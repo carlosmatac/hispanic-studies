@@ -8,6 +8,7 @@ All from Wikimedia Commons. Check the licence again before any commercial use.
 | `velazquez-las-lanzas.jpg`, `velazquez-las-lanzas-crop-lances.jpg` (resized/cropped) | [File:Velazquez-The Surrender of Breda.jpg](https://commons.wikimedia.org/wiki/File:Velazquez-The_Surrender_of_Breda.jpg) | Public domain |
 | `galleon-cabrera-bueno-1734.jpg` (flattened on white) | [File:Galleon after González Cabrera Bueno 1734.png](https://commons.wikimedia.org/wiki/File:Galleon_after_Gonz%C3%A1lez_Cabrera_Bueno_1734.png) | Public domain |
 | `cross-of-burgundy.svg` | [File:Flag of Cross of Burgundy.svg](https://commons.wikimedia.org/wiki/File:Flag_of_Cross_of_Burgundy.svg) | Public domain |
+| `zurbaran-agnus-dei.jpg` (resized to 1800 px) | [File:Agnus Dei, por Francisco de Zurbarán.jpg](https://commons.wikimedia.org/wiki/File:Agnus_Dei,_por_Francisco_de_Zurbar%C3%A1n.jpg) (Museo del Prado, c. 1635–40) | Public domain |
 | `zurbaran-agnus-dei.jpg` (resized to 1600px) | [File:Francisco de Zurbarán 006.jpg](https://commons.wikimedia.org/wiki/File:Francisco_de_Zurbar%C3%A1n_006.jpg) (Zurbarán, *Agnus Dei*, c. 1635–40, Museo del Prado) | Public domain |
 
 Brand files in `assets/brand/` belong to Hispano Studies LLC (logo taken from the Substack publication); the transparent versions were derived by us.
