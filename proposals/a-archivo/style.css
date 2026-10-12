@@ -180,7 +180,7 @@ img { display: block; max-width: 100%; }
 }
 @media (max-width: 760px) {
   body { font-size: 17px; }
-  .hide-sm, .brand__sub { display: none; }
+  .hide-sm, .brand__sub, .topline span:first-child { display: none; }
   .header { flex-wrap: wrap; gap: 12px 18px; }
   .nav { order: 3; width: 100%; margin: 0; overflow-x: auto; gap: 20px; }
   .header__tools { margin-left: auto; }

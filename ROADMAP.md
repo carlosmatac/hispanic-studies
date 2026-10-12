@@ -16,6 +16,8 @@ Progress lives in the GitHub issues (open/closed) and their PRs. This file is th
 | 4 | [#6](https://github.com/carlosmatac/hispanic-studies/issues/6) | Proposal C: Hispanorientalism | proposals | #3 |
 | 5 | [#7](https://github.com/carlosmatac/hispanic-studies/issues/7) | Proposals gallery and meeting kit | proposals, meeting | #4, #5, #6 |
 
+Status (2026-10-12): #1–#7 done. Open `make serve` → http://localhost:8000/proposals/ for the gallery.
+
 Proposals A, B and C are independent: each person can take one (reassign the issue) and work in its folder without touching the others.
 
 ## Parked until the meeting
