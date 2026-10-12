@@ -5,3 +5,4 @@ node_modules/
 .env
 .env.*
 *.tmp
+.devin/*.local.json
