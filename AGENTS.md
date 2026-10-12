@@ -70,6 +70,17 @@ Labels: `area:proposals`, `area:shared`, `area:research`, `area:infra`, `meeting
 - Respect `prefers-reduced-motion`; every animation has a still fallback.
 - Follow the brief's homepage order (hero + pamphlet signup → books → videos/essays → mission → community → footer) and navigation (Watch · Read · Books · About · Merch, EN/ES switch, cart) so proposals are comparable.
 
+## Unicorn Studio (WebGL scenes)
+
+Some proposals are built as Unicorn Studio scenes and embedded with `<div data-us-project="ID">` + the SDK. Inspiration and plan: `docs/research/unicorn-inspiration.md`.
+
+- Connect the MCP (each person, each tool, logs in separately):
+  - Devin: `devin mcp add unicorn-studio https://agentmcp-qbght5huyq-uc.a.run.app/mcp` (saved to `.devin/mcp_config.local.json`, not committed)
+  - Claude Code: `claude mcp add --transport http unicorn-studio https://agentmcp-qbght5huyq-uc.a.run.app/mcp`
+- The agent only works on a design open in the browser with **Allow agents** on (lock icon on the "Connected" button in the editor's top bar).
+- The Free plan has **200 agent changes a month** and 8 branded publishes, non-commercial only. Read-only calls are free. Before a large build, check `agentChanges` in `get_editor_state`; one scene per proposal, one Unicorn design per proposal (`IHS · <id>`); write the scene's project ID and editor URL in the proposal's issue.
+- Production needs the Legend plan (commercial licence, no watermark).
+
 ## Local preview
 
 ```bash
