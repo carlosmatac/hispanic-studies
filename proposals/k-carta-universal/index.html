@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · K · Carta Universal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>K · Carta Universal</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--map" id="signup">
+    <div class="stage">
+      <img src="../../assets/art/ribero-carta-universal-1529.jpg" alt="Diego Ribero's Carta Universal of 1529, a world map on parchment" width="1600" height="686">
+      <canvas id="routes" aria-hidden="true"></canvas>
+      <p class="legend mono"><span class="k-atl">●</span> Flota de Indias · Seville–Veracruz &nbsp; <span class="k-pac">●</span> Galeón de Manila · Acapulco–Manila</p>
+    </div>
+    <div class="band">
+      <div class="band__head">
+        <p class="mono eyebrow">K · Carta Universal · the world in one network</p>
+        <h1>One world, <em>two oceans.</em></h1>
+      </div>
+      <div class="hero__copy">
+        <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+        <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+          <label class="sr" for="email">Email address</label>
+          <input id="email" type="email" required placeholder="your@email.com">
+          <button type="submit">Get the free PDF</button>
+          <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+        </form>
+        <p class="mono consent">Newsletter + publication updates · unsubscribe any time · Diego Ribero, <i>Carta Universal</i>, Seville 1529</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">The first map of <em>a global network.</em></h2>
+      <p class="concept__why">Ribero drew the Carta Universal for the Casa de Contratación in Seville, the first scientific world map. Two centuries of fleets then turned it into a working system: silver from Veracruz to Seville, silk and porcelain from Manila to Acapulco. The page shows that the Hispanic world was a network, not a periphery, which is the Institute's whole argument.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Map</b>: Diego Ribero, <i>Carta Universal</i> 1529 (public domain), full width</span></li>
+          <li><span><b>Routes</b> drawn on a canvas overlay as dashed curves (hand-placed, approximate)</span></li>
+          <li><span><b>Ships</b>: dots with short wakes travelling the Flota de Indias and the Manila galleon, including the northern <i>tornaviaje</i></span></li>
+          <li><span><b>Ports</b> pulse when a ship arrives: Seville, Veracruz, Acapulco, Manila</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">CINZEL</p>
+        <p>Roman capitals, like the lettering of the map's cartouches.</p>
+        <p class="spec-2">EB Garamond for text · Space Mono for captions</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#E8DCC0"><b>Vellum</b>#E8DCC0</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#B5402A"><b>Vermilion</b>#B5402A</li>
+          <li style="--c:#2F5D62"><b>Pacific</b>#2F5D62</li>
+          <li style="--c:#3B2A1A"><b>Sepia</b>#3B2A1A</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">A large-format print of the Carta with the routes in vermilion, and a "Seville–Manila" route tee.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Built with our own code</h3>
+        <p class="note">About 90 lines of canvas 2D in <code>main.js</code>: Catmull-Rom curves through hand-placed points, dots moving along them. A data version (real voyages per year) would make it an explainer, not just a hero. With reduced motion the routes are drawn still.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">This page is the without-Unicorn version: canvas routes and particles over a public-domain map.</p>
+        <span class="viab">1–2 days · high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction K · Carta Universal · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script type="module" src="main.js"></script>
+</body>
+</html>

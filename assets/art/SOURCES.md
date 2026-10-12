@@ -10,6 +10,9 @@ All from Wikimedia Commons. Check the licence again before any commercial use.
 | `cross-of-burgundy.svg` | [File:Flag of Cross of Burgundy.svg](https://commons.wikimedia.org/wiki/File:Flag_of_Cross_of_Burgundy.svg) | Public domain |
 | `zurbaran-agnus-dei.jpg` (resized to 1800 px) | [File:Agnus Dei, por Francisco de Zurbarán.jpg](https://commons.wikimedia.org/wiki/File:Agnus_Dei,_por_Francisco_de_Zurbar%C3%A1n.jpg) (Museo del Prado, c. 1635–40) | Public domain |
 | `zurbaran-agnus-dei.jpg` (resized to 1600px) | [File:Francisco de Zurbarán 006.jpg](https://commons.wikimedia.org/wiki/File:Francisco_de_Zurbar%C3%A1n_006.jpg) (Zurbarán, *Agnus Dei*, c. 1635–40, Museo del Prado) | Public domain |
+| `florentine-codex-folio-80.jpg` (resized to 1600px) | [File:The Florentine Codex (folio 80).jpg](https://commons.wikimedia.org/wiki/File:The_Florentine_Codex_(folio_80).jpg) (Sahagún, *Florentine Codex*, 1575–77) | Public domain |
+| `velazquez-las-meninas.jpg` (resized to 1600px) | [File:Las Meninas 01.jpg](https://commons.wikimedia.org/wiki/File:Las_Meninas_01.jpg) (Velázquez, 1656, Museo del Prado) | Public domain |
+| `ribero-carta-universal-1529.jpg` (resized to 1600px) | [File:Map Diego Ribero 1529.jpg](https://commons.wikimedia.org/wiki/File:Map_Diego_Ribero_1529.jpg) | Public domain |
 
 Brand files in `assets/brand/` belong to Hispano Studies LLC (logo taken from the Substack publication); the transparent versions were derived by us.
 
