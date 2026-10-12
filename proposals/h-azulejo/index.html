@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · H · Azulejo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="light">
+<div class="proposal-tag"><a href="../">← Proposals</a><span>H · Azulejo</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--card" id="signup">
+    <div class="hero__fallback" aria-hidden="true"></div>
+    <canvas id="tiles" class="hero__fx" aria-label="A wall of blue-and-white tiles with the IHS eagle and the Cross of Burgundy; the cursor glazes them"></canvas>
+    <div class="hero__veil"></div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">H · Azulejo · the tile that crossed the ocean</p>
+      <h1>One craft, <em>two shores.</em></h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">Talavera de la Reina → Puebla · UNESCO intangible heritage, 2019<br><b>Move the cursor to glaze the tiles</b></p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">A shared craft <em>as a pattern system.</em></h2>
+      <p class="concept__why">Talavera crossed from Talavera de la Reina to Puebla and stayed: in 2019 UNESCO inscribed it jointly for Spain and Mexico. That is his thesis in ceramic form, a culture that travelled and took root rather than a loot. The tile is also a system: the same eagle-and-cross module tiles headers, section breaks, packaging and the shop, and every visitor finishes the wall by glazing it.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Tile module</b> drawn in code: the IHS eagle (logo mask) and the Cross of Burgundy alternate in the centre, corner quarter-rosettes join across four tiles</span></li>
+          <li><span><b>Bisque → glaze</b>: tiles start as fired clay with the pencil sketch, the cursor glazes them in cobalt on tin-white (a radial wipe from where you touch)</span></li>
+          <li><span><b>Wet sheen</b> that follows the cursor; burgundy in the saltires, like Talavera's manganese</span></li>
+          <li><span><b>Unicorn version</b>: Recursive Grid + mouse ripple + Bloom on the glaze</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">DM Serif <i>Display</i></p>
+        <p>Generous serif with a soft italic, like hand-lettered tiles.</p>
+        <p class="spec-2">DM Sans for text · DM Mono for labels</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#F6F3EA"><b>Tin glaze</b>#F6F3EA</li>
+          <li style="--c:#1F3E8C"><b>Cobalt</b>#1F3E8C</li>
+          <li style="--c:#E0A526"><b>Puebla yellow</b>#E0A526</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing · manganese</li>
+          <li style="--c:#D8B193"><b>Bisque</b>#D8B193</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">Real tiles, mugs and plates from a Puebla workshop, with the eagle-and-cross module; the pattern also wraps the shop's packaging.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Built with our own code</h3>
+        <p class="note">Canvas 2D in <code>main.js</code>: four pre-rendered tile faces (two motifs × bisque/glazed), a glaze state per tile and a clip circle for the wipe. Light theme on purpose: the only daylight direction among D–K. With reduced motion the wall is shown fully glazed and still.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">This page is the without-Unicorn version: a 2D canvas (or a small shader) is all the effect needs.</p>
+        <span class="viab">< 1 day · very high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction H · Azulejo · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script type="module" src="main.js"></script>
+</body>
+</html>
