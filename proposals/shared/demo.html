@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>glyph-field demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #111; color: #eee; font: 14px "IBM Plex Mono", monospace; }
+  h1 { font-size: 14px; font-weight: 600; padding: 16px 20px 0; margin: 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; padding: 16px 20px 40px; }
+  figure { margin: 0; }
+  .stage { position: relative; aspect-ratio: 4 / 3; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  figcaption { padding-top: 8px; opacity: 0.7; }
+</style>
+</head>
+<body>
+<h1>proposals/shared/glyph-field.js: one engine, four sources</h1>
+<div class="grid">
+  <figure><div class="stage"><canvas id="a"></canvas></div><figcaption>image · density · peek lens (hover)</figcaption></figure>
+  <figure><div class="stage"><canvas id="b"></canvas></div><figcaption>procedural · Cross of Burgundy · digits</figcaption></figure>
+  <figure><div class="stage"><canvas id="c"></canvas></div><figcaption>image · density · drift</figcaption></figure>
+  <figure><div class="stage"><canvas id="d"></canvas></div><figcaption>procedural + image · galleon on a glyph sea</figcaption></figure>
+</div>
+<script type="module">
+  import { GlyphField } from './glyph-field.js';
+  const A = '../../assets/art/';
+  new GlyphField(document.getElementById('a'), {
+    source: { type: 'image', src: A + 'guadalupe-tilma.jpg' }, charset: ' .:-=+*#%@', cell: 5, background: '#F4ECD8',
+    palette: ['#C9A24A', '#8B2E2E', '#470B15'], invert: true, fit: 'contain', gamma: 1.2,
+    mouse: { radius: 90, peek: 1 }, shimmer: 0.25, drift: { zoom: 0.04, period: 20 },
+  });
+  new GlyphField(document.getElementById('b'), {
+    source: { type: 'procedural', glsl: GlyphField.procedural.burgundyFlag, size: [1500, 1000] },
+    charset: ' .:1742365098', cell: 9, background: '#0E0708', palette: ['#2a1012', '#8C8270', '#E8383F', '#C9A24A'],
+    colorMode: 'source', fit: 'contain', zoom: 0.82, focus: [0.55, 0.5], dither: 0.05,
+  });
+  new GlyphField(document.getElementById('c'), {
+    source: { type: 'image', src: A + 'velazquez-las-lanzas-crop-lances.jpg' }, charset: ' .:-+*#%@', cell: 6,
+    background: '#0E0708', palette: ['#470B15', '#C9A24A', '#F9F3DD'], gamma: 1.4, drift: { zoom: 0.06, pan: [0.03, 0], period: 30 },
+    reveal: { mode: 'scroll', start: 1, end: 0.4 },
+  });
+  new GlyphField(document.getElementById('d'), {
+    source: { type: 'procedural', glsl: GlyphField.procedural.galleonSea, image: A + 'galleon-cabrera-bueno-1734.jpg', crop: [0.19, 0.13, 0.84, 0.86], size: [480, 493] },
+    charset: ' ·:;=+*#%', cell: 5, background: '#0B1B2B', palette: ['#0B1B2B', '#7FA3C4', '#E8E2D0'], colorMode: 'source',
+    fit: 'contain', zoom: 0.92,
+  });
+</script>
+</body>
+</html>
