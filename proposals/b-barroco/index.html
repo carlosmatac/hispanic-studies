@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Proposal B · Baroque Modernity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,800;1,6..96,400;1,6..96,600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>B · Baroque Modernity</span></div>
+
+<header class="header">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="#watch">Watch</a><a href="#read">Read</a><a href="#books">Books</a><a href="#about">About</a><a href="#merch">Merch</a>
+  </nav>
+  <div class="tools mono"><button class="lang">EN / <span>ES</span></button><a href="#merch" class="cart">Cart · 0</a></div>
+</header>
+
+<main>
+  <section class="hero" id="signup">
+    <canvas id="flag" class="hero__canvas" aria-label="The Cross of Burgundy waving, drawn with digits"></canvas>
+    <div class="hero__veil"></div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">✠ Baroque Modernity</p>
+      <h1>Not a relic.<br><em>A civilization.</em></h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions, plus new essays, videos and drops.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF <span aria-hidden="true">→</span></button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">Cross of Burgundy · 1506–1843 · Flanders → Florida → Manila → Potosí<br><span>203K views · our most-watched Short</span></p>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>Veritas prius pace</span><i>✠</i><span>Baroque Modernity</span><i>✠</i><span>Hispanorientalism</span><i>✠</i><span>Plus Ultra</span><i>✠</i>
+      <span>Veritas prius pace</span><i>✠</i><span>Baroque Modernity</span><i>✠</i><span>Hispanorientalism</span><i>✠</i><span>Plus Ultra</span><i>✠</i>
+    </div>
+  </div>
+
+  <section class="numbers" aria-label="Audience">
+    <ul data-list="stats"><template><li><b>{{n}}</b><span class="mono">{{label}}</span></li></template></ul>
+  </section>
+
+  <section class="block books" id="books">
+    <div class="block__head">
+      <p class="mono eyebrow">01 · De Indiis Editions</p>
+      <h2>The canon, <em>translated.</em></h2>
+    </div>
+    <div class="books__grid">
+      <article class="foil">
+        <div class="foil__cover">
+          <span class="logo logo--gold" aria-hidden="true"></span>
+          <h3>Hispanic<br>Reunification</h3>
+          <p>200 Years of<br>Theory and Praxis</p>
+          <span class="mono foil__n">DIE · 001</span>
+        </div>
+        <div class="foil__meta mono"><span class="tag">Free PDF</span><span>Forthcoming · English</span></div>
+      </article>
+      <div>
+        <p class="books__intro">De Indiis Editions translates and republishes the texts that shaped Hispanic thought. Already on Substack:</p>
+        <ol class="rows" data-list="essays">
+          <template><li><a href="{{url}}" target="_blank" rel="noopener"><span class="rows__i mono">{{i}}</span><span class="rows__t">{{title}}</span><span class="rows__a mono">{{byline}}</span><span class="rows__go" aria-hidden="true">↗</span></a></li></template>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="lanzas">
+    <canvas id="lanzas" aria-label="Velázquez, The Surrender of Breda, drawn with characters"></canvas>
+    <div class="lanzas__copy">
+      <p class="mono eyebrow">02 · Manifesto</p>
+      <h2>An empire that <em>generated,</em><br>not one that plundered.</h2>
+      <p class="mono lanzas__cap">Velázquez · <i>The Surrender of Breda (Las Lanzas)</i> · 1635. Spinola receives the keys of the city and refuses to humiliate the defeated.</p>
+    </div>
+  </section>
+
+  <section class="block watch" id="watch">
+    <div class="block__head">
+      <p class="mono eyebrow">03 · Watch</p>
+      <h2>Short. Sharp. <em>Sourced.</em></h2>
+    </div>
+    <div class="shorts" data-list="shorts">
+      <template><a class="short" href="{{url}}" target="_blank" rel="noopener"><span class="short__img"><img src="{{thumb}}" alt="" loading="lazy"><b class="short__v">{{views}}</b></span><span class="short__t">{{title}}</span></a></template>
+    </div>
+  </section>
+
+  <section class="block mission" id="about">
+    <div class="block__head">
+      <p class="mono eyebrow">04 · Our mission</p>
+      <h2>Seven <em>theses.</em></h2>
+    </div>
+    <p class="mission__lead">The Institute for Hispano Studies is dedicated to the study, defense, and renewal of Hispanic civilization, through audiovisual work, publishing, translation, and community.</p>
+    <ol class="theses" data-list="mission">
+      <template><li><span class="theses__n">{{n}}</span><span class="theses__t">{{title}}</span><span class="theses__es mono">{{es}}</span></li></template>
+    </ol>
+  </section>
+
+  <section class="block merch" id="merch">
+    <div class="block__head">
+      <p class="mono eyebrow">05 · Merch</p>
+      <h2>Drop <em>01.</em></h2>
+    </div>
+    <div class="drop">
+      <article class="piece">
+        <div class="piece__img"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M62 28 40 38 14 64l22 24 14-10v94h100V78l14 10 22-24-26-26-22-10c-4 12-18 20-38 20s-34-8-38-20Z" fill="#141010"/></svg><canvas id="tee-flag" class="piece__print" aria-hidden="true"></canvas></div>
+        <h3>Aspa · digit tee</h3><p class="mono">Concept · the flag in numbers, gold on black</p>
+      </article>
+      <article class="piece">
+        <div class="piece__img"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M60 40 34 52 12 92l22 14 12-12v84h108V94l12 12 22-14-22-40-26-12c-6 14-22 22-40 22s-34-8-40-22Z" fill="#470B15"/><path d="M78 36c6 18 38 18 44 0" fill="none" stroke="#2F070D" stroke-width="6"/></svg><span class="logo logo--gold piece__logo" aria-hidden="true"></span></div>
+        <h3>The Eagle · hoodie</h3><p class="mono">Concept · burgundy, gold puff print</p>
+      </article>
+      <article class="piece">
+        <div class="piece__img"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M40 120c0-44 26-70 60-70s60 26 60 70Z" fill="#141010"/><path d="M30 122h150c0 10-20 14-75 14s-75-4-75-14Z" fill="#0a0808"/></svg><span class="cap mono">VPP</span></div>
+        <h3>Veritas prius pace · cap</h3><p class="mono">Concept · black, gold embroidery</p>
+      </article>
+    </div>
+    <p class="mono merch__code">The old store's code still lives on: <b>BAROQUEMODERNITY</b></p>
+  </section>
+
+  <section class="join">
+    <p class="mono eyebrow">06 · Community</p>
+    <h2>Enter the<br><em>Reconquista Syndicate.</em></h2>
+    <p>Our Discord: debates, study groups, translation work. Free to join.</p>
+    <div class="join__cta"><a class="btn" href="#">Join the Discord</a><a class="btn btn--line" href="mailto:hispanostudies@gmail.com">Collaborate</a></div>
+  </section>
+
+  <section class="sheet" aria-label="Brand system">
+    <p class="mono eyebrow">For the meeting · brand system B</p>
+    <div class="sheet__grid">
+      <div>
+        <ul class="chips">
+          <li style="--c:#0E0708"><b>Obsidian</b>#0E0708</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#B3202A"><b>Aspa red</b>#B3202A</li>
+          <li style="--c:#C9A24A"><b>Gold leaf</b>#C9A24A</li>
+          <li style="--c:#F2E8D0"><b>Bone</b>#F2E8D0</li>
+        </ul>
+      </div>
+      <div>
+        <p class="spec spec--d">Bodoni <em>Moda</em></p>
+        <p class="spec">High-contrast display with baroque italics.</p>
+        <p class="spec spec--g">Space Grotesk · body and UI</p>
+        <p class="spec mono">JetBrains Mono · numbers, glyph fields</p>
+      </div>
+      <div>
+        <p class="spec">Beltrán’s own motto, “Baroque Modernity”, as a visual system: black and gold, ornament meets grid. Built for video traffic and streetwear drops. Motion signature: the Cross of Burgundy and the Tercios’ pikes made of numbers.</p>
+        <div class="tiles"><span class="tile"><span class="logo logo--gold"></span></span><span class="tile tile--b"><span class="logo logo--bone"></span></span><span class="tile tile--r"><span class="logo logo--bone"></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p class="footer__big">Veritas <em>prius pace.</em></p>
+  <div class="footer__cols">
+    <nav class="mono" data-list="channels"><template><a href="{{url}}" target="_blank" rel="noopener">{{name}}</a></template></nav>
+    <p class="mono">hispanostudies@gmail.com<br>© 2026 Hispano Studies LLC<br>Privacy · Terms · Shipping · EN / ES</p>
+  </div>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
