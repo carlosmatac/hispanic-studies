@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · I · Códice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Alegreya+Sans:wght@400;500;700&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>I · Códice</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--codex" id="signup">
+    <figure class="folio">
+      <img src="../../assets/art/florentine-codex-folio-80.jpg" alt="A page of the Florentine Codex: Nahuatl and Spanish text in two columns with a painted figure" width="1021" height="1600">
+    </figure>
+    <canvas id="ink" class="hero__fx" aria-hidden="true"></canvas>
+    <div class="hero__copy">
+      <p class="mono eyebrow">I · Códice · the cursor is a quill</p>
+      <h1>Written in <em>two tongues.</em></h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">Bernardino de Sahagún and Nahua scholars · <i>Florentine Codex</i> · 1575–77<br><b>Move the cursor: it writes in ink</b></p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">Nahuatl and Spanish, <em>on the same page.</em></h2>
+      <p class="concept__why">The Florentine Codex is the founding document of the Hispanic world as a shared project: Franciscan friars and Nahua scholars writing, side by side, an encyclopaedia of Mexico in two languages and painted images. It is the opposite of the "conquest vs. victims" story, and it is the Institute's thesis in one object. The visitor writes on it with a quill.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Page</b>: a folio of the Florentine Codex (Biblioteca Medicea Laurenziana, public domain) on a parchment ground</span></li>
+          <li><span><b>Ink</b>: a 2D canvas trail behind the cursor; the stroke thins with speed, like a real quill</span></li>
+          <li><span><b>Drops</b> of cochineal red when the hand slows down; the ink dries and fades in about three seconds</span></li>
+          <li><span><b>Idle</b>: the quill draws Nahua speech scrolls (volutes) by itself</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">IM Fell <i>English</i></p>
+        <p>A 17th-century press face, the closest to a printed chronicle.</p>
+        <p class="spec-2">Alegreya Sans for text · IBM Plex Mono for captions</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#EFE4CC"><b>Parchment</b>#EFE4CC</li>
+          <li style="--c:#1E1A16"><b>Iron gall</b>#1E1A16</li>
+          <li style="--c:#A3242B"><b>Cochineal</b>#A3242B</li>
+          <li style="--c:#4F8FA6"><b>Maya blue</b>#4F8FA6</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">A codex-page notebook with the bilingual layout, and a cochineal-red tote with a speech-scroll glyph.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Built with our own code</h3>
+        <p class="note">About 100 lines of canvas 2D in <code>main.js</code>, no libraries. A WebGL fluid (ink diffusing in water) would be the premium version. With reduced motion the page is a still image.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">This page is the without-Unicorn version: canvas ink trail (or a WebGL fluid) over a public-domain folio.</p>
+        <span class="viab">1 day · high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction I · Códice · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · J · Meninas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Jost:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>J · Meninas</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--salon" id="signup">
+    <div class="room" aria-hidden="true">
+      <div class="layer layer--bg"></div>
+      <div class="layer layer--paint"><img src="../../assets/art/velazquez-las-meninas.jpg" alt="" width="1390" height="1600"><span class="glint"></span></div>
+      <div class="layer layer--fg"></div>
+    </div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">J · Meninas · step into the room</p>
+      <h1>The painting <em>looks back.</em></h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">Diego Velázquez · <i>Las Meninas</i> · 1656 · Museo del Prado<br><b>Move the cursor: the room moves with you</b></p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">Who is looking <em>at whom?</em></h2>
+      <p class="concept__why">Las Meninas is a painting about the viewer: the king and queen stand where we stand, seen only in the mirror. A slight parallax makes that literal, as if the visitor stepped into the Alcázar. It also suits an institute of ideas: Velázquez painting himself at work is the intellectual as part of the court of a universal monarchy.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Room</b>: the painting itself, blurred and scaled up, as a dim background layer</span></li>
+          <li><span><b>Canvas</b>: <i>Las Meninas</i> (Prado, public domain) in a frame, tilting a few degrees towards the cursor</span></li>
+          <li><span><b>Glint</b>: a soft highlight that slides across the varnish against the movement</span></li>
+          <li><span><b>Vignette</b> as a front layer moving the most; three depths give the illusion</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">Bodoni <i>Moda</i></p>
+        <p>High-contrast court serif, museum-label elegance.</p>
+        <p class="spec-2">Jost for text · DM Mono for captions</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#1C1714"><b>Alcázar</b>#1C1714</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#C98F86"><b>Infanta rose</b>#C98F86</li>
+          <li style="--c:#9DA3A6"><b>Silver</b>#9DA3A6</li>
+          <li style="--c:#EDE6DC"><b>Gesso</b>#EDE6DC</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">A "Who is looking?" print with the mirror detail, and a silver-grey sweatshirt with the Infanta's silhouette.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Built with our own code</h3>
+        <p class="note">About 50 lines in <code>main.js</code>: CSS 3D transforms eased towards the pointer. The next step is a real depth map (Depth Anything) displacing the image in a shader, so the Infanta stands out from the room. With reduced motion the room stays still.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">This page is the without-Unicorn version: layered parallax now, depth-map parallax next.</p>
+        <span class="viab">1–2 days · medium-high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction J · Meninas · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script type="module" src="main.js"></script>
+</body>
+</html>
