@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Institute for Hispano Studies · Three directions</title>
+<title>Institute for Hispano Studies · Design directions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,600;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Shippori+Mincho:wght@600&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
@@ -31,14 +31,31 @@
   .card small { color: var(--muted); }
   .a { --accent: #c79a5a; } .b { --accent: #C9A24A; } .c { --accent: #C23B22; }
   footer { padding: 10px clamp(18px, 4vw, 56px) 50px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 26px; }
-  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .row-head { padding: 34px clamp(18px, 4vw, 56px) 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; border-top: 1px solid var(--line); margin-top: 10px; }
+  .row-head h2 { margin: 0; font: 600 clamp(24px, 2.6vw, 34px)/1.1 "Ibarra Real Nova", serif; }
+  .row-head p { margin: 0; color: var(--muted); }
+  .grid--8 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .thumb { position: relative; aspect-ratio: 16 / 10; background: #000 center / cover no-repeat; overflow: hidden; }
+  .thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(13, 11, 11, 0.55), transparent 55%); }
+  .thumb .logo { position: absolute; left: 50%; top: 46%; width: 46%; transform: translate(-50%, -50%); background: linear-gradient(160deg, #f1d78e, #D4AF5A 45%, #7d5b1d); filter: drop-shadow(0 0 18px rgba(212, 175, 90, 0.45)); }
+  .thumb--f { background-image: radial-gradient(ellipse at 50% 45%, #3a0c16, #0E0708 70%); }
+  .thumb--e { background: radial-gradient(ellipse at 50% 50%, #2A0910, #0E0708 70%); }
+  .thumb--e span { position: absolute; left: 50%; top: 50%; width: 52%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); background: url("../assets/unicorn/columnario-height.png") center / cover; filter: sepia(0.5) contrast(1.4); }
+  .thumb--h { background: #F6F3EA; }
+  .thumb--h span { position: absolute; inset: 0; background: radial-gradient(circle at 0 0, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 100% 0, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 0 100%, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 100% 100%, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 50% 50%, #470B15 0 9%, #F6F3EA 9% 15%, #1F3E8C 15% 17%, transparent 17%); background-size: 60px 60px; background-color: #F6F3EA; }
+  .tag-us { display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px solid var(--accent); border-radius: 999px; font-size: 10px; letter-spacing: 0.08em; }
+  .d { --accent: #C8913A; } .e { --accent: #C9A24A; } .f { --accent: #D4AF5A; } .g { --accent: #D2333C; }
+  .h { --accent: #3B63B8; } .i { --accent: #9E1B32; } .j { --accent: #B4412E; } .k { --accent: #2F5D62; }
+  .grid--8 h2 { font: 400 26px/1.05 "Ibarra Real Nova", serif; }
+  @media (max-width: 1100px) { .grid--8 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 900px) { .grid, .grid--8 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <header>
   <span class="logo" aria-hidden="true"></span>
   <div>
-    <h1>Institute for Hispano Studies: three directions</h1>
+    <h1>Institute for Hispano Studies: design directions</h1>
     <p>Mockups for the first meeting with Beltrán Arellanes · October 2026</p>
   </div>
 </header>
@@ -74,9 +91,89 @@
   </a>
 </div>
 
+<div class="row-head">
+  <h2>Unicorn Studio directions: eight concept pages</h2>
+  <p>D–K from the Unicorn research. E, F and G are published Unicorn scenes; D, H, I, J and K are our own code, to show what we can build without it.</p>
+</div>
+<div class="grid grid--8">
+  <a class="card d" href="d-tenebrismo/">
+    <span class="thumb thumb--d" style="background-image:url('../assets/art/zurbaran-agnus-dei.jpg')" aria-hidden="true"></span>
+    <div class="card__body">
+      <span class="card__k">D · own code</span>
+      <h2>Tenebrismo</h2>
+      <p>The cursor is a candle: Zurbarán's lamb relit in a dark chapel. Spanish Golden Age chiaroscuro as the Read/Books mood.</p>
+      <small>Icon: Zurbarán, Agnus Dei, c. 1635–40</small>
+    </div>
+  </a>
+  <a class="card e" href="e-real-de-a-ocho/">
+    <span class="thumb thumb--e"  aria-hidden="true"><span></span></span>
+    <div class="card__body">
+      <span class="card__k">E · scene<span class="tag-us">Unicorn</span></span>
+      <h2>Real de a Ocho</h2>
+      <p>"The dollar was Spanish first": the 8-reales columnario spins and dissolves into a ledger. The hook for US Hispanics, and the best merch.</p>
+      <small>Icon: 8 reales columnario, 1732–1772</small>
+    </div>
+  </a>
+  <a class="card f" href="f-retablo/">
+    <span class="thumb thumb--f"  aria-hidden="true"><span class="logo"></span></span>
+    <div class="card__body">
+      <span class="card__k">F · scene<span class="tag-us">Unicorn</span></span>
+      <h2>Retablo</h2>
+      <p>His own eagle extruded in gold under the rays of a baroque altarpiece. Zero new assets: the logo becomes the hero.</p>
+      <small>Icon: IHS eagle · gold leaf</small>
+    </div>
+  </a>
+  <a class="card g" href="g-la-tela/">
+    <span class="thumb thumb--g" style="background-image:url('../assets/unicorn/cross-of-burgundy-cloth.jpg')" aria-hidden="true"></span>
+    <div class="card__body">
+      <span class="card__k">G · scene<span class="tag-us">Unicorn</span></span>
+      <h2>La Tela</h2>
+      <p>The Cross of Burgundy (his top Short, 203K) as real cloth in the wind; the cursor pushes the folds.</p>
+      <small>Icon: Cross of Burgundy, 1506–1843</small>
+    </div>
+  </a>
+  <a class="card h" href="h-azulejo/">
+    <span class="thumb thumb--h"  aria-hidden="true"><span></span></span>
+    <div class="card__body">
+      <span class="card__k">H · own code</span>
+      <h2>Azulejo</h2>
+      <p>A Talavera wall built from the eagle and the cross; the visitor glazes it. A Spanish-Mexican craft as a pattern system.</p>
+      <small>Icon: Talavera, Spain–Mexico, UNESCO 2019</small>
+    </div>
+  </a>
+  <a class="card i" href="i-codice/">
+    <span class="thumb thumb--i" style="background-image:url('../assets/art/florentine-codex-folio-80.jpg')" aria-hidden="true"></span>
+    <div class="card__body">
+      <span class="card__k">I · own code</span>
+      <h2>Códice</h2>
+      <p>Nahuatl and Spanish side by side, inked by the cursor: mestizaje as an interface, and the UI for De Indiis Editions.</p>
+      <small>Icon: Florentine Codex, 1577</small>
+    </div>
+  </a>
+  <a class="card j" href="j-meninas/">
+    <span class="thumb thumb--j" style="background-image:url('../assets/art/velazquez-las-meninas.jpg')" aria-hidden="true"></span>
+    <div class="card__body">
+      <span class="card__k">J · own code</span>
+      <h2>Las Meninas 2.5D</h2>
+      <p>The most famous Spanish painting as an entrance, in depth: "step into the Hispanic world".</p>
+      <small>Icon: Velázquez, Las Meninas, 1656</small>
+    </div>
+  </a>
+  <a class="card k" href="k-carta-universal/">
+    <span class="thumb thumb--k" style="background-image:url('../assets/art/ribero-carta-universal-1529.jpg')" aria-hidden="true"></span>
+    <div class="card__body">
+      <span class="card__k">K · own code</span>
+      <h2>Carta Universal</h2>
+      <p>Ribero's 1529 world map with the Flota de Indias and the Manila galleon flowing on it: content by place.</p>
+      <small>Icon: Diego Ribero, Carta Universal, 1529</small>
+    </div>
+  </a>
+</div>
+
 <footer>
   <a href="shared/demo.html">Glyph engine demo</a>
   <a href="https://github.com/carlosmatac/hispanic-studies/tree/main/docs/research">Research</a>
+  <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Unicorn directions and viability</a>
   <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/meeting/questions.md">Meeting questions</a>
 </footer>
 

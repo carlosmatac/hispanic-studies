@@ -104,9 +104,35 @@ Each one: an image his audience already knows + a Unicorn effect stack. Same rul
 2. **G · La Tela**: the visual "wow", and it reuses the flag that is already his top Short.
 3. **E · Real de a Ocho**: the best story hook for the US audience and the strongest merch.
 
-D, H, I, J and K wait for Beltrán's reaction.
+Built on 2026-10-12: E, F and G as published Unicorn scenes (design "IHS · Retablo"), D, H, I, J and K with our own code, all as concept pages in `proposals/` and in the gallery.
 
 ## Assets ready
 
 - `assets/brand/ihs-logo.svg`: vector logo traced from the 1280 px PNG (for 3D extrude and Particle Formation).
 - Public-domain art in `assets/art/` (Guadalupe, Las Lanzas, galleon, Cross of Burgundy). To add when needed: Zurbarán *Agnus Dei*, *Las Meninas*, the Florentine Codex, Ribero 1529, a columnario photo (check licences and list them in `assets/art/SOURCES.md`).
+
+## Without Unicorn: viability
+
+Every direction can be built with our own code. What it would take, if Beltrán prefers no third-party runtime:
+
+| Dir | How with own code | Effort | Viability |
+| --- | --- | --- | --- |
+| D Tenebrismo | WebGL shader, normal map precomputed offline (e.g. Depth Anything) or from luminance, point light on the cursor | 1–2 days | High |
+| E Real de a Ocho | Three.js `ExtrudeGeometry` from SVG + PBR metal + environment map; points for the $ morph | 2–3 days | High |
+| F Retablo | Three.js extruded SVG in gold + post-processing god rays (pmndrs) + particles | 2–3 days | High |
+| G La Tela | Verlet cloth (three.js cloth example) with texture and mouse; a GPU cloth like Unicorn's is much harder | 3–4 days | Medium |
+| H Azulejo | 2D shader / canvas | < 1 day | Very high |
+| I Códice | Canvas ink trail or the MIT-licensed WebGL fluid simulation | 1 day | High |
+| J Meninas 2.5D | Depth-map parallax shader + offline depth map; a deep dolly shows artefacts | 1–2 days | Medium-high |
+| K Carta Universal | Canvas/SVG routes + particles | 1–2 days | High |
+
+D, H, I, J and K are already built this way (see their pages); the E and F scenes use custom shaders inside Unicorn (sources in `assets/unicorn/`), which is most of the work an own-code version would need.
+
+**Conclusion:** everything is buildable without Unicorn. Unicorn buys iteration speed, polish, visual editing by non-developers, and saves roughly 2–3 weeks of creative-dev work across D–K, at $168/year.
+
+### What we learnt building E, F and G through the MCP
+
+- Agents cannot add files to the media library: effects that need an SVG (3D SDF custom shape, Particle Formation) only take SVGs a human uploaded. We worked around it with custom effects fed by textures we generated (`assets/unicorn/`).
+- Custom effects are cheap in agent changes: previews are free and only the commit counts. The three scenes cost 54 of the 200 monthly changes and 3 of 8 publishes.
+- Free-plan embeds carry a tiled Unicorn watermark: fine for the pitch, not for production.
+- Cloth Physics renders black in headless Chrome (software WebGL); check it in a real browser.
