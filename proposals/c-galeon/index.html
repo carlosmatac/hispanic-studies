@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Proposal C · Hispanorientalism</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>C · Hispanorientalism</span></div>
+
+<header class="header">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for Hispano Studies<small>Instituto de Estudios Hispanos</small></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="#watch">Watch<small>Ver</small></a><a href="#read">Read<small>Leer</small></a><a href="#books">Books<small>Libros</small></a><a href="#about">About<small>Nosotros</small></a><a href="#merch">Merch<small>Tienda</small></a>
+  </nav>
+  <div class="tools mono"><button class="lang"><b>EN</b> · ES</button><a class="cart" href="#merch">Cart 0</a></div>
+</header>
+
+<main>
+  <section class="hero" id="signup">
+    <canvas id="galleon" class="hero__canvas" aria-label="A Manila galleon drawn with characters, on a moving sea"></canvas>
+    <p class="hero__vertical" aria-hidden="true">Galeón de Manila · Nao de China</p>
+    <aside class="route mono" aria-label="Manila galleon route">
+      <div class="route__row"><span>Acapulco</span><span>16°51′N 99°53′W</span></div>
+      <svg viewBox="0 0 300 70" class="route__svg" aria-hidden="true">
+        <path id="arc" d="M10 55 Q150 -10 290 55" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 5"/>
+        <circle r="3.5" fill="#C23B22"><animateMotion dur="9s" repeatCount="indefinite"><mpath href="#arc"/></animateMotion></circle>
+        <circle cx="10" cy="55" r="2.5" fill="currentColor"/><circle cx="290" cy="55" r="2.5" fill="currentColor"/>
+      </svg>
+      <div class="route__row"><span>Manila</span><span>14°35′N 120°58′E</span></div>
+      <div class="route__years"><b id="year">1565</b><span>1565 — 1815 · 250 years</span></div>
+    </aside>
+    <div class="hero__copy">
+      <p class="mono eyebrow">Hispanorientalism</p>
+      <h1>The West went so far West, it became <em>the East.</em></h1>
+      <p class="hero__es">Occidente fue tan al oeste que se volvió Oriente.</p>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="Email address · Correo">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter in English or Spanish · unsubscribe any time</p>
+    </div>
+    <p class="hero__cap mono">After the frontispiece of J. González Cabrera Bueno, <i>Navegación especulativa y práctica</i>, Manila, 1734</p>
+  </section>
+
+  <section class="tornaviaje">
+    <div class="tv__head">
+      <p class="mono eyebrow">The first globalization</p>
+      <h2>Silver went west. Silk came east. <em>A civilization crossed the Pacific.</em></h2>
+    </div>
+    <ol class="legs">
+      <li><span class="mono">1565</span><b>Tornaviaje</b><p>Andrés de Urdaneta finds the return route from Manila to Acapulco. The Pacific becomes a Spanish lake for 250 years.</p></li>
+      <li><span class="mono">Westbound</span><b>Acapulco → Manila</b><p>American silver, missionaries, soldiers and settlers sail with the trade winds.</p></li>
+      <li><span class="mono">Eastbound</span><b>Manila → Acapulco</b><p>Porcelain, silk and spices from China and Japan reach New Spain, and then Europe.</p></li>
+      <li><span class="mono">1815</span><b>Last galleon</b><p>Independence wars end the route. The Hispanic world fragments: the theme of our pamphlet.</p></li>
+    </ol>
+  </section>
+
+  <section class="block books" id="books">
+    <header class="block__head"><p class="mono eyebrow">De Indiis Editions</p><h2>Books <small>Libros</small></h2></header>
+    <div class="books__grid">
+      <article class="volume">
+        <div class="volume__cover">
+          <span class="volume__binding" aria-hidden="true"></span>
+          <span class="volume__label"><b>Hispanic Reunification</b><i>200 Years of Theory and Praxis</i></span>
+          <span class="logo logo--red" aria-hidden="true"></span>
+        </div>
+        <p class="mono"><span class="pill">Free PDF</span> Forthcoming · English · Spanish edition planned</p>
+      </article>
+      <div>
+        <p class="books__intro">Translation is our bridge. De Indiis Editions brings the Hispanic intellectual tradition into English, and back.</p>
+        <ul class="tlist" data-list="essays">
+          <template><li><a href="{{url}}" target="_blank" rel="noopener"><span class="tlist__t">{{title}}</span><span class="tlist__a mono">{{byline}} · {{dateLabel}}</span></a></li></template>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block watch" id="watch">
+    <header class="block__head"><p class="mono eyebrow">YouTube · @hispano_studies</p><h2>Watch <small>Ver</small></h2></header>
+    <div class="scroll" data-list="shorts">
+      <template><a class="panel" href="{{url}}" target="_blank" rel="noopener"><span class="panel__img"><img src="{{thumb}}" alt="" loading="lazy"></span><span class="panel__v mono">{{views}} views</span><span class="panel__t">{{title}}</span></a></template>
+    </div>
+  </section>
+
+  <section class="block mission" id="about">
+    <header class="block__head"><p class="mono eyebrow">Our mission · Nuestra misión</p><h2>Seven theses <small>Siete tesis</small></h2></header>
+    <p class="mission__lead">The Institute for Hispano Studies is dedicated to the study, defense, and renewal of Hispanic civilization, in English, Spanish and Portuguese, across the Atlantic and the Pacific.</p>
+    <ol class="bilingual" data-list="mission">
+      <template><li><span class="bilingual__n">{{n}}</span><span class="bilingual__en">{{title}}</span><span class="bilingual__es">{{es}}</span></li></template>
+    </ol>
+  </section>
+
+  <section class="block merch" id="merch">
+    <header class="block__head"><p class="mono eyebrow">Concepts · not for sale yet</p><h2>Merch <small>Tienda</small></h2></header>
+    <div class="goods">
+      <article class="good">
+        <div class="good__img good__img--plate"><span class="plate"><span class="logo logo--blue" aria-hidden="true"></span></span></div>
+        <h3>Kraak plate</h3><p class="mono">Blue-and-white porcelain with the eagle, after the galleon’s cargo</p>
+      </article>
+      <article class="good">
+        <div class="good__img"><svg viewBox="0 0 200 200" aria-hidden="true"><path d="M62 28 40 38 14 64l22 24 14-10v94h100V78l14 10 22-24-26-26-22-10c-4 12-18 20-38 20s-34-8-38-20Z" fill="#0B1B2B"/></svg><canvas id="tee" class="good__print" aria-hidden="true"></canvas></div>
+        <h3>Nao de China · tee</h3><p class="mono">The galleon in characters, silver on indigo</p>
+      </article>
+      <article class="good">
+        <div class="good__img good__img--furoshiki"><span class="furoshiki"><span class="logo logo--paper" aria-hidden="true"></span></span></div>
+        <h3>Manila–Acapulco furoshiki</h3><p class="mono">Vermilion cloth wrap printed with the route</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="join">
+    <div>
+      <p class="mono eyebrow">Community · Comunidad</p>
+      <h2>An intercontinental crew.</h2>
+      <p>Madrid, Miami, México, Manila. Join <b>Reconquista Syndicate</b>, our Discord, and help us translate.</p>
+    </div>
+    <div class="join__cta">
+      <a class="btn" href="#">Join the Discord</a>
+      <a class="btn btn--line" href="mailto:hispanostudies@gmail.com">hispanostudies@gmail.com</a>
+    </div>
+    <ul class="join__stats" data-list="stats"><template><li><b>{{n}}</b><span class="mono">{{label}}</span></li></template></ul>
+  </section>
+
+  <section class="sheet" aria-label="Brand system">
+    <p class="mono eyebrow">For the meeting · brand system C</p>
+    <div class="sheet__grid">
+      <ul class="chips">
+        <li style="--c:#0B1B2B"><b>Pacific indigo</b>#0B1B2B</li>
+        <li style="--c:#EFE8D8"><b>Washi</b>#EFE8D8</li>
+        <li style="--c:#C23B22"><b>Lacquer</b>#C23B22</li>
+        <li style="--c:#B8C2CC"><b>Silver peso</b>#B8C2CC</li>
+        <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+      </ul>
+      <div>
+        <p class="spec spec--d">Shippori Mincho</p>
+        <p class="spec">A Japanese mincho with Latin letters: East and West in one family.</p>
+        <p class="spec mono">IBM Plex Sans + Mono · body, data</p>
+      </div>
+      <div>
+        <p class="spec">Beltrán’s idea nobody else owns: Hispanorientalism. The Manila galleon as the symbol of a civilization that is both Western and Eastern. Bilingual by design, every label in English and Spanish.</p>
+        <div class="tiles"><span class="tile"><span class="logo logo--paper"></span></span><span class="tile tile--w"><span class="logo logo--red"></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span class="logo logo--paper" aria-hidden="true"></span>
+  <p>Institute for Hispano Studies<br><span class="mono">Hispanic-Catholic Civilization & Pan-Iberian Geopolitics</span></p>
+  <nav class="mono" data-list="channels"><template><a href="{{url}}" target="_blank" rel="noopener">{{name}}</a></template></nav>
+  <p class="mono footer__legal">© 2026 Hispano Studies LLC · Privacy · Terms · Shipping · English / Español</p>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
