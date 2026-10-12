@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · E · Real de a Ocho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="">
+<div class="proposal-tag"><a href="../">← Proposals</a><span>E · Real de a Ocho</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--split" id="signup">
+    <div class="hero__fallback" aria-hidden="true"><span class="coin"></span></div>
+    <div class="hero__fx" data-us-project="l6rw6IMwqGGf3MEJJc9B" data-us-lazyload="true" data-us-scale="1" data-us-dpi="1.5" data-us-alttext="A Spanish eight-reales columnario coin spinning, dissolving into characters" data-us-arialabel="A Spanish eight-reales columnario coin spinning, dissolving into characters"></div>
+    <div class="hero__veil"></div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">E · Real de a Ocho · the piece of eight</p>
+      <h1>The dollar was <em>Spanish</em> first.</h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">8 reales <i>columnario</i> · Mexico City mint · 1732–1772<br><b>Legal tender in the US until 1857</b></p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">You have carried Spain <em>in your wallet.</em></h2>
+      <p class="concept__why">The 8-reales <i>columnario</i> (two crowned hemispheres between the Pillars of Hercules, PLUS ULTRA on the ribbons) was legal tender in the United States until 1857, and the pillars with their ribbon are one of the most cited origins of the $ sign. For English-speaking US Hispanics it is the perfect hook: the Hispanic world is already in their pocket. The coin turns under candle light and dissolves into a ledger of characters and back.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Coin</b>: custom 3D effect, a struck coin with a relief map we drew (pillars, PLVS VLTRA ribbons, crowned globes, VTRAQUE VNUM legend), milled edge, silver under candle light, leaning toward the cursor</span></li>
+          <li><span><b>Glyph Dither</b> in gold, looping every 9 s: ledger → silver → ledger</span></li>
+          <li><span><b>Background</b>: burgundy-black radial gradient</span></li>
+          <li><span><b>Next</b>: Particle Formation that turns the coin into the $ (needs the SVG uploaded to the media library)</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">CINZEL</p>
+        <p>Roman capitals, like a coin legend.</p>
+        <p class="spec-2">IBM Plex Sans for text · Plex Mono for figures</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#0E0708"><b>Obsidian</b>#0E0708</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#CFC9BE"><b>Piece of eight</b>#CFC9BE</li>
+          <li style="--c:#C9A24A"><b>Gold</b>#C9A24A</li>
+          <li style="--c:#2A0910"><b>Ledger</b>#2A0910</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">A cast coin pendant, a lapel pin and a numbered challenge coin for members: the scene becomes the product shot.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>How it is built</h3>
+        <p class="note">Scene "E · Real de a Ocho" in the Unicorn Studio design "IHS · Retablo", built through the Unicorn MCP and embedded with <code>&lt;div data-us-project&gt;</code> + the SDK (v2.4.2). The relief is a stylised height map, not a photo of a real coin (<code>assets/unicorn/columnario-height.png</code>). Free plan watermark until we publish from a paid account.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">Three.js: a cylinder with the relief as normal map, PBR metal with an environment map, and a points pass for the $ morph.</p>
+        <span class="viab">2–3 days · high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction E · Real de a Ocho · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script>
+  // Unicorn Studio scene: loaded only when motion is allowed; the CSS fallback stays visible otherwise.
+  (function () {
+    var el = document.querySelector('[data-us-project]');
+    if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.4.2/dist/unicornStudio.umd.js';
+    s.onload = function () {
+      UnicornStudio.init().then(function () { document.documentElement.classList.add('us-ready'); }).catch(function (e) { console.warn('Unicorn scene failed', e); });
+    };
+    document.head.appendChild(s);
+  })();
+</script>
+</body>
+</html>
