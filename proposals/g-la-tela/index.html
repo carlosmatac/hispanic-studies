@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · G · La Tela</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="">
+<div class="proposal-tag"><a href="../">← Proposals</a><span>G · La Tela</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--left" id="signup">
+    <div class="hero__fallback" aria-hidden="true"><img src="../../assets/unicorn/cross-of-burgundy-cloth.jpg" alt=""></div>
+    <div class="hero__fx" data-us-project="UJRE2hLiycqZZq3f0FSI" data-us-lazyload="true" data-us-scale="1" data-us-dpi="1.5" data-us-alttext="The Cross of Burgundy hanging as cloth, moving in the wind" data-us-arialabel="The Cross of Burgundy hanging as cloth, moving in the wind"></div>
+    <div class="hero__veil"></div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">G · La Tela · touch the flag</p>
+      <h1>The flag that <em>connected</em> the world.</h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">Cross of Burgundy · 1506–1843 · Flanders → Florida → Manila → Potosí<br><b>203K views</b> · our most-watched Short</p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">Proposal B's flag, <em>now real fabric.</em></h2>
+      <p class="concept__why">His most-viewed Short (203K) is about the Cross of Burgundy, and the 151K one about Bolivians waving it. Cloth Physics hangs it as a heavy banner in the wind and the cursor pushes the folds: the visitor touches the flag that flew from Flanders to Florida, Manila and Potosí. The most "wow" per effort, and the same scene can carry the tilma of Guadalupe for a devotional page (gently, no glitch). The flag is also used by far-right groups in Spain: ask Beltrán how he wants to handle it on merch.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Image layer</b>: the Cross of Burgundy (Wikimedia Commons, public domain) on burgundy velvet</span></li>
+          <li><span><b>Cloth Physics</b> in media mode: pinned at the top, strong wind, the cursor repels the fabric</span></li>
+          <li><span><b>Vignette</b> in burgundy-black, <b>Film Grain</b></span></li>
+          <li><span><b>Next</b>: Glyph Dither on top for the castle.tech look, or the tilma of Guadalupe as the fabric</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">ANTON</p>
+        <p>Condensed poster type: flags, banners, drops.</p>
+        <p class="spec-2">Archivo for text · IBM Plex Mono for labels</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#120A0B"><b>Ink</b>#120A0B</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#B3202A"><b>Aspa red</b>#B3202A</li>
+          <li style="--c:#3A0C16"><b>Velvet</b>#3A0C16</li>
+          <li style="--c:#EEE4CE"><b>Linen</b>#EEE4CE</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">The waving flag as a printed bandana and a woven patch; a short loop of the scene for drop announcements.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>How it is built</h3>
+        <p class="note">Scene "G · La Tela" in the Unicorn Studio design "IHS · Retablo": an image layer under a Cloth Physics effect that maps the layers below onto the fabric. Embedded with <code>&lt;div data-us-project&gt;</code> + the SDK (v2.4.2); Free plan watermark until we publish from a paid account. Headless Chrome (software WebGL) renders the cloth black; check it in a real browser.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">Verlet cloth (the three.js cloth example) with the flag as texture and mouse picking. A GPU cloth like Unicorn's is much harder.</p>
+        <span class="viab">3–4 days · medium</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction G · La Tela · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script>
+  // Unicorn Studio scene: loaded only when motion is allowed; the CSS fallback stays visible otherwise.
+  (function () {
+    var el = document.querySelector('[data-us-project]');
+    if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.4.2/dist/unicornStudio.umd.js';
+    s.onload = function () {
+      UnicornStudio.init().then(function () { document.documentElement.classList.add('us-ready'); }).catch(function (e) { console.warn('Unicorn scene failed', e); });
+    };
+    document.head.appendChild(s);
+  })();
+</script>
+</body>
+</html>

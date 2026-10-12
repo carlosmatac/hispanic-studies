@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · F · Retablo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Manrope:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="">
+<div class="proposal-tag"><a href="../">← Proposals</a><span>F · Retablo</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--center" id="signup">
+    <div class="hero__fallback" aria-hidden="true"><span class="rays"></span><span class="logo logo--gold"></span></div>
+    <div class="hero__fx" data-us-project="i3aobKyq9iTzOiIxTUmC" data-us-lazyload="true" data-us-scale="1" data-us-dpi="1.5" data-us-alttext="The IHS eagle extruded in gold with baroque light rays" data-us-arialabel="The IHS eagle extruded in gold with baroque light rays"></div>
+    <div class="hero__veil"></div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">F · Retablo · the eagle in gold leaf</p>
+      <h1>The eagle, <em>in gold leaf.</em></h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">IHS eagle · gold, rays and grain · <b>Unicorn Studio scene</b></p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">The logo <em>is</em> the altarpiece.</h2>
+      <p class="concept__why">Beltrán already owns the strongest asset: the Habsburg eagle in his logo. A baroque retablo (Seville Cathedral's retablo mayor, Santa Prisca in Taxco, Tonantzintla in Puebla) puts one sacred image at the centre of a field of gold and rays. Here the eagle takes that place, and the rays are the same <i>resplandor</i> as Guadalupe's mandorla and a monstrance. Zero new assets: it turns the existing brand into the hero.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Gold eagle</b>: custom 3D effect that extrudes a distance field of <code>ihs-logo.svg</code>, bevelled, polished gold, swaying and leaning toward the cursor</span></li>
+          <li><span><b>God Rays</b> from the bright gold: the <i>resplandor</i>, drifting slightly with the cursor</span></li>
+          <li><span><b>Sparkle</b> on the highlights: gold-leaf glints</span></li>
+          <li><span><b>Vignette</b> in burgundy-black, <b>Film Grain</b></span></li>
+          <li><span><b>On load</b>: the gold lights up and settles forward in 2.8 s</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">Playfair <i>Display</i></p>
+        <p>High-contrast serif with a baroque italic.</p>
+        <p class="spec-2">Manrope for text and UI · DM Mono for labels</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#0E0708"><b>Obsidian</b>#0E0708</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#D4AF5A"><b>Gold leaf</b>#D4AF5A</li>
+          <li style="--c:#8A6A24"><b>Old gold</b>#8A6A24</li>
+          <li style="--c:#F3E7CF"><b>Bone</b>#F3E7CF</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">A die-struck enamel pin of the extruded eagle and gold-foil prints on black: the same render, on the chest.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>How it is built</h3>
+        <p class="note">One scene in the Unicorn Studio design "IHS · Retablo", built through the Unicorn MCP and embedded with <code>&lt;div data-us-project&gt;</code> + the SDK (v2.4.2). Free plan: the Unicorn watermark stays until we publish from a paid account. Agents cannot upload SVGs to the media library, so the eagle is extruded from a distance field we generated from the vector logo (<code>assets/unicorn/</code>); with the SVG uploaded by hand, the built-in 3D SDF and Particle Formation (the eagle assembling from gold dust) become available.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">Three.js <code>ExtrudeGeometry</code> from the SVG, PBR gold with an environment map, pmndrs post-processing god rays and a particle pass.</p>
+        <span class="viab">2–3 days · high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction F · Retablo · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script>
+  // Unicorn Studio scene: loaded only when motion is allowed; the CSS fallback stays visible otherwise.
+  (function () {
+    var el = document.querySelector('[data-us-project]');
+    if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.4.2/dist/unicornStudio.umd.js';
+    s.onload = function () {
+      UnicornStudio.init().then(function () { document.documentElement.classList.add('us-ready'); }).catch(function (e) { console.warn('Unicorn scene failed', e); });
+    };
+    document.head.appendChild(s);
+  })();
+</script>
+</body>
+</html>

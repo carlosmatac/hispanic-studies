@@ -10,3 +10,13 @@ All from Wikimedia Commons. Check the licence again before any commercial use.
 | `cross-of-burgundy.svg` | [File:Flag of Cross of Burgundy.svg](https://commons.wikimedia.org/wiki/File:Flag_of_Cross_of_Burgundy.svg) | Public domain |
 
 Brand files in `assets/brand/` belong to Hispano Studies LLC (logo taken from the Substack publication); the transparent versions were derived by us.
+
+## Unicorn Studio textures (`assets/unicorn/`)
+
+Derived by us for the Unicorn scenes E, F and G; regenerate them with the scripts in the same folder.
+
+| File | Made from |
+| --- | --- |
+| `ihs-logo-sdf.png` | Signed distance field of `assets/brand/ihs-logo.svg` (brand file, Hispano Studies LLC) |
+| `columnario-height.png` | Drawn by us: a stylised relief evoking the 8-reales *columnario* (not a photo or copy of a specific coin) |
+| `cross-of-burgundy-cloth.jpg` | `cross-of-burgundy.svg` above (public domain), rasterised on a linen-coloured field |
