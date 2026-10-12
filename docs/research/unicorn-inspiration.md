@@ -29,7 +29,16 @@ Embed: `<div data-us-project="ID">` + the ~50 KB SDK. Works in plain HTML, Next.
 | Custom 3D models and fonts | no | yes |
 | MCP agent changes | **200 / month** | unlimited |
 
-Pitch mockups fit the Free plan. **The production site needs Legend** (commercial licence, no watermark): add it to the recurring-cost list for Beltrán.
+Pitch mockups fit the Free plan.
+
+### How licensing works in practice
+
+- The plan belongs to **whoever designs and publishes** (our account), not to the website or the client. Beltrán does not need an account and Unicorn does not know he exists.
+- **Publish** uploads the scene (a JSON of shaders and settings) to Unicorn's cloud under a project ID. The site only contains `<div data-us-project="ID">` and the SDK; every visitor's browser downloads the scene from Unicorn using that ID. The watermark is baked into scenes published from a Free account.
+- **FAQ:** if the subscription expires, published scenes keep working without the watermark; it only comes back if you republish from Free. So the minimum is **one month of Legend ($20) while we publish the final scenes**, then cancel; editing them later means another month. If we use it for other clients too, $168/year as an agency tool.
+- **Commercial use** (a client's site) needs Legend at the time of publishing. The FAQ forbids reselling or redistributing the Unicorn code itself, not showing the output on a client's site. Edge cases: george@unicorn.studio.
+- **Self-hosting with our stack:** Legend can export the scene as JSON. We commit it to GitHub, Vercel serves it, and the embed uses `data-us-project-src="/scenes/hero.json"` with the SDK (`unicornstudio-react/next` in Next.js). The site then no longer depends on Unicorn's servers.
+- For simple effects our own `proposals/shared/glyph-field.js` costs nothing and has no dependency; Unicorn is worth it for what would take days to code (cloth, 3D, particles, depth relighting).
 
 ## References that fit IHS
 
