@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Proposal A · Archivo de Indias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>A · Archivo de Indias</span></div>
+
+<div class="topline mono">
+  <span>Archivo IHS · Legajo 2026</span>
+  <span class="hide-sm">Madrid · Miami · Manila · México</span>
+  <span>Free pamphlet → <a href="#signup">get it</a></span>
+</div>
+
+<header class="header">
+  <a class="brand" href="#">
+    <span class="logo" aria-hidden="true"></span>
+    <span class="brand__text">
+      <span class="brand__name">Institute for Hispano Studies</span>
+      <span class="brand__sub mono">De Indiis Editions</span>
+    </span>
+  </a>
+  <nav class="nav" aria-label="Main">
+    <a href="#watch">Watch</a><a href="#read">Read</a><a href="#books">Books</a><a href="#about">About</a><a href="#merch">Merch</a>
+  </nav>
+  <div class="header__tools mono">
+    <button class="lang" aria-label="Language">EN <span>/ ES</span></button>
+    <a class="cart" href="#merch">Cart (0)</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="signup">
+    <div class="hero__copy">
+      <p class="eyebrow mono">Legajo I · Free pamphlet</p>
+      <blockquote class="kicker">“You were given a history with three hundred years cut out of it.”</blockquote>
+      <h1>Discover 200 years of Hispanic reunification thought.</h1>
+      <p class="lead">Sign up for the Institute’s newsletter and receive <em>Hispanic Reunification: 200 Years of Theory and Praxis</em>, a free pamphlet from De Indiis Editions. New essays, videos and publication announcements, in English and Spanish.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="Email address">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Check your inbox to confirm. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="consent mono">Newsletter and publication updates. Unsubscribe any time.</p>
+    </div>
+    <figure class="hero__figure">
+      <div class="mount">
+        <canvas id="guadalupe" aria-label="Our Lady of Guadalupe drawn with characters"></canvas>
+      </div>
+      <figcaption class="mono">
+        <span>Fig. 1</span> Our Lady of Guadalupe, tilma of Juan Diego, Tepeyac, 1531. Set in <b id="glyph-count">…</b> characters. <i>Hover to see the original.</i>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="ledger mono" aria-label="Audience">
+    <ul data-list="stats"><template><li><b>{{n}}</b> {{label}}</li></template></ul>
+  </section>
+
+  <section class="section books" id="books">
+    <header class="section__head">
+      <p class="eyebrow mono">Legajo II</p>
+      <h2>De Indiis Editions</h2>
+      <p>The Institute’s imprint: translation, publication and republication of the texts that shaped Hispanic thought, now in English.</p>
+    </header>
+    <div class="books__grid">
+      <article class="cover">
+        <div class="cover__cloth">
+          <span class="logo logo--gold" aria-hidden="true"></span>
+          <p class="cover__series mono">De Indiis Editions · Nº 1</p>
+          <h3>Hispanic Reunification</h3>
+          <p class="cover__sub">200 Years of Theory and Praxis</p>
+        </div>
+        <div class="cover__meta mono">
+          <span class="badge">Free PDF · Forthcoming</span>
+          <span>Pamphlet · English</span>
+        </div>
+      </article>
+      <div class="books__list">
+        <h3 class="mono small-head">Already translated, on Substack</h3>
+        <ol class="catalog" data-list="essays">
+          <template><li><a href="{{url}}" target="_blank" rel="noopener"><span class="mono">{{i}}</span><span class="catalog__t">{{title}}</span><span class="catalog__a mono">{{byline}}</span></a></li></template>
+        </ol>
+        <p class="note mono">Books with prices and checkout appear here only when real editions exist.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section watch" id="watch">
+    <header class="section__head">
+      <p class="eyebrow mono">Legajo III</p>
+      <h2>Watch</h2>
+      <p>Short films against the Black Legend. Six of the most-watched.</p>
+    </header>
+    <div class="reel" data-list="shorts">
+      <template><a class="short" href="{{url}}" target="_blank" rel="noopener"><span class="short__img"><img src="{{thumb}}" alt="" loading="lazy"></span><span class="short__n mono">Nº {{i}} · {{views}} views</span><span class="short__t">{{title}}</span></a></template>
+    </div>
+    <div class="longs" data-list="videos">
+      <template><a class="long" href="{{url}}" target="_blank" rel="noopener"><span class="long__img"><img src="{{thumb}}" alt="" loading="lazy"></span><span class="long__t">{{title}}</span><span class="mono long__n">Long-form · YouTube</span></a></template>
+    </div>
+  </section>
+
+  <section class="section read" id="read">
+    <header class="section__head">
+      <p class="eyebrow mono">Legajo IV</p>
+      <h2>Read</h2>
+      <p>Essays and translations. The full text lives on Substack.</p>
+    </header>
+    <div class="cards" data-list="essays">
+      <template><a class="card" href="{{url}}" target="_blank" rel="noopener"><span class="card__top mono"><span>Ficha {{i}}</span><span>{{dateLabel}}</span></span><span class="card__t">{{title}}</span><span class="card__a">{{byline}}</span><span class="card__go mono">Read on Substack →</span></a></template>
+    </div>
+  </section>
+
+  <section class="section mission" id="about">
+    <div class="mission__intro">
+      <p class="eyebrow mono">Legajo V · Our mission</p>
+      <h2>Hispanic civilization, studied, defended and renewed.</h2>
+      <p class="lead">The Institute for Hispano Studies is dedicated to the study, defense, and renewal of Hispanic civilization. Through audiovisual work, publishing, translation, and community, we make its history and intellectual traditions accessible across languages and borders.</p>
+      <a class="link mono" href="#about">Read the full manifesto →</a>
+    </div>
+    <ol class="articles" data-list="mission">
+      <template><li><span class="articles__n">{{n}}</span><span class="articles__t">{{title}}<i>{{es}}</i></span></li></template>
+    </ol>
+  </section>
+
+  <section class="section merch" id="merch">
+    <header class="section__head">
+      <p class="eyebrow mono">Legajo VI · Gabinete</p>
+      <h2>Merch</h2>
+      <p>Concepts built on the Institute’s eagle and its motto. Not for sale yet.</p>
+    </header>
+    <div class="merch__grid">
+      <article class="item">
+        <div class="item__img item__img--tee">
+          <svg viewBox="0 0 200 200" aria-hidden="true"><path d="M62 28 40 38 14 64l22 24 14-10v94h100V78l14 10 22-24-26-26-22-10c-4 12-18 20-38 20s-34-8-38-20Z" fill="#EFE5CC" stroke="#CDBF9C"/></svg>
+          <span class="logo item__logo" aria-hidden="true"></span>
+        </div>
+        <h3>The Eagle · heavyweight tee</h3><p class="mono">Concept · cream / burgundy</p>
+      </article>
+      <article class="item">
+        <div class="item__img item__img--poster"><canvas id="poster" aria-label="Glyph poster"></canvas></div>
+        <h3>Fig. 1 · glyph print</h3><p class="mono">Concept · A2 giclée, numbered</p>
+      </article>
+      <article class="item">
+        <div class="item__img item__img--tote">
+          <svg viewBox="0 0 200 200" aria-hidden="true"><path d="M70 60c0-24 60-24 60 0" fill="none" stroke="#8B5E4B" stroke-width="5"/><rect x="45" y="58" width="110" height="122" fill="#470B15"/></svg>
+          <span class="tote__text">Veritas<br>prius<br>pace</span>
+        </div>
+        <h3>Veritas prius pace · tote</h3><p class="mono">Concept · burgundy canvas</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section community">
+    <div>
+      <p class="eyebrow mono">Legajo VII · Community</p>
+      <h2>Join the conversation, then help build it.</h2>
+      <p class="lead">Discussion, study groups and translation work happen in our Discord, <b>Reconquista Syndicate</b>. Translators, editors and researchers: write to us.</p>
+    </div>
+    <div class="community__actions">
+      <a class="btn" href="#">Join the Discord</a>
+      <a class="btn btn--ghost" href="mailto:hispanostudies@gmail.com">hispanostudies@gmail.com</a>
+    </div>
+  </section>
+
+  <section class="sheet" aria-label="Brand system">
+    <p class="eyebrow mono">For the meeting · brand system A</p>
+    <div class="sheet__grid">
+      <div>
+        <h3 class="mono small-head">Palette</h3>
+        <ul class="chips">
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#F3EAD3"><b>Parchment</b>#F3EAD3</li>
+          <li style="--c:#231A14"><b>Iron gall ink</b>#231A14</li>
+          <li style="--c:#A8842C"><b>Gilt</b>#A8842C</li>
+          <li style="--c:#CDBF9C"><b>Rule</b>#CDBF9C</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="mono small-head">Type</h3>
+        <p class="spec spec--display">Ibarra Real Nova</p>
+        <p class="spec">Joaquín Ibarra’s 18th-century Spanish types. Already on the current site: we keep it.</p>
+        <p class="spec mono">IBM Plex Mono · catalogue numbers, captions, data</p>
+      </div>
+      <div>
+        <h3 class="mono small-head">Idea</h3>
+        <p class="spec">The Institute as an archive: legajos, fichas, figures. Evolution, not revolution: same eagle, same burgundy. The motion signature is the engraving made of characters.</p>
+        <div class="sheet__logos"><span class="tile"><span class="logo"></span></span><span class="tile tile--dark"><span class="logo logo--paper"></span></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__brand">
+    <span class="logo logo--paper" aria-hidden="true"></span>
+    <p>Institute for Hispano Studies<br><span class="mono">Hispanic-Catholic Civilization & Pan-Iberian Geopolitics</span></p>
+  </div>
+  <nav class="mono" data-list="channels"><template><a href="{{url}}" target="_blank" rel="noopener">{{name}}</a></template></nav>
+  <p class="mono footer__legal">© 2026 Hispano Studies LLC · Privacy · Terms · Shipping · English / Español</p>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>

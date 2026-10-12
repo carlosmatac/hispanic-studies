@@ -406,7 +406,7 @@ export class GlyphField {
 
   revealProgress(t) {
     const r = this.o.reveal;
-    if (!r || reduceMotion()) return 1;
+    if (!r || reduceMotion() || location.search.includes('noreveal')) return 1;
     if (r.mode === 'scroll') {
       const rect = this.canvas.getBoundingClientRect();
       const vh = innerHeight;
