@@ -258,10 +258,10 @@ export class GlyphField {
     this.gl = gl;
     const o = this.o;
 
-    if (document.fonts) await document.fonts.load(`${o.weight} 48px ${o.font}`).catch(() => {});
     let chars;
     if (o.mode === 'text') chars = [...new Set([...o.text])];
     else chars = [...o.charset];
+    if (document.fonts) await document.fonts.load(`${o.weight} 48px ${o.font}`, chars.join('')).catch(() => {});
     const atlas = buildAtlas(chars, o.font, o.weight, o.mode !== 'text');
     this.glyphCount = atlas.chars.length;
 
@@ -545,7 +545,8 @@ vec4 SRC(vec2 uv, vec2 st, float t) {
   float ship = 0.0;
   vec3 sc = uPal[2];
   if (suv.x > 0.0 && suv.y > 0.0 && suv.x < 1.0 && suv.y < 1.0) {
-    ship = smoothstep(0.25, 0.8, 1.0 - lev(lumaMin(suv)));
+    float avg = luma(img(suv).rgb);
+    ship = smoothstep(0.22, 0.85, 1.0 - lev(mix(lumaMin(suv), avg, 0.55)));
   }
   float horizon = 0.78;
   float sea = 0.0;
