@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · D · Tenebrismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;700&family=Courier+Prime&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="">
+<div class="proposal-tag"><a href="../">← Proposals</a><span>D · Tenebrismo</span></div>
+
+<header class="bar">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="brand__name">Institute for<br>Hispano Studies</span></a>
+  <nav class="nav" aria-label="Main"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <div class="tools mono">EN / <span>ES</span> · Cart 0</div>
+</header>
+
+<main>
+  <section class="hero hero--left" id="signup">
+    <div class="hero__fallback" aria-hidden="true"></div>
+    <canvas id="candle" class="hero__fx" aria-label="Zurbarán, Agnus Dei, lit by a candle that follows the cursor"></canvas>
+    <div class="hero__veil"></div>
+    <div class="hero__copy">
+      <p class="mono eyebrow">D · Tenebrismo · the cursor is a candle</p>
+      <h1>Read it <em>by candlelight.</em></h1>
+      <p class="lead">Discover 200 years of Hispanic reunification thought. Get <b>Hispanic Reunification: 200 Years of Theory and Praxis</b>, the free pamphlet from De Indiis Editions.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="your@email.com">
+        <button type="submit">Get the free PDF</button>
+        <p class="signup__ok mono">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+      <p class="mono consent">Newsletter + publication updates · unsubscribe any time</p>
+    </div>
+    <p class="hero__caption mono">Francisco de Zurbarán · <i>Agnus Dei</i> · c. 1635–40 · Museo del Prado<br><b>Move the cursor: you are holding the candle</b></p>
+  </section>
+
+  <section class="concept" aria-labelledby="idea">
+    <div class="concept__head">
+      <h2 id="idea">A dark chapel, <em>and you hold the light.</em></h2>
+      <p class="concept__why">Spanish Golden Age chiaroscuro is the most "Spanish Baroque" thing we can put on a screen. Zurbarán's lamb, bound on the altar, is Christ as sacrifice painted with almost nothing but light and black. The page is that chapel: the visitor walks it with a candle. It works beyond the hero too: on Read and Books each essay can be lit by its own painting, which gives the archive a single, recognisable mood.</p>
+    </div>
+    <div class="concept__grid">
+      <div class="cell cell--wide">
+        <h3>Effect stack</h3>
+        <ol class="stack">
+          <li><span><b>Painting</b>: Zurbarán, <i>Agnus Dei</i> (Prado, public domain), as a WebGL texture with mipmaps</span></li>
+          <li><span><b>Relief</b> from the painting's own luminance (two blur levels), no extra maps</span></li>
+          <li><span><b>Candle</b>: warm point light on the cursor, eased, with a slow flicker; drifts over the lamb when idle</span></li>
+          <li><span><b>Vignette</b> and fine <b>grain</b> in the same shader</span></li>
+        </ol>
+      </div>
+      <div class="cell">
+        <h3>Type</h3>
+        <p class="spec">Cormorant <i>Garamond</i></p>
+        <p>Old-style serif, tall italics, candlelit.</p>
+        <p class="spec-2">Karla for text · Courier Prime for captions</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Palette</h3>
+        <ul class="chips">
+          <li style="--c:#0A0807"><b>Chapel</b>#0A0807</li>
+          <li style="--c:#470B15"><b>Burgundy</b>#470B15 · existing</li>
+          <li style="--c:#C8913A"><b>Ochre</b>#C8913A</li>
+          <li style="--c:#EADBC0"><b>Wool</b>#EADBC0</li>
+          <li style="--c:#5E5B55"><b>Altar grey</b>#5E5B55</li>
+        </ul>
+      </div>
+      <div class="cell">
+        <h3>Merch spin-off</h3>
+        <p class="note">A black heavyweight tee with the lamb in a single warm spot, and art prints of the relit painting.</p>
+      </div>
+      <div class="cell cell--wide">
+        <h3>Built with our own code</h3>
+        <p class="note">About 150 lines of WebGL2 in <code>main.js</code>: one full-screen shader, no libraries. The Unicorn version would use <code>process_image</code> to get a real normal map and its Point Light effect; the luminance trick is close enough for a pitch. With reduced motion the painting stays still and dim.</p>
+      </div>
+      <div class="cell">
+        <h3>Without Unicorn</h3>
+        <p class="note">This page is the without-Unicorn version: WebGL shader, normal from luminance (or a precomputed normal map, e.g. Depth Anything), point light on the cursor.</p>
+        <span class="viab">1–2 days · high</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Concept page · direction D · Tenebrismo · mockup for the first meeting with Beltrán Arellanes, October 2026</span>
+  <span><a href="../">All proposals</a> · <a href="https://github.com/carlosmatac/hispanic-studies/blob/main/docs/research/unicorn-inspiration.md">Research</a></span>
+</footer>
+<script type="module" src="main.js"></script>
+</body>
+</html>
