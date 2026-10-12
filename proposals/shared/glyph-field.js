@@ -531,7 +531,7 @@ vec4 SRC(vec2 uv, vec2 st, float t) {
   float c2 = raguly(vec2(q.x, 1.0 - q.y), normalize(vec2(1.5, 1.0)), 0.06);
   float cross = max(c1, c2);
   vec3 col = mix(uPal[1], uPal[2], cross);
-  float d = mix(0.16, 1.0, cross) * shade;
+  float d = mix(0.22, 1.0, cross) * shade;
   return vec4(col, d);
 }`,
 
