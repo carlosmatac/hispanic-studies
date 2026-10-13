@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-scene="0">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Proposal M · Pintura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>M · Pintura</span></div>
+
+<header class="header">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="mono">Institute for Hispano Studies</span></a>
+  <nav class="nav"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <span class="mono lang">EN · ES</span>
+</header>
+
+<main>
+  <section class="hero" aria-label="Painted hero">
+    <div class="stage" id="stage">
+      <figure class="scene is-active"><img class="bleed" src="../../assets/paintings/cielo-ciguenas.jpg" alt=""><img class="paint" src="../../assets/paintings/cielo-ciguenas.jpg" alt="Storks over a Castilian bell tower, oil on canvas"></figure>
+      <figure class="scene"><img class="bleed" src="../../assets/paintings/nao-niebla.jpg" alt=""><img class="paint" src="../../assets/paintings/nao-niebla.jpg" alt="A Spanish galleon at anchor in the fog, oil on canvas"></figure>
+      <figure class="scene"><img class="bleed" src="../../assets/paintings/mision.jpg" alt=""><img class="paint" src="../../assets/paintings/mision.jpg" alt="A Spanish mission church in the desert at dusk, oil on canvas"></figure>
+      <figure class="scene"><img class="bleed" src="../../assets/paintings/columnas-hercules.jpg" alt=""><img class="paint" src="../../assets/paintings/columnas-hercules.jpg" alt="A ship sailing west through the Strait of Gibraltar at sunrise, oil on canvas"></figure>
+      <div class="light" aria-hidden="true"></div>
+      <div class="haze" aria-hidden="true"></div>
+    </div>
+
+    <div class="copy" id="copy">
+      <p class="mono eyebrow" id="eyebrow"></p>
+      <h1 id="title"></h1>
+      <p class="sub" id="sub"></p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="Email address">
+        <button type="submit">Get the free pamphlet</button>
+        <p class="ok mono">Check your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+    </div>
+
+    <nav class="switcher mono" id="switcher" aria-label="Change painting">
+      <button data-i="0"><b>1</b><span> Cielo</span></button>
+      <button data-i="1"><b>2</b><span> La Nao</span></button>
+      <button data-i="2"><b>3</b><span> La Misión</span></button>
+      <button data-i="3"><b>4</b><span> Plus Ultra</span></button>
+      <span class="hint">← → or 1–4</span>
+    </nav>
+  </section>
+
+  <section class="after">
+    <p class="lead">The Institute for Hispano Studies is dedicated to the study, defense and renewal of Hispanic civilization, through films, books, translation and community.</p>
+    <div class="cols">
+      <a href="#"><span class="mono">Watch</span><b>Short films against the Black Legend</b><i>203K views on our most-watched</i></a>
+      <a href="#"><span class="mono">Read</span><b>Bueno, Vasconcelos, Elías de Tejada, in English</b><i>Essays and translations</i></a>
+      <a href="#"><span class="mono">Books</span><b>De Indiis Editions</b><i>First pamphlet: Hispanic Reunification</i></a>
+    </div>
+    <footer class="mono foot"><span class="logo" aria-hidden="true"></span>© 2026 Hispano Studies LLC · Veritas prius pace</footer>
+  </section>
+</main>
+
+<div class="linen" aria-hidden="true"></div>
+<script type="module" src="main.js"></script>
+</body>
+</html>
