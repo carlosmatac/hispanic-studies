@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" style="--ink:#FFF6E6;--accent:#F0C674;--muted:rgba(255,246,230,.8);--base:#756855;--base2:#574c3d;--field:rgba(30,24,16,.3);--veil:rgba(50,35,15,.45)">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Proposal N · Pintura viva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Shares the painted system of proposal M; only the video specifics live here. -->
+<link rel="stylesheet" href="../m-pintura/style.css">
+<style>
+  .paint { animation: none; }
+  video.paint { display: block; position: absolute; left: -2%; width: 104%; object-fit: cover; object-position: 50% 50%; }
+  .copy { justify-content: flex-start; align-items: center; text-align: center; padding-top: 14svh; }
+  .copy h1 { font-size: clamp(56px, 8.4vw, 140px); text-shadow: 0 6px 40px rgba(40, 25, 10, 0.35); }
+  .copy .sub { margin-inline: auto; max-width: 26em; }
+  .play { position: absolute; z-index: 6; left: 50%; top: calc(100svh - 70px); transform: translateX(-50%); }
+  .play button { font: 500 11.5px var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); background: var(--field); backdrop-filter: blur(12px); border: 0; border-radius: 999px; padding: 10px 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="proposal-tag"><a href="../">← Proposals</a><span>N · Pintura viva</span></div>
+
+<header class="header">
+  <a class="brand" href="#"><span class="logo" aria-hidden="true"></span><span class="mono">Institute for Hispano Studies</span></a>
+  <nav class="nav"><a href="#">Watch</a><a href="#">Read</a><a href="#">Books</a><a href="#">About</a><a href="#">Merch</a></nav>
+  <span class="mono lang">EN · ES</span>
+</header>
+
+<main>
+  <section class="hero" aria-label="Living painting hero">
+    <div class="stage" id="stage">
+      <figure class="scene is-active">
+        <img class="bleed" src="../../assets/video/columnas-hercules-poster.jpg" alt="">
+        <video id="film" class="paint" src="../../assets/video/columnas-hercules-loop.mp4" poster="../../assets/video/columnas-hercules-poster.jpg" muted loop playsinline autoplay></video>
+      </figure>
+      <div class="light" aria-hidden="true"></div>
+      <div class="haze" aria-hidden="true"></div>
+    </div>
+    <div class="copy">
+      <p class="mono eyebrow">Non plus ultra → Plus Ultra</p>
+      <h1>Beyond the <em>pillars.</em></h1>
+      <p class="sub">The Hispanic world began where the old one ended. Discover 200 years of Hispanic reunification thought in our free pamphlet.</p>
+      <form class="signup" onsubmit="event.preventDefault(); this.classList.add('is-done')">
+        <label class="sr" for="email">Email address</label>
+        <input id="email" type="email" required placeholder="Email address">
+        <button type="submit">Get the free pamphlet</button>
+        <p class="ok mono">Check your inbox. (Mockup: nothing is sent.)</p>
+      </form>
+    </div>
+    <div class="play"><button id="toggle" aria-pressed="true">Pause</button></div>
+  </section>
+
+  <section class="after">
+    <p class="lead">The Institute for Hispano Studies is dedicated to the study, defense and renewal of Hispanic civilization, through films, books, translation and community.</p>
+    <div class="cols">
+      <a href="#"><span class="mono">Watch</span><b>Short films against the Black Legend</b><i>203K views on our most-watched</i></a>
+      <a href="#"><span class="mono">Read</span><b>Bueno, Vasconcelos, Elías de Tejada, in English</b><i>Essays and translations</i></a>
+      <a href="#"><span class="mono">Books</span><b>De Indiis Editions</b><i>First pamphlet: Hispanic Reunification</i></a>
+    </div>
+    <footer class="mono foot"><span class="logo" aria-hidden="true"></span>© 2026 Hispano Studies LLC · Veritas prius pace</footer>
+  </section>
+</main>
+
+<div class="linen" aria-hidden="true"></div>
+<script>
+  const film = document.getElementById('film');
+  const btn = document.getElementById('toggle');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { film.removeAttribute('autoplay'); film.pause(); btn.textContent = 'Play'; btn.setAttribute('aria-pressed', 'false'); }
+  btn.addEventListener('click', () => {
+    if (film.paused) { film.play(); btn.textContent = 'Pause'; btn.setAttribute('aria-pressed', 'true'); }
+    else { film.pause(); btn.textContent = 'Play'; btn.setAttribute('aria-pressed', 'false'); }
+  });
+  addEventListener('pointermove', (e) => {
+    document.documentElement.style.setProperty('--lx', `${e.clientX}px`);
+    document.documentElement.style.setProperty('--ly', `${e.clientY + scrollY}px`);
+  }, { passive: true });
+</script>
+</body>
+</html>
