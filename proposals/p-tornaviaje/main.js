@@ -9,9 +9,7 @@
 import { CHANNELS, STATS, SHORTS, VIDEOS, ESSAYS, shortThumb, shortUrl } from '../shared/content.js';
 import { mountThemeSwitcher } from '../shared/theme.js';
 import { drawMap, loadMapData } from '../o-atlas/map.js';
-import {
-  REDUCED, observeReveals, flushWatchers, whenInView, makeHoverCard,
-} from '../o-atlas/motion.js';
+import { REDUCED, observeReveals, flushWatchers } from '../o-atlas/motion.js';
 import { buildCorridor, sectionProgress, smoothed } from './corridor.js';
 
 const DATA = '../shared/data';
@@ -63,7 +61,7 @@ const STRINGS = {
 
     'canon.kicker': 'El canon · cincuenta textos',
     'canon.h': 'Una discusión viva, no una lista de lecturas.',
-    'canon.sub': 'Doscientos años de gente discutiendo lo mismo. Monárquicos y marxistas, liberales y nacionalistas — y los que argumentaron <em>contra</em> la unidad hispánica, señalados como tales.',
+    'canon.sub': 'Situados según el tipo de unidad que presupone cada uno, y unidos por lo que de verdad los conecta. Cada línea es una afirmación sobre la evidencia: continua donde la recepción está documentada, discontinua donde solo es probable, roja donde ambos se enfrentaron. Pincha en cualquier cosa para leerla.',
     'canon.fine': 'Clasificación adaptada de Gustavo Bueno, «España y América» (2001). Las tradiciones portuguesa, brasileña, lusoafricana, asiática, indígena, del Atlántico negro, ecuatoguineana y filipina siguen siendo históricamente distintas. Su presencia aquí no implica su adhesión a un proyecto hispánico o iberófono.',
 
     'books.kicker': 'De Indiis Editions',
@@ -379,129 +377,6 @@ function setupRead() {
   render();
 }
 
-/* ==========================================================================
-   CANON — the chart, back by request. Same grammar as O, read on the dark.
-   ========================================================================== */
-
-const NS = 'http://www.w3.org/2000/svg';
-const svgEl = (n, a, p) => {
-  const e = document.createElementNS(NS, n);
-  for (const [k, v] of Object.entries(a)) e.setAttribute(k, String(v));
-  if (p) p.appendChild(e);
-  return e;
-};
-
-const BAND = {
-  A1: 'NATIONALIST', A2: 'INTER-NATIONALIST', B1: 'AMERICAN WHOLE', 'B2.4': 'PAN-AMERICAN',
-  'B2.5': 'OCCIDENTALIST', 'B2.6': 'HISPANIC COMMUNITY', 'B2.7': 'LUSOPHONE COMMUNITY',
-  'B2.8': 'IBERIAN / IBEROPHONE',
-};
-const PL = {
-  en: { pos: 'Position', unity: 'Unity', op: 'Operation', reg: 'Region', ct: 'Argued against Hispanic unity' },
-  es: { pos: 'Posición', unity: 'Unidad', op: 'Operación', reg: 'Región', ct: 'Argumentó contra la unidad hispánica' },
-};
-
-function cardHtml(t) {
-  const l = PL[lang];
-  return `<p class="hc-t">${t.title}</p>
-    <p class="hc-a">${t.author}${t.life ? ` · ${t.life}` : ''}</p>
-    <dl>
-      <dt>${l.pos}</dt><dd>${t.bueno} · ${BAND[t.bueno] || ''}</dd>
-      <dt>${l.unity}</dt><dd>${t.unity}</dd>
-      <dt>${l.op}</dt><dd>${t.operations.join(', ') || '—'}</dd>
-      <dt>${l.reg}</dt><dd>${t.region || '—'}</dd>
-    </dl>
-    ${t.role === 'counter-tradition' ? `<p class="hc-ct">${l.ct}</p>` : ''}`;
-}
-
-function setupCanon(canon) {
-  const W = 1000;
-  const ROW = 42;
-  const PAD_L = 142;
-  const PAD_T = 16;
-  const PAD_B = 26;
-  const bands = canon.bands;
-  const H = PAD_T + bands.length * ROW + PAD_B;
-  const Y0 = 1810;
-  const Y1 = 2005;
-  const x = (y) => PAD_L + ((y - Y0) / (Y1 - Y0)) * (W - PAD_L - 24);
-
-  const host = $('#canon-chart');
-  host.textContent = '';
-  const card = makeHoverCard(host);
-  const svg = svgEl('svg', {
-    viewBox: `0 0 ${W} ${H}`, role: 'img',
-    'aria-label': 'Fifty canonical texts placed by publication year and by the kind of unity they presuppose.',
-  }, host);
-
-  const rowY = {};
-  bands.forEach((b, n) => {
-    const y = PAD_T + n * ROW;
-    rowY[b.code] = y;
-    const g = svgEl('g', { class: 'band' }, svg);
-    svgEl('rect', {
-      x: PAD_L, y, width: W - PAD_L - 24, height: ROW - 3, rx: 7,
-      fill: canon.palette[b.code] || '#888',
-    }, g);
-    svgEl('text', { x: PAD_L - 10, y: y + ROW / 2, 'text-anchor': 'end' }, g)
-      .textContent = BAND[b.code] || b.code;
-    svgEl('text', { x: 4, y: y + ROW / 2, class: 'code' }, g).textContent = b.code;
-  });
-
-  const axis = svgEl('g', { class: 'axis' }, svg);
-  for (let y = 1820; y <= 2000; y += 20) {
-    svgEl('line', { x1: x(y), y1: PAD_T, x2: x(y), y2: H - PAD_B }, axis);
-    svgEl('text', { x: x(y), y: H - PAD_B + 11, 'text-anchor': 'middle' }, axis).textContent = y;
-  }
-
-  const rup = svgEl('g', { class: 'rupture' }, svg);
-  svgEl('line', { x1: x(1898), y1: PAD_T - 6, x2: x(1898), y2: H - PAD_B }, rup);
-  svgEl('text', { x: x(1898) + 3, y: PAD_T - 1 }, rup).textContent = '1898';
-
-  const cursor = svgEl('g', { class: 'cursor is-off' }, svg);
-  const cursorLine = svgEl('line', { x1: 0, y1: PAD_T - 6, x2: 0, y2: H - PAD_B }, cursor);
-
-  const byBand = {};
-  for (const t of canon.texts) (byBand[t.bueno] ||= []).push(t);
-  for (const [code, list] of Object.entries(byBand)) {
-    const y = rowY[code];
-    if (y === undefined) continue;
-    list.sort((a, b) => a.year - b.year);
-    let lastX = -99;
-    let lane = 0;
-    for (const t of list) {
-      const cx = x(t.year);
-      lane = cx - lastX < 13 ? (lane + 1) % 3 : 0;
-      lastX = cx;
-      const dot = svgEl('circle', {
-        class: 'dot', cx, cy: y + ROW / 2 - 7 + lane * 7, r: 3.6,
-        'data-role': t.role, tabindex: '0', role: 'button',
-      }, svg);
-      svgEl('title', {}, dot).textContent = `${t.title} — ${t.author}`;
-      dot.style.setProperty('--d', `${Math.round(((t.year - Y0) / (Y1 - Y0)) * 900)}ms`);
-      const on = () => {
-        for (const d of svg.querySelectorAll('.dot.is-active')) d.classList.remove('is-active');
-        dot.classList.add('is-active');
-        cursorLine.setAttribute('x1', cx);
-        cursorLine.setAttribute('x2', cx);
-        cursor.classList.remove('is-off');
-      };
-      dot.addEventListener('pointerenter', (e) => { on(); card.show(cardHtml(t), e.clientX, e.clientY); });
-      dot.addEventListener('pointermove', (e) => card.move(e.clientX, e.clientY));
-      dot.addEventListener('pointerleave', () => card.hide());
-      dot.addEventListener('focus', () => {
-        on();
-        const b = dot.getBoundingClientRect();
-        card.show(cardHtml(t), b.left + b.width / 2, b.top);
-      });
-      dot.addEventListener('blur', () => card.hide());
-    }
-  }
-
-  host.addEventListener('pointerleave', () => { card.hide(); cursor.classList.add('is-off'); });
-  whenInView(host, () => host.classList.add('is-in'), 0.18);
-}
-
 function setupBooks(doc) {
   const a = $('#drift-a');
   const b = $('#drift-b');
@@ -607,7 +482,19 @@ async function boot() {
 
   setupWall(images);
   const voyage = setupVoyage(milestones, images);
-  setupCanon(canon);
+  /* The canon is a graph now. It pulls React and React Flow from pinned CDN
+     modules, so the module is imported dynamically and mounted on its own: a
+     static import would mean an unreachable CDN takes the whole page down
+     with it, which is exactly what it did the first time. */
+  import('./canon-graph.js')
+    .then(({ mountCanonGraph }) =>
+      mountCanonGraph($('#canon-chart'), { dataUrl: `${DATA}/canon-graph.json`, lang }))
+    .then(({ render }) => document.addEventListener('langchange', () => render(lang)))
+    .catch((err) => {
+      console.error('canon graph:', err);
+      $('#canon-chart').innerHTML =
+        '<p class="cg-fail">The canon graph could not be loaded. Open the page through <code>make serve</code>.</p>';
+    });
   const drift = setupBooks(books);
   const booksProgress = sectionProgress($('#books'));
 

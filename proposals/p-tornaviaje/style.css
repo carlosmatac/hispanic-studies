@@ -599,57 +599,200 @@ section { padding: clamp(80px, 11vw, 180px) var(--gutter); max-width: var(--maxw
 .tally span { display: block; margin-top: 10px; font-size: 14px; color: var(--paper-soft); max-width: 22ch; }
 
 /* ==========================================================================
-   CANON — the chart, not a list. Same grammar as O, read on the dark.
+   CANON — the graph. Node and edge grammar follows the legend Beltrán
+   supplied: a work is an outlined rectangle, an author a filled node, a
+   periodical a diamond, an institution a hexagon, documented influence a
+   solid line, probable a dashed one, opposition broken and red.
    ========================================================================== */
 
-.canon__chart { position: relative; }
-.canon__chart svg { display: block; width: 100%; height: auto; }
-.canon .band rect { opacity: 0.3; }
-.canon .band text {
-  font-family: var(--body); font-size: 5.4px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.12em;
-  fill: color-mix(in srgb, var(--paper) 76%, transparent);
+.canon__chart {
+  --cg-edge: color-mix(in srgb, var(--paper) 58%, transparent);
+  --cg-faint: color-mix(in srgb, var(--paper) 20%, transparent);
+  --cg-opp: var(--accent-2);
+  --cg-grid: color-mix(in srgb, var(--paper) 7%, transparent);
+  position: relative;
 }
-.canon .band .code { font-family: var(--mono); font-size: 5.4px; fill: color-mix(in srgb, var(--paper) 52%, transparent); }
-.canon .axis line { stroke: color-mix(in srgb, var(--paper) 14%, transparent); stroke-width: 0.4; }
-.canon .axis text { font-family: var(--mono); font-size: 5.6px; fill: color-mix(in srgb, var(--paper) 58%, transparent); }
-.canon .rupture line { stroke: var(--accent-2); stroke-width: 0.8; stroke-dasharray: 3 2; }
-.canon .rupture text { font-family: var(--mono); font-size: 5.8px; fill: var(--accent-2); }
-.canon .cursor line { stroke: color-mix(in srgb, var(--paper) 40%, transparent); stroke-width: 0.5; stroke-dasharray: 2 2; }
-.canon .cursor.is-off { display: none; }
+.cg { position: relative; }
 
-.canon .dot {
-  fill: none; stroke: color-mix(in srgb, var(--paper) 92%, transparent); stroke-width: 1.1;
-  cursor: pointer; transform-box: fill-box; transform-origin: center;
-  transition: fill 0.15s, stroke 0.15s, r 0.15s;
+/* --- the control bar ------------------------------------------------------ */
+
+.cg-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-bottom: 14px;
 }
-.canon .dot[data-role="counter-tradition"] { stroke-dasharray: 1.6 1.2; }
-.canon .dot:hover, .canon .dot.is-active { fill: var(--accent); stroke: var(--accent); r: 5.4; }
-
-@keyframes dot-in { from { opacity: 0; transform: scale(0.1); } to { opacity: 1; transform: none; } }
-.js-motion .canon__chart:not(.is-in) .dot { opacity: 0; }
-.js-motion .canon__chart.is-in .dot { animation: dot-in 0.5s cubic-bezier(0.34, 1.4, 0.5, 1) var(--d, 0ms) both; }
-
-/* the card follows the pointer, so you read the dot you are on */
-.hovercard {
-  position: absolute; left: 0; top: 0; z-index: 20; width: max-content; max-width: 330px;
-  padding: 16px 19px; pointer-events: none;
-  background: color-mix(in srgb, var(--room) 94%, #000); color: var(--paper);
-  border: 1px solid color-mix(in srgb, var(--accent) 36%, transparent);
-  border-radius: 16px; box-shadow: 0 24px 54px -26px #000;
-  opacity: 0; transition: opacity 0.14s ease;
+.cg-bar__label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--paper-soft); margin-right: 4px;
 }
-.hovercard.is-in { opacity: 1; }
-.hovercard .hc-t { font-family: var(--display); font-weight: var(--display-wght); font-size: 20px; line-height: 1.12; margin-bottom: 4px; }
-.hovercard .hc-a { font-size: 13.5px; color: var(--paper-soft); margin-bottom: 11px; }
-.hovercard dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; font-family: var(--mono); font-size: 11px; }
-.hovercard dt { color: var(--paper-soft); }
-.hovercard dd { margin: 0; }
-.hovercard .hc-ct {
-  margin-top: 11px; padding-top: 9px;
-  border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
+.cg-bar__hint {
+  font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 36%, transparent);
+  margin-left: auto;
+}
+.cg-chip {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 6px 13px; border-radius: 999px; font-size: 12.5px;
+  background: none; color: var(--paper-soft);
+  border: 1px solid color-mix(in srgb, var(--paper) 16%, transparent);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.cg-chip i { width: 18px; height: 0; border-top: 2px solid currentColor; display: block; }
+.cg-chip--probable i { border-top-style: dashed; }
+.cg-chip--opposition i { border-top-style: dashed; color: var(--accent-2); }
+.cg-chip--wrote i { border-top-width: 1px; }
+.cg-chip--mv i { height: 10px; border: 1px solid currentColor; border-radius: 2px; }
+.cg-chip[aria-pressed="true"] { color: var(--paper); border-color: color-mix(in srgb, var(--accent) 60%, transparent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.cg-chip[aria-pressed="false"] { opacity: 0.45; }
+
+/* --- the stage ------------------------------------------------------------ */
+
+.cg-stage {
+  position: relative; height: clamp(520px, 72vh, 760px);
+  border-radius: 18px; overflow: hidden;
+  background: #0d0b0a;
+  border: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
+}
+.cg-stage .react-flow__renderer { cursor: grab; }
+.cg-stage .react-flow__controls { box-shadow: none; }
+.cg-stage .react-flow__controls-button {
+  background: color-mix(in srgb, var(--paper) 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
+  fill: var(--paper); color: var(--paper);
+}
+.cg-stage .react-flow__controls-button:hover { background: color-mix(in srgb, var(--accent) 26%, transparent); }
+.cg-stage .react-flow__edge-path { transition: stroke-width 0.15s; }
+.cg-stage .react-flow__edge:hover .react-flow__edge-path,
+.cg-stage .react-flow__edge.selected .react-flow__edge-path { stroke-width: 3; }
+.cg-stage .react-flow__node { cursor: pointer; }
+.cg-stage .react-flow__handle { opacity: 0; pointer-events: none; }
+
+/* --- the field ------------------------------------------------------------ */
+
+.cg-band { width: 100%; height: 100%; border-radius: 8px; opacity: 0.17; pointer-events: none; }
+
+/* the band names sit outside the canvas and track the viewport, so they stay
+   legible however far along the century you have panned */
+.cg-rail {
+  position: absolute; inset: 0 auto 0 0; width: 182px; z-index: 5;
+  pointer-events: none; overflow: hidden;
+  background: linear-gradient(90deg, #0d0b0a 62%, transparent);
+}
+.cg-rail__in { position: absolute; inset: 0; }
+.cg-rail__row { position: absolute; left: 14px; right: 10px; display: flex; flex-direction: column; justify-content: center; gap: 3px; overflow: hidden; }
+.cg-rail__code { font-family: var(--mono); font-size: 11px; }
+.cg-rail__name {
+  font-family: var(--body); font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--paper) 64%, transparent); line-height: 1.2;
+}
+.cg-rupture {
+  width: 0; border-left: 1px dashed var(--accent-2); opacity: 0.5; pointer-events: none;
+}
+.cg-rupture span {
+  position: absolute; top: -4px; left: 5px; font-family: var(--mono);
+  font-size: 11px; color: var(--accent-2); white-space: nowrap;
+}
+.cg-movement {
+  width: 100%; height: 100%; border-radius: 12px; pointer-events: none;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.cg-movement span {
+  position: absolute; top: 6px; left: 10px; font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.1em; color: color-mix(in srgb, var(--accent) 80%, transparent);
+  white-space: nowrap;
+}
+
+/* --- the nodes ------------------------------------------------------------ */
+
+.cg-node {
+  display: flex; flex-direction: column; gap: 2px;
+  height: 100%; overflow: hidden;
+  padding: 8px 11px; font-size: 11.5px; line-height: 1.2;
+  color: var(--paper); background: #15110f;
+  transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
+}
+/* clamped so a long title cannot push a card out of its lane */
+.cg-node__t { flex: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cg-node--author .cg-node__t, .cg-node--corpus .cg-node__t { -webkit-line-clamp: 2; }
+.cg-node:hover { transform: translateY(-2px); box-shadow: 0 12px 26px -14px #000; }
+.cg-node__yr { flex: none; font-family: var(--mono); font-size: 10px; color: var(--accent); }
+.cg-node__t { font-family: var(--display); font-weight: var(--display-wght); font-size: 12.5px; line-height: 1.14; }
+.cg-node__a { flex: none; font-size: 10.5px; color: var(--paper-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cg-node__chip {
+  align-self: flex-start; margin-top: 3px; padding: 1px 7px; border-radius: 999px;
+  font-family: var(--mono); font-size: 9.5px;
+  background: color-mix(in srgb, var(--paper) 10%, transparent); color: var(--paper-soft);
+}
+
+/* a work is an outlined rectangle */
+.cg-node--text { border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent); border-radius: 3px; }
+.cg-node--text:hover { border-color: var(--accent); }
+
+/* an author is filled */
+.cg-node--author {
+  border: 1px solid transparent; border-radius: 999px; padding: 9px 16px; justify-content: center;
+  background: color-mix(in srgb, var(--accent) 24%, #15110f);
+}
+.cg-node--author:hover { border-color: var(--accent); }
+.cg-node--author.is-counter {
+  background: #15110f;
+  border: 1px dashed color-mix(in srgb, var(--accent-2) 70%, transparent);
+}
+
+/* a corpus or an idea: no date of its own, so no hard edge either */
+.cg-node--corpus {
+  justify-content: center;
+  border: 1px dotted color-mix(in srgb, var(--paper) 30%, transparent);
+  border-radius: 10px; background: color-mix(in srgb, var(--paper) 5%, transparent);
+  font-style: italic;
+}
+
+/* periodicals and institutions keep the legend's shapes */
+.cg-node--periodical {
+  border: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
+  border-radius: 2px; transform: skewX(-9deg);
+}
+.cg-node--periodical > * { transform: skewX(9deg); }
+.cg-node--institution {
+  border: 1px solid color-mix(in srgb, var(--accent) 52%, transparent);
+  border-radius: 2px;
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+  padding-inline: 20px;
+}
+
+/* --- the reading panel ----------------------------------------------------- */
+
+.cg-panel {
+  position: absolute; right: 14px; top: 14px; z-index: 6;
+  width: min(330px, 42%); max-height: calc(100% - 28px); overflow: auto;
+  padding: 17px 19px; border-radius: 16px;
+  background: color-mix(in srgb, #0d0b0a 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--paper) 15%, transparent);
+  backdrop-filter: blur(10px);
+}
+.cg-panel__hint { color: var(--paper-soft); font-size: 13.5px; margin: 0; }
+.cg-panel__kind {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 6px;
+}
+.cg-panel__t { font-family: var(--display); font-weight: var(--display-wght); font-size: 19px; line-height: 1.14; margin: 0; }
+.cg-panel__a { margin: 5px 0 0; font-size: 13px; color: var(--paper-soft); }
+.cg-panel dl { margin: 13px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-family: var(--mono); font-size: 11px; }
+.cg-panel dt { color: var(--paper-soft); }
+.cg-panel dd { margin: 0; }
+.cg-panel__p { margin: 13px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--paper-soft); }
+.cg-panel__ct {
+  margin: 12px 0 0; padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--accent-2);
+}
+
+@media (max-width: 720px) {
+  .cg-panel { position: static; width: auto; max-height: none; margin-top: 12px; }
+  .cg-rail { width: 120px; }
+  .cg-stage { height: 62vh; }
+  .cg-bar__hint { display: none; }
 }
 
 /* ==========================================================================
