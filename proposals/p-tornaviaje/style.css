@@ -494,17 +494,101 @@ section { padding: clamp(80px, 11vw, 180px) var(--gutter); max-width: var(--maxw
    THE WORLD
    ========================================================================== */
 
-.world__map { position: relative; margin: clamp(10px, 2vw, 28px) auto clamp(30px, 4vw, 58px); max-width: 1080px; }
+/* --- the chart, hung and lit ----------------------------------------------
+
+   This is the same map as O's hero, with the same content — labels, sea
+   names, the rose, the routes, the cartouche, the readout — read on the dark
+   instead of on paper, and framed the way the corridor frames its pictures. */
+
+.plate {
+  position: relative; margin: clamp(14px, 2.5vw, 36px) auto 0; max-width: 1140px;
+}
+.plate__lamp {
+  position: absolute; left: 50%; top: -14%; width: 70%; height: 60%;
+  transform: translateX(-50%); pointer-events: none;
+  background: radial-gradient(60% 100% at 50% 0,
+    color-mix(in srgb, var(--accent) 24%, transparent), transparent 72%);
+  filter: blur(26px);
+}
+.plate__in {
+  position: relative; padding: clamp(10px, 1.2vw, 18px); border-radius: 8px;
+  background: #0a0908;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent),
+    0 0 0 clamp(7px, 0.8vw, 12px) #0a0908,
+    0 0 0 calc(clamp(7px, 0.8vw, 12px) + 1px) color-mix(in srgb, var(--paper) 13%, transparent),
+    0 70px 120px -60px #000;
+}
+.plate figcaption {
+  margin-top: clamp(22px, 2.4vw, 34px); text-align: center;
+  color: var(--paper-soft); max-width: 70ch; margin-inline: auto;
+}
+
+.world__map { position: relative; }
 .world .map { display: block; width: 100%; height: auto; }
-.world .map .ocean, .world .map .rest, .world .map .rose, .world .map .labels { display: none; }
-.world .map .graticule { fill: none; stroke: color-mix(in srgb, var(--paper) 7%, transparent); stroke-width: calc(0.6px * var(--u, 1)); }
-.world .map .sphere { fill: none; stroke: color-mix(in srgb, var(--paper) 14%, transparent); stroke-width: calc(1px * var(--u, 1)); }
-.world .map .ib path { fill: var(--accent); stroke: none; }
-.world .map .ib path[data-tier="submersa"] { fill: color-mix(in srgb, var(--accent) 32%, transparent); }
-.world .map .route { fill: none; stroke: var(--paper); opacity: 0.45; stroke-width: calc(1.4px * var(--u, 1)); stroke-dasharray: 5 5; }
-.world .map .port, .world .map .pin { fill: var(--accent); stroke: none; }
-.world .map .pin { r: calc(3px * var(--u, 1)); }
-.world .map .port { r: calc(2px * var(--u, 1)); }
+
+/* the ocean is the room: a darker field with the same laid lines */
+.world .map .ocean { fill: #0d0b0a; }
+.world .map .graticule { fill: none; stroke: color-mix(in srgb, var(--paper) 9%, transparent); stroke-width: calc(0.6px * var(--u, 1)); }
+.world .map .sphere { fill: none; stroke: color-mix(in srgb, var(--accent) 34%, transparent); stroke-width: calc(1.1px * var(--u, 1)); }
+.world .map .rest path { fill: color-mix(in srgb, var(--paper) 9%, transparent); stroke: color-mix(in srgb, var(--paper) 13%, transparent); stroke-width: calc(0.45px * var(--u, 1)); }
+
+.world .map .ib path { fill: var(--accent); stroke: none; transition: fill 0.2s; }
+.world .map { --hatch-bg: #110e0c; --hatch-ink: color-mix(in srgb, var(--accent) 62%, transparent); }
+.world .map .ib path[data-tier="submersa"] { fill: color-mix(in srgb, var(--accent) 30%, transparent); }
+.world .map .ib path:hover, .world .map .ib path.is-active { fill: color-mix(in srgb, var(--accent) 60%, #fff); }
+
+.world .map .route { fill: none; stroke: var(--paper); opacity: 0.6; stroke-width: calc(1.5px * var(--u, 1)); stroke-dasharray: 5 4; stroke-linecap: round; }
+.world .map .route--return { opacity: 0.32; }
+.world .map .port { fill: var(--paper); stroke: none; r: calc(2px * var(--u, 1)); }
+.world .map .pin { fill: var(--accent); stroke: none; r: calc(3px * var(--u, 1)); }
+
+.world .map .label {
+  font-family: var(--body); font-size: calc(9.2px * var(--u, 1)); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  fill: color-mix(in srgb, var(--paper) 88%, transparent);
+  paint-order: stroke; stroke: #0d0b0a; stroke-width: calc(3px * var(--u, 1));
+  stroke-linejoin: round; pointer-events: none;
+}
+.world .map .label--sea {
+  font-family: var(--display); font-style: italic; font-weight: 400;
+  text-transform: none; letter-spacing: 0.22em; font-size: calc(11px * var(--u, 1));
+  fill: color-mix(in srgb, var(--paper) 42%, transparent);
+}
+.world .map .rose { fill: none; stroke: color-mix(in srgb, var(--paper) 36%, transparent); stroke-width: calc(0.7px * var(--u, 1)); }
+.world .map .rose .pt-major { fill: color-mix(in srgb, var(--accent) 72%, transparent); stroke: none; }
+.world .map .rose .pt-minor { fill: none; stroke: color-mix(in srgb, var(--paper) 30%, transparent); stroke-width: calc(0.6px * var(--u, 1)); }
+
+/* the cartouche and the readout, in this room's idiom */
+.cartouche, .readout {
+  position: absolute; z-index: 3;
+  background: color-mix(in srgb, #0d0b0a 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
+  border-radius: 14px; backdrop-filter: blur(10px);
+}
+.cartouche { left: clamp(18px, 2.4vw, 36px); top: clamp(18px, 2.4vw, 36px); padding: 16px 20px 18px; max-width: 290px; }
+.cartouche h3 {
+  font-family: var(--display); font-weight: var(--display-wght);
+  font-size: clamp(15px, 1.3vw, 19px); line-height: 1.16;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.cartouche__rule { height: 1px; margin: 11px 0; background: color-mix(in srgb, var(--accent) 50%, transparent); }
+.cartouche dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; font-family: var(--mono); font-size: 11px; }
+.cartouche dt { color: var(--paper-soft); }
+.cartouche dd { margin: 0; text-align: right; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+.readout {
+  right: clamp(18px, 2.4vw, 36px); top: clamp(18px, 2.4vw, 36px);
+  padding: 13px 16px; width: min(250px, 44%); font-size: 11.5px; line-height: 1.5;
+}
+.readout strong {
+  display: block; font-family: var(--display); font-weight: var(--display-wght);
+  font-size: 18px; letter-spacing: 0; text-transform: none; margin-bottom: 4px;
+}
+.readout__hint { color: var(--paper-soft); }
+.readout dl { margin: 7px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; }
+.readout dt { color: var(--paper-soft); }
+.readout dd { margin: 0; text-align: right; color: var(--accent); }
 
 .world__stats { display: grid; gap: clamp(18px, 2.4vw, 40px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); }
 .tally b {
@@ -709,6 +793,13 @@ section { padding: clamp(80px, 11vw, 180px) var(--gutter); max-width: var(--maxw
   .corridor { perspective: 1900px; perspective-origin: 50% 46%; }
   .way__treat { display: none; }
   .foot__cols { grid-template-columns: 1fr; }
+  /* the cartouche and the readout would cover a map this size, so they stack
+     underneath it instead, and the place names come off */
+  .cartouche, .readout {
+    position: static; width: auto; max-width: none; margin-top: 10px;
+  }
+  .cartouche dd, .readout dd { text-align: right; }
+  .world .map .labels { display: none; }
   .hero__facts { gap: 18px 30px; }
   .hero__facts li { flex: 0 0 calc(50% - 15px); }
 }

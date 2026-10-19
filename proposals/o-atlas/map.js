@@ -116,8 +116,13 @@ function defs(parent, uid) {
     id: `hatch-${uid}`, width: 5, height: 5,
     patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)',
   }, d);
-  el('rect', { width: 5, height: 5, fill: 'var(--paper, #efe6d4)' }, hatch);
-  el('path', { d: 'M0 0V5', stroke: 'var(--map-submersa, #9c6a52)', 'stroke-width': 1.5 }, hatch);
+  // its own two variables, so a page can set the hatch without having to
+  // adopt the paper colour it was first drawn against
+  el('rect', { width: 5, height: 5, fill: 'var(--hatch-bg, var(--paper, #efe6d4))' }, hatch);
+  el('path', {
+    d: 'M0 0V5', 'stroke-width': 1.5,
+    stroke: 'var(--hatch-ink, var(--map-submersa, #9c6a52))',
+  }, hatch);
 
   // laid-paper lines over the water, the way an engraved plate reads
   const laid = el('pattern', {

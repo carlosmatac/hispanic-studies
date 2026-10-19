@@ -53,6 +53,13 @@ const STRINGS = {
     'world.kicker': 'Lo que salió de aquello',
     'world.h': 'Veintinueve estados lo siguen hablando.',
     'world.sub': 'El español y el portugués son oficiales en cuatro continentes, y las rutas que los unieron funcionaron trescientos años.',
+    'world.cart': 'El mundo<br>iberófono',
+    'world.c1': 'Estados, lengua oficial',
+    'world.c2': 'Territorios de presencia',
+    'world.c3': 'Rutas marítimas dibujadas',
+    'world.c4': 'La ruptura',
+    'world.hint': 'Señala un país.',
+    'world.cap': 'Proyección equivalente · geometría de Natural Earth · rutas según la Carrera de Indias, el Galeón de Manila y la Carreira da Índia',
 
     'canon.kicker': 'El canon · cincuenta textos',
     'canon.h': 'Una discusión viva, no una lista de lecturas.',
@@ -253,6 +260,32 @@ function setupVoyage(doc, images) {
 /* ==========================================================================
    THE REST
    ========================================================================== */
+
+/* ==========================================================================
+   THE CHART — the same map as O's hero, hung and lit in this room
+   ========================================================================== */
+
+const TIER_WORD = {
+  en: { emersa: 'Spanish or Portuguese official', submersa: 'Iberophone presence, not official' },
+  es: { emersa: 'español o portugués oficial', submersa: 'presencia iberófona, sin oficialidad' },
+};
+const CORPUS_WORD = {
+  en: (n) => `${n} ${n === 1 ? 'author' : 'authors'}`,
+  es: (n) => `${n} ${n === 1 ? 'autor' : 'autores'}`,
+};
+
+function renderReadout(rec) {
+  const box = $('#readout');
+  if (!rec) {
+    const hint = lang === 'es' ? 'Señala un país.' : 'Point at a country.';
+    box.innerHTML = `<span class="readout__hint">${hint}</span>`;
+    return;
+  }
+  const corpus = lang === 'es' ? 'En el corpus' : 'In the corpus';
+  box.innerHTML = `<strong>${rec.name[lang] || rec.name.en}</strong>
+    <span class="readout__hint">${TIER_WORD[lang][rec.tier]}</span>
+    <dl><dt>${corpus}</dt><dd>${CORPUS_WORD[lang](rec.authors)}</dd></dl>`;
+}
 
 /* ==========================================================================
    HERO WALL — the whole hang at once
@@ -562,7 +595,15 @@ async function boot() {
     if (k >= 1) { for (const [el, v] of tallies) el.textContent = v; countFrom = -1; }
   };
 
-  drawMap($('#world-map'), mapData, { animate: true, labels: false, rose: false });
+  // the full plate: labels, sea names, the rose and the routes, as in O
+  drawMap($('#world-map'), mapData, {
+    animate: true, labels: true, rose: true, onPick: renderReadout,
+  });
+  renderReadout(null);
+  $('#c-states').textContent = all.filter((c) => c.tier === 'emersa').length;
+  $('#c-presence').textContent = all.filter((c) => c.tier === 'submersa').length;
+  $('#c-routes').textContent = mapData.routes.length;
+  document.addEventListener('langchange', () => renderReadout(null));
 
   setupWall(images);
   const voyage = setupVoyage(milestones, images);

@@ -154,7 +154,30 @@
       <h2 class="big" id="world-h" data-reveal data-i18n="world.h">Twenty-nine states still speak it.</h2>
       <p class="head__sub" data-reveal data-i18n="world.sub">Spanish and Portuguese are official on four continents, and the routes that joined them ran for three hundred years.</p>
     </div>
-    <div class="world__map" id="world-map"></div>
+    <!-- the chart hangs like everything else in this room: framed, lit from
+         above, with the same gold rule as the corridor's pictures -->
+    <figure class="plate" data-reveal>
+      <div class="plate__lamp" aria-hidden="true"></div>
+      <div class="plate__in">
+        <div class="world__map" id="world-map"></div>
+
+        <div class="cartouche">
+          <h3 data-i18n-html="world.cart">The Iberophone<br>World</h3>
+          <div class="cartouche__rule"></div>
+          <dl>
+            <dt data-i18n="world.c1">States, language official</dt><dd id="c-states">—</dd>
+            <dt data-i18n="world.c2">Territories of presence</dt><dd id="c-presence">—</dd>
+            <dt data-i18n="world.c3">Sea routes drawn</dt><dd id="c-routes">—</dd>
+            <dt data-i18n="world.c4">The rupture</dt><dd>1898</dd>
+          </dl>
+        </div>
+
+        <div class="readout mono" id="readout" aria-live="polite">
+          <span class="readout__hint" data-i18n="world.hint">Point at a country.</span>
+        </div>
+      </div>
+      <figcaption class="mono" data-i18n="world.cap">Equal-area projection · Natural Earth geometry · routes after the Carrera de Indias, the Manila galleon and the Carreira da Índia</figcaption>
+    </figure>
   </section>
 
   <!-- ===================================================================
