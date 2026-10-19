@@ -6,10 +6,12 @@
    would mean two clocks and two opinions about where the page is.
    ========================================================================== */
 
-import { CHANNELS, SHORTS, VIDEOS, shortThumb, shortUrl } from '../shared/content.js';
+import { CHANNELS, STATS, SHORTS, VIDEOS, ESSAYS, shortThumb, shortUrl } from '../shared/content.js';
 import { mountThemeSwitcher } from '../shared/theme.js';
 import { drawMap, loadMapData } from '../o-atlas/map.js';
-import { REDUCED, observeReveals, flushWatchers } from '../o-atlas/motion.js';
+import {
+  REDUCED, observeReveals, flushWatchers, whenInView, makeHoverCard,
+} from '../o-atlas/motion.js';
 import { buildCorridor, sectionProgress, smoothed } from './corridor.js';
 
 const DATA = '../shared/data';
@@ -17,10 +19,10 @@ const ART = '../../assets/art/corridor';
 const $ = (s, r = document) => r.querySelector(s);
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-/* How many of the sixty milestones you actually fly past. The rest are in the
-   index below: a hallway you can never reach the end of is a worse experience
-   than a hallway with a door at the end. */
-const WAYPOINTS = 24;
+/* How many of the sixty milestones you actually fly past. Short on purpose:
+   the corridor used to be the hero and blocked everything under it. The rail
+   reaches all sixty. */
+const WAYPOINTS = 14;
 
 /* ==========================================================================
    i18n
@@ -29,27 +31,31 @@ const WAYPOINTS = 24;
 const STRINGS = {
   en: {},
   es: {
-    'nav.atlas': 'El corredor', 'nav.canon': 'Canon', 'nav.books': 'Libros', 'nav.watch': 'Ver',
+    'nav.watch': 'Ver', 'nav.corridor': 'El corredor', 'nav.world': 'El mundo',
+    'nav.canon': 'Canon', 'nav.books': 'Libros', 'nav.read': 'Leer', 'nav.about': 'Nosotros',
 
     'hero.kicker': 'Institute for Hispano Studies · De Indiis Editions',
-    'hero.h1': 'El <em>tornaviaje</em><br>es la vuelta.',
-    'hero.lede': 'Dos coronas ibéricas construyeron un mundo y después perdieron su mapa. Todo lo que se discutió desde entonces — mestizaje, fe, lengua — sigue aquí, colgado en las paredes. Baja y míralo.',
-    'hero.cue': 'Desplázate para entrar en el corredor',
+    'hero.h1': 'Cuatro continentes. Dos lenguas.<br><em>Una discusión que no terminó.</em>',
+    'hero.lede': 'Un think tank sobre la civilización hispano-católica y la geopolítica panibérica — y la editorial que traduce su canon. Vídeo corto, ensayo largo, y los libros que casi nunca llegaron al inglés.',
+    'hero.cta1': 'Empieza por los vídeos',
+    'hero.cta2': 'Quiero el folleto gratuito',
+    'hero.f1': 'autores en el corpus',
+    'hero.f2': 'textos canónicos',
+    'hero.f3': 'hitos fechados',
+    'hero.f4': 'estados, lengua oficial',
+    'hero.cue': 'Baja',
 
+    'voy.kicker': 'El corredor · de hacia 722 a 2026',
+    'voy.h': 'Recorre la cronología.',
+    'voy.sub': 'Sesenta hitos fechados en siete capítulos, colgados en las paredes. Desplázate para avanzar por el pasillo; cada parada lleva su tratamiento cartográfico y su fuente. Usa el raíl para saltar.',
     'voy.treatment': 'Cómo lo dibuja el mapa',
-
-    'idx.kicker': 'La cronología completa',
-    'idx.h': 'Sesenta hitos, siete capítulos.',
 
     'world.kicker': 'Lo que salió de aquello',
     'world.h': 'Veintinueve estados lo siguen hablando.',
-    'world.authors': 'autores en el corpus',
-    'world.texts': 'textos canónicos',
-    'world.milestones': 'hitos fechados',
-    'world.states': 'estados, lengua oficial',
+    'world.sub': 'El español y el portugués son oficiales en cuatro continentes, y las rutas que los unieron funcionaron trescientos años.',
 
     'canon.kicker': 'El canon · cincuenta textos',
-    'canon.h': 'Recórrelo con la vista.',
+    'canon.h': 'Una discusión viva, no una lista de lecturas.',
     'canon.sub': 'Doscientos años de gente discutiendo lo mismo. Monárquicos y marxistas, liberales y nacionalistas — y los que argumentaron <em>contra</em> la unidad hispánica, señalados como tales.',
     'canon.fine': 'Clasificación adaptada de Gustavo Bueno, «España y América» (2001). Las tradiciones portuguesa, brasileña, lusoafricana, asiática, indígena, del Atlántico negro, ecuatoguineana y filipina siguen siendo históricamente distintas. Su presencia aquí no implica su adhesión a un proyecto hispánico o iberófono.',
 
@@ -57,8 +63,16 @@ const STRINGS = {
     'books.h': 'Casi nada de esto se tradujo nunca.',
     'books.fine': 'Los órdenes de prioridad son recomendaciones editoriales del programa de adquisiciones, no anuncios de publicación. No se listan los prologuistas ni los editores propuestos: son investigadores que no han aceptado participar. Las cubiertas son provisionales.',
 
-    'watch.kicker': 'Ver · por donde llega casi todo el mundo',
+    'watch.kicker': 'Ver',
     'watch.h': 'Trescientos años, recortados del relato.',
+    'watch.sub': 'Vídeo corto en YouTube, Instagram, X y TikTok. Los mismos cortes en todas partes, porque el argumento viaja mejor que la plataforma.',
+    'watch.shorts': 'Cortos',
+    'watch.long': 'Formato largo',
+
+    'about.kicker': 'La misión',
+    'about.h': 'Una tradición olvidada, no refutada.',
+    'about.p1': 'El Instituto estudia y defiende la civilización hispánica: su historia, su herencia católica, su mestizaje y sus dos lenguas. De Indiis Editions traduce y reedita el canon de esa discusión.',
+    'about.p2': 'La tesis no es que esta tradición fuera derrotada. Es que casi nunca se tradujo, y un argumento que no puedes leer es un argumento que no puedes responder.',
 
     'cta.kicker': 'De Indiis Editions · gratis',
     'cta.h': 'Llévate <em>la discusión entera</em><br>a casa.',
@@ -152,7 +166,6 @@ function setupVoyage(doc, images) {
   const progress = sectionProgress(section);
   const z = smoothed(0, REDUCED ? 1 : 0.09);
 
-  const hero = $('#hero');
   const way = $('#way');
   const fill = $('#meter-fill');
   const meter = $('.meter__track');
@@ -160,8 +173,31 @@ function setupVoyage(doc, images) {
   const ring = $('#ring');
   const capsule = $('#capsule');
 
+  // one tick per milestone, the stops drawn taller; clicking scrolls the hall
+  const railX = (y) => (y <= 1800 ? ((y - 722) / 1078) * 38 : 41 + ((y - 1800) / 226) * 59);
+  const stops = new Set(ways);
+  const ticks = items.map((m, n) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tick';
+    b.style.left = `${railX(m.year)}%`;
+    b.dataset.stop = String(stops.has(n));
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-label', `${m.date.en} — ${m.title.en}`);
+    b.addEventListener('click', () => {
+      // jump to the nearest stop on the hall
+      let k = 0;
+      ways.forEach((v, j) => { if (v <= n) k = j; });
+      const r = section.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      const target = window.scrollY + r.top + span * ((k + 0.5) / ways.length);
+      window.scrollTo({ top: target, behavior: REDUCED ? 'auto' : 'smooth' });
+    });
+    meter.appendChild(b);
+    return b;
+  });
+
   let shown = -1;
-  const HERO_END = 0.07;
 
   function render(i, n) {
     const m = items[i];
@@ -182,16 +218,12 @@ function setupVoyage(doc, images) {
     z.set(p * hall.depth);
     hall.travel(z.step());
 
-    // the hero holds at the mouth, then hands over
-    const heroOut = clamp((p - HERO_END * 0.35) / (HERO_END * 0.65), 0, 1);
-    hero.style.setProperty('--o', (1 - heroOut).toFixed(3));
-    hero.style.visibility = heroOut >= 1 ? 'hidden' : 'visible';
-    way.style.setProperty('--o', heroOut.toFixed(3));
-    way.style.visibility = heroOut <= 0.02 ? 'hidden' : 'visible';
-
-    const wp = clamp((p - HERO_END) / (1 - HERO_END - 0.05), 0, 1);
-    const idx = clamp(Math.floor(wp * ways.length), 0, ways.length - 1);
-    if (idx !== shown) { shown = idx; render(ways[idx], idx); }
+    const idx = clamp(Math.floor(p * ways.length), 0, ways.length - 1);
+    if (idx !== shown) {
+      shown = idx;
+      render(ways[idx], idx);
+      ticks.forEach((b, k) => b.setAttribute('aria-current', String(k === ways[idx])));
+    }
 
     // the meter reads the chronology, not the scrollbar: a broken axis, the
     // way the source document itself draws time
@@ -222,71 +254,219 @@ function setupVoyage(doc, images) {
    THE REST
    ========================================================================== */
 
-const CHAPTER_INK = ['#8a7a5e', '#4e6f7d', '#a8502f', '#6e7f63', '#7b2230', '#5a5680', '#ad8220'];
+/* ==========================================================================
+   HERO WALL — the whole hang at once
+   ========================================================================== */
 
-function setupChronology(doc) {
+function setupWall(images) {
+  const wall = $('#wall');
+  // four rows, drifting at different speeds, so the hang fills the frame
+  const rows = 4;
+  const per = Math.ceil(images.length / rows);
+  wall.innerHTML = '';
+  for (let r = 0; r < rows; r += 1) {
+    const slice = images.slice(r * per, (r + 1) * per);
+    const row = document.createElement('div');
+    row.className = 'wall__row';
+    // doubled so the slide loops without a seam
+    row.innerHTML = [...slice, ...slice]
+      .map((src) => `<img src="${src}" alt="" loading="lazy" decoding="async">`).join('');
+    wall.appendChild(row);
+  }
+}
+
+/* ==========================================================================
+   WATCH — the way most people arrive, so it is not a list
+   ========================================================================== */
+
+/* Follower counts from docs/research/context.md. The clips are cross-posted to
+   every platform, which is why one set of thumbnails stands for all of them. */
+/* We have real numbers for four of the six. The other two show the platform
+   instead of a dash: a placeholder figure on a page about sourcing is the one
+   thing that should never appear. */
+const REACH = { YouTube: '13.5K', Instagram: '19K', X: '22K', Substack: '587' };
+const REACH_LABEL = {
+  en: { subs: 'subscribers', followers: 'followers', readers: 'readers', members: 'members' },
+  es: { subs: 'suscriptores', followers: 'seguidores', readers: 'lectores', members: 'miembros' },
+};
+const REACH_KIND = {
+  YouTube: 'subs', Instagram: 'followers', X: 'followers',
+  TikTok: 'followers', Substack: 'readers', Patreon: 'members',
+};
+
+function setupWatch() {
+  const renderChannels = () => {
+    const l = REACH_LABEL[lang];
+    const visit = lang === 'es' ? 'ver el perfil' : 'visit the profile';
+    $('#channels').innerHTML = CHANNELS.map((c) => {
+      const n = REACH[c.name];
+      return `<a class="channel${n ? '' : ' channel--plain'}" href="${c.url}" target="_blank" rel="noopener">
+        ${n ? `<b>${n}</b><span>${c.name}</span><i>${l[REACH_KIND[c.name]] || ''}</i>`
+          : `<span class="channel__name">${c.name}</span><i>${visit} →</i>`}
+      </a>`;
+    }).join('');
+  };
+
+  // the clips are cut vertical, so they are shown vertical
+  $('#shorts').innerHTML = SHORTS.map((v) => `
+    <a class="short" href="${shortUrl(v.id)}" target="_blank" rel="noopener">
+      <span class="short__frame">
+        <img src="${shortThumb(v.id)}" alt="" loading="lazy" width="480" height="360">
+        <span class="short__views">${v.views}</span>
+      </span>
+      <h3>${v.title}</h3>
+    </a>`).join('');
+
+  $('#longs').innerHTML = VIDEOS.slice(0, 3).map((v) => `
+    <a class="long" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+      <span class="long__frame">
+        <img src="${shortThumb(v.id)}" alt="" loading="lazy" width="480" height="360">
+        <span class="long__play"><span>▶</span></span>
+      </span>
+      <h3>${v.title}</h3>
+    </a>`).join('');
+
+  document.addEventListener('langchange', renderChannels);
+  renderChannels();
+}
+
+function setupRead() {
   const render = () => {
-    $('#chron').innerHTML = doc.milestones.map((m) => `
-      <li style="--ch:${CHAPTER_INK[m.chapter]}">
-        <b>${m.date[lang] || m.date.en}</b>
-        <span>${m.title[lang] || m.title.en}</span>
-      </li>`).join('');
+    const f = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
+      { year: 'numeric', month: 'short', day: 'numeric' });
+    $('#essays').innerHTML = ESSAYS.slice(0, 6).map((e) => `
+      <a class="essay" href="${e.url}" target="_blank" rel="noopener">
+        <span class="essay__date">${f.format(new Date(e.date))}</span>
+        <h3>${e.title}</h3>
+        <p class="essay__by">${e.author}${e.translator
+          ? ` · ${lang === 'es' ? 'trad.' : 'trans.'} ${e.translator}` : ''}</p>
+      </a>`).join('');
   };
   document.addEventListener('langchange', render);
   render();
 }
 
+/* ==========================================================================
+   CANON — the chart, back by request. Same grammar as O, read on the dark.
+   ========================================================================== */
+
+const NS = 'http://www.w3.org/2000/svg';
+const svgEl = (n, a, p) => {
+  const e = document.createElementNS(NS, n);
+  for (const [k, v] of Object.entries(a)) e.setAttribute(k, String(v));
+  if (p) p.appendChild(e);
+  return e;
+};
+
 const BAND = {
-  A1: 'Nationalist', A2: 'Inter-nationalist', B1: 'American whole', 'B2.4': 'Pan-American',
-  'B2.5': 'Occidentalist', 'B2.6': 'Hispanic community', 'B2.7': 'Lusophone community',
-  'B2.8': 'Iberian / Iberophone',
+  A1: 'NATIONALIST', A2: 'INTER-NATIONALIST', B1: 'AMERICAN WHOLE', 'B2.4': 'PAN-AMERICAN',
+  'B2.5': 'OCCIDENTALIST', 'B2.6': 'HISPANIC COMMUNITY', 'B2.7': 'LUSOPHONE COMMUNITY',
+  'B2.8': 'IBERIAN / IBEROPHONE',
 };
 const PL = {
   en: { pos: 'Position', unity: 'Unity', op: 'Operation', reg: 'Region', ct: 'Argued against Hispanic unity' },
   es: { pos: 'Posición', unity: 'Unidad', op: 'Operación', reg: 'Región', ct: 'Argumentó contra la unidad hispánica' },
 };
 
+function cardHtml(t) {
+  const l = PL[lang];
+  return `<p class="hc-t">${t.title}</p>
+    <p class="hc-a">${t.author}${t.life ? ` · ${t.life}` : ''}</p>
+    <dl>
+      <dt>${l.pos}</dt><dd>${t.bueno} · ${BAND[t.bueno] || ''}</dd>
+      <dt>${l.unity}</dt><dd>${t.unity}</dd>
+      <dt>${l.op}</dt><dd>${t.operations.join(', ') || '—'}</dd>
+      <dt>${l.reg}</dt><dd>${t.region || '—'}</dd>
+    </dl>
+    ${t.role === 'counter-tradition' ? `<p class="hc-ct">${l.ct}</p>` : ''}`;
+}
+
 function setupCanon(canon) {
-  const list = $('#hoverlist');
-  const plate = $('#canon-plate');
-  const texts = [...canon.texts].sort((a, b) => a.year - b.year);
+  const W = 1000;
+  const ROW = 42;
+  const PAD_L = 142;
+  const PAD_T = 16;
+  const PAD_B = 26;
+  const bands = canon.bands;
+  const H = PAD_T + bands.length * ROW + PAD_B;
+  const Y0 = 1810;
+  const Y1 = 2005;
+  const x = (y) => PAD_L + ((y - Y0) / (Y1 - Y0)) * (W - PAD_L - 24);
 
-  const show = (t, li) => {
-    for (const el of list.querySelectorAll('.is-on')) el.classList.remove('is-on');
-    if (li) li.classList.add('is-on');
-    const l = PL[lang];
-    plate.innerHTML = `
-      <p class="pl-t">${t.title}</p>
-      <p class="pl-a">${t.author}${t.life ? ` · ${t.life}` : ''}</p>
-      <dl>
-        <dt>${l.pos}</dt><dd>${t.bueno} · ${BAND[t.bueno] || ''}</dd>
-        <dt>${l.unity}</dt><dd>${t.unity}</dd>
-        <dt>${l.op}</dt><dd>${t.operations.join(', ') || '—'}</dd>
-        <dt>${l.reg}</dt><dd>${t.region || '—'}</dd>
-      </dl>
-      ${t.role === 'counter-tradition' ? `<p class="pl-ct">${l.ct}</p>` : ''}`;
-  };
+  const host = $('#canon-chart');
+  host.textContent = '';
+  const card = makeHoverCard(host);
+  const svg = svgEl('svg', {
+    viewBox: `0 0 ${W} ${H}`, role: 'img',
+    'aria-label': 'Fifty canonical texts placed by publication year and by the kind of unity they presuppose.',
+  }, host);
 
-  const render = () => {
-    list.innerHTML = texts.map((t, i) => `
-      <li${t.role === 'counter-tradition' ? ' class="is-ct"' : ''}>
-        <button type="button" data-i="${i}">
-          <span class="yr">${t.year}</span>
-          <span class="t">${t.title.replace(/\s*\(\d{4}\)\s*$/, '')}</span>
-          <span class="cls">${t.bueno}</span>
-        </button>
-      </li>`).join('');
-    for (const b of list.querySelectorAll('button')) {
-      const t = texts[+b.dataset.i];
-      const li = b.closest('li');
-      b.addEventListener('pointerenter', () => show(t, li));
-      b.addEventListener('focus', () => show(t, li));
-      b.addEventListener('click', () => show(t, li));
+  const rowY = {};
+  bands.forEach((b, n) => {
+    const y = PAD_T + n * ROW;
+    rowY[b.code] = y;
+    const g = svgEl('g', { class: 'band' }, svg);
+    svgEl('rect', {
+      x: PAD_L, y, width: W - PAD_L - 24, height: ROW - 3, rx: 7,
+      fill: canon.palette[b.code] || '#888',
+    }, g);
+    svgEl('text', { x: PAD_L - 10, y: y + ROW / 2, 'text-anchor': 'end' }, g)
+      .textContent = BAND[b.code] || b.code;
+    svgEl('text', { x: 4, y: y + ROW / 2, class: 'code' }, g).textContent = b.code;
+  });
+
+  const axis = svgEl('g', { class: 'axis' }, svg);
+  for (let y = 1820; y <= 2000; y += 20) {
+    svgEl('line', { x1: x(y), y1: PAD_T, x2: x(y), y2: H - PAD_B }, axis);
+    svgEl('text', { x: x(y), y: H - PAD_B + 11, 'text-anchor': 'middle' }, axis).textContent = y;
+  }
+
+  const rup = svgEl('g', { class: 'rupture' }, svg);
+  svgEl('line', { x1: x(1898), y1: PAD_T - 6, x2: x(1898), y2: H - PAD_B }, rup);
+  svgEl('text', { x: x(1898) + 3, y: PAD_T - 1 }, rup).textContent = '1898';
+
+  const cursor = svgEl('g', { class: 'cursor is-off' }, svg);
+  const cursorLine = svgEl('line', { x1: 0, y1: PAD_T - 6, x2: 0, y2: H - PAD_B }, cursor);
+
+  const byBand = {};
+  for (const t of canon.texts) (byBand[t.bueno] ||= []).push(t);
+  for (const [code, list] of Object.entries(byBand)) {
+    const y = rowY[code];
+    if (y === undefined) continue;
+    list.sort((a, b) => a.year - b.year);
+    let lastX = -99;
+    let lane = 0;
+    for (const t of list) {
+      const cx = x(t.year);
+      lane = cx - lastX < 13 ? (lane + 1) % 3 : 0;
+      lastX = cx;
+      const dot = svgEl('circle', {
+        class: 'dot', cx, cy: y + ROW / 2 - 7 + lane * 7, r: 3.6,
+        'data-role': t.role, tabindex: '0', role: 'button',
+      }, svg);
+      svgEl('title', {}, dot).textContent = `${t.title} — ${t.author}`;
+      dot.style.setProperty('--d', `${Math.round(((t.year - Y0) / (Y1 - Y0)) * 900)}ms`);
+      const on = () => {
+        for (const d of svg.querySelectorAll('.dot.is-active')) d.classList.remove('is-active');
+        dot.classList.add('is-active');
+        cursorLine.setAttribute('x1', cx);
+        cursorLine.setAttribute('x2', cx);
+        cursor.classList.remove('is-off');
+      };
+      dot.addEventListener('pointerenter', (e) => { on(); card.show(cardHtml(t), e.clientX, e.clientY); });
+      dot.addEventListener('pointermove', (e) => card.move(e.clientX, e.clientY));
+      dot.addEventListener('pointerleave', () => card.hide());
+      dot.addEventListener('focus', () => {
+        on();
+        const b = dot.getBoundingClientRect();
+        card.show(cardHtml(t), b.left + b.width / 2, b.top);
+      });
+      dot.addEventListener('blur', () => card.hide());
     }
-    show(texts[0], list.querySelector('li'));
-  };
-  document.addEventListener('langchange', render);
-  render();
+  }
+
+  host.addEventListener('pointerleave', () => { card.hide(); cursor.classList.add('is-off'); });
+  whenInView(host, () => host.classList.add('is-in'), 0.18);
 }
 
 function setupBooks(doc) {
@@ -311,18 +491,6 @@ function setupBooks(doc) {
     a.style.transform = `translateX(${(-p * span * 0.5).toFixed(1)}px)`;
     b.style.transform = `translateX(${(-span * 0.5 + p * span * 0.5).toFixed(1)}px)`;
   };
-}
-
-function setupWatch() {
-  const all = [...SHORTS.map((s) => ({ ...s, short: true })), ...VIDEOS].slice(0, 6);
-  $('#vids').innerHTML = all.map((v) => `
-    <a class="vid" href="${v.short ? shortUrl(v.id) : `https://www.youtube.com/watch?v=${v.id}`}" target="_blank" rel="noopener">
-      <span class="vid__thumb">
-        <img src="${shortThumb(v.id)}" alt="" loading="lazy" width="480" height="360">
-        ${v.views ? `<span class="vid__views">${v.views}</span>` : ''}
-      </span>
-      <h3>${v.title}</h3>
-    </a>`).join('');
 }
 
 function setupFooter() {
@@ -350,6 +518,7 @@ async function boot() {
   });
 
   setupWatch();
+  setupRead();
   setupFooter();
 
   const [mapData, milestones, canon, books, art] = await Promise.all([
@@ -377,6 +546,7 @@ async function boot() {
     [$('#s-milestones'), milestones.milestones.length],
     [$('#s-states'), all.filter((c) => c.tier === 'emersa').length],
   ];
+  // they are in the hero, so they are on screen from the first frame
   for (const [el, v] of tallies) el.textContent = REDUCED ? v : 0;
   let countFrom = REDUCED ? -1 : null;
   const paintTallies = () => {
@@ -394,8 +564,8 @@ async function boot() {
 
   drawMap($('#world-map'), mapData, { animate: true, labels: false, rose: false });
 
+  setupWall(images);
   const voyage = setupVoyage(milestones, images);
-  setupChronology(milestones);
   setupCanon(canon);
   const drift = setupBooks(books);
   const booksProgress = sectionProgress($('#books'));
