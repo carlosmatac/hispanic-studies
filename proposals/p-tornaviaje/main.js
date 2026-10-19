@@ -1,122 +1,92 @@
 /* ==========================================================================
    P · Tornaviaje — page wiring.
 
-   Same data as O · Atlas, a different register. The map engine, the motion
-   helpers and the datasets are shared; everything visual is this folder's.
+   One frame loop drives everything that moves: the corridor, the lamp, the
+   plaques, the meter, the drifting book rows and the nav ring. Two loops
+   would mean two clocks and two opinions about where the page is.
    ========================================================================== */
 
-import { CHANNELS, SHORTS, VIDEOS, ESSAYS, shortThumb, shortUrl } from '../shared/content.js';
+import { CHANNELS, SHORTS, VIDEOS, shortThumb, shortUrl } from '../shared/content.js';
 import { mountThemeSwitcher } from '../shared/theme.js';
 import { drawMap, loadMapData } from '../o-atlas/map.js';
-import {
-  REDUCED, observeReveals, countUp, scrollSteps, scrollProgress,
-  makeHoverCard, whenInView, flushWatchers,
-} from '../o-atlas/motion.js';
+import { REDUCED, observeReveals, flushWatchers } from '../o-atlas/motion.js';
+import { buildCorridor, sectionProgress, smoothed } from './corridor.js';
 
 const DATA = '../shared/data';
+const ART = '../../assets/art/corridor';
 const $ = (s, r = document) => r.querySelector(s);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+/* How many of the sixty milestones you actually fly past. The rest are in the
+   index below: a hallway you can never reach the end of is a worse experience
+   than a hallway with a door at the end. */
+const WAYPOINTS = 24;
 
 /* ==========================================================================
-   i18n — the HTML ships English, this table carries the Spanish
+   i18n
    ========================================================================== */
 
 const STRINGS = {
   en: {},
   es: {
-    'nav.atlas': 'Atlas', 'nav.canon': 'Canon', 'nav.books': 'Libros', 'nav.watch': 'Ver',
-    'nav.cta': 'Quiero el folleto',
+    'nav.atlas': 'El corredor', 'nav.canon': 'Canon', 'nav.books': 'Libros', 'nav.watch': 'Ver',
 
-    'hero.eyebrow': 'Institute for Hispano Studies',
-    'hero.h1': 'Cuatro continentes. |Dos lenguas.| Una discusión.',
-    'hero.lede': 'El español y el portugués son oficiales en veintinueve estados. Ese espacio tiene una historia, un canon y doscientos años de discusión sobre qué es — y casi nada de eso llegó a traducirse.',
-    'hero.cta1': 'Empieza por el folleto gratuito',
-    'hero.cta2': 'Abrir el Atlas',
-    'hero.mapcap': 'Veintinueve estados · cuatro continentes · las rutas que los unieron',
+    'hero.kicker': 'Institute for Hispano Studies · De Indiis Editions',
+    'hero.h1': 'El <em>tornaviaje</em><br>es la vuelta.',
+    'hero.lede': 'Dos coronas ibéricas construyeron un mundo y después perdieron su mapa. Todo lo que se discutió desde entonces — mestizaje, fe, lengua — sigue aquí, colgado en las paredes. Baja y míralo.',
+    'hero.cue': 'Desplázate para entrar en el corredor',
 
-    'strip.h': 'El canon',
-    'strip.label': 'Cincuenta obras, nunca traducidas',
+    'voy.treatment': 'Cómo lo dibuja el mapa',
 
-    'stats.eyebrow': 'Lo que hay aquí de verdad',
-    'stats.h': 'No un archivo. |Una obra de referencia.|',
-    'stats.authors': 'autores en el corpus',
-    'stats.milestones': 'hitos fechados, de hacia 722 a 2026',
-    'stats.texts': 'textos canónicos, de 1818 a 1999',
-    'stats.states': 'estados donde las lenguas son oficiales',
+    'idx.kicker': 'La cronología completa',
+    'idx.h': 'Sesenta hitos, siete capítulos.',
 
-    'pil.eyebrow': 'Tres troncos',
-    'pil.h': 'Todo lo de aquí |cuelga de uno de los tres.|',
-    'pil.1': 'Mestizaje',
-    'pil.1s': 'Castas, transculturación, <i>La raza cósmica</i>, pensamiento indoamericano y la Leyenda Negra sobre la raza.',
-    'pil.1m': '8 títulos prioritarios',
-    'pil.2': 'Catolicismo',
-    'pil.2s': 'Guadalupe, evangelización, la Escuela de Salamanca y el pensamiento político católico a ambos lados del Atlántico.',
-    'pil.2m': '6 títulos prioritarios',
-    'pil.3': 'Lengua',
-    'pil.3s': 'Español y portugués, las academias, la Iberofonía y la traducción como tarea misma de la editorial.',
-    'pil.3m': '14 títulos prioritarios',
+    'world.kicker': 'Lo que salió de aquello',
+    'world.h': 'Veintinueve estados lo siguen hablando.',
+    'world.authors': 'autores en el corpus',
+    'world.texts': 'textos canónicos',
+    'world.milestones': 'hitos fechados',
+    'world.states': 'estados, lengua oficial',
 
-    'atlas.eyebrow': 'El Atlas · sesenta hitos',
-    'atlas.h': 'Avanza, y |el mapa se mueve contigo.|',
-    'atlas.sub': 'Una sola secuencia de hacia 722 a 2026, en siete capítulos. Cada hito lleva su propio tratamiento cartográfico y cita su propia fuente.',
-    'atlas.treatment': 'Tratamiento cartográfico',
-    'atlas.keys': 'desplázate, o usa las flechas del teclado',
+    'canon.kicker': 'El canon · cincuenta textos',
+    'canon.h': 'Recórrelo con la vista.',
+    'canon.sub': 'Doscientos años de gente discutiendo lo mismo. Monárquicos y marxistas, liberales y nacionalistas — y los que argumentaron <em>contra</em> la unidad hispánica, señalados como tales.',
+    'canon.fine': 'Clasificación adaptada de Gustavo Bueno, «España y América» (2001). Las tradiciones portuguesa, brasileña, lusoafricana, asiática, indígena, del Atlántico negro, ecuatoguineana y filipina siguen siendo históricamente distintas. Su presencia aquí no implica su adhesión a un proyecto hispánico o iberófono.',
 
-    'canon.eyebrow': 'El canon · cincuenta textos',
-    'canon.h': 'Una discusión viva, |no una lista de lecturas.|',
-    'canon.sub': 'Cada texto se sitúa según el tipo de unidad que presupone. Ha habido hispanistas monárquicos y marxistas, liberales y nacionalistas — y por eso los autores que argumentaron <em>contra</em> la unidad hispánica también están en el esquema, con el trazo roto.',
-    'canon.disclaimer': 'Clasificación adaptada de Gustavo Bueno, «España y América» (2001). Las tradiciones portuguesa, brasileña, lusoafricana, asiática, indígena, del Atlántico negro, ecuatoguineana y filipina siguen siendo históricamente distintas. Su presencia en este esquema no implica su adhesión a un proyecto hispánico o iberófono.',
+    'books.kicker': 'De Indiis Editions',
+    'books.h': 'Casi nada de esto se tradujo nunca.',
+    'books.fine': 'Los órdenes de prioridad son recomendaciones editoriales del programa de adquisiciones, no anuncios de publicación. No se listan los prologuistas ni los editores propuestos: son investigadores que no han aceptado participar. Las cubiertas son provisionales.',
 
-    'books.eyebrow': 'De Indiis Editions',
-    'books.h': 'Traducir un canon, |no una estantería.|',
-    'books.note': 'Los órdenes de prioridad son recomendaciones editoriales del programa de adquisiciones, no anuncios de publicación. No se listan los prologuistas ni los editores propuestos: son investigadores que no han aceptado participar. Las cubiertas son provisionales.',
+    'watch.kicker': 'Ver · por donde llega casi todo el mundo',
+    'watch.h': 'Trescientos años, recortados del relato.',
 
-    'watch.eyebrow': 'Ver',
-    'watch.h': 'Trescientos años, |recortados del relato.|',
-
-    'read.eyebrow': 'Leer · en Substack',
-    'read.h': 'Ensayos y |primeras traducciones.|',
-
-    'join.eyebrow': 'De Indiis Editions',
-    'join.h': 'Doscientos años de teoría |y praxis. Gratis.|',
-    'join.sub': 'El folleto que abre el canon: de dónde vienen estas ideas, quién las discutió y por dónde empezar a leer.',
-    'join.label': 'Correo electrónico',
-    'join.ph': 'tu@correo.com',
-    'join.cta': 'Envíamelo',
-    'join.ok': 'Confírmalo en tu correo. (Maqueta: no se envía nada.)',
-    'join.discord': 'Entrar en el Discord',
+    'cta.kicker': 'De Indiis Editions · gratis',
+    'cta.h': 'Llévate <em>la discusión entera</em><br>a casa.',
+    'cta.lede': 'Doscientos años de teoría y praxis en un folleto: de dónde vienen estas ideas, quién las discutió y por dónde empezar a leer.',
+    'cta.ph': 'tu@correo.com',
+    'cta.btn': 'Envíamelo',
+    'cta.ok': 'Confírmalo en tu correo. (Maqueta: no se envía nada.)',
+    'cta.discord': 'Reconquista Syndicate · Discord',
 
     'foot.motto': 'Veritas prius pace',
-    'foot.explore': 'Explorar', 'foot.channels': 'Canales',
-    'foot.sources': 'Fuentes', 'foot.theme': 'Tema',
-    'foot.canonSrc': 'Esquema del canon según Gustavo Bueno (2001)',
+    'foot.blurb': 'Un think tank sobre la civilización hispano-católica y la geopolítica panibérica, y la editorial que traduce su canon.',
+    'foot.explore': 'Explorar', 'foot.channels': 'Canales', 'foot.look': 'Registro',
+    'foot.world': 'El mundo',
+    'foot.note': 'Tres registros, un mismo instituto.',
     'foot.legal': 'Hispano Studies LLC',
-    'foot.draft': 'Borrador de la dirección P · Tornaviaje · octubre de 2026 · texto no definitivo',
+    'foot.draft': 'Borrador de la dirección P · Tornaviaje · octubre de 2026',
   },
 };
 
 let lang = 'en';
-const t = (k, fb = '') => (lang === 'en' ? fb : STRINGS.es[k] ?? fb);
 
 function captureEnglish() {
   for (const n of document.querySelectorAll('[data-i18n]')) STRINGS.en[n.dataset.i18n] = n.innerHTML;
+  for (const n of document.querySelectorAll('[data-i18n-html]')) STRINGS.en[n.dataset.i18nHtml] = n.innerHTML;
   for (const n of document.querySelectorAll('[data-i18n-attr]')) {
     const [a, k] = n.dataset.i18nAttr.split(':');
     STRINGS.en[k] = n.getAttribute(a);
   }
-}
-
-/** Headlines are authored with |pipes| around the phrase that takes the accent. */
-function splitWords(el) {
-  const html = el.innerHTML;
-  const parts = html.split('|');
-  el.innerHTML = parts.map((chunk, i) => {
-    const words = chunk.trim().split(/\s+/).filter(Boolean);
-    if (!words.length) return '';
-    const inner = words.map((w) => `<span class="word">${w}</span>`).join(' ');
-    return i % 2 ? `<span class="line-2">${inner}</span>` : inner;
-  }).join(' ');
-  const words = [...el.querySelectorAll('.word')];
-  words.forEach((w, i) => w.style.setProperty('--d', `${i * 48}ms`));
 }
 
 function applyLang(next, push = true) {
@@ -129,11 +99,10 @@ function applyLang(next, push = true) {
   }
   const dict = STRINGS[next];
   for (const n of document.querySelectorAll('[data-i18n]')) {
-    const v = dict[n.dataset.i18n];
-    if (v !== undefined) {
-      n.innerHTML = v;
-      if (n.hasAttribute('data-split')) splitWords(n);
-    }
+    if (dict[n.dataset.i18n] !== undefined) n.innerHTML = dict[n.dataset.i18n];
+  }
+  for (const n of document.querySelectorAll('[data-i18n-html]')) {
+    if (dict[n.dataset.i18nHtml] !== undefined) n.innerHTML = dict[n.dataset.i18nHtml];
   }
   for (const n of document.querySelectorAll('[data-i18n-attr]')) {
     const [a, k] = n.dataset.i18nAttr.split(':');
@@ -146,304 +115,207 @@ function applyLang(next, push = true) {
 }
 
 /* ==========================================================================
-   MARQUEE — the canon, moving
+   THE VOYAGE
    ========================================================================== */
 
-function setupMarquee(canon) {
-  const pick = canon.texts.slice(0, 26);
-  const one = pick.map((x) => {
-    const title = x.title.replace(/\s*\(\d{4}\)\s*$/, '');
-    return `<span class="marquee__item">${title}<span>${x.year}</span></span>`;
-  }).join('');
-  // duplicated so the translate(-50%) loop is seamless
-  $('#marquee-row').innerHTML = one + one;
-}
-
-/* ==========================================================================
-   ATLAS
-   ========================================================================== */
-
-const PLACES = {
-  724: ['Spain', 'Castile', 'Castilian', 'Aragon', 'Asturias', 'Asturian', 'Granada', 'Covadonga', 'Cádiz', 'Madrid', 'Salamanca', 'Canary', 'Canaries', 'Zamora', 'Alcáçovas', 'Tordesillas', 'Valladolid', 'Spanish monarchy'],
-  620: ['Portugal', 'Portuguese', 'Lisbon', 'Guimarães', 'Azores', 'Madeira', 'Ceuta'],
-  76: ['Brazil', 'Brazilian', 'Rio de Janeiro', 'Bahia', 'Salvador'],
-  484: ['Mexico', 'Mexican', 'New Spain', 'Tenochtitlan', 'Acapulco', 'Veracruz', 'Guadalupe Hidalgo'],
-  604: ['Peru', 'Peruvian', 'Andes', 'Lima', 'Ayacucho', 'Callao', 'Cuzco'],
-  608: ['Philippines', 'Philippine', 'Filipino', 'Manila'],
-  192: ['Cuba', 'Cuban', 'Havana'],
-  630: ['Puerto Rico'],
-  214: ['Dominican', 'Santo Domingo'],
-  32: ['Argentina', 'Argentine', 'Buenos Aires', 'Río de la Plata', 'Plata'],
-  152: ['Chile', 'Chilean'],
-  858: ['Uruguay', 'Uruguayan', 'Montevideo'],
-  600: ['Paraguay', 'Paraguayan'],
-  68: ['Bolivia', 'Bolivian', 'Upper Peru'],
-  218: ['Ecuador', 'Quito'],
-  862: ['Venezuela', 'Venezuelan', 'Caracas'],
-  170: ['Colombia', 'Colombian', 'Gran Colombia', 'New Granada'],
-  591: ['Panama', 'Panamanian', 'Amphictyonic'],
-  320: ['Guatemala', 'Central American federation'],
-  340: ['Honduras'], 222: ['El Salvador'], 558: ['Nicaragua'], 188: ['Costa Rica'],
-  840: ['United States', 'American republics', 'Spanish-American War', 'Pan-American'],
-  24: ['Angola', 'Angolan'], 508: ['Mozambique', 'Mozambican'],
-  226: ['Equatorial Guinea', 'Equatoguinean'], 624: ['Guinea-Bissau'],
-  626: ['Timor', 'Timor-Leste'],
-  356: ['India', 'Goa', 'Cape route'], 710: ['Cape of Good Hope', 'South Africa'],
-  156: ['China', 'Macao', 'Macau'],
-};
-
-const SPINE_YEARS = new Set([1492, 1494, 1519, 1565, 1580, 1808, 1824, 1898, 1974, 2015]);
-const CHAPTER_INK = ['#8a7a5e', '#4e6f7d', '#a8502f', '#6e7f63', '#7b2230', '#5a5680', '#ad8220'];
-const RUPTURES = new Set([1808, 1898, 1974]);
-
-const placesIn = (text) => {
-  const found = new Set();
-  for (const [iso, names] of Object.entries(PLACES)) {
-    if (names.some((n) => text.includes(n))) found.add(String(iso).padStart(3, '0'));
+function pickWaypoints(items, n) {
+  // every chapter is entered, then the rest are spread evenly so no stretch
+  // of the hall is left without a year to read
+  const opens = items.map((m, i) => (i === 0 || items[i - 1].chapter !== m.chapter ? i : -1))
+    .filter((i) => i >= 0);
+  const out = new Set(opens);
+  const step = items.length / (n - opens.length + 1);
+  for (let k = 1; out.size < n && k < items.length; k += 1) {
+    out.add(Math.min(items.length - 1, Math.round(k * step)));
   }
-  return found;
-};
-
-function routesFor(year) {
-  const on = new Set();
-  if (year >= 1498) on.add('india');
-  if (year >= 1500) on.add('brasil');
-  if (year >= 1557) on.add('macao');
-  if (year >= 1565) { on.add('manila'); on.add('tornaviaje'); }
-  if (year >= 1566) on.add('indias');
-  return on;
+  return [...out].sort((a, b) => a - b).slice(0, n);
 }
 
-const railX = (y) => (y <= 1800 ? ((y - 722) / 1078) * 38 : 41 + ((y - 1800) / 226) * 59);
-
-function setupAtlas(doc, map) {
+function setupVoyage(doc, images) {
+  const section = $('#voyage');
   const items = doc.milestones;
   const refs = doc.references;
-  let i = 0;
-  let turning = 0;
-  let scroller = null;
+  const ways = pickWaypoints(items, WAYPOINTS);
 
-  const spine = [];
-  items.forEach((m, n) => {
-    if (n === 0 || items[n - 1].chapter !== m.chapter || SPINE_YEARS.has(m.year)) spine.push(n);
-  });
-  const onSpine = new Set(spine);
-  const spineIndexFor = (n) => { let b = 0; spine.forEach((v, k) => { if (v <= n) b = k; }); return b; };
-
-  const rail = $('#rail');
-  const ticks = items.map((m, n) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'rail__tick';
-    b.style.left = `${railX(m.year)}%`;
-    b.dataset.spine = String(onSpine.has(n));
-    b.dataset.rupture = String(RUPTURES.has(m.year));
-    b.setAttribute('role', 'tab');
-    b.setAttribute('aria-label', `${m.date.en} — ${m.title.en}`);
-    b.addEventListener('click', () => { show(n); scroller?.goTo(spineIndexFor(n)); });
-    rail.appendChild(b);
-    return b;
-  });
-
-  const stepHost = $('#atlas-steps');
-  const steps = spine.map(() => {
+  const steps = $('#voyage-steps');
+  // one screen per waypoint, plus two: one to hold the hero still at the
+  // mouth, one to land on at the end
+  const stepCount = ways.length + 2;
+  for (let i = 0; i < stepCount; i += 1) {
     const d = document.createElement('div');
-    d.className = 'atlas__step';
-    stepHost.appendChild(d);
-    return d;
-  });
-  $('.atlas__scroll').style.setProperty('--steps', steps.length);
+    d.className = 'voyage__step';
+    steps.appendChild(d);
+  }
+  section.style.setProperty('--steps', stepCount);
 
-  function show(n) {
-    i = Math.max(0, Math.min(items.length - 1, n));
+  const hall = buildCorridor($('#corridor'), { images, planes: 76 });
+  const progress = sectionProgress(section);
+  const z = smoothed(0, REDUCED ? 1 : 0.09);
+
+  const hero = $('#hero');
+  const way = $('#way');
+  const fill = $('#meter-fill');
+  const meter = $('.meter__track');
+  const lamp = $('#lamp');
+  const ring = $('#ring');
+  const capsule = $('#capsule');
+
+  let shown = -1;
+  const HERO_END = 0.07;
+
+  function render(i, n) {
     const m = items[i];
     const L = lang;
-    const frame = $('.atlas__frame');
-    if (!REDUCED) {
-      frame.classList.add('is-turning');
-      clearTimeout(turning);
-      turning = setTimeout(() => frame.classList.remove('is-turning'), 180);
-    }
-    $('#f-ghost').textContent = m.year;
-    $('#f-n').textContent = `${String(m.n).padStart(2, '0')} / 60`;
-    $('#f-chapter').textContent = doc.chapters[m.chapter][L] || doc.chapters[m.chapter].en;
-    $('#f-date').textContent = m.date[L] || m.date.en;
-    $('#f-title').textContent = m.title[L] || m.title.en;
-    $('#f-body').textContent = m.body[L] || m.body.en;
-    $('#f-map').textContent = m.map[L] || m.map.en;
-    $('#f-src').textContent = m.sources.map((k) => (refs[k] ? `${k} · ${refs[k][L] || refs[k].en}` : k)).join(' · ');
-    $('#f-prev').disabled = i === 0;
-    $('#f-next').disabled = i === items.length - 1;
-    ticks.forEach((b, k) => b.setAttribute('aria-current', String(k === i)));
-
-    const hit = placesIn(`${m.title.en} ${m.body.en} ${m.map.en}`);
-    map.highlight(hit);
-    map.showRoutes(routesFor(m.year));
-    map.frameTo(hit);
+    $('#w-n').textContent = `${String(n + 1).padStart(2, '0')} / ${ways.length}`;
+    $('#w-chapter').textContent = doc.chapters[m.chapter][L] || doc.chapters[m.chapter].en;
+    $('#w-year').textContent = m.date[L] || m.date.en;
+    $('#w-title').textContent = m.title[L] || m.title.en;
+    $('#w-body').textContent = m.body[L] || m.body.en;
+    $('#w-map').textContent = m.map[L] || m.map.en;
+    $('#w-src').textContent = m.sources
+      .map((k) => (refs[k] ? `${k} · ${refs[k][L] || refs[k].en}` : k)).join(' · ');
   }
 
-  $('#f-prev').addEventListener('click', () => show(i - 1));
-  $('#f-next').addEventListener('click', () => show(i + 1));
-  if (steps.length) scroller = scrollSteps(steps, (k) => show(spine[k]));
+  function paint() {
+    const p = progress();
 
-  document.addEventListener('keydown', (e) => {
-    if (e.target.matches('input, textarea')) return;
-    const box = $('#atlas').getBoundingClientRect();
-    if (box.bottom < 120 || box.top > window.innerHeight - 120) return;
-    if (e.key === 'ArrowRight') { show(i + 1); e.preventDefault(); }
-    if (e.key === 'ArrowLeft') { show(i - 1); e.preventDefault(); }
-  });
-  document.addEventListener('langchange', () => show(i));
-  show(0);
+    z.set(p * hall.depth);
+    hall.travel(z.step());
+
+    // the hero holds at the mouth, then hands over
+    const heroOut = clamp((p - HERO_END * 0.35) / (HERO_END * 0.65), 0, 1);
+    hero.style.setProperty('--o', (1 - heroOut).toFixed(3));
+    hero.style.visibility = heroOut >= 1 ? 'hidden' : 'visible';
+    way.style.setProperty('--o', heroOut.toFixed(3));
+    way.style.visibility = heroOut <= 0.02 ? 'hidden' : 'visible';
+
+    const wp = clamp((p - HERO_END) / (1 - HERO_END - 0.05), 0, 1);
+    const idx = clamp(Math.floor(wp * ways.length), 0, ways.length - 1);
+    if (idx !== shown) { shown = idx; render(ways[idx], idx); }
+
+    // the meter reads the chronology, not the scrollbar: a broken axis, the
+    // way the source document itself draws time
+    const yr = items[ways[idx]].year;
+    const t = clamp(yr <= 1800 ? ((yr - 722) / 1078) * 0.38 : 0.41 + ((yr - 1800) / 226) * 0.59, 0, 1);
+    fill.style.width = `${(t * 100).toFixed(1)}%`;
+    meter.style.setProperty('--p', `${(t * 100).toFixed(1)}%`);
+
+  }
+
+  function chrome() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const d = h > 0 ? clamp(window.scrollY / h, 0, 1) : 0;
+    capsule.classList.toggle('is-tight', window.scrollY > window.innerHeight * 0.6);
+    ring.style.strokeDashoffset = (107 * (1 - d)).toFixed(1);
+    // one light, drifting through one room, for the whole document
+    lamp.style.setProperty('--lx', `${(42 + Math.sin(d * 7.4) * 26).toFixed(1)}%`);
+    lamp.style.setProperty('--ly', `${(22 + Math.cos(d * 4.1) * 16 + d * 26).toFixed(1)}%`);
+  }
+
+  document.addEventListener('langchange', () => { if (shown >= 0) render(ways[shown], shown); });
+  render(ways[0], 0);
+
+  return { paint, chrome };
 }
 
 /* ==========================================================================
-   CANON
+   THE REST
    ========================================================================== */
 
-const NS = 'http://www.w3.org/2000/svg';
-const svgEl = (n, a, p) => {
-  const e = document.createElementNS(NS, n);
-  for (const [k, v] of Object.entries(a)) e.setAttribute(k, String(v));
-  if (p) p.appendChild(e);
-  return e;
-};
+const CHAPTER_INK = ['#8a7a5e', '#4e6f7d', '#a8502f', '#6e7f63', '#7b2230', '#5a5680', '#ad8220'];
 
-const BAND_SHORT = {
-  A1: 'NATIONALIST', A2: 'INTER-NATIONALIST', B1: 'AMERICAN WHOLE', 'B2.4': 'PAN-AMERICAN',
-  'B2.5': 'OCCIDENTALIST', 'B2.6': 'HISPANIC COMMUNITY', 'B2.7': 'LUSOPHONE COMMUNITY',
-  'B2.8': 'IBERIAN / IBEROPHONE',
-};
-const CARD_LABELS = {
-  en: { year: 'Year', pos: 'Position', unity: 'Unity', op: 'Operation', reg: 'Region', ct: 'Argued against Hispanic unity' },
-  es: { year: 'Año', pos: 'Posición', unity: 'Unidad', op: 'Operación', reg: 'Región', ct: 'Argumentó contra la unidad hispánica' },
-};
-
-function cardHtml(txt) {
-  const l = CARD_LABELS[lang];
-  const ct = txt.role === 'counter-tradition' ? `<p class="hc-ct">${l.ct}</p>` : '';
-  return `<p class="hc-t">${txt.title}</p>
-    <p class="hc-a">${txt.author}${txt.life ? ` · ${txt.life}` : ''}</p>
-    <dl><dt>${l.year}</dt><dd>${txt.year}</dd>
-    <dt>${l.pos}</dt><dd>${txt.bueno} · ${BAND_SHORT[txt.bueno] || ''}</dd>
-    <dt>${l.unity}</dt><dd>${txt.unity}</dd>
-    <dt>${l.op}</dt><dd>${txt.operations.join(', ') || '—'}</dd>
-    <dt>${l.reg}</dt><dd>${txt.region || '—'}</dd></dl>${ct}`;
-}
-
-function setupCanon(canon) {
-  const W = 1000;
-  const ROW = 42;
-  const PAD_L = 132;
-  const PAD_T = 16;
-  const PAD_B = 26;
-  const bands = canon.bands;
-  const H = PAD_T + bands.length * ROW + PAD_B;
-  const Y0 = 1810;
-  const Y1 = 2005;
-  const x = (y) => PAD_L + ((y - Y0) / (Y1 - Y0)) * (W - PAD_L - 24);
-
-  const host = $('#canon-chart');
-  host.textContent = '';
-  const card = makeHoverCard(host);
-  const svg = svgEl('svg', {
-    viewBox: `0 0 ${W} ${H}`, role: 'img',
-    'aria-label': 'Fifty canonical texts placed by publication year and by the kind of unity they presuppose.',
-  }, host);
-
-  const rowY = {};
-  bands.forEach((b, n) => {
-    const y = PAD_T + n * ROW;
-    rowY[b.code] = y;
-    const g = svgEl('g', { class: 'band' }, svg);
-    svgEl('rect', { x: PAD_L, y, width: W - PAD_L - 24, height: ROW - 3, rx: 6, fill: canon.palette[b.code] || '#e6e0d4' }, g);
-    svgEl('text', { x: PAD_L - 9, y: y + ROW / 2, 'text-anchor': 'end' }, g).textContent = BAND_SHORT[b.code] || b.code;
-  });
-
-  const axis = svgEl('g', { class: 'axis' }, svg);
-  for (let y = 1820; y <= 2000; y += 20) {
-    svgEl('line', { x1: x(y), y1: PAD_T, x2: x(y), y2: H - PAD_B }, axis);
-    svgEl('text', { x: x(y), y: H - PAD_B + 11, 'text-anchor': 'middle' }, axis).textContent = y;
-  }
-
-  const rup = svgEl('g', { class: 'rupture' }, svg);
-  svgEl('line', { x1: x(1898), y1: PAD_T - 6, x2: x(1898), y2: H - PAD_B }, rup);
-  svgEl('text', { x: x(1898) + 3, y: PAD_T - 1 }, rup).textContent = '1898';
-
-  const cursor = svgEl('g', { class: 'cursor is-off' }, svg);
-  const cursorLine = svgEl('line', { x1: 0, y1: PAD_T - 6, x2: 0, y2: H - PAD_B }, cursor);
-
-  const byBand = {};
-  for (const txt of canon.texts) (byBand[txt.bueno] ||= []).push(txt);
-  for (const [code, list] of Object.entries(byBand)) {
-    const y = rowY[code];
-    if (y === undefined) continue;
-    list.sort((a, b) => a.year - b.year);
-    let lastX = -99;
-    let lane = 0;
-    for (const txt of list) {
-      const cx = x(txt.year);
-      lane = cx - lastX < 13 ? (lane + 1) % 3 : 0;
-      lastX = cx;
-      const dot = svgEl('circle', {
-        class: 'dot', cx, cy: y + ROW / 2 - 7 + lane * 7, r: 3.6,
-        'data-role': txt.role, tabindex: '0', role: 'button',
-      }, svg);
-      svgEl('title', {}, dot).textContent = `${txt.title} — ${txt.author}`;
-      dot.style.setProperty('--d', `${Math.round(((txt.year - Y0) / (Y1 - Y0)) * 900)}ms`);
-
-      const on = () => {
-        for (const d of svg.querySelectorAll('.dot.is-active')) d.classList.remove('is-active');
-        dot.classList.add('is-active');
-        cursorLine.setAttribute('x1', cx);
-        cursorLine.setAttribute('x2', cx);
-        cursor.classList.remove('is-off');
-      };
-      dot.addEventListener('pointerenter', (e) => { on(); card.show(cardHtml(txt), e.clientX, e.clientY); });
-      dot.addEventListener('pointermove', (e) => card.move(e.clientX, e.clientY));
-      dot.addEventListener('pointerleave', () => card.hide());
-      dot.addEventListener('focus', () => {
-        on();
-        const b = dot.getBoundingClientRect();
-        card.show(cardHtml(txt), b.left + b.width / 2, b.top);
-      });
-      dot.addEventListener('blur', () => card.hide());
-    }
-  }
-
-  host.addEventListener('pointerleave', () => { card.hide(); cursor.classList.add('is-off'); });
-  whenInView(host, () => host.classList.add('is-in'), 0.18);
-}
-
-/* ==========================================================================
-   BOOKS, WATCH, READ, FOOTER
-   ========================================================================== */
-
-function setupBooks(doc) {
-  const rail = $('#books-rail');
+function setupChronology(doc) {
   const render = () => {
-    rail.innerHTML = doc.books.slice(0, 16).map((b) => `
-      <article class="bookcard">
-        <div class="bookcard__cover"><span>[${lang === 'es' ? 'Cubierta' : 'Cover'}]</span></div>
-        <p class="yr">${b.source_year ?? ''} · ${b.country}</p>
-        <h3>${b.title}</h3>
-        <p class="au">${b.author}</p>
-        <p class="se">${b.series}</p>
-      </article>`).join('');
+    $('#chron').innerHTML = doc.milestones.map((m) => `
+      <li style="--ch:${CHAPTER_INK[m.chapter]}">
+        <b>${m.date[lang] || m.date.en}</b>
+        <span>${m.title[lang] || m.title.en}</span>
+      </li>`).join('');
   };
-  const page = (dir) => {
-    const step = rail.clientWidth * 0.8;
-    rail.scrollBy({ left: dir * step, behavior: REDUCED ? 'auto' : 'smooth' });
-  };
-  $('#b-prev').addEventListener('click', () => page(-1));
-  $('#b-next').addEventListener('click', () => page(1));
   document.addEventListener('langchange', render);
   render();
 }
 
+const BAND = {
+  A1: 'Nationalist', A2: 'Inter-nationalist', B1: 'American whole', 'B2.4': 'Pan-American',
+  'B2.5': 'Occidentalist', 'B2.6': 'Hispanic community', 'B2.7': 'Lusophone community',
+  'B2.8': 'Iberian / Iberophone',
+};
+const PL = {
+  en: { pos: 'Position', unity: 'Unity', op: 'Operation', reg: 'Region', ct: 'Argued against Hispanic unity' },
+  es: { pos: 'Posición', unity: 'Unidad', op: 'Operación', reg: 'Región', ct: 'Argumentó contra la unidad hispánica' },
+};
+
+function setupCanon(canon) {
+  const list = $('#hoverlist');
+  const plate = $('#canon-plate');
+  const texts = [...canon.texts].sort((a, b) => a.year - b.year);
+
+  const show = (t, li) => {
+    for (const el of list.querySelectorAll('.is-on')) el.classList.remove('is-on');
+    if (li) li.classList.add('is-on');
+    const l = PL[lang];
+    plate.innerHTML = `
+      <p class="pl-t">${t.title}</p>
+      <p class="pl-a">${t.author}${t.life ? ` · ${t.life}` : ''}</p>
+      <dl>
+        <dt>${l.pos}</dt><dd>${t.bueno} · ${BAND[t.bueno] || ''}</dd>
+        <dt>${l.unity}</dt><dd>${t.unity}</dd>
+        <dt>${l.op}</dt><dd>${t.operations.join(', ') || '—'}</dd>
+        <dt>${l.reg}</dt><dd>${t.region || '—'}</dd>
+      </dl>
+      ${t.role === 'counter-tradition' ? `<p class="pl-ct">${l.ct}</p>` : ''}`;
+  };
+
+  const render = () => {
+    list.innerHTML = texts.map((t, i) => `
+      <li${t.role === 'counter-tradition' ? ' class="is-ct"' : ''}>
+        <button type="button" data-i="${i}">
+          <span class="yr">${t.year}</span>
+          <span class="t">${t.title.replace(/\s*\(\d{4}\)\s*$/, '')}</span>
+          <span class="cls">${t.bueno}</span>
+        </button>
+      </li>`).join('');
+    for (const b of list.querySelectorAll('button')) {
+      const t = texts[+b.dataset.i];
+      const li = b.closest('li');
+      b.addEventListener('pointerenter', () => show(t, li));
+      b.addEventListener('focus', () => show(t, li));
+      b.addEventListener('click', () => show(t, li));
+    }
+    show(texts[0], list.querySelector('li'));
+  };
+  document.addEventListener('langchange', render);
+  render();
+}
+
+function setupBooks(doc) {
+  const a = $('#drift-a');
+  const b = $('#drift-b');
+  const card = (x) => `
+    <article class="tome">
+      <div class="tome__spine"><span>${x.source_year ?? ''}</span></div>
+      <h3>${x.title}</h3>
+      <p>${x.author}</p>
+    </article>`;
+  const render = () => {
+    // doubled, so a row can drift without running out of books
+    a.innerHTML = doc.books.slice(0, 10).map(card).join('').repeat(2);
+    b.innerHTML = doc.books.slice(10, 20).map(card).join('').repeat(2);
+  };
+  document.addEventListener('langchange', render);
+  render();
+
+  return (p) => {
+    const span = a.scrollWidth / 2;
+    a.style.transform = `translateX(${(-p * span * 0.5).toFixed(1)}px)`;
+    b.style.transform = `translateX(${(-span * 0.5 + p * span * 0.5).toFixed(1)}px)`;
+  };
+}
+
 function setupWatch() {
   const all = [...SHORTS.map((s) => ({ ...s, short: true })), ...VIDEOS].slice(0, 6);
-  $('#watch-grid').innerHTML = all.map((v) => `
+  $('#vids').innerHTML = all.map((v) => `
     <a class="vid" href="${v.short ? shortUrl(v.id) : `https://www.youtube.com/watch?v=${v.id}`}" target="_blank" rel="noopener">
       <span class="vid__thumb">
         <img src="${shortThumb(v.id)}" alt="" loading="lazy" width="480" height="360">
@@ -453,18 +325,12 @@ function setupWatch() {
     </a>`).join('');
 }
 
-function setupRead() {
-  const render = () => {
-    const f = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-    $('#read-list').innerHTML = ESSAYS.slice(0, 5).map((e) => `
-      <a class="essay" href="${e.url}" target="_blank" rel="noopener">
-        <span class="essay__date">${f.format(new Date(e.date))}</span>
-        <span><h3>${e.title}</h3>
-        <p class="essay__by">${e.author}${e.translator ? ` · ${lang === 'es' ? 'trad.' : 'trans.'} ${e.translator}` : ''}</p></span>
-      </a>`).join('');
-  };
-  document.addEventListener('langchange', render);
-  render();
+function setupFooter() {
+  $('#foot-channels').innerHTML = CHANNELS.map((c) =>
+    `<li><a href="${c.url}" target="_blank" rel="noopener">${c.name}</a></li>`).join('');
+  const words = [...CHANNELS.map((c) => c.name), 'Reconquista Syndicate', 'De Indiis Editions', 'Veritas prius pace'];
+  const row = words.map((w) => `<span>${w}</span>`).join('');
+  $('#foot-ticker').innerHTML = row + row;
 }
 
 /* ==========================================================================
@@ -473,56 +339,86 @@ function setupRead() {
 
 async function boot() {
   captureEnglish();
-  for (const el of document.querySelectorAll('[data-split]')) splitWords(el);
-
   for (const b of document.querySelectorAll('.lang button')) {
     b.addEventListener('click', () => applyLang(b.dataset.lang));
   }
   mountThemeSwitcher($('#themer'), { lang: () => lang, compact: true });
   mountThemeSwitcher($('#themer-foot'), { lang: () => lang });
-
-  scrollProgress($('#progress'));
   $('#signup').addEventListener('submit', (e) => {
     e.preventDefault();
     e.currentTarget.classList.add('is-done');
   });
-  $('#foot-channels').innerHTML = CHANNELS.map((c) =>
-    `<li><a href="${c.url}" target="_blank" rel="noopener">${c.name}</a></li>`).join('');
 
   setupWatch();
-  setupRead();
+  setupFooter();
 
-  const [mapData, milestones, canon, books] = await Promise.all([
+  const [mapData, milestones, canon, books, art] = await Promise.all([
     loadMapData(DATA),
     fetch(`${DATA}/milestones.json`).then((r) => r.json()),
     fetch(`${DATA}/canon.json`).then((r) => r.json()),
     fetch(`${DATA}/books.json`).then((r) => r.json()),
+    fetch(`${ART}/manifest.json`).then((r) => r.json()).catch(() => []),
   ]);
 
+  // the hall still has to stand up if the picture set is missing
+  const images = art.length
+    ? art.map((x) => `${ART}/${x.file}`)
+    : ['velazquez-las-lanzas', 'velazquez-las-meninas', 'guadalupe-tilma', 'zurbaran-agnus-dei',
+      'ribero-carta-universal-1529', 'florentine-codex-folio-80', 'galleon-cabrera-bueno-1734']
+      .map((n) => `../../assets/art/${n}.jpg`);
+
   const all = [...mapData.iberophone.countries, ...mapData.iberophone.points];
-  countUp($('#s-authors'), canon.corpusTotal ?? 267);
-  countUp($('#s-milestones'), milestones.milestones.length);
-  countUp($('#s-texts'), canon.texts.length);
-  countUp($('#s-states'), all.filter((c) => c.tier === 'emersa').length);
+  /* The tallies count from the page's own loop rather than a shared observer:
+     one clock, and the figure on screen is never left mid-count. Every value
+     is read off the data. */
+  const tallies = [
+    [$('#s-authors'), canon.corpusTotal ?? 267],
+    [$('#s-texts'), canon.texts.length],
+    [$('#s-milestones'), milestones.milestones.length],
+    [$('#s-states'), all.filter((c) => c.tier === 'emersa').length],
+  ];
+  for (const [el, v] of tallies) el.textContent = REDUCED ? v : 0;
+  let countFrom = REDUCED ? -1 : null;
+  const paintTallies = () => {
+    if (countFrom === -1) return;
+    const r = tallies[0][0].getBoundingClientRect();
+    if (countFrom === null) {
+      if (r.top > window.innerHeight * 0.88 || r.bottom < 0) return;
+      countFrom = performance.now();
+    }
+    const k = clamp((performance.now() - countFrom) / 1100, 0, 1);
+    const e = 1 - (1 - k) ** 3;
+    for (const [el, v] of tallies) el.textContent = Math.round(v * e);
+    if (k >= 1) { for (const [el, v] of tallies) el.textContent = v; countFrom = -1; }
+  };
 
-  drawMap($('#hero-map'), mapData, {
-    animate: true, labels: false, rose: false,
-    projection: 'orthographic', spin: 2.4,
-  });
-  const atlasMap = drawMap($('#atlas-map'), mapData, { rose: false, animate: false, labels: true });
+  drawMap($('#world-map'), mapData, { animate: true, labels: false, rose: false });
 
-  setupMarquee(canon);
-  setupAtlas(milestones, atlasMap);
+  const voyage = setupVoyage(milestones, images);
+  setupChronology(milestones);
   setupCanon(canon);
-  setupBooks(books);
+  const drift = setupBooks(books);
+  const booksProgress = sectionProgress($('#books'));
+
+  const tick = () => {
+    voyage.paint();
+    voyage.chrome();
+    drift(booksProgress());
+    paintTallies();
+    // the reveals ride this loop too: one clock for everything that moves
+    flushWatchers();
+  };
+  const loop = () => { tick(); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+  // a frame callback is not guaranteed to be delivered; the corridor must not
+  // freeze if one is dropped
+  window.addEventListener('scroll', tick, { passive: true });
+  window.addEventListener('resize', tick, { passive: true });
+  tick();
 
   const wanted = new URL(window.location).searchParams.get('lang');
   if (wanted === 'es') applyLang('es', false);
 
-  // split headlines reveal on the same watcher as everything else
-  for (const el of document.querySelectorAll('[data-split]')) {
-    whenInView(el, () => el.classList.add('is-in'), 0.1);
-  }
   observeReveals();
   flushWatchers();
   window.__motionReady = true;

@@ -49,12 +49,13 @@
   .grid--now2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 1180px; }
   @media (max-width: 900px) { .grid--now2 { grid-template-columns: 1fr; } }
   .p { --accent: #D9A441; }
-  .thumb--p { background: #16213E; display: grid; place-items: center; aspect-ratio: 16 / 7; }
+  .thumb--p { background: #0b0a09; display: grid; place-items: center; aspect-ratio: 16 / 7; overflow: hidden; }
   .thumb--p::before {
-    content: ""; width: 46%; aspect-ratio: 1; border-radius: 50%;
-    background: radial-gradient(circle at 38% 34%, #D9A441 0 10%, transparent 10%),
-                radial-gradient(circle at 58% 56%, #D9A441 0 6%, transparent 6%),
-                radial-gradient(circle at 42% 44%, #3a4668, #11182c 70%);
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(38% 52% at 50% 48%, rgba(217,164,65,.30), transparent 70%),
+      linear-gradient(90deg, #1a1512 0 11%, transparent 11% 22%, #231c17 22% 30%, transparent 30% 70%, #231c17 70% 78%, transparent 78% 89%, #1a1512 89%),
+      linear-gradient(0deg, #0b0a09, #15110e);
   }
   .thumb--p::after { background: none; }
   .grid--now .card h2 { font-family: "Ibarra Real Nova", serif; font-weight: 600; font-size: 40px; }
@@ -104,8 +105,8 @@
     <div class="card__body">
       <span class="card__k">P · current direction</span>
       <h2>Tornaviaje</h2>
-      <p>The same content, a warmer and more spectacular register: a turning globe, stacked colour blocks, oversized type. Built because O may read as too austere.</p>
-      <small>Three switchable registers: Desierto · Caribe · Virreinal</small>
+      <p>The same content, the opposite register. One continuous dark room, and the chronology becomes a corridor of paintings you fly down — sixty milestones hung on the walls.</p>
+      <small>27 sourced works · three switchable registers: Desierto · Caribe · Virreinal</small>
     </div>
   </a>
 </div>
