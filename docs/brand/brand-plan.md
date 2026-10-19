@@ -109,19 +109,26 @@ Rules:
 
 ## Motion budget
 
-He rejected both extremes: not "excesivamente dinámica", but "sin ser aburrido". A written budget so this is reviewable rather than a matter of taste.
+Revised 2026-10-19, replacing a stricter first version that allowed no scroll-driven motion at all. Beltrán rejected both extremes — not *"excesivamente dinámica"*, but *"sin ser aburrido"* — and he also said the site has to be somewhere people **want to spend time**: *"que guste navegarla, que se lo pase bien navegándola"* [18:10]. A page that is merely correct does not earn that.
+
+**The rule that replaced the blanket ban: motion must carry content.** A heading that wipes in is carrying the fact that you arrived at it. A map that advances as you scroll is carrying two thousand years. Decoration that moves for its own sake is still out.
 
 | Surface | Allowed | Hard limits |
 | --- | --- | --- |
-| Hero map | One ambient effect: routes drawing themselves once on load, then still | ≤ 6s, runs once, no loop, no parallax |
-| Atlas timeline | Motion **only on user action** — step forward/back, Prezi-style pan-and-zoom between frames | 450ms per step, eased, one transform at a time |
-| Canon chart | Hover highlight and filter transitions only | 150ms |
-| Section reveals | None | No scroll-triggered cascades anywhere |
+| Hero map | Routes draw themselves once on load, then still | ≤ 6s, runs once, no loop, no parallax |
+| Hero figures | Count up from zero when they enter view | Real values from the data; the final value is written by a timer regardless, so a dropped frame can never leave a half-counted figure on screen |
+| Atlas | The stage **pins** while the milestones scroll past; the map flies to the countries each one names | One `viewBox` move at a time, 450ms, eased. Sixty milestones reachable by rail and arrow keys, so scroll is never the only way through |
+| Atlas frame text | Cross-fades between milestones | 180ms, so the words never land before the map does |
+| Canon chart | Dots grow in along the century when the chart arrives; hover card follows the pointer | Stagger ≤ 900ms total; hover response 150ms |
+| Section entry | Headings wipe up; the body and grid children fade up, staggered | 0.72s / 0.55s, once per element, never replayed on scroll back |
+| Hover | Colour, underline, and a 6px lift on book covers / 1.045 zoom on video thumbnails | No shadow bloom, no rotation |
 | Video | One muted loop maximum on the whole site, and not in the hero | Never autoplays with sound |
-| Hover states | Colour and underline only | No scale, no lift, no shadow bloom |
-| `prefers-reduced-motion` | Every effect above has a designed still state, not just `animation: none` | Routes drawn complete; timeline becomes a list |
+| `prefers-reduced-motion` | Every effect above has a designed still state | Routes complete, counters final, frames swap instantly, reveals simply present |
 
-The things Beltrán liked in M/N (painted heroes dissolving, living painting video) are *not* in this budget. They move to the Community block as a single static backdrop, which is where he himself put them [13:29].
+### Two rules that are not negotiable
+
+1. **Content may never be hidden by a reveal that fails to fire.** The pre-reveal state lives behind a `.js-motion` class set in the document head; if the module throws, fails to load, or never finishes booting, a timer removes that class and the whole page is simply visible. Reveals also fire for anything *already scrolled past*, so an anchor jump or a restored scroll position cannot strand a section invisible above the viewport.
+2. **Nothing paces itself off a clock it does not own.** Animation progress is measured from the frame callback's own timestamp, and every timed state change is backed by a timer that writes the final value. This is not theoretical: mixing `performance.now()` with frame timestamps threw the map's `viewBox` into the billions during testing.
 
 ## Information architecture
 
@@ -151,6 +158,7 @@ Why the Atlas gets its own route: it is the thing that makes the site a *referen
 ## What we are explicitly not doing
 
 - No glyph-field hero. The `shared/glyph-field.js` engine is a beautiful effect and it reads as "tech startup", which is the opposite of institute. Keep the code; do not ship it on the hero.
+- No scroll-jacking. The Atlas pins its stage but never takes the scroll away: the wheel always moves the page, and the sixty milestones are equally reachable by the rail and the arrow keys.
 - No Unicorn Studio in production. Free plan is non-commercial and watermarked, and nothing in this plan needs WebGL. (`docs/research/unicorn-inspiration.md` stays as research.)
 - No AI-generated historical scenes. See [`imagery-and-rights.md`](imagery-and-rights.md).
 - No 3D globe. He floated it ("incluso un modelo 3D", [21:18]) but a flat projection is more legible, loads faster, labels better and is what every atlas he admires actually uses. Worth showing him the flat version and letting him argue.

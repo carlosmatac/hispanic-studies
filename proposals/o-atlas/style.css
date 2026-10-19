@@ -193,39 +193,39 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 /* --- map ink -------------------------------------------------------------- */
 
 .map .ocean { fill: #e2d8c2; }
-.map .graticule { fill: none; stroke: var(--grid); stroke-width: 0.5; opacity: 0.5; }
-.map .sphere { fill: none; stroke: var(--grid); stroke-width: 1.1; }
-.map .rest path { fill: #f2ebdc; stroke: #b9ae9b; stroke-width: 0.4; }
+.map .graticule { fill: none; stroke: var(--grid); stroke-width: calc(0.7px * var(--u, 1)); opacity: 0.5; }
+.map .sphere { fill: none; stroke: var(--grid); stroke-width: calc(1.4px * var(--u, 1)); }
+.map .rest path { fill: #f2ebdc; stroke: #b9ae9b; stroke-width: calc(0.6px * var(--u, 1)); }
 
-.map .ib path { stroke: var(--paper); stroke-width: 0.5; transition: fill 0.18s; }
+.map .ib path { stroke: var(--paper); stroke-width: calc(0.7px * var(--u, 1)); transition: fill 0.18s; }
 .map .ib path[data-tier="emersa"] { fill: var(--map-emersa); }
 .map .ib path[data-tier="submersa"] { fill: url(#hatch); }
 .map .ib path:hover,
 .map .ib path.is-active { fill: var(--burgundy); }
 
 .map .route {
-  fill: none; stroke: var(--gold); stroke-width: 1.4;
+  fill: none; stroke: var(--gold); stroke-width: calc(1.9px * var(--u, 1));
   stroke-linecap: round; stroke-dasharray: 5 3.5;
 }
 .map .route--return { stroke: var(--gold); opacity: 0.6; stroke-dasharray: 2 4; }
-.map .port { fill: var(--paper); stroke: var(--ink); stroke-width: 0.9; }
-.map .pin { fill: var(--map-emersa); stroke: var(--paper); stroke-width: 1; }
+.map .port { fill: var(--paper); stroke: var(--ink); stroke-width: calc(1.2px * var(--u, 1)); r: calc(2.4px * var(--u, 1)); }
+.map .pin { fill: var(--map-emersa); stroke: var(--paper); stroke-width: calc(1.4px * var(--u, 1)); r: calc(3.4px * var(--u, 1)); }
 .map .pin[data-tier="submersa"] { fill: var(--map-submersa); }
 
 .map .label {
-  font-family: var(--body); font-size: 7.4px; font-weight: 500;
+  font-family: var(--body); font-size: calc(9.6px * var(--u, 1)); font-weight: 500;
   text-transform: uppercase; letter-spacing: 0.1em;
   fill: var(--ink); paint-order: stroke;
-  stroke: var(--paper); stroke-width: 2.4px; stroke-linejoin: round;
+  stroke: var(--paper); stroke-width: calc(3px * var(--u, 1)); stroke-linejoin: round;
   pointer-events: none;
 }
 .map .label--sea {
   font-family: var(--display); font-style: italic; font-weight: 400;
-  text-transform: none; letter-spacing: 0.22em; font-size: 8.5px;
-  fill: var(--ink-muted); stroke-width: 2px;
+  text-transform: none; letter-spacing: 0.22em; font-size: calc(11.5px * var(--u, 1));
+  fill: var(--ink-muted); stroke-width: calc(2.6px * var(--u, 1));
 }
 .map .label--route {
-  font-family: var(--mono); font-size: 6.2px; letter-spacing: 0.06em;
+  font-family: var(--mono); font-size: calc(8px * var(--u, 1)); letter-spacing: 0.06em;
   fill: #8a6a1e; text-transform: none;
 }
 
@@ -244,7 +244,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 /* --- cartouche ------------------------------------------------------------ */
 
 .cartouche {
-  position: absolute; left: clamp(22px, 3vw, 44px); bottom: clamp(22px, 3vw, 44px);
+  position: absolute; left: clamp(22px, 3vw, 44px); top: clamp(22px, 3vw, 44px);
   z-index: 2; max-width: 290px;
   padding: 16px 19px 17px;
   background: color-mix(in srgb, var(--paper) 94%, transparent);
@@ -286,10 +286,25 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 /* --- the hero band below the plate --------------------------------------- */
 
 .hero__band {
+  position: relative; z-index: 3;
   display: grid; gap: clamp(26px, 4vw, 60px);
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: start;
   padding: clamp(32px, 4.5vw, 64px) var(--gutter) clamp(36px, 5vw, 70px);
+}
+
+@media (min-width: 1041px) {
+  /* the band slides up over the foot of the plate: the one deliberately bold
+     piece of layout on the page. Solid paper, so the map is behind it rather
+     than showing through the type. */
+  .hero__band {
+    margin-top: clamp(-104px, -6.5vw, -56px);
+    background: var(--paper);
+    border-top: 1px solid var(--grid);
+    padding-top: clamp(30px, 3.4vw, 50px);
+  }
+  /* the plate's engraved border should not run under the band */
+  .plate-wrap::after { bottom: clamp(44px, 5vw, 76px); }
 }
 .hero__band h1 em { font-style: italic; color: var(--burgundy); }
 .hero__band h1 + p { margin-top: 20px; }
@@ -347,6 +362,24 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 
 .atlas { background: var(--paper-deep); border-bottom: var(--rule); }
 
+/* The scroll region is as tall as its steps; --steps is set from JS so the
+   height and the step count can never drift apart. */
+.atlas__scroll {
+  position: relative;
+  min-height: calc(var(--steps, 1) * 58vh);
+}
+
+.atlas__sticky {
+  position: sticky; top: 72px;
+  min-height: calc(100vh - 86px);
+  display: grid; gap: 14px; align-content: center;
+  padding-bottom: 6px;
+}
+
+/* the steps are empty: they only give the scroll something to measure */
+.atlas__steps { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.atlas__step { height: 58vh; }
+
 .atlas__stage {
   display: grid; gap: clamp(20px, 2.5vw, 38px);
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
@@ -357,8 +390,32 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
   position: relative; background: var(--paper);
   border: 1px solid var(--grid); overflow: hidden;
 }
+/* No fixed height needed: every viewBox frameTo produces keeps the plate's
+   own aspect, so `height: auto` already holds the box steady between frames. */
+
+/* the year, set huge behind the frame text like a printed chapter number */
+.atlas__ghost {
+  position: absolute; right: -0.04em; top: -0.12em; z-index: 0;
+  font-family: var(--display); font-weight: 600;
+  font-size: clamp(130px, 15vw, 240px); line-height: 0.78;
+  letter-spacing: -0.04em; font-variant-numeric: lining-nums;
+  color: var(--ink); opacity: 0.06; pointer-events: none;
+  user-select: none;
+}
+.atlas__frame { position: relative; }
+.atlas__frame > * { position: relative; z-index: 1; }
 
 .atlas__frame { min-width: 0; }
+
+/* the frame cross-fades rather than snapping: the map is moving, the words
+   should not arrive before it does */
+.atlas__frame.is-turning #f-date,
+.atlas__frame.is-turning #f-title,
+.atlas__frame.is-turning #f-body,
+.atlas__frame.is-turning .frame__map { opacity: 0; transform: translateY(6px); }
+#f-date, #f-title, #f-body, .frame__map {
+  transition: opacity 0.26s ease, transform 0.26s ease;
+}
 
 .frame__n {
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
@@ -415,6 +472,9 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 .rail__tick:hover::after { height: 24px; width: 2px; }
 .rail__tick[aria-current="true"]::after { height: 44px; width: 2px; background: var(--burgundy); }
 .rail__tick[data-rupture="true"]::after { background: var(--rupture); height: 21px; }
+/* the milestones the scroll walks through sit taller on the rail */
+.rail__tick[data-spine="true"]::after { height: 28px; width: 2px; }
+.rail__tick[aria-current="true"]::after { height: 46px; width: 2.5px; background: var(--burgundy); }
 
 .rail__break {
   position: absolute; bottom: 0; width: 9px; height: 17px;
@@ -433,11 +493,98 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 .rail__legend i { width: 9px; height: 9px; background: var(--ch); display: inline-block; }
 
 /* ==========================================================================
+   MOTION PRIMITIVES
+   ========================================================================== */
+
+/* document scroll progress */
+.progress {
+  position: fixed; inset: 0 0 auto; height: 2px; z-index: 60;
+  background: color-mix(in srgb, var(--grid) 45%, transparent);
+}
+.progress i {
+  display: block; height: 100%; background: var(--gold);
+  transform: scaleX(0); transform-origin: 0 50%;
+}
+
+/* Reveals are keyframe animations, not transitions, and every one of them
+   uses `both` fill: the finished state is part of the animation, so a reveal
+   cannot leave content stranded half way. The pre-reveal state only exists
+   while `.js-motion` is on <html>, which the head script removes if boot
+   never completes. */
+@keyframes wipe-up {
+  from { clip-path: inset(0 0 102% 0); transform: translateY(0.14em); }
+  to   { clip-path: inset(0 0 -18% 0); transform: none; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.js-motion [data-reveal]:not(.is-in) .wipe,
+.js-motion .wipe[data-reveal]:not(.is-in) { clip-path: inset(0 0 102% 0); }
+.js-motion [data-reveal].is-in .wipe,
+.js-motion .wipe[data-reveal].is-in {
+  animation: wipe-up 0.72s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.js-motion [data-reveal]:not(.is-in) > :not(.wipe),
+.js-motion [data-reveal-stagger] > :not(.is-in) { opacity: 0; }
+.js-motion [data-reveal].is-in > :not(.wipe),
+.js-motion [data-reveal-stagger] > .is-in {
+  animation: rise 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0ms) both;
+}
+
+/* section numerals, set in the margin like a printed plate number */
+.numeral {
+  position: absolute; left: 0; top: clamp(52px, 7vw, 104px);
+  display: none; align-items: center; gap: 10px;
+  writing-mode: vertical-rl;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em;
+  color: color-mix(in srgb, currentColor 38%, transparent);
+}
+.numeral i { display: block; width: 1px; height: 46px; background: currentColor; opacity: 0.45; }
+
+@media (min-width: 1240px) {
+  section { position: relative; }
+  .numeral { display: flex; left: calc(var(--gutter) - 26px); }
+}
+
+/* the pointer-following card used by the canon chart */
+.hovercard {
+  position: absolute; left: 0; top: 0; z-index: 20; width: max-content; max-width: 310px;
+  padding: 13px 16px 14px;
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--ink);
+  box-shadow: 4px 5px 0 color-mix(in srgb, var(--ink) 11%, transparent);
+  pointer-events: none;
+  opacity: 0; transition: opacity 0.14s ease;
+}
+.hovercard.is-in { opacity: 1; }
+.hovercard .hc-t {
+  font-family: var(--display); font-size: 19px; font-weight: 600; line-height: 1.15;
+  font-style: italic; margin-bottom: 3px;
+}
+.hovercard .hc-a { font-size: 13.5px; color: var(--ink-muted); margin-bottom: 9px; }
+.hovercard dl {
+  margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 12px;
+  font-family: var(--mono); font-size: 11px;
+}
+.hovercard dt { color: var(--ink-muted); }
+.hovercard dd { margin: 0; }
+.hovercard .hc-ct {
+  margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--grid);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--rupture);
+}
+
+/* ==========================================================================
    CANON — the 50 canonical texts on the Bueno field
    ========================================================================== */
 
 .canon { border-bottom: var(--rule); }
 .canon__chart { position: relative; margin-bottom: 22px; }
+.canon .cursor line { stroke: var(--ink); stroke-width: 0.5; stroke-dasharray: 2 2; opacity: 0.45; }
+.canon .cursor.is-off { display: none; }
 .canon__chart svg { display: block; width: 100%; height: auto; }
 
 .canon .band rect { opacity: 0.55; }
@@ -451,8 +598,19 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 .canon .rupture text { font-family: var(--mono); font-size: 5.2px; fill: var(--rupture); }
 .canon .dot {
   fill: var(--paper); stroke: var(--ink); stroke-width: 0.95; cursor: pointer;
-  transition: fill 0.15s, stroke-width 0.15s;
+  transform-box: fill-box; transform-origin: center;
+  transition: fill 0.15s, stroke-width 0.15s, r 0.15s;
 }
+/* the canon fills up along the century when the chart comes into view */
+@keyframes dot-in {
+  from { opacity: 0; transform: scale(0.1); }
+  to   { opacity: 1; transform: none; }
+}
+.js-motion .canon__chart:not(.is-in) .dot { opacity: 0; }
+.js-motion .canon__chart.is-in .dot {
+  animation: dot-in 0.5s cubic-bezier(0.34, 1.4, 0.5, 1) var(--d, 0ms) both;
+}
+.canon .dot:hover, .canon .dot.is-active { r: 5; stroke-width: 1.4; }
 .canon .dot:hover, .canon .dot.is-active { fill: var(--burgundy); stroke: var(--burgundy); }
 .canon .dot[data-role="counter-tradition"] { stroke-dasharray: 1.6 1.2; }
 
@@ -490,6 +648,11 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 .books__grid { display: grid; gap: clamp(18px, 2vw, 30px); grid-template-columns: repeat(auto-fill, minmax(min(100%, 212px), 1fr)); }
 
 .book { display: flex; flex-direction: column; gap: 11px; }
+.book__cover { transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.35s; }
+.book:hover .book__cover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--gold) 85%, transparent);
+}
 .book__cover {
   aspect-ratio: 2 / 3; display: grid; place-items: center; padding: 18px;
   background: linear-gradient(170deg, #241a19, #120c0c);
@@ -522,7 +685,11 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
   position: relative; aspect-ratio: 16 / 9; overflow: hidden;
   background: #2a211b; border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
 }
-.vid__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vid__thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vid:hover .vid__thumb img { transform: scale(1.045); }
 .vid__views {
   position: absolute; right: 7px; bottom: 7px;
   padding: 2px 6px; background: color-mix(in srgb, var(--ink) 86%, transparent);
@@ -589,6 +756,11 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 
 @media (max-width: 1040px) {
   .hero__band, .atlas__stage { grid-template-columns: 1fr; }
+  /* sticky scrollytelling needs height we do not have here: fall back to the
+     stepper, which does the same job with buttons */
+  .atlas__sticky { position: static; }
+  .atlas__steps { display: none; }
+  .atlas__ghost { font-size: clamp(64px, 17vw, 120px); }
   .readout { position: static; width: auto; margin: 0 clamp(22px, 3vw, 44px) clamp(22px, 3vw, 44px); }
   .cartouche { position: static; max-width: none; margin: clamp(22px, 3vw, 44px); }
   .plate-wrap::after { inset: 8px; }
@@ -619,4 +791,21 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
   }
   /* routes are shown complete rather than drawn */
   .map .route.is-drawing { stroke-dasharray: 5 3.5; stroke-dashoffset: 0; animation: none; }
+
+  /* revealed content is simply present */
+  .js-motion [data-reveal] .wipe, .js-motion .wipe[data-reveal],
+  .js-motion [data-reveal]:not(.is-in) .wipe { clip-path: none; transform: none; animation: none; }
+  .js-motion [data-reveal] > :not(.wipe),
+  .js-motion [data-reveal-stagger] > *,
+  .js-motion [data-reveal]:not(.is-in) > :not(.wipe) { opacity: 1; transform: none; animation: none; }
+  .js-motion .canon__chart .dot,
+  .js-motion .canon__chart:not(.is-in) .dot { opacity: 1; transform: none; animation: none; }
+
+  /* no lift, no zoom */
+  .book:hover .book__cover { transform: none; }
+  .vid:hover .vid__thumb img { transform: none; }
+
+  /* the sticky stage still works without smooth scrolling; the steps just
+     switch frames instantly */
+  .progress i { transition: none; }
 }

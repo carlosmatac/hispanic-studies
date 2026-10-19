@@ -298,25 +298,46 @@ export function drawMap(host, data, opts = {}) {
 
   const easeOut = (t) => 1 - (1 - t) ** 3;
 
-  function animateTo(target, ms = 450) {
+  /* --u is user units per screen pixel. Anything that should keep a fixed size
+     on screen — type, hairlines, port dots — is written as
+     calc(<px> * var(--u)), so it holds through both zooming and resizing and
+     reads the same in the wide hero plate and the small atlas one. */
+  const apply = () => {
+    svg.setAttribute('viewBox', current.map((v) => v.toFixed(2)).join(' '));
+    const px = svg.clientWidth || svg.getBoundingClientRect().width || WIDTH;
+    svg.style.setProperty('--u', (current[2] / px).toFixed(4));
+  };
+
+  const sane = (b) => Array.isArray(b) && b.length === 4
+    && b.every(Number.isFinite) && b[2] > 0 && b[3] > 0;
+
+  function animateTo(box, ms = 450) {
+    // A bad box must never reach the viewBox: once it does it feeds back into
+    // the next interpolation and the numbers run away.
+    const target = sane(box) ? box : full;
     cancelAnimationFrame(raf);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!sane(current)) current = full.slice();
     if (reduce || ms === 0) {
       current = target.slice();
-      svg.setAttribute('viewBox', current.join(' '));
+      apply();
       return;
     }
     const from = current.slice();
-    const t0 = performance.now();
+    // t0 comes from the first frame callback, not from performance.now(): the
+    // two clocks are not guaranteed to share an epoch, and mixing them makes
+    // the easing blow up.
+    let t0 = null;
     const settle = () => {
       current = target.slice();
-      svg.setAttribute('viewBox', current.map((v) => v.toFixed(2)).join(' '));
+      apply();
     };
     const tick = (now) => {
-      const t = Math.min(1, (now - t0) / ms);
+      if (t0 === null) t0 = now;
+      const t = Math.min(1, Math.max(0, (now - t0) / ms));
       const k = easeOut(t);
       current = from.map((v, i) => v + (target[i] - v) * k);
-      svg.setAttribute('viewBox', current.map((v) => v.toFixed(2)).join(' '));
+      apply();
       if (t < 1) raf = requestAnimationFrame(tick);
       else settle();
     };
@@ -329,10 +350,16 @@ export function drawMap(host, data, opts = {}) {
 
   /** Fit the given ISO ids, with padding, or go back to the whole world. */
   function frameTo(isos, pad = 0.42) {
-    const list = [...isos].map((i) => features.get(i)).filter(Boolean);
+    // Only features that actually project to something: a geometry clipped
+    // away by the antimeridian yields an empty box, and an empty box poisons
+    // the bounds of the whole collection.
+    const list = [...isos]
+      .map((i) => features.get(i))
+      .filter((f) => f && Number.isFinite(geoPath(projection).bounds(f)[0][0]));
     if (!list.length) return animateTo(full);
     const b = geoPath(projection).bounds({ type: 'FeatureCollection', features: list });
     let [[bx0, by0], [bx1, by1]] = b;
+    if (![bx0, by0, bx1, by1].every(Number.isFinite)) return animateTo(full);
     const w = Math.max(bx1 - bx0, 40);
     const h = Math.max(by1 - by0, 26);
     const px = w * pad;
@@ -343,15 +370,20 @@ export function drawMap(host, data, opts = {}) {
     let vw = bx1 - bx0;
     let vh = by1 - by0;
     if (vw / vh > aspect) vh = vw / aspect; else vw = vh * aspect;
+    // Clamping each side independently would break the aspect and squash the
+    // plate. If the needed box does not fit, show the whole world instead.
+    if (vw > WIDTH || vh > height) return animateTo(full);
     const cx = (bx0 + bx1) / 2;
     const cy = (by0 + by1) / 2;
-    vw = Math.min(vw, WIDTH); vh = Math.min(vh, height);
     animateTo([
       Math.max(0, Math.min(WIDTH - vw, cx - vw / 2)),
       Math.max(0, Math.min(height - vh, cy - vh / 2)),
       vw, vh,
     ]);
   }
+
+  window.addEventListener('resize', apply, { passive: true });
+  apply();
 
   return {
     svg,

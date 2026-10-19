@@ -9,6 +9,9 @@
 
 import { CHANNELS, SHORTS, VIDEOS, ESSAYS, shortThumb, shortUrl } from '../shared/content.js';
 import { drawMap, loadMapData } from './map.js';
+import {
+  REDUCED, observeReveals, countUp, scrollSteps, scrollProgress, makeHoverCard, whenInView, flushWatchers,
+} from './motion.js';
 
 const DATA = '../shared/data';
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -61,7 +64,7 @@ const STRINGS = {
     'atlas.h': 'Avanza y el mapa se mueve contigo.',
     'atlas.sub': 'Una sola secuencia cronológica en siete capítulos. Cada hito lleva su propio tratamiento cartográfico y su propia fuente. Un tratado, un viaje, una red cultural y un cambio real de soberanía se dibujan de forma distinta, y las propuestas se identifican como propuestas.',
     'atlas.treatment': 'Tratamiento cartográfico',
-    'atlas.keys': 'o usa las flechas del teclado',
+    'atlas.keys': 'desplázate, o usa las flechas del teclado',
 
     'canon.eyebrow': 'El canon · cincuenta textos, de 1818 a 1999',
     'canon.h': 'Una discusión viva, no una lista de lecturas.',
@@ -251,12 +254,34 @@ function railX(year) {
   return 41 + ((year - 1800) / (2026 - 1800)) * 59;
 }
 
+/* The spine: the milestones the scroll walks through. Everything else is
+   still one arrow key or one rail click away. Derived, not hand-picked —
+   the opening milestone of each chapter, plus the ruptures and the hinges
+   the chronology itself turns on. */
+const SPINE_YEARS = new Set([1492, 1494, 1519, 1565, 1580, 1808, 1824, 1898, 1974, 2015]);
+
+function spineOf(items) {
+  const seen = new Set();
+  const out = [];
+  for (const [n, m] of items.entries()) {
+    const opensChapter = n === 0 || items[n - 1].chapter !== m.chapter;
+    if ((opensChapter || SPINE_YEARS.has(m.year)) && !seen.has(n)) {
+      seen.add(n);
+      out.push(n);
+    }
+  }
+  return out;
+}
+
 function setupAtlas(doc, map) {
   const items = doc.milestones;
   const refs = doc.references;
+  const spine = spineOf(items);
   let i = 0;
+  let turning = 0;
 
   const rail = $('#rail');
+  const onSpine = new Set(spine);
   const ticks = items.map((m, n) => {
     const b = document.createElement('button');
     b.type = 'button';
@@ -264,12 +289,32 @@ function setupAtlas(doc, map) {
     b.style.left = `${railX(m.year)}%`;
     b.style.setProperty('--ch', CHAPTER_INK[m.chapter]);
     b.dataset.rupture = String(RUPTURES.has(m.year));
+    b.dataset.spine = String(onSpine.has(n));
     b.setAttribute('role', 'tab');
     b.setAttribute('aria-label', `${m.date.en} — ${m.title.en}`);
-    b.addEventListener('click', () => show(n));
+    b.addEventListener('click', () => { show(n); scroller?.goTo(spineIndexFor(n)); });
     rail.appendChild(b);
     return b;
   });
+
+  // one invisible scroll step per spine milestone
+  const stepHost = $('#atlas-steps');
+  const steps = spine.map(() => {
+    const d = document.createElement('div');
+    d.className = 'atlas__step';
+    stepHost.appendChild(d);
+    return d;
+  });
+  $('.atlas__scroll').style.setProperty('--steps', steps.length);
+
+  /** Nearest spine entry at or before `n`, so the rail and the scroll agree. */
+  const spineIndexFor = (n) => {
+    let best = 0;
+    spine.forEach((v, k) => { if (v <= n) best = k; });
+    return best;
+  };
+
+  let scroller = null;
   const brk = document.createElement('div');
   brk.className = 'rail__break';
   brk.style.left = '38.5%';
@@ -285,6 +330,15 @@ function setupAtlas(doc, map) {
     const m = items[i];
     const L = lang;
 
+    // cross-fade the words so they do not land before the map does
+    const frame = $('.atlas__frame');
+    if (!REDUCED) {
+      frame.classList.add('is-turning');
+      clearTimeout(turning);
+      turning = setTimeout(() => frame.classList.remove('is-turning'), 180);
+    }
+
+    $('#f-ghost').textContent = m.year;
     $('#f-n').textContent = `${String(m.n).padStart(2, '0')} / 60`;
     $('#f-chapter').textContent = doc.chapters[m.chapter][L] || doc.chapters[m.chapter].en;
     $('#f-date').textContent = m.date[L] || m.date.en;
@@ -307,6 +361,11 @@ function setupAtlas(doc, map) {
 
   $('#f-prev').addEventListener('click', () => show(i - 1));
   $('#f-next').addEventListener('click', () => show(i + 1));
+
+  // scroll walks the spine; the sticky stage keeps the map in front of you
+  if (steps.length) {
+    scroller = scrollSteps(steps, (k) => show(spine[k]));
+  }
   document.addEventListener('keydown', (e) => {
     if (e.target.matches('input, textarea')) return;
     const box = $('#atlas').getBoundingClientRect();
@@ -352,6 +411,7 @@ function setupCanon(canon) {
 
   const host = $('#canon-chart');
   host.textContent = '';
+  const card = makeHoverCard(host);
   const svg = svgEl('svg', {
     viewBox: `0 0 ${W} ${H}`, role: 'img',
     'aria-label': 'Fifty canonical texts placed by publication year and by the kind of unity they presuppose.',
@@ -389,6 +449,10 @@ function setupCanon(canon) {
   const rt = svgEl('text', { x: x(1898) + 3, y: PAD_T - 1 }, rup);
   rt.textContent = '1898';
 
+  // a hairline that follows the pointer, so you can read a dot against the axis
+  const cursor = svgEl('g', { class: 'cursor is-off' }, svg);
+  const cursorLine = svgEl('line', { x1: 0, y1: PAD_T - 6, x2: 0, y2: H - PAD_B }, cursor);
+
   // dots, spread inside their band so nothing hides behind anything
   const byBand = {};
   for (const txt of canon.texts) (byBand[txt.bueno] ||= []).push(txt);
@@ -408,16 +472,61 @@ function setupCanon(canon) {
         'data-id': txt.id, 'data-role': txt.role, tabindex: '0', role: 'button',
       }, svg);
       svgEl('title', {}, dot).textContent = `${txt.title} — ${txt.author}`;
-      const pick = () => {
+      // the canon fills in along the century, oldest first
+      dot.style.setProperty('--d', `${Math.round(((txt.year - Y0) / (Y1 - Y0)) * 900)}ms`);
+
+      const highlight = () => {
         for (const d of svg.querySelectorAll('.dot.is-active')) d.classList.remove('is-active');
         dot.classList.add('is-active');
+        cursorLine.setAttribute('x1', cx);
+        cursorLine.setAttribute('x2', cx);
+        cursor.classList.remove('is-off');
         renderCanonReadout(txt, canon);
       };
-      dot.addEventListener('pointerenter', pick);
-      dot.addEventListener('focus', pick);
-      dot.addEventListener('click', pick);
+      dot.addEventListener('pointerenter', (e) => {
+        highlight();
+        card.show(cardHtml(txt, canon), e.clientX, e.clientY);
+      });
+      dot.addEventListener('pointermove', (e) => card.move(e.clientX, e.clientY));
+      dot.addEventListener('pointerleave', () => card.hide());
+      dot.addEventListener('focus', () => {
+        highlight();
+        const b = dot.getBoundingClientRect();
+        card.show(cardHtml(txt, canon), b.left + b.width / 2, b.top);
+      });
+      dot.addEventListener('blur', () => card.hide());
+      dot.addEventListener('click', highlight);
     }
   }
+
+  host.addEventListener('pointerleave', () => {
+    card.hide();
+    cursor.classList.add('is-off');
+  });
+
+  // the dots grow in when the chart arrives
+  whenInView(host, () => host.classList.add('is-in'), 0.18);
+}
+
+const CARD_LABELS = {
+  en: { year: 'Year', pos: 'Position', unity: 'Unity', op: 'Operation', reg: 'Region',
+        ct: 'Argued against Hispanic unity' },
+  es: { year: 'Año', pos: 'Posición', unity: 'Unidad', op: 'Operación', reg: 'Región',
+        ct: 'Argumentó contra la unidad hispánica' },
+};
+
+function cardHtml(txt, canon) {
+  const lab = CARD_LABELS[lang];
+  const ct = txt.role === 'counter-tradition' ? `<p class="hc-ct">${lab.ct}</p>` : '';
+  return `<p class="hc-t">${txt.title}</p>
+    <p class="hc-a">${txt.author}${txt.life ? ` · ${txt.life}` : ''}</p>
+    <dl>
+      <dt>${lab.year}</dt><dd>${txt.year}</dd>
+      <dt>${lab.pos}</dt><dd>${txt.bueno} · ${BAND_SHORT[txt.bueno] || ''}</dd>
+      <dt>${lab.unity}</dt><dd>${txt.unity}</dd>
+      <dt>${lab.op}</dt><dd>${txt.operations.join(', ') || '—'}</dd>
+      <dt>${lab.reg}</dt><dd>${txt.region || '—'}</dd>
+    </dl>${ct}`;
 }
 
 function renderCanonReadout(txt, canon) {
@@ -539,6 +648,7 @@ async function boot() {
     e.currentTarget.classList.add('is-done');
   });
 
+  scrollProgress($('#progress'));
   setupWatch();
   setupRead();
   setupFooter();
@@ -550,12 +660,12 @@ async function boot() {
     fetch(`${DATA}/books.json`).then((r) => r.json()),
   ]);
 
-  // the cartouche counts what the data actually holds
+  // the cartouche counts what the data actually holds, and counts it up
   const all = [...mapData.iberophone.countries, ...mapData.iberophone.points];
-  $('#c-states').textContent = all.filter((c) => c.tier === 'emersa').length;
-  $('#c-presence').textContent = all.filter((c) => c.tier === 'submersa').length;
-  $('#c-authors').textContent = canon.corpusTotal ?? 267;
-  $('#c-milestones').textContent = milestones.milestones.length;
+  countUp($('#c-states'), all.filter((c) => c.tier === 'emersa').length);
+  countUp($('#c-presence'), all.filter((c) => c.tier === 'submersa').length);
+  countUp($('#c-authors'), canon.corpusTotal ?? 267);
+  countUp($('#c-milestones'), milestones.milestones.length);
 
   drawMap($('#hero-map'), mapData, {
     animate: true,
@@ -572,10 +682,15 @@ async function boot() {
   setupBooks(books);
 
   if (startLang !== 'en') applyLang(startLang, false);
+  observeReveals();
+  flushWatchers();
+  window.__motionReady = true;
 }
 
 boot().catch((err) => {
   console.error(err);
+  // a failed boot must not leave the page hidden behind its own reveal state
+  document.documentElement.classList.remove('js-motion');
   const r = document.querySelector('#readout');
   if (r) r.textContent = 'The map data could not be loaded. Open the page through `make serve`.';
 });
