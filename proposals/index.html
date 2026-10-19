@@ -44,6 +44,20 @@
   .thumb--h { background: #F6F3EA; }
   .thumb--h span { position: absolute; inset: 0; background: radial-gradient(circle at 0 0, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 100% 0, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 0 100%, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 100% 100%, #1F3E8C 0 20%, #F6F3EA 20% 26%, #E0A526 26% 30%, transparent 30%), radial-gradient(circle at 50% 50%, #470B15 0 9%, #F6F3EA 9% 15%, #1F3E8C 15% 17%, transparent 17%); background-size: 60px 60px; background-color: #F6F3EA; }
   .tag-us { display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px solid var(--accent); border-radius: 999px; font-size: 10px; letter-spacing: 0.08em; }
+  .o { --accent: #7B2230; }
+  .grid--now { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+  .grid--now .card h2 { font-family: "Ibarra Real Nova", serif; font-weight: 600; font-size: 40px; }
+  .row-head--now { border-top: 0; margin-top: 0; }
+  .intro--now { padding-top: 14px; }
+  .thumb--o { background: #F5EFE2; display: grid; place-items: center; aspect-ratio: 16 / 7; }
+  .thumb--o::before {
+    content: ""; width: 72%; aspect-ratio: 2.05; border-radius: 50%;
+    background: radial-gradient(ellipse at 38% 52%, #7B2230 0 9%, transparent 9%),
+                radial-gradient(ellipse at 56% 40%, #7B2230 0 4%, transparent 4%),
+                #E2D8C2;
+    border: 1px solid #C9BFAF;
+  }
+  .thumb--o::after { background: none; }
   .d { --accent: #C8913A; } .e { --accent: #C9A24A; } .f { --accent: #D4AF5A; } .g { --accent: #D2333C; }
   .h { --accent: #3B63B8; } .i { --accent: #9E1B32; } .j { --accent: #B4412E; } .k { --accent: #2F5D62; } .l { --accent: #C9A24A; } .m { --accent: #B4876A; } .n { --accent: #F0C674; }
   .grid--8 h2 { font: 400 26px/1.05 "Ibarra Real Nova", serif; }
@@ -59,6 +73,27 @@
     <p>Mockups for the first meeting with Beltrán Arellanes · October 2026</p>
   </div>
 </header>
+<div class="row-head row-head--now">
+  <h2>After the first meeting: the direction we are building</h2>
+  <p>14 October 2026 · one consolidated direction, map-led and functional</p>
+</div>
+<p class="intro intro--now">Beltrán liked all fourteen directions below and rejected the register: <i>“demasiado bonito… lo veo para un museo, para una galería”</i>, <i>“yo quiero algo más militante”</i>. He asked for a mix rather than a winner, with the map first. <b>O · Atlas</b> is that mix, built on the documents he handed over: 60 dated milestones that step across a real map, a canon of 50 texts, and the De Indiis acquisitions programme.</p>
+<div class="grid grid--now">
+  <a class="card o" href="o-atlas/">
+    <div class="thumb thumb--o"></div>
+    <div class="card__body">
+      <span class="card__k">O · current direction</span>
+      <h2>Atlas</h2>
+      <p>Equal Earth plate of the Iberophone world, the 60 milestones stepped like a Prezi, the Bueno field of 50 canonical texts, De Indiis by series. EN/ES.</p>
+      <small>Natural Earth · his own canon dataset · his own 60-milestone chronology</small>
+    </div>
+  </a>
+</div>
+
+<div class="row-head">
+  <h2>Shown at the first meeting</h2>
+  <p>A–N · kept as the record of what he saw · no longer maintained</p>
+</div>
 <p class="intro">The logo and the burgundy stay. Each direction builds a full system around them and animates one of the images his audience already recognises, drawn with characters, the way castle.tech draws its knights. Every page follows the brief's homepage order and uses only real content: his videos, essays and numbers.</p>
 
 <div class="grid">

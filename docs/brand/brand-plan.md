@@ -99,7 +99,7 @@ Three families, all Google Fonts, all already used in this repo. This is continu
 | --- | --- | --- |
 | Display, headlines, book titles | **Ibarra Real Nova** | A revival of the types of the Imprenta Real de Madrid (Joaquín Ibarra, 1780s) — the printing house of the late Hispanic monarchy. Already the display face on hispanostudies.com. The brand story writes itself, and it is sober without being generic. |
 | Body, UI, map place labels | **Inter** | Already in his WordPress theme. Neutral, excellent diacritics for ES/PT, and it holds up at 11–13px for map labels in small caps with open tracking. |
-| Data, legends, years, figures, captions | **IBM Plex Mono** | The "instrument" voice: coordinates, dates, author codes, Bueno class tags. Used across the existing proposals, so there is continuity with what he already saw and liked. |
+| Data, legends, years, figures, captions | **IBM Plex Mono** | The "instrument" voice: coordinates, dates, author codes, Bueno class codes, source keys. Used across the existing proposals, so there is continuity with what he already saw and liked. |
 
 Rules:
 - Headlines in Ibarra Real Nova, tight (`line-height: 1.05`), never letterspaced, never all-caps.
