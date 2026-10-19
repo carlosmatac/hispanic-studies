@@ -7,7 +7,16 @@
 <meta name="description" content="A reference atlas of the Iberophone world: 60 dated milestones, a canon of Hispanist thought, and the books that carry it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link id="fonts" rel="stylesheet" href="">
+<script type="module">
+  // fonts and theme before first paint, so nothing flashes in the wrong face
+  import { fontHref, applyTheme, storedTheme } from '../shared/theme.js';
+  document.getElementById('fonts').href = fontHref([
+    'Ibarra+Real+Nova:ital,wght@0,400;0,600;1,400;1,600',
+    'Inter:wght@400;500;600', 'IBM+Plex+Mono:wght@400;500',
+  ]);
+  applyTheme(storedTheme(), { plate: true });
+</script>
 <link rel="stylesheet" href="style.css">
 <script>
   /* Set before first paint so revealed content never flashes in and out.
@@ -45,6 +54,7 @@
     <a href="#merch" data-i18n="nav.merch">Merch</a>
   </nav>
   <div class="tools">
+    <div id="themer" class="themer--compact"></div>
     <div class="lang" role="group" aria-label="Language">
       <button type="button" data-lang="en" aria-pressed="true">EN</button>
       <button type="button" data-lang="es" aria-pressed="false">ES</button>

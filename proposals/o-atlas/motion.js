@@ -116,17 +116,23 @@ export function countUp(el, value, ms = 1100) {
   if (REDUCED) { el.textContent = target; return; }
 
   whenInView(el, () => {
-    const t0 = performance.now();
+    // t0 comes from the first frame callback, never from performance.now():
+    // the two clocks are not guaranteed to share an epoch, and subtracting
+    // one from the other sent these counters to -12252.
+    let t0 = null;
+    let done = false;
     const tick = (now) => {
-      const t = Math.min(1, (now - t0) / ms);
+      if (done) return;
+      if (t0 === null) t0 = now;
+      const t = Math.min(1, Math.max(0, (now - t0) / ms));
       el.textContent = Math.round(target * (1 - (1 - t) ** 3));
       if (t < 1) requestAnimationFrame(tick);
-      else el.textContent = target;
+      else { done = true; el.textContent = target; }
     };
     requestAnimationFrame(tick);
-    // a frozen animation frame must never leave a half-counted figure on
-    // screen: these are real numbers from the data
-    setTimeout(() => { el.textContent = target; }, ms + 200);
+    // and a frame callback that never arrives must not leave a half-counted
+    // figure on screen: these are real numbers from the data
+    setTimeout(() => { done = true; el.textContent = target; }, ms + 250);
   }, 0.25);
 }
 

@@ -16,7 +16,7 @@
    ========================================================================== */
 
 import {
-  geoEqualEarth, geoPath, geoGraticule10, geoInterpolate, geoCentroid,
+  geoEqualEarth, geoOrthographic, geoPath, geoGraticule10, geoInterpolate, geoCentroid,
 } from 'https://cdn.jsdelivr.net/npm/d3-geo@3.1.1/+esm';
 import { feature } from 'https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm';
 
@@ -116,8 +116,8 @@ function defs(parent, uid) {
     id: `hatch-${uid}`, width: 5, height: 5,
     patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)',
   }, d);
-  el('rect', { width: 5, height: 5, fill: '#efe6d4' }, hatch);
-  el('path', { d: 'M0 0V5', stroke: '#9c6a52', 'stroke-width': 1.5 }, hatch);
+  el('rect', { width: 5, height: 5, fill: 'var(--paper, #efe6d4)' }, hatch);
+  el('path', { d: 'M0 0V5', stroke: 'var(--map-submersa, #9c6a52)', 'stroke-width': 1.5 }, hatch);
 
   // laid-paper lines over the water, the way an engraved plate reads
   const laid = el('pattern', {
@@ -139,6 +139,8 @@ function defs(parent, uid) {
  * @param {boolean} [opts.rose]    draw the compass rose
  * @param {boolean} [opts.animate] draw the routes on once
  * @param {Function}[opts.onPick]  called with a country record, or null
+ * @param {string}  [opts.projection] 'equalEarth' (default) or 'orthographic'
+ * @param {number}  [opts.spin]    degrees per second for an orthographic globe
  */
 export function drawMap(host, data, opts = {}) {
   const { world, iberophone, routes = [] } = data;
@@ -148,7 +150,12 @@ export function drawMap(host, data, opts = {}) {
   const land = feature(world, world.objects.countries);
   const byIso = new Map(iberophone.countries.map((c) => [c.iso, c]));
 
-  const projection = geoEqualEarth().rotate(ROTATE).precision(0.2);
+  const globe = o.projection === 'orthographic';
+  const projection = globe
+    // a real sphere, tilted so the Atlantic faces the viewer: the hemisphere
+    // that holds most of the Iberophone world
+    ? geoOrthographic().rotate([40, -12, 0]).precision(0.4)
+    : geoEqualEarth().rotate(ROTATE).precision(0.2);
   // fit the whole sphere into WIDTH, then read the height back off it
   projection.fitWidth(WIDTH, { type: 'Sphere' });
   const path = geoPath(projection);
@@ -189,12 +196,14 @@ export function drawMap(host, data, opts = {}) {
         d, 'data-iso': f.id, 'data-tier': rec.tier, tabindex: '0',
         role: 'button',
       }, ours);
+      if (o.projection === 'orthographic') p.dataset.geo = JSON.stringify(f.geometry);
       el('title', {}, p).textContent =
         `${rec.name.en} — ${rec.authors} ${rec.authors === 1 ? 'author' : 'authors'} in the corpus`;
       p.setAttribute('fill', rec.tier === 'submersa' ? `url(#hatch-${uid})` : '');
       if (rec.tier === 'submersa') p.style.fill = `url(#hatch-${uid})`;
     } else {
-      el('path', { d }, rest);
+      const q = el('path', { d }, rest);
+      if (o.projection === 'orthographic') q.dataset.geo = JSON.stringify(f.geometry);
     }
   }
 
@@ -219,7 +228,11 @@ export function drawMap(host, data, opts = {}) {
       }
       for (const w of r.waypoints) {
         const xy = projection(w);
-        if (xy) el('circle', { class: 'port', cx: xy[0], cy: xy[1], r: 1.7 }, portLayer);
+        if (xy) {
+          const c = el('circle', { class: 'port', cx: xy[0], cy: xy[1], r: 1.7 }, portLayer);
+          c.dataset.lon = w[0];
+          c.dataset.lat = w[1];
+        }
       }
     });
   }
@@ -233,6 +246,8 @@ export function drawMap(host, data, opts = {}) {
       class: 'pin', cx: xy[0], cy: xy[1], r: 2.6,
       'data-tier': pt.tier, 'data-code': pt.code, tabindex: '0', role: 'button',
     }, pins);
+    c.dataset.lon = pt.lon;
+    c.dataset.lat = pt.lat;
     el('title', {}, c).textContent =
       `${pt.name.en} — ${pt.authors} ${pt.authors === 1 ? 'author' : 'authors'} in the corpus`;
   }
@@ -384,6 +399,65 @@ export function drawMap(host, data, opts = {}) {
 
   window.addEventListener('resize', apply, { passive: true });
   apply();
+
+  /* A turning globe has to redraw: the projection changes under every path.
+     Three things keep that affordable — the geometries are parsed once rather
+     than per frame, the turn is capped well below the frame rate (a slow turn
+     reads better anyway), and the loop stops entirely whenever the globe is
+     off screen, so scrolling the rest of the page costs nothing. */
+  if (globe && o.spin && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const shapes = [...plate.querySelectorAll('path[data-geo]')].map((el) => {
+      const geometry = JSON.parse(el.dataset.geo);
+      delete el.dataset.geo;
+      return { el, geometry };
+    });
+    const routeGeo = [...routeLayer.querySelectorAll('.route')]
+      .map((el, n) => ({ el, geometry: greatCircle(routes[n].waypoints) }));
+    const dots = [...portLayer.querySelectorAll('circle'), ...pins.querySelectorAll('circle')]
+      .map((el) => ({ el, lonlat: [+el.dataset.lon, +el.dataset.lat] }));
+
+    let lon = 40;
+    let last = 0;
+    let running = false;
+    let raf2 = 0;
+
+    const frame = (now) => {
+      if (!running) return;
+      raf2 = requestAnimationFrame(frame);
+      if (now - last < 66) return;                 // ~15fps is plenty for this
+      const dt = last ? (now - last) / 1000 : 0;
+      last = now;
+      lon = (lon + o.spin * Math.min(dt, 0.2)) % 360;
+      projection.rotate([lon, -12, 0]);
+      for (const sh of shapes) sh.el.setAttribute('d', path(sh.geometry) || '');
+      for (const r of routeGeo) r.el.setAttribute('d', path(r.geometry) || '');
+      for (const d of dots) {
+        const xy = projection(d.lonlat);
+        d.el.style.display = xy ? '' : 'none';
+        if (xy) { d.el.setAttribute('cx', xy[0]); d.el.setAttribute('cy', xy[1]); }
+      }
+    };
+
+    const setRunning = (on) => {
+      if (on === running) return;
+      running = on;
+      if (on) { last = 0; raf2 = requestAnimationFrame(frame); } else cancelAnimationFrame(raf2);
+    };
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => setRunning(e.isIntersecting), { threshold: 0.05 })
+        .observe(host);
+    }
+    // IntersectionObserver may not deliver before the first paint, and it is
+    // not the only thing that can keep the loop from starting, so bound it:
+    // check once on a timer and let scrolling correct it from there.
+    const check = () => {
+      const r = host.getBoundingClientRect();
+      setRunning(r.bottom > 0 && r.top < window.innerHeight);
+    };
+    window.addEventListener('scroll', check, { passive: true });
+    setTimeout(check, 300);
+  }
 
   return {
     svg,

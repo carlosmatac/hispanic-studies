@@ -9,6 +9,7 @@
 
 import { CHANNELS, SHORTS, VIDEOS, ESSAYS, shortThumb, shortUrl } from '../shared/content.js';
 import { drawMap, loadMapData } from './map.js';
+import { mountThemeSwitcher } from '../shared/theme.js';
 import {
   REDUCED, observeReveals, countUp, scrollSteps, scrollProgress, makeHoverCard, whenInView, flushWatchers,
 } from './motion.js';
@@ -639,6 +640,8 @@ async function boot() {
   for (const b of document.querySelectorAll('.lang button')) {
     b.addEventListener('click', () => applyLang(b.dataset.lang));
   }
+  // the three registers from the brand plan, switchable
+  mountThemeSwitcher($('#themer'), { lang: () => lang, compact: true, plate: true });
   // ?lang=es gives a shareable Spanish URL, which is also what makes the
   // bilingual build testable without clicking through the page
   const wanted = new URL(window.location).searchParams.get('lang');
