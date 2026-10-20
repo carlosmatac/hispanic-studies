@@ -348,7 +348,8 @@
   .cg-chip { font-size: 12px; padding: 5px 9px; }
 
   /* full screen on a phone: the field on top, the record as a sheet below */
-  .cg.is-full .cg-body { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+  .cg.is-full .cg-body { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .cg.is-full .cg-chip { white-space: nowrap; flex: none; }
   .cg.is-full .cg-stage { height: auto; min-height: 0; }
   .cg.is-full .cg-panel { max-height: 42vh; }
   .cg.is-full .cg-panel:not(.has-sel) { max-height: 0; padding: 0; border: 0; }
