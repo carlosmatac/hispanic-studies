@@ -1,0 +1,195 @@
+{
+ "note": "Waypoints only; the page interpolates great circles between them.",
+ "routes": [
+  {
+   "id": "indias",
+   "name": {
+    "en": "Flota de Indias",
+    "es": "Flota de Indias"
+   },
+   "years": "1566-1778",
+   "ocean": "atlantic",
+   "waypoints": [
+    [
+     -6.0,
+     37.39
+    ],
+    [
+     -15.42,
+     28.12
+    ],
+    [
+     -66.1,
+     18.47
+    ],
+    [
+     -82.38,
+     23.13
+    ],
+    [
+     -96.13,
+     19.2
+    ]
+   ],
+   "ports": {
+    "en": "Seville - Canaries - San Juan - Havana - Veracruz",
+    "es": "Sevilla - Canarias - San Juan - La Habana - Veracruz"
+   }
+  },
+  {
+   "id": "manila",
+   "name": {
+    "en": "Manila galleon",
+    "es": "Galeón de Manila"
+   },
+   "years": "1565-1815",
+   "ocean": "pacific",
+   "waypoints": [
+    [
+     -99.9,
+     16.85
+    ],
+    [
+     -160.0,
+     13.0
+    ],
+    [
+     144.75,
+     13.44
+    ],
+    [
+     120.98,
+     14.6
+    ]
+   ],
+   "ports": {
+    "en": "Acapulco - Guam - Manila",
+    "es": "Acapulco - Guam - Manila"
+   }
+  },
+  {
+   "id": "tornaviaje",
+   "name": {
+    "en": "Tornaviaje",
+    "es": "Tornaviaje"
+   },
+   "years": "from 1565",
+   "ocean": "pacific",
+   "waypoints": [
+    [
+     120.98,
+     14.6
+    ],
+    [
+     140.0,
+     34.0
+    ],
+    [
+     180.0,
+     39.0
+    ],
+    [
+     -150.0,
+     38.0
+    ],
+    [
+     -99.9,
+     16.85
+    ]
+   ],
+   "ports": {
+    "en": "Manila - the northern Pacific - Acapulco",
+    "es": "Manila - el Pacífico norte - Acapulco"
+   }
+  },
+  {
+   "id": "india",
+   "name": {
+    "en": "Carreira da Índia",
+    "es": "Carreira da Índia"
+   },
+   "years": "1498-1833",
+   "ocean": "atlantic",
+   "waypoints": [
+    [
+     -9.14,
+     38.72
+    ],
+    [
+     -23.51,
+     14.93
+    ],
+    [
+     -10.0,
+     -20.0
+    ],
+    [
+     18.47,
+     -34.36
+    ],
+    [
+     73.88,
+     15.3
+    ]
+   ],
+   "ports": {
+    "en": "Lisbon - Cabo Verde - Cape of Good Hope - Goa",
+    "es": "Lisboa - Cabo Verde - Cabo de Buena Esperanza - Goa"
+   }
+  },
+  {
+   "id": "brasil",
+   "name": {
+    "en": "Carreira do Brasil",
+    "es": "Carreira do Brasil"
+   },
+   "years": "1500-1808",
+   "ocean": "atlantic",
+   "waypoints": [
+    [
+     -9.14,
+     38.72
+    ],
+    [
+     -23.51,
+     14.93
+    ],
+    [
+     -38.5,
+     -12.97
+    ]
+   ],
+   "ports": {
+    "en": "Lisbon - Cabo Verde - Salvador da Bahia",
+    "es": "Lisboa - Cabo Verde - Salvador de Bahía"
+   }
+  },
+  {
+   "id": "macao",
+   "name": {
+    "en": "Goa - Macao",
+    "es": "Goa - Macao"
+   },
+   "years": "1557-1999",
+   "ocean": "pacific",
+   "waypoints": [
+    [
+     73.88,
+     15.3
+    ],
+    [
+     100.0,
+     5.0
+    ],
+    [
+     113.54,
+     22.2
+    ]
+   ],
+   "ports": {
+    "en": "Goa - Malacca - Macao",
+    "es": "Goa - Malaca - Macao"
+   }
+  }
+ ]
+}

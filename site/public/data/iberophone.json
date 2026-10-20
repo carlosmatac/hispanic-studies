@@ -1,0 +1,371 @@
+{
+ "note": "Tier follows the Iberia Emersa / Iberia Submersa distinction: emersa = Spanish or Portuguese official today, submersa = Iberophone population or historical presence without official status. Author counts are from the 267-entry corpus in Hispanic_Reunification_Canon_data.json, by region_code.",
+ "basemap": "Natural Earth 110m via world-atlas 2.0.2 (public domain)",
+ "countries": [
+  {
+   "iso": "724",
+   "code": "ES",
+   "name": {
+    "en": "Spain",
+    "es": "España"
+   },
+   "tier": "emersa",
+   "region": "eu",
+   "authors": 50
+  },
+  {
+   "iso": "484",
+   "code": "MX",
+   "name": {
+    "en": "Mexico",
+    "es": "México"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 11
+  },
+  {
+   "iso": "320",
+   "code": "GT",
+   "name": {
+    "en": "Guatemala",
+    "es": "Guatemala"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 2
+  },
+  {
+   "iso": "340",
+   "code": "HN",
+   "name": {
+    "en": "Honduras",
+    "es": "Honduras"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 2
+  },
+  {
+   "iso": "222",
+   "code": "SV",
+   "name": {
+    "en": "El Salvador",
+    "es": "El Salvador"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 1
+  },
+  {
+   "iso": "558",
+   "code": "NI",
+   "name": {
+    "en": "Nicaragua",
+    "es": "Nicaragua"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 2
+  },
+  {
+   "iso": "188",
+   "code": "CR",
+   "name": {
+    "en": "Costa Rica",
+    "es": "Costa Rica"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 3
+  },
+  {
+   "iso": "591",
+   "code": "PA",
+   "name": {
+    "en": "Panama",
+    "es": "Panamá"
+   },
+   "tier": "emersa",
+   "region": "na",
+   "authors": 1
+  },
+  {
+   "iso": "192",
+   "code": "CU",
+   "name": {
+    "en": "Cuba",
+    "es": "Cuba"
+   },
+   "tier": "emersa",
+   "region": "ca",
+   "authors": 6
+  },
+  {
+   "iso": "214",
+   "code": "DO",
+   "name": {
+    "en": "Dominican Republic",
+    "es": "República Dominicana"
+   },
+   "tier": "emersa",
+   "region": "ca",
+   "authors": 6
+  },
+  {
+   "iso": "630",
+   "code": "PR",
+   "name": {
+    "en": "Puerto Rico",
+    "es": "Puerto Rico"
+   },
+   "tier": "emersa",
+   "region": "ca",
+   "authors": 6
+  },
+  {
+   "iso": "862",
+   "code": "VE",
+   "name": {
+    "en": "Venezuela",
+    "es": "Venezuela"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 6
+  },
+  {
+   "iso": "170",
+   "code": "CO",
+   "name": {
+    "en": "Colombia",
+    "es": "Colombia"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 2
+  },
+  {
+   "iso": "218",
+   "code": "EC",
+   "name": {
+    "en": "Ecuador",
+    "es": "Ecuador"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 5
+  },
+  {
+   "iso": "604",
+   "code": "PE",
+   "name": {
+    "en": "Peru",
+    "es": "Perú"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 14
+  },
+  {
+   "iso": "068",
+   "code": "BO",
+   "name": {
+    "en": "Bolivia",
+    "es": "Bolivia"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 6
+  },
+  {
+   "iso": "152",
+   "code": "CL",
+   "name": {
+    "en": "Chile",
+    "es": "Chile"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 8
+  },
+  {
+   "iso": "032",
+   "code": "AR",
+   "name": {
+    "en": "Argentina",
+    "es": "Argentina"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 17
+  },
+  {
+   "iso": "600",
+   "code": "PY",
+   "name": {
+    "en": "Paraguay",
+    "es": "Paraguay"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 4
+  },
+  {
+   "iso": "858",
+   "code": "UY",
+   "name": {
+    "en": "Uruguay",
+    "es": "Uruguay"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 5
+  },
+  {
+   "iso": "226",
+   "code": "GQ",
+   "name": {
+    "en": "Equatorial Guinea",
+    "es": "Guinea Ecuatorial"
+   },
+   "tier": "emersa",
+   "region": "af",
+   "authors": 8
+  },
+  {
+   "iso": "620",
+   "code": "PT",
+   "name": {
+    "en": "Portugal",
+    "es": "Portugal"
+   },
+   "tier": "emersa",
+   "region": "eu",
+   "authors": 23
+  },
+  {
+   "iso": "076",
+   "code": "BR",
+   "name": {
+    "en": "Brazil",
+    "es": "Brasil"
+   },
+   "tier": "emersa",
+   "region": "sa",
+   "authors": 17
+  },
+  {
+   "iso": "024",
+   "code": "AO",
+   "name": {
+    "en": "Angola",
+    "es": "Angola"
+   },
+   "tier": "emersa",
+   "region": "af",
+   "authors": 8
+  },
+  {
+   "iso": "508",
+   "code": "MZ",
+   "name": {
+    "en": "Mozambique",
+    "es": "Mozambique"
+   },
+   "tier": "emersa",
+   "region": "af",
+   "authors": 5
+  },
+  {
+   "iso": "624",
+   "code": "GW",
+   "name": {
+    "en": "Guinea-Bissau",
+    "es": "Guinea-Bisáu"
+   },
+   "tier": "emersa",
+   "region": "af",
+   "authors": 3
+  },
+  {
+   "iso": "626",
+   "code": "TL",
+   "name": {
+    "en": "Timor-Leste",
+    "es": "Timor Oriental"
+   },
+   "tier": "emersa",
+   "region": "as",
+   "authors": 3
+  },
+  {
+   "iso": "840",
+   "code": "US",
+   "name": {
+    "en": "United States",
+    "es": "Estados Unidos"
+   },
+   "tier": "submersa",
+   "region": "na",
+   "authors": 1
+  },
+  {
+   "iso": "608",
+   "code": "PH",
+   "name": {
+    "en": "Philippines",
+    "es": "Filipinas"
+   },
+   "tier": "submersa",
+   "region": "as",
+   "authors": 18
+  }
+ ],
+ "points": [
+  {
+   "code": "CV",
+   "name": {
+    "en": "Cabo Verde",
+    "es": "Cabo Verde"
+   },
+   "lon": -23.51,
+   "lat": 14.93,
+   "tier": "emersa",
+   "authors": 5
+  },
+  {
+   "code": "ST",
+   "name": {
+    "en": "Sao Tome and Principe",
+    "es": "Santo Tomé y Príncipe"
+   },
+   "lon": 6.73,
+   "lat": 0.33,
+   "tier": "emersa",
+   "authors": 3
+  },
+  {
+   "code": "MAC",
+   "name": {
+    "en": "Macao",
+    "es": "Macao"
+   },
+   "lon": 113.54,
+   "lat": 22.2,
+   "tier": "submersa",
+   "authors": 3
+  },
+  {
+   "code": "GOA",
+   "name": {
+    "en": "Goa",
+    "es": "Goa"
+   },
+   "lon": 73.88,
+   "lat": 15.3,
+   "tier": "submersa",
+   "authors": 5
+  }
+ ]
+}

@@ -1,0 +1,360 @@
+/* ==========================================================================
+   The canon graph, in the Atlas register: paper, burgundy, hairlines.
+   Colours are the brand tokens from app/globals.css; nothing new is invented,
+   only tints of them.
+   ========================================================================== */
+
+.cg {
+  --cg-edge: var(--burgundy);
+  --cg-opp: var(--ink);
+  --cg-faint: color-mix(in srgb, var(--ink) 34%, transparent);
+  --cg-rail-w: 190px;
+  position: relative;
+}
+
+/* --- control bar --------------------------------------------------------- */
+
+.cg-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-bottom: 12px;
+}
+.cg-bar__label {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink-muted); margin-right: 6px;
+}
+.cg-bar__hint { margin-left: auto; font-family: var(--mono); font-size: 10.5px; color: var(--ink-muted); }
+
+.cg-chip {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 5px 11px; font-size: 12.5px; line-height: 1.2;
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--grid);
+  transition: border-color 0.15s, background 0.15s, opacity 0.15s;
+}
+.cg-chip:hover { border-color: var(--burgundy); }
+.cg-chip[aria-pressed="true"] { border-color: var(--ink); background: var(--paper-deep); }
+.cg-chip[aria-pressed="false"] { opacity: 0.5; }
+.cg-chip[aria-pressed="false"] .cg-swatch { opacity: 0.4; }
+.cg-chip--mv i { width: 16px; height: 9px; border: 1px dashed var(--burgundy); display: block; }
+.cg-chip:focus-visible, .cg-tools button:focus-visible, .cg-ref:focus-visible, .cg-panel__close:focus-visible {
+  outline: 2px solid var(--burgundy); outline-offset: 2px;
+}
+
+.cg-swatch { width: 26px; height: 6px; flex: none; overflow: visible; }
+
+/* --- body: stage + reading panel -------------------------------------------- */
+
+.cg-body {
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(300px, 26vw, 380px);
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--grid); outline-offset: 4px;   /* the engraved double rule */
+  background: var(--paper);
+  height: clamp(560px, 78vh, 820px);
+}
+
+.cg-stage { position: relative; min-width: 0; overflow: hidden; background: var(--paper); }
+.cg-stage .react-flow { background: transparent; }
+.cg-stage .react-flow__pane { cursor: grab; }
+.cg-stage .react-flow__pane.dragging { cursor: grabbing; }
+.cg-stage .react-flow__handle { opacity: 0; pointer-events: none; width: 1px; height: 1px; min-width: 0; min-height: 0; border: 0; }
+
+/* THE SELECTION BUG in the HTML version, and why the field is built this way.
+   Every background layer there (a band, a rupture line, a movement) was a
+   React Flow node, and React Flow gives every node pointer events as soon as
+   an onNodeClick handler exists. The rule that lifted a hovered card,
+   `.react-flow__node:hover { z-index: 900 }`, matched those layers too.
+   Moving the pointer through an empty patch of a band lifted the whole band
+   to z-index 900, over every card in its row; the pointer was then still on
+   the band, so it stayed lifted and took every click. It showed up "after the
+   first click" because that is when you move across a band. Measured in the
+   mockup: band z-index 0 → 900, and elementsFromPoint on a card returned the
+   band first.
+   Here the layers are not nodes at all (.cg-under, below), and only cards
+   can lift. */
+.react-flow__node.cg-card:hover,
+.react-flow__node.cg-card:focus-visible { z-index: 1000 !important; }
+.react-flow__node.cg-card { cursor: pointer; }
+.react-flow__node.cg-card:focus-visible { outline: none; }
+.react-flow__node.cg-card:focus-visible .cg-node { outline: 2px solid var(--burgundy); outline-offset: 3px; }
+
+/* --- the field ------------------------------------------------------------------ */
+
+/* the underlay: bands, decade rules, ruptures and movements, transformed with
+   the viewport and painted under the graph */
+.cg-stage .react-flow { position: absolute; inset: 0; z-index: 1; }
+/* React Flow's edge layer is a 0×0 box whose SVG relies on overflow; the
+   site-wide `svg { max-width: 100% }` would squash that SVG to zero width, and
+   a zero-width SVG paints nothing at all */
+.cg-stage .react-flow svg { max-width: none; }
+.cg-under { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.cg-under__in { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.cg-l { position: absolute; }
+.cg-l--band { background: var(--paper); border-top: 1px solid var(--grid); }
+.cg-l--band.is-odd { background: color-mix(in srgb, var(--paper-deep) 70%, var(--paper)); }
+.cg-l--axis { border-left: 1px solid color-mix(in srgb, var(--grid) 55%, transparent); }
+.cg-l--axis.is-major { border-left-color: var(--grid); }
+.cg-l--rupture { border-left: 1px dashed color-mix(in srgb, var(--burgundy) 55%, transparent); }
+.cg-l--movement {
+  background: color-mix(in srgb, var(--burgundy) 5%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--burgundy) 40%, transparent);
+}
+.cg-l--movement span {
+  position: absolute; top: 6px; left: 9px; font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.1em; color: var(--burgundy); white-space: nowrap;
+}
+
+/* the band rail: names in screen space, over a paper fade */
+.cg-rail {
+  position: absolute; inset: 0 auto 0 0; width: var(--cg-rail-w); z-index: 5;
+  pointer-events: none; overflow: hidden;
+  background: linear-gradient(90deg, var(--paper) 70%, color-mix(in srgb, var(--paper) 0%, transparent));
+}
+.cg-rail__row {
+  position: absolute; left: 0; right: 16px; padding-left: 14px;
+  display: flex; flex-direction: column; justify-content: center; gap: 3px; overflow: hidden;
+  border-top: 1px solid var(--grid);
+}
+.cg-rail__code { font-family: var(--mono); font-size: 11px; color: var(--burgundy); font-weight: 500; }
+.cg-rail__name {
+  font-family: var(--body); font-size: 9.5px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; color: var(--ink-muted);
+}
+
+/* the year ruler along the top */
+.cg-years {
+  position: absolute; inset: 0 0 auto 0; height: 24px; z-index: 6; pointer-events: none;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border-bottom: 1px solid var(--grid);
+  overflow: hidden;
+}
+.cg-years span {
+  position: absolute; top: 5px; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 10px; color: var(--ink-muted);
+}
+.cg-years span.is-major { color: var(--ink); font-weight: 500; }
+.cg-years__rp {
+  position: absolute; bottom: 0; width: 0; height: 7px;
+  border-left: 2px solid var(--burgundy); transform: translateX(-1px);
+}
+
+/* --- cards ------------------------------------------------------------------ */
+
+.cg-node {
+  position: relative; box-sizing: border-box;
+  display: flex; flex-direction: column; gap: 2px;
+  width: 100%; height: 100%; overflow: hidden;
+  padding: 7px 10px 7px 11px;
+  font-size: 11.5px; line-height: 1.2; color: var(--ink);
+  background: var(--paper);
+  transition: box-shadow 0.18s, opacity 0.2s, background 0.18s;
+}
+.cg-node__yr { flex: none; font-family: var(--mono); font-size: 10px; color: var(--burgundy); letter-spacing: 0.02em; }
+.cg-node__t {
+  flex: none; font-family: var(--display); font-weight: 600; font-size: 13px; line-height: 1.12;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.cg-node__a { flex: none; font-size: 10.5px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* a work: an outlined rectangle, title in italic as a title should be */
+.cg-node--text { border: 1px solid var(--ink); }
+.cg-node--text .cg-node__t { font-style: italic; }
+
+/* an author: filled */
+.cg-node--author {
+  justify-content: center; padding: 8px 15px; border-radius: 999px;
+  background: var(--burgundy); color: var(--paper); border: 1px solid var(--burgundy);
+}
+.cg-node--author .cg-node__a { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+/* the counter-tradition: same shape, broken outline, not filled */
+.cg-node--author.is-counter {
+  background: var(--paper); color: var(--ink);
+  border: 1.5px dashed var(--burgundy);
+}
+.cg-node--author.is-counter .cg-node__a { color: var(--ink-muted); }
+
+/* a corpus or an idea: no date of its own, so no hard edge either */
+.cg-node--corpus {
+  justify-content: center; border: 1px dotted var(--ink); border-radius: 8px;
+  background: var(--paper-deep);
+}
+.cg-node--corpus .cg-node__t { font-weight: 400; font-style: italic; }
+
+/* a periodical: a parallelogram; an institution: a hexagon */
+.cg-node--periodical { border: 1px solid var(--ink); transform: skewX(-10deg); justify-content: center; }
+.cg-node--periodical .cg-node__in { transform: skewX(10deg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cg-node--institution {
+  justify-content: center; padding-inline: 20px;
+  background: var(--ink);
+  clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 11px 100%, 0 50%);
+}
+/* a hexagon cannot carry a border, so it is drawn as ink with a paper inset */
+.cg-node--institution::before {
+  content: ""; position: absolute; inset: 1px; z-index: 0; background: var(--paper);
+  clip-path: polygon(10.5px 0, calc(100% - 10.5px) 0, 100% 50%, calc(100% - 10.5px) 100%, 10.5px 100%, 0 50%);
+}
+.cg-node--institution .cg-node__in { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+/* hover opens the card: the clamp comes off and it lifts above its neighbours,
+   so a title is never cut. Only cards do this (see the selection bug above). */
+.react-flow__node.cg-card:hover .cg-node { height: auto; min-height: 100%; box-shadow: 3px 4px 0 color-mix(in srgb, var(--ink) 16%, transparent); }
+.react-flow__node.cg-card:hover .cg-node__t { -webkit-line-clamp: unset; }
+.react-flow__node.cg-card:hover .cg-node__a { white-space: normal; }
+.react-flow__node.cg-card:hover .cg-node--text { background: var(--paper-deep); }
+
+/* selection lights the neighbourhood and dims the rest */
+.react-flow__node.cg-card.is-dim { opacity: 0.22; }
+.react-flow__node.cg-card.is-dim:hover { opacity: 0.85; }
+.react-flow__node.cg-card.is-sel .cg-node { outline: 2px solid var(--burgundy); outline-offset: 3px; overflow: visible; }
+.react-flow__node.cg-card.is-sel .cg-node--author { outline-color: var(--ink); }
+
+/* --- edges ------------------------------------------------------------------ */
+
+.cg-stage .react-flow__edge-path {
+  /* hairlines stay hairlines and never vanish: stroke widths are screen
+     pixels at every zoom, or a 1.8px line is half a pixel in the overview */
+  vector-effect: non-scaling-stroke;
+  transition: opacity 0.2s, stroke-width 0.15s;
+}
+.cg-stage .react-flow__edge { cursor: pointer; }
+.cg-stage .react-flow__edge.is-dim { pointer-events: none; }
+.cg-stage .react-flow__edge:hover .react-flow__edge-path,
+.cg-stage .react-flow__edge.is-sel .react-flow__edge-path { stroke-width: 3 !important; }
+.cg-spark { fill: var(--burgundy); }
+.cg-spark--opposition { fill: var(--ink); }
+.cg-spark--wrote { fill: color-mix(in srgb, var(--ink) 50%, transparent); }
+
+/* --- toolbar ------------------------------------------------------------------ */
+
+.cg-tools {
+  position: absolute; right: 12px; bottom: 12px; z-index: 7;
+  display: flex; flex-direction: column;
+  border: 1px solid var(--ink); background: var(--paper);
+}
+.cg-tools button {
+  width: 34px; height: 34px; display: grid; place-items: center; cursor: pointer;
+  background: none; border: 0; border-bottom: 1px solid var(--grid);
+  font-family: var(--mono); font-size: 16px; line-height: 1; color: var(--ink);
+  transition: background 0.15s, color 0.15s;
+}
+.cg-tools button:last-child { border-bottom: 0; }
+.cg-tools button:hover { background: var(--burgundy); color: var(--paper); }
+.cg-tools svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.4; }
+.cg-tools svg circle { fill: currentColor; stroke: none; }
+.cg-tools button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+/* --- reading panel -------------------------------------------------------------- */
+
+.cg-panel {
+  position: relative; overflow: auto; overscroll-behavior: contain;
+  padding: 20px 22px 26px;
+  border-left: 1px solid var(--ink);
+  background: var(--paper);
+}
+.cg-panel__close {
+  position: sticky; top: 0; float: right; margin: -8px -10px 0 8px; z-index: 1;
+  width: 30px; height: 30px; cursor: pointer;
+  background: var(--paper); border: 1px solid var(--grid);
+  font-size: 18px; line-height: 1; color: var(--ink);
+}
+.cg-panel__close:hover { border-color: var(--burgundy); color: var(--burgundy); }
+.cg-panel__hint { font-family: var(--display); font-size: 19px; line-height: 1.25; margin: 0 0 10px; }
+.cg-panel__sub { font-size: 12.5px; color: var(--ink-muted); line-height: 1.5; margin: 0 0 14px; }
+.cg-panel__kind {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--burgundy); margin: 0 0 6px;
+}
+.cg-panel__t { font-family: var(--display); font-weight: 600; font-size: 22px; line-height: 1.12; margin: 0; }
+.cg-panel__a { margin: 6px 0 0; font-size: 13.5px; color: var(--ink-muted); }
+.cg-panel__dl {
+  margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--grid);
+  display: grid; grid-template-columns: auto 1fr; gap: 5px 14px;
+  font-size: 12.5px; line-height: 1.4;
+}
+.cg-panel__dl dt { font-family: var(--mono); font-size: 10.5px; color: var(--ink-muted); padding-top: 1px; }
+.cg-panel__dl dd { margin: 0; }
+.cg-panel__p { margin: 14px 0 0; font-size: 13.5px; line-height: 1.55; max-width: none; }
+.cg-panel__ct {
+  margin: 12px 0 0; padding: 7px 10px; border: 1px dashed var(--burgundy);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--burgundy);
+}
+.cg-panel__h {
+  margin: 22px 0 10px; padding-top: 14px; border-top: 1px solid var(--ink);
+  font-family: var(--body); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.cg-panel__none { font-size: 13px; color: var(--ink-muted); }
+
+.cg-group { margin-top: 12px; }
+.cg-group__h {
+  display: flex; align-items: center; gap: 8px; margin: 0 0 6px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
+}
+.cg-group__h span { margin-left: auto; }
+.cg-group__h--lg { font-size: 12px; color: var(--ink); margin: 6px 0 12px; }
+.cg-group ul, .cg-pair, .cg-legend ul { list-style: none; margin: 0; padding: 0; }
+.cg-group li { border-top: 1px solid var(--grid); padding: 8px 0 9px; }
+
+.cg-ref {
+  display: grid; grid-template-columns: auto 1fr; gap: 1px 8px; align-items: baseline;
+  width: 100%; padding: 2px 0; cursor: pointer; text-align: left;
+  background: none; border: 0; color: var(--ink);
+}
+.cg-ref__dir { grid-row: span 2; font-family: var(--mono); font-size: 12px; color: var(--burgundy); }
+.cg-ref__t { font-family: var(--display); font-weight: 600; font-size: 15px; line-height: 1.2; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 0.15s; }
+.cg-ref:hover .cg-ref__t { text-decoration-color: var(--burgundy); color: var(--burgundy); }
+.cg-ref__k { grid-column: 2; font-family: var(--mono); font-size: 10px; color: var(--ink-muted); }
+.cg-pair { display: grid; gap: 4px; margin-bottom: 10px; }
+.cg-pair li { border: 1px solid var(--grid); padding: 8px 10px; }
+.cg-pair .cg-pair__arrow { border: 0; padding: 0 10px; color: var(--burgundy); font-family: var(--mono); }
+
+.cg-ev {
+  display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 6px 0 0 20px;
+  font-size: 12px; line-height: 1.4;
+}
+.cg-ev dt { font-family: var(--mono); font-size: 10px; color: var(--ink-muted); padding-top: 1px; }
+.cg-ev dd { margin: 0; }
+.cg-pair + .cg-ev { margin-left: 0; }
+
+.cg-legend { border-top: 1px solid var(--grid); padding-top: 14px; }
+.cg-legend ul { display: grid; gap: 7px; margin-bottom: 16px; font-size: 12.5px; }
+.cg-legend li { display: flex; align-items: center; gap: 10px; }
+.lg { width: 26px; height: 13px; flex: none; display: block; background: var(--paper); }
+.lg--text { border: 1px solid var(--ink); }
+.lg--author { background: var(--burgundy); border-radius: 999px; }
+.lg--counter { border: 1.5px dashed var(--burgundy); border-radius: 999px; }
+.lg--corpus { border: 1px dotted var(--ink); border-radius: 4px; background: var(--paper-deep); }
+.lg--periodical { border: 1px solid var(--ink); transform: skewX(-12deg); }
+.lg--institution { background: var(--ink); clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 50%, calc(100% - 5px) 100%, 5px 100%, 0 50%); }
+
+/* --- full screen ---------------------------------------------------------------- */
+
+.cg.is-full {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column;
+  padding: 14px clamp(12px, 2vw, 24px) clamp(12px, 2vw, 24px);
+  background: var(--paper);
+}
+.cg.is-full .cg-body { flex: 1; height: auto; min-height: 0; outline-offset: 3px; }
+
+/* --- narrow screens -------------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .cg { --cg-rail-w: 116px; }
+  .cg-bar__hint { display: none; }
+  .cg-body { display: block; height: auto; }
+  .cg-stage { height: 64vh; min-height: 420px; }
+  .cg-panel { border-left: 0; border-top: 1px solid var(--ink); max-height: none; }
+  .cg-rail__name { font-size: 8.5px; letter-spacing: 0.06em; }
+  .cg-chip { font-size: 12px; padding: 5px 9px; }
+
+  /* full screen on a phone: the field on top, the record as a sheet below */
+  .cg.is-full .cg-body { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+  .cg.is-full .cg-stage { height: auto; min-height: 0; }
+  .cg.is-full .cg-panel { max-height: 42vh; }
+  .cg.is-full .cg-panel:not(.has-sel) { max-height: 0; padding: 0; border: 0; }
+  .cg.is-full .cg-bar { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cg *, .cg *::before, .cg *::after { transition: none !important; }
+}
