@@ -23,9 +23,11 @@ import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 import htm from 'https://esm.sh/htm@3.1.1';
 import {
   ReactFlow, Background, Controls, Handle, Position, ReactFlowProvider,
+  BaseEdge, getBezierPath,
 } from 'https://esm.sh/@xyflow/react@12.3.5?deps=react@18.3.1,react-dom@18.3.1';
 
 const html = htm.bind(React.createElement);
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const CSS = 'https://esm.sh/@xyflow/react@12.3.5/dist/style.css';
 
@@ -33,7 +35,7 @@ const CSS = 'https://esm.sh/@xyflow/react@12.3.5/dist/style.css';
 
 const Y0 = 1806;
 const Y1 = 2008;
-const PX_PER_YEAR = 21;
+const PX_PER_YEAR = 16;
 
 /* The lane pitch has to clear the tallest card, or lanes overlap vertically
    however carefully they are allocated horizontally. Heights are fixed per
@@ -85,7 +87,7 @@ const Ports = () => html`
   <//>`;
 
 function WorkNode({ data }) {
-  return html`<div class="cg-node cg-node--text ${data.dim ? 'is-dim' : ''}">
+  return html`<div class="cg-node cg-node--text" style=${{ '--bc': data.bandColor }} title=${data.label}>
     <${Ports} />
     <span class="cg-node__yr">${data.year}</span>
     <span class="cg-node__t">${data.label}</span>
@@ -94,23 +96,23 @@ function WorkNode({ data }) {
 }
 
 function AuthorNode({ data }) {
-  return html`<div class="cg-node cg-node--author ${data.dim ? 'is-dim' : ''} ${data.role === 'counter-tradition' ? 'is-counter' : ''}">
+  return html`<div class="cg-node cg-node--author ${data.role === 'counter-tradition' ? 'is-counter' : ''}"
+    style=${{ '--bc': data.bandColor }} title=${data.label}>
     <${Ports} />
     <span class="cg-node__t">${data.label}</span>
     ${data.life && html`<span class="cg-node__a">${data.life}</span>`}
-    ${data.band && html`<span class="cg-node__chip">${data.band}</span>`}
   </div>`;
 }
 
 function CorpusNode({ data }) {
-  return html`<div class="cg-node cg-node--corpus ${data.dim ? 'is-dim' : ''}">
+  return html`<div class="cg-node cg-node--corpus" style=${{ '--bc': data.bandColor }} title=${data.label}>
     <${Ports} />
     <span class="cg-node__t">${data.label}</span>
   </div>`;
 }
 
 function VenueNode({ data }) {
-  return html`<div class="cg-node cg-node--${data.kind} ${data.dim ? 'is-dim' : ''}">
+  return html`<div class="cg-node cg-node--${data.kind}" style=${{ '--bc': data.bandColor }} title=${data.label}>
     <${Ports} />
     <span class="cg-node__t">${data.label}</span>
     ${data.place && html`<span class="cg-node__a">${data.place}</span>`}
@@ -128,6 +130,26 @@ function RuptureNode({ data }) {
 function MovementNode({ data }) {
   return html`<div class="cg-movement"><span>${data.label}</span></div>`;
 }
+
+/* A spark running the length of each line. The reading it carries is
+   direction: who received whom. It is an <animateMotion> on the edge's own
+   path, so the browser animates it with no frame loop of ours. */
+function SparkEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, style, markerEnd, data }) {
+  const [path] = getBezierPath({
+    sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition, curvature: 0.3,
+  });
+  const dur = data?.kind === 'wrote' ? 5.5 : 4;
+  return html`<${React.Fragment}>
+    <${BaseEdge} id=${id} path=${path} style=${style} markerEnd=${markerEnd} />
+    ${!REDUCED && html`
+      <circle class="cg-spark cg-spark--${data?.kind}" r=${data?.kind === 'wrote' ? 1.8 : 2.6}>
+        <animateMotion dur="${dur}s" repeatCount="indefinite" begin="${data?.delay ?? 0}s"
+          keyPoints="0;1" keyTimes="0;1" calcMode="linear" path=${path} />
+      </circle>`}
+  <//>`;
+}
+
+const edgeTypes = { spark: SparkEdge };
 
 const nodeTypes = {
   text: WorkNode,
@@ -262,7 +284,10 @@ function layout(graph, { showMovements }) {
       id: n.id, type: n.kind, zIndex: 5,
       style: { width: w, height: heightOf(n.kind) },
       position: { x, y: rowTop[row] + 10 + lane * LANE_H },
-      data: { ...n, kind: n.kind, year: yearOf(n) },
+      data: {
+        ...n, kind: n.kind, year: yearOf(n),
+        bandColor: graph.palette[bandOf(n)] || '#9a8f7e',
+      },
     });
   }
 
@@ -351,13 +376,37 @@ function Graph({ graph, lang }) {
     () => Object.fromEntries(graph.nodes.map((n) => [n.id, n.label])), [graph],
   );
 
-  const edges = useMemo(() => graph.edges.filter((e) => kinds[e.kind]).map((e) => ({
-    id: e.id, source: e.source, target: e.target,
-    type: 'bezier', style: edgeStyle(e.kind),
-    markerEnd: e.kind === 'wrote' ? undefined : { type: 'arrowclosed', color: edgeStyle(e.kind).stroke },
-    data: { ...e, sourceLabel: labelOf[e.source], targetLabel: labelOf[e.target] },
-    className: `cg-edge cg-edge--${e.kind}`,
-  })), [graph, kinds, labelOf]);
+  /* Selecting a node lights its own connections and dims everything else.
+     This is the part that makes the chart teach: you see at once who a thing
+     answered and who answered it. */
+  const focus = sel?.type === 'node' ? sel.data.id : null;
+  const near = useMemo(() => {
+    if (!focus) return null;
+    const set = new Set([focus]);
+    for (const e of graph.edges) {
+      if (e.source === focus) set.add(e.target);
+      if (e.target === focus) set.add(e.source);
+    }
+    return set;
+  }, [focus, graph]);
+
+  const edges = useMemo(() => graph.edges.filter((e) => kinds[e.kind]).map((e, i) => {
+    const lit = !near || (near.has(e.source) && near.has(e.target));
+    return {
+      id: e.id, source: e.source, target: e.target,
+      type: 'spark', style: { ...edgeStyle(e.kind), opacity: lit ? 1 : 0.1 },
+      markerEnd: e.kind === 'wrote' ? undefined : { type: 'arrowclosed', color: edgeStyle(e.kind).stroke },
+      data: { ...e, sourceLabel: labelOf[e.source], targetLabel: labelOf[e.target], delay: (i % 7) * 0.55 },
+      className: `cg-edge cg-edge--${e.kind}${lit ? '' : ' is-dim'}`,
+      zIndex: lit ? 3 : 1,
+    };
+  }), [graph, kinds, labelOf, near]);
+
+  const nodes = useMemo(() => laid.nodes.map((n) => (
+    ['band', 'rupture', 'movement'].includes(n.type) || !near
+      ? n
+      : { ...n, className: near.has(n.id) ? 'is-lit' : 'is-dim' }
+  )), [laid, near]);
 
   const onNodeClick = useCallback((_, n) => {
     if (['band', 'rupture', 'movement'].includes(n.type)) return;
@@ -381,15 +430,16 @@ function Graph({ graph, lang }) {
     </div>
     <div class="cg-stage">
       <${ReactFlow}
-        nodes=${laid.nodes} edges=${edges} nodeTypes=${nodeTypes}
+        nodes=${nodes} edges=${edges} nodeTypes=${nodeTypes} edgeTypes=${edgeTypes}
         onNodeClick=${onNodeClick} onEdgeClick=${onEdgeClick}
         onPaneClick=${() => setSel(null)}
         onMove=${(_, v) => setView(v)}
         onInit=${(inst) => setView(inst.getViewport())}
-        fitView fitViewOptions=${{ padding: 0.05, minZoom: 0.22 }}
+        fitView fitViewOptions=${{ padding: 0.03, minZoom: 0.38 }}
         nodesDraggable=${false} nodesConnectable=${false} elementsSelectable=${true}
         proOptions=${{ hideAttribution: true }}
-        minZoom=${0.2} maxZoom=${2.2}>
+        minZoom=${0.34} maxZoom=${2.4}
+        translateExtent=${[[-320, -260], [laid.width + 320, laid.height + 260]]}>
         <${Background} gap=${34} size=${1} color="var(--cg-grid)" />
         <${Controls} showInteractive=${false} />
       <//>
