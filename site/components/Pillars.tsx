@@ -1,35 +1,21 @@
 import Image from 'next/image';
 import { dict, type Lang } from '@/lib/i18n';
 import { SITE } from '@/lib/content';
+import EngravedPlate from './pillars/EngravedPlate';
 
-/* The three pillars as a portico: an entablature carrying the motto rests on
-   three columns (capital, a painted niche, base), and the columns stand on
-   steps that run into the Atlas section below. The paintings are public
-   domain and logged in assets/art/SOURCES.md. The motion (columns rising,
-   the entablature settling) is CSS only, in globals.css, and fails open. */
+/* The three pillars as a plate from an architecture treatise: three real
+   columns, one from each tradition, standing under an entablature with the
+   motto and on steps that run into the Atlas section.
 
-/* Tuscan capital and base, drawn once and stretched to the column width;
-   strokes keep their weight with non-scaling-stroke. */
-const Capital = () => (
-  <svg className="column__cap" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
-    <rect x="3" y="1.5" width="194" height="11" />
-    <path d="M10 12.5C16 27 30 30 30 30h140s14-3 20-17.5" />
-    <path d="M30 34h140M30 38.5h140" />
-  </svg>
-);
-const Base = () => (
-  <svg className="column__base" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M30 1.5h140M30 6h140" />
-    <path d="M30 6C14 8 12 13 12 18s2 9 18 9h140c16 0 18-4 18-9s-2-10-18-12" />
-    <rect x="3" y="27" width="194" height="11.5" />
-  </svg>
-);
+     Mestizaje    San Lorenzo de Carangas, Potosí (1728–44), barroco mestizo
+     Catolicismo  La Compañía de Jesús, Quito (1722–65), Solomonic columns
+     Lengua       University of Salamanca (c. 1529), plateresque
 
-const SRC: Record<string, string> = {
-  mestizaje: '/art/pillars/mestizaje.jpg',
-  catolicismo: '/art/pillars/catolicismo.jpg',
-  lengua: '/art/pillars/lengua.jpg',
-};
+   Each plate is a photograph of the building, engraved and then gilded in
+   WebGL as it scrolls in (pillars/EngravedPlate.tsx). Photographs, paintings
+   and their licences: assets/art/SOURCES.md. */
+
+const ROMAN = ['I', 'II', 'III'];
 
 export default function Pillars({ lang }: { lang: Lang }) {
   const d = dict(lang);
@@ -41,6 +27,7 @@ export default function Pillars({ lang }: { lang: Lang }) {
         <p className="eyebrow">{d.pillars.eyebrow}</p>
         <h2 id="pillars-h">{d.pillars.h}</h2>
         <p>{d.pillars.sub}</p>
+        <p className="portico__method mono">{d.pillars.method}</p>
       </div>
 
       <div className="portico">
@@ -55,23 +42,31 @@ export default function Pillars({ lang }: { lang: Lang }) {
         </div>
 
         <div className="portico__cols">
-          {d.pillars.items.map((p) => (
+          {d.pillars.items.map((p, i) => (
             <article key={p.key} className={`column column--${p.key}`}>
-              <Capital />
-              <div className="column__shaft">
-                <figure className="column__niche">
-                  <span className="column__arch">
-                    <Image src={SRC[p.key]} alt={p.alt} width={900} height={1200} sizes="(max-width: 760px) 88vw, 28vw" />
-                  </span>
+              <figure className="lamina">
+                <span className="lamina__no" aria-hidden="true">{d.pillars.plate} {ROMAN[i]}</span>
+                <EngravedPlate
+                  tex={`/art/pillars/col-${p.key}.webp`}
+                  still={`/art/pillars/col-${p.key}-gilded.jpg`}
+                  alt={p.colAlt}
+                  order={i}
+                />
+                <figcaption>
+                  <span className="lamina__cap">{p.col}</span>
+                  <span className="lamina__credit">{p.credit}</span>
+                </figcaption>
+              </figure>
+
+              <div className="column__text">
+                <h3>{p.name}</h3>
+                <p>{p.sub}</p>
+                <figure className="column__art">
+                  <Image src={`/art/pillars/${p.key}.jpg`} alt={p.alt} width={900} height={1200} sizes="96px" />
                   <figcaption>{p.art}</figcaption>
                 </figure>
-                <div className="column__text">
-                  <h3>{p.name}</h3>
-                  <p>{p.sub}</p>
-                  <p className="column__series">{p.n}</p>
-                </div>
+                <p className="column__series">{p.n}</p>
               </div>
-              <Base />
             </article>
           ))}
         </div>

@@ -8,7 +8,7 @@ The website for **Beltrán Arellanes** and his **Institute for Hispano Studies**
 
 Decided (handoff: `docs/handoff/2026-10-20-real-project.md`):
 - **Direction: O · Atlas** (`proposals/o-atlas/` on the mockup branches): the sober reference-work register Beltrán asked for.
-- **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.**
+- **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.** One exception, decided 2026-10-21: **gold leaf** (`--gold*` tokens) for the gilding of the pillars and the motto on their frieze, nowhere else.
 - From P · Tornaviaje only two things came over: the **footer** and the **canon as a React Flow graph**.
 
 Still parked (do not build on a guess): CMS/editing, payments and merch (#9), the newsletter provider behind the pamphlet signup, the Discord invite link.
@@ -86,6 +86,13 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 - Background layers (bands, decade rules, ruptures, movements) are **not React Flow nodes**; they are drawn in `FieldUnderlay` under the graph. In the HTML mockup they were nodes, and a hover rule lifted a band over every card in its row, which is why clicks stopped working after the first one. Keep it that way; the full story is in `canon.css`.
 - Selection is our own state keyed by id (`elementsSelectable={false}`); clicking a neighbour in the panel moves the camera to it.
 - Edge strokes use `vector-effect: non-scaling-stroke`, and the graph's SVGs are exempt from the global `svg { max-width: 100% }` (it squashes React Flow's edge layer to zero width and nothing paints).
+
+## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/`)
+
+- Three **real, dated columns**, one per pillar: San Lorenzo de Carangas, Potosí (1728–44, mestizaje); La Compañía, Quito (1722–65, salomónicas, catolicismo); University of Salamanca (c. 1529, plateresque, lengua). Sources and licences in `assets/art/SOURCES.md`. Never swap in a column whose building and date we have not checked, and never generate one.
+- Each plate is a photograph engraved and gilded by a WebGL2 shader (`engrave.glsl.ts`) as it scrolls in; the still image underneath is the finished plate and is all that shows with reduced motion, without WebGL, or before the texture loads.
+- The page says the engraving and the gold are ours (`pillars.method` in `i18n.ts`). Keep that line.
+- In headless tests, launch Chrome with `--enable-unsafe-swiftshader` and scroll with `behavior: 'instant'` (the page smooth-scrolls).
 
 ## Unicorn Studio (WebGL scenes)
 

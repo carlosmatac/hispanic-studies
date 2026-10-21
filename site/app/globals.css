@@ -15,6 +15,12 @@
   --ink: #28231e;
   --map-submersa: var(--leather);   /* the hatch for presence without official status */
 
+  /* gold leaf: only for the gilding in the pillars (decided 2026-10-21) —
+     the gold of a retablo laid over burgundy bole */
+  --gold: #be8e3a;
+  --gold-light: #fae4a0;
+  --gold-deep: #6e4818;
+
   /* derived tints, for hairlines and secondary text */
   --ink-muted: color-mix(in srgb, var(--ink) 70%, var(--paper));
   --grid: color-mix(in srgb, var(--ink) 24%, var(--paper));
@@ -241,52 +247,50 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 .consent { color: var(--ink-muted); }
 
 /* ==========================================================================
-   PILLARS — a portico: entablature, three columns, steps into the Atlas
+   PILLARS — a treatise plate: entablature, three real columns, steps into
+   the Atlas. The plates engrave and gild themselves (pillars/EngravedPlate).
    ========================================================================== */
 
 .pillars { padding-bottom: 0; }
-.portico { --col-gap: clamp(18px, 3vw, 56px); --arch: 37.5%; }
+.portico__method { margin-top: 16px !important; color: var(--ink-muted) !important; max-width: 70ch; }
+.portico { --col-gap: clamp(18px, 3vw, 56px); }
 
 .portico__top { position: relative; z-index: 2; }
 .portico__cornice { height: 9px; border-block: 1px solid var(--ink); margin-inline: -10px; }
 .portico__frieze {
   display: flex; justify-content: center; flex-wrap: wrap; gap: 0 0.9em;
   margin-top: 4px; padding: clamp(12px, 1.4vw, 18px) 12px;
-  background: var(--burgundy); color: var(--paper);
+  background: var(--burgundy); color: var(--gold-light);
   font-family: var(--display); font-weight: 600; font-size: clamp(15px, 1.7vw, 24px);
   letter-spacing: 0.42em; line-height: 1; text-indent: 0.42em;
+  text-shadow: 0 1px 0 var(--gold-deep);
 }
-.portico__frieze i { font-style: normal; opacity: 0.55; margin-right: 0.9em; }
+.portico__frieze i { font-style: normal; color: var(--gold); margin-right: 0.9em; }
 .portico__architrave { height: 12px; margin: 4px 10px 0; border: 1px solid var(--ink); border-top-width: 2px; background: var(--paper-deep); }
 
-.portico__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--col-gap); padding-inline: clamp(8px, 2vw, 34px); }
-.column { display: flex; flex-direction: column; min-width: 0; }
-.column__cap, .column__base { display: block; width: 100%; height: clamp(30px, 2.8vw, 40px); overflow: visible; }
-.column__cap *, .column__base * { fill: var(--paper); stroke: var(--ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
-.column__cap rect, .column__base rect { fill: var(--paper-deep); }
+.portico__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--col-gap); padding: clamp(26px, 3vw, 40px) clamp(8px, 2vw, 34px) clamp(30px, 3vw, 44px); }
+.column { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 
-/* the shaft: fluting hairlines down both edges, the niche and the text on paper */
-.column__shaft {
-  flex: 1; margin-inline: 15%; padding: clamp(14px, 1.4vw, 20px) clamp(9px, 1vw, 14px);
-  border-inline: 1px solid var(--ink);
-  background: repeating-linear-gradient(90deg, var(--paper) 0 7px, var(--grid) 7px 8px);
-  display: flex; flex-direction: column;
+/* the plate: a double frame like the plate mark of an engraving */
+.lamina { position: relative; margin: 0; width: min(100%, 330px); padding: 9px; background: var(--paper); border: 1px solid var(--ink); outline: 1px solid var(--grid); outline-offset: 4px; }
+.lamina__no {
+  position: absolute; z-index: 2; top: -9px; left: 16px; padding: 0 7px; background: var(--paper);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; line-height: 16px; color: var(--burgundy);
 }
-.column__niche, .column__text { background: var(--paper); }
-.column__niche { margin: 0; padding: 8px 8px 0; }
-.column__arch {
-  display: block; position: relative; overflow: hidden;
-  border-radius: 50% 50% 0 0 / var(--arch) var(--arch) 0 0;
-  outline: 1px solid var(--ink); outline-offset: 4px;
-  background: var(--paper-deep);
-}
-.column__arch img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; transform-origin: 50% 70%; transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1); }
-.column:hover .column__arch img { transform: scale(1.04); }
-.column__niche figcaption { padding: 12px 2px 0; font-family: var(--mono); font-size: 10px; line-height: 1.45; color: var(--ink-muted); }
-.column__text { flex: 1; padding: 18px 8px 8px; text-align: center; display: flex; flex-direction: column; gap: 10px; }
+.lamina__img { position: relative; aspect-ratio: 2 / 5; overflow: hidden; background: var(--paper-deep); }
+.lamina__img img { object-fit: cover; }
+.lamina__img canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 0.4s; }
+.lamina__img.is-live canvas { opacity: 1; }
+.lamina figcaption { display: grid; align-content: start; gap: 3px; min-height: 62px; padding: 10px 2px 1px; font-family: var(--mono); font-size: 10px; line-height: 1.45; color: var(--ink-muted); }
+.lamina__cap { color: var(--ink); }
+
+.column__text { width: min(100%, 360px); padding-top: 26px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; flex: 1; }
 .column__text h3 { font-size: clamp(18px, 1.55vw, 25px); text-transform: uppercase; letter-spacing: 0.1em; color: var(--burgundy); overflow-wrap: anywhere; }
-.column__text p { font-size: 14.5px; line-height: 1.5; color: var(--ink-muted); margin: 0 auto; }
-.column__series { margin-top: auto !important; padding-top: 12px; border-top: var(--rule); font-family: var(--mono); font-size: 10.5px !important; color: var(--burgundy) !important; letter-spacing: 0.03em; }
+.column__text > p { font-size: 14.5px; line-height: 1.5; color: var(--ink-muted); margin: 0 auto; }
+.column__art { margin: 4px 0 0; display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; }
+.column__art img { width: 54px; height: 72px; object-fit: cover; border: 1px solid var(--grid); display: block; }
+.column__art figcaption { font-family: var(--mono); font-size: 10px; line-height: 1.45; color: var(--ink-muted); }
+.column__series { margin-top: auto !important; padding-top: 12px; border-top: var(--rule); width: 100%; font-family: var(--mono); font-size: 10.5px !important; color: var(--burgundy) !important; letter-spacing: 0.03em; }
 
 /* the steps: each wider than the last, the bottom one is the Atlas section's own ground */
 .portico__steps { display: grid; }
@@ -295,23 +299,13 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 .portico__steps i:nth-child(2) { margin-inline: calc(clamp(2px, 1.4vw, 24px) * -0.5 - 6px); }
 .portico__steps i:nth-child(3) { margin-inline: calc(var(--gutter) * -1); border-inline: 0; }
 
-/* motion: the columns rise out of the steps one after another, then the
-   entablature settles on them. Only where scroll-driven animation exists and
-   motion is welcome; everywhere else the portico simply stands. */
-@keyframes col-rise { from { clip-path: inset(100% -20px 0 -20px); transform: translateY(36px); } to { clip-path: inset(-20px -20px 0 -20px); transform: none; } }
+/* the entablature settles once the plates are in view; CSS only, and only
+   where scroll-driven animation exists and motion is welcome */
 @keyframes top-settle { from { opacity: 0; transform: translateY(-42px); } to { opacity: 1; transform: none; } }
-@keyframes niche-drift { from { transform: scale(1.14) translateY(4%); } to { transform: scale(1) translateY(0); } }
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) and (min-width: 761px) {
+  @media (prefers-reduced-motion: no-preference) {
     .portico { view-timeline: --portico block; }
-    .column { animation: col-rise linear both; animation-timeline: --portico; animation-range: entry 8% cover 34%; }
-    .column:nth-child(2) { animation-range: entry 16% cover 40%; }
-    .column:nth-child(3) { animation-range: entry 24% cover 46%; }
-    .portico__top { animation: top-settle linear both; animation-timeline: --portico; animation-range: cover 30% cover 48%; }
-    .column__arch img { animation: niche-drift linear both; animation-timeline: --portico; animation-range: entry 0% cover 60%; }
-  }
-  @media (prefers-reduced-motion: no-preference) and (max-width: 760px) {
-    .column { animation: col-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    .portico__top { animation: top-settle linear both; animation-timeline: --portico; animation-range: entry 0% entry 30%; }
   }
 }
 
@@ -510,13 +504,8 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .foot__say { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
-  .portico { --arch: 50%; }
-  .portico__cols { grid-template-columns: 1fr; gap: 34px; padding-inline: 0; }
-  .column__shaft { margin-inline: 7%; }
-  .column__arch img { aspect-ratio: 1; }
-  .column--mestizaje .column__arch img { object-position: 50% 40%; }
-  .column--catolicismo .column__arch img { object-position: 50% 25%; }
-  .column--lengua .column__arch img { object-position: 50% 75%; }
+  .portico__cols { grid-template-columns: 1fr; gap: 56px; padding-inline: 0; }
+  .lamina { width: min(100%, 300px); }
   .portico__frieze { letter-spacing: 0.26em; text-indent: 0.26em; }
   .watch__grid { grid-template-columns: 1fr; }
   .watch__grid .is-lead { grid-column: auto; grid-row: auto; }
@@ -538,7 +527,7 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; }
-  .vid:hover img, .short:hover img, .column:hover .column__arch img { transform: none; }
+  .vid:hover img, .short:hover img { transform: none; }
 }
 
 .cg-placeholder {

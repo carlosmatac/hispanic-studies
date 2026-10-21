@@ -27,6 +27,14 @@ drops the proposed introducers and editors — real scholars who have agreed to
 nothing — along with market and risk ratings, rights columns and decision
 fields. See `docs/research/provided-documentation.md`.
 
+## `build-pillar-plates.py`
+
+Builds the three engraved pillar plates (`site/public/art/pillars/col-*`) from
+the column crops in `assets/art/pillars/columns/`. The one tool that is not
+stdlib only: it needs Pillow and NumPy. Run it again after changing a crop or
+the engraving method in `site/components/pillars/engrave.glsl.ts`, so the still
+image and the WebGL plate stay alike.
+
 ## Sources and licences
 
 - **Natural Earth** (via `world-atlas` 2.0.2): public domain, no attribution
