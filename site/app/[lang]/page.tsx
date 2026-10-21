@@ -1,11 +1,16 @@
 import { notFound } from 'next/navigation';
 import { dict, isLang } from '@/lib/i18n';
-import { SITE, SHORTS, ESSAYS, CHANNELS, shortThumb, shortUrl } from '@/lib/content';
+import Image from 'next/image';
+import { SITE, SHORTS, VIDEOS, ESSAYS, channel, shortThumb, shortUrl, videoThumb, videoUrl } from '@/lib/content';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroMap from '@/components/HeroMap';
 import Signup from '@/components/Signup';
 import CanonGraphLazy from '@/components/canon/CanonGraphLazy';
+import Pillars from '@/components/Pillars';
+import ShortsRail from '@/components/ShortsRail';
+import ChannelIcon from '@/components/ChannelIcon';
+import { SealRow, ChannelBadge, ChannelGrid } from '@/components/Channels';
 
 // Server-only reads: the cartouche counts what the data actually holds.
 import iberophone from '@/public/data/iberophone.json';
@@ -20,31 +25,6 @@ const COUNTS = {
   milestones: milestones.milestones.length,
 };
 
-const GLYPHS: Record<string, React.ReactNode> = {
-  mestizaje: (
-    <>
-      <path d="M6 5c0 11 7 15 13 19s5 12 5 19" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      <path d="M42 5c0 11-7 15-13 19s-5 12-5 19" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-      <path d="M24 29v14" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" />
-    </>
-  ),
-  catolicismo: (
-    <>
-      <ellipse cx="24" cy="24" rx="9.5" ry="15" stroke="currentColor" strokeWidth="2.2" />
-      <g stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-        <path d="M24 3v4M24 41v4M10 24H6M42 24h-4" />
-        <path d="M12.5 10.5 9.8 7.8M35.5 37.5l2.7 2.7M12.5 37.5l-2.7 2.7M35.5 10.5l2.7-2.7" />
-      </g>
-    </>
-  ),
-  lengua: (
-    <>
-      <path d="M9 17c3-5 7-5 10 0s7 5 10 0 7-5 10 0" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-      <path d="M16 25v18M32 25v18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-    </>
-  ),
-};
-
 const fmtDate = (iso: string, lang: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 
@@ -52,7 +32,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const d = dict(lang);
-  const patreon = CHANNELS.find((c) => c.name === 'Patreon')!;
+  const patreon = channel('patreon');
 
   return (
     <>
@@ -86,29 +66,16 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <p>{d.hero.pamphletA}<b>{SITE.pamphlet}</b>{d.hero.pamphletB}</p>
               <Signup lang={lang} />
               <p className="mono consent">{d.hero.consent}</p>
+              <div className="follow">
+                <span className="follow__label">{d.hero.follow}</span>
+                <SealRow lang={lang} keys={['youtube', 'instagram', 'x', 'tiktok', 'substack']} />
+              </div>
             </div>
           </div>
         </section>
 
-        {/* I · three pillars */}
-        <section className="pillars" aria-labelledby="pillars-h">
-          <span className="numeral" aria-hidden="true">I<i /></span>
-          <div className="section-head reveal">
-            <p className="eyebrow">{d.pillars.eyebrow}</p>
-            <h2 id="pillars-h">{d.pillars.h}</h2>
-            <p>{d.pillars.sub}</p>
-          </div>
-          <div className="pillars__grid">
-            {d.pillars.items.map((p) => (
-              <a key={p.key} className="pillar reveal" href="#canon">
-                <svg className="pillar__glyph" viewBox="0 0 48 48" fill="none" aria-hidden="true">{GLYPHS[p.key]}</svg>
-                <h3>{p.name}</h3>
-                <p>{p.sub}</p>
-                <span className="pillar__count">{p.n}</span>
-              </a>
-            ))}
-          </div>
-        </section>
+        {/* I · three pillars, as a portico */}
+        <Pillars lang={lang} />
 
         {/* II · the Atlas (next version) */}
         <section className="atlas" id="atlas" aria-labelledby="atlas-h">
@@ -149,32 +116,58 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* V · watch */}
         <section className="watch" id="watch" aria-labelledby="watch-h">
           <span className="numeral" aria-hidden="true">V<i /></span>
-          <div className="section-head reveal">
-            <p className="eyebrow">{d.watch.eyebrow}</p>
-            <h2 id="watch-h">{d.watch.h}</h2>
-            <p>{d.watch.sub}</p>
+          <div className="section-head section-head--split reveal">
+            <div>
+              <p className="eyebrow">{d.watch.eyebrow}</p>
+              <h2 id="watch-h">{d.watch.h}</h2>
+              <p>{d.watch.sub}</p>
+            </div>
+            <ChannelBadge lang={lang} name="youtube" label={d.watch.all} unit={d.watch.subscribers} />
           </div>
-          <div className="watch__grid">
-            {SHORTS.map((s) => (
-              <a key={s.id} className="vid reveal" href={shortUrl(s.id)} target="_blank" rel="noopener noreferrer">
-                <span className="vid__thumb">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- YouTube's own thumbnail, served by YouTube */}
-                  <img src={shortThumb(s.id)} alt="" loading="lazy" width={480} height={360} />
-                  <span className="vid__views">{s.views} {d.watch.views}</span>
-                </span>
-                <h3>{s.title}</h3>
-              </a>
+
+          <h3 className="shelf">{d.watch.long} <span>{VIDEOS.length}</span></h3>
+          <ul className="watch__grid">
+            {VIDEOS.map((v, i) => (
+              <li key={v.id} className={i === 0 ? 'is-lead' : undefined}>
+                <a className="vid reveal" href={videoUrl(v.id)} target="_blank" rel="noopener noreferrer">
+                  <span className="vid__thumb">
+                    <Image src={videoThumb(v.id)} alt="" width={1280} height={720} sizes={i === 0 ? '(max-width: 760px) 92vw, 60vw' : '(max-width: 760px) 92vw, 30vw'} />
+                    <span className="vid__play" aria-hidden="true" />
+                    <span className="vid__views">{v.views} {d.watch.views}</span>
+                  </span>
+                  <h4>{v.title}</h4>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
+
+          <h3 className="shelf">{d.watch.shorts} <span>{SHORTS.length}</span></h3>
+          <ShortsRail label={d.watch.shorts} prev={d.watch.prev} next={d.watch.next}>
+            {SHORTS.map((v) => (
+              <li key={v.id}>
+                <a className="short" href={shortUrl(v.id)} target="_blank" rel="noopener noreferrer">
+                  <span className="short__thumb">
+                    <Image src={shortThumb(v.id)} alt="" width={1080} height={1920} sizes="200px" />
+                    <span className="vid__views">{v.views} {d.watch.views}</span>
+                  </span>
+                  <h4>{v.title}</h4>
+                </a>
+              </li>
+            ))}
+          </ShortsRail>
+          <p className="watch__note mono">{d.watch.asOf}</p>
         </section>
 
         {/* VI · read */}
         <section className="read" id="read" aria-labelledby="read-h">
           <span className="numeral" aria-hidden="true">VI<i /></span>
-          <div className="section-head reveal">
-            <p className="eyebrow">{d.read.eyebrow}</p>
-            <h2 id="read-h">{d.read.h}</h2>
-            <p>{d.read.sub}</p>
+          <div className="section-head section-head--split reveal">
+            <div>
+              <p className="eyebrow">{d.read.eyebrow}</p>
+              <h2 id="read-h">{d.read.h}</h2>
+              <p>{d.read.sub}</p>
+            </div>
+            <ChannelBadge lang={lang} name="substack" label={d.read.subscribe} unit={d.read.subscribers} />
           </div>
           <div className="read__list">
             {ESSAYS.map((e) => (
@@ -198,6 +191,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
           <p className="lede">{d.about.p1}</p>
           <p>{d.about.p2}</p>
+          <h3 className="shelf">{d.about.channels}</h3>
+          <ChannelGrid lang={lang} />
         </section>
 
         {/* community */}
@@ -208,8 +203,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p>{d.comm.sub}</p>
           </div>
           <div className="community__actions">
-            <span className="pending">{d.comm.discord} {d.comm.discordPending}</span>
-            <a className="btn btn--ghost" href={patreon.url} target="_blank" rel="noopener noreferrer">{d.comm.patreon}</a>
+            <span className="pending"><ChannelIcon name="discord" /> {d.comm.discord} {d.comm.discordPending}</span>
+            <a className="btn btn--ghost" href={patreon.url} target="_blank" rel="noopener noreferrer"><ChannelIcon name="patreon" /> {d.comm.patreon}</a>
           </div>
         </section>
 

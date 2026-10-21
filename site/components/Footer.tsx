@@ -1,5 +1,6 @@
 import { dict, type Lang } from '@/lib/i18n';
 import { CHANNELS, SITE, DISCORD } from '@/lib/content';
+import ChannelIcon from './ChannelIcon';
 
 /* The footer from P · Tornaviaje: motto and blurb, columns, a channel
    marquee and an oversized wordmark. The wordmark is an SVG so it scales to
@@ -25,13 +26,21 @@ export default function Footer({ lang }: { lang: Lang }) {
         <div>
           <h4>{d.foot.channels}</h4>
           <ul>
-            {CHANNELS.map((c) => <li key={c.name}><a href={c.url} target="_blank" rel="noopener noreferrer">{c.name}</a></li>)}
+            {CHANNELS.map((c) => (
+              <li key={c.key}>
+                <a className="foot__chan" href={c.url} target="_blank" rel="noopener noreferrer">
+                  <ChannelIcon name={c.key} />
+                  <span>{c.name}</span>
+                  {c.following && <span className="foot__count">{c.following}</span>}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <div>
           <h4>{d.foot.community}</h4>
           <ul>
-            <li><span>{d.foot.discord}</span> <span className="foot__pending">{d.comm.discordPending}</span></li>
+            <li className="foot__chan"><ChannelIcon name="discord" /><span>{d.foot.discord} <span className="foot__pending">{d.comm.discordPending}</span></span></li>
           </ul>
           <h4 style={{ marginTop: 26 }}>{d.foot.sources}</h4>
           <ul>
