@@ -79,3 +79,14 @@ Our own models, built and rendered by us in Blender; set aside on 2026-10-21. Th
 ## Platform icons (`site/components/ChannelIcon.tsx`)
 
 The glyphs are the [Simple Icons](https://simpleicons.org/) paths (CC0 1.0), set in our burgundy inside our own seal ring. They identify each platform where we link to it, which is what the platforms' brand guidelines allow; they are not altered beyond colour and scale.
+
+## The reel (`film/reel/`, delivered as `site/public/video/reel.mp4`)
+
+| What | Source | Rights |
+| --- | --- | --- |
+| Clips of Beltrán talking (13 fragments, list in `film/tools/fetch-clips.sh`) | His own YouTube videos and Shorts (@hispano_studies); catalogue in `film/MATERIAL.md`. Only shots of him: no third-party footage, no burnt-in captions (cropped out) | His own work, used on his own site |
+| Video thumbnails (`film/reel/assets/img/yt-*.jpg`) | His YouTube thumbnails (i.ytimg.com) | His own work |
+| The three pillar paintings | `assets/art/pillars/` (see above) | Public domain |
+| The Iberophone map (`iberophone-map.jpg`) | A capture of this site's own map plate (Natural Earth geometry) | Ours; Natural Earth is public domain |
+| Ibarra Real Nova | Google Fonts (`film/reel/assets/fonts/OFL.txt`) | SIL Open Font License |
+| Music | Not yet: brief in `film/MUSIC.md`. Log the generator, plan, date and prompt here when it lands | — |
