@@ -27,6 +27,12 @@ drops the proposed introducers and editors — real scholars who have agreed to
 nothing — along with market and risk ratings, rights columns and decision
 fields. See `docs/research/provided-documentation.md`.
 
+## `blender/`
+
+3D columns tried for the pillars section and set aside (not on the site): see
+[`blender/README.md`](blender/README.md). Needs Blender with its MCP extension,
+and Pillow for packing the frames.
+
 ## Sources and licences
 
 - **Natural Earth** (via `world-atlas` 2.0.2): public domain, no attribution

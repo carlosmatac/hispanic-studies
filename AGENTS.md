@@ -1,22 +1,30 @@
-# AGENTS.md: Institute for Hispano Studies (IHS) proposals
+# AGENTS.md: Institute for Hispano Studies (IHS) website
 
 Instructions for every coding agent (Claude Code, Codex, Cursor, Devin…) and for both humans working in this repo. Read it fully at the start of every session.
 
 ## What this is
 
-Pitch material for **Beltrán Arellanes** and his **Institute for Hispano Studies** (hispanostudies.com, @hispano_studies): website, payments, merch and brand. Right now we **only mock up**: self-contained HTML pages, each one a different brand/design direction, to show at our first meeting with him. Nothing here is production code yet, and we do not build anything that depends on decisions Beltrán has not made (stack, CMS, payments, merch catalogue). Those issues carry the `parked` label.
+The website for **Beltrán Arellanes** and his **Institute for Hispano Studies** (hispanostudies.com, @hispano_studies). The mockup phase is over: since 2026-10-20 we build **the real site**, a Next.js app in `site/`, deployed later on Vercel (decision in issue #8).
 
-Every decision should serve the meeting: three strong, clearly different directions that open in a browser and look finished beat a half-built app.
+Decided (handoff: `docs/handoff/2026-10-20-real-project.md`):
+- **Direction: O · Atlas** (`proposals/o-atlas/` on the mockup branches): the sober reference-work register Beltrán asked for.
+- **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.**
+- From P · Tornaviaje only two things came over: the **footer** and the **canon as a React Flow graph**.
+
+Still parked (do not build on a guess): CMS/editing, payments and merch (#9), the newsletter provider behind the pamphlet signup, the Discord invite link.
 
 | Folder | What | Owner |
 | --- | --- | --- |
-| `proposals/<id>/` | One design direction per folder (`a-archivo/`, `b-barroco/`, `c-galeon/`…): `index.html` plus its own CSS/JS/images | the **assignee of that proposal's issue** |
-| `proposals/shared/` | Code used by several proposals (glyph-field engine, fonts, shared content) | **shared**: changes need the other person's review |
-| `proposals/index.html` | Gallery linking every proposal | shared |
-| `docs/research/` | Context, brand audit, iconography | both |
-| `docs/meeting/` | Questions and notes for/from Beltrán | both |
+| `site/` | **The real site**: Next.js (App Router, TypeScript) | both, through PRs |
+| `site/app/[lang]/` | Routes, one tree per language (`/en`, `/es`) | both |
+| `site/components/` | Page components; `canon/` is the React Flow canon graph | both |
+| `site/lib/` | `i18n.ts` (every string, EN + ES), `content.ts` (real videos, essays, channels), `atlas-map.js` (the map plate) | both |
+| `site/data/`, `site/public/data/` | Datasets built from Beltrán's documents (see `tools/`). `public/data` is fetched by the browser; `data/` is imported at build time | both |
+| `proposals/` | The mockups Beltrán saw (archive, not maintained) | nobody |
+| `tools/` | Stdlib Python scripts that build the datasets | both |
+| `docs/research/`, `docs/meeting/`, `docs/brand/`, `docs/handoff/` | Context, decisions, brand, handoffs | both |
 | `docs/brief/` | The developer brief Beltrán received (reference, do not edit) | nobody |
-| `assets/` | Brand files, research screenshots, public-domain art sources | both (add, don't overwrite) |
+| `assets/` | Brand files, public-domain art sources (`assets/art/SOURCES.md`) | both (add, don't overwrite) |
 
 ## Start of every session (do this before writing anything)
 
@@ -27,20 +35,20 @@ Every decision should serve the meeting: three strong, clearly different directi
    - `gh pr list --state open` (what the other person has in flight)
    - `git log --oneline origin/main -15` (what landed recently)
 4. Pick up the issue the user asks for, or the lowest-numbered open issue assigned to them whose dependencies are closed. The issue's checklist is the scope. Skip `parked` issues.
-5. Work only inside the folders you own (table above). Need a change in someone else's proposal or in `proposals/shared/`? Stop and tell the user; propose a small separate PR or an issue comment instead of editing it silently.
+5. Keep the PR to the issue's scope. Shared pieces (`site/lib/`, `site/app/globals.css`, the datasets) are everyone's: say in the PR what you changed there and why.
 
 ## Git workflow (mandatory)
 
 - **Never commit to `main` directly.** Every change goes through a branch and a pull request.
 - **One issue = one branch = one PR.** Branch from the latest `origin/main`:
-  `git switch -c <type>/<issue>-<slug> origin/main`, e.g. `feat/4-proposal-archivo`, `docs/2-research`, `chore/1-repo-methodology`.
+  `git switch -c <type>/<issue>-<slug> origin/main`, e.g. `feat/42-canon-page`, `fix/60-map-labels`, `docs/47-meeting-notes`.
   Types: `feat`, `fix`, `chore`, `docs`, `refactor`.
-- Commit small and often, with clear messages (`proposal-a: hero with the Guadalupe glyph field`). Push early: `git push -u origin HEAD`, so the other person can see the work.
+- Commit small and often, with clear messages (`canon: jump to a neighbour from the panel`). Push early: `git push -u origin HEAD`, so the other person can see the work.
 - Open the PR as soon as there is something to look at (draft is fine): `gh pr create --fill --draft`, then fill in the template. The body must include `Closes #<issue>`.
 - Before marking the PR ready: merge main in again and check the pages in the browser (see "Verification").
 - **Merging**: squash merge (`gh pr merge --squash --delete-branch`).
-  - PRs that only touch your own proposal (or docs) can be merged by you.
-  - PRs touching `proposals/shared/` get the `area:shared` label and need the other person's approval.
+  - PRs that only touch one section of the site (or docs) can be merged by their author.
+  - PRs touching shared pieces (`site/lib/`, `site/app/globals.css`, datasets, `AGENTS.md`) get the `area:shared` label and need the other person's approval.
 - Never force-push to `main`. Never rewrite someone else's branch. Never commit secrets.
 
 ## Staying in sync with the other person's work
@@ -49,7 +57,7 @@ There is no staging environment: `main` is the only place our work meets. **Inte
 
 - Merge main into your branch at the start of every session, before opening or updating a PR, and whenever the other person merges something you depend on: `git fetch origin && git merge origin/main`
 - Use merge, not rebase, on branches that are already pushed.
-- Resolve conflicts keeping both people's intent. If a conflict is in the other person's folder, ask before choosing a side.
+- Resolve conflicts keeping both people's intent. If a conflict touches work the other person is doing, ask before choosing a side.
 - Keep PRs small so they land fast.
 
 ## Issues are the documentation
@@ -58,21 +66,36 @@ There is no staging environment: `main` is the only place our work meets. **Inte
 - Anything that depends on Beltrán goes in an issue labelled `parked` (or `meeting` for meeting input/output) instead of being built on a guess.
 - After the meeting, write the notes in `docs/meeting/` and turn every decision into an issue.
 
-Labels: `area:proposals`, `area:shared`, `area:research`, `area:infra`, `meeting`, `parked`.
+Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, `area:infra`, `meeting`, `parked`.
 
-## Mockups: rules of the game
+## The site: rules of the game
 
-- **Plain HTML, CSS and JS. No frameworks, no build step, no npm.** A proposal must open with `make serve` and nothing else. Google Fonts and pinned CDN files are fine.
-- **No deploys.** Do not connect the repo to Vercel or any host until a decision issue says so.
-- Each proposal is self-contained: its own `style.css`/`main.js`/images inside its folder, plus whatever it imports from `proposals/shared/`.
-- Use **real content** (Beltrán's video titles, Substack essays, numbers from `docs/research/context.md`); never invent books, people, prices or quotes. Placeholder copy must look like placeholder (`[Pamphlet cover]`).
-- Images: only public-domain or properly licensed sources, saved in `assets/art/` with their source and licence in `assets/art/SOURCES.md`.
-- Respect `prefers-reduced-motion`; every animation has a still fallback.
-- Follow the brief's homepage order (hero + pamphlet signup → books → videos/essays → mission → community → footer) and navigation (Watch · Read · Books · About · Merch, EN/ES switch, cart) so proposals are comparable.
+- **Stack**: Next.js 16 (App Router, Turbopack), React 19, TypeScript, plain CSS (custom properties, no CSS framework). `@xyflow/react` for the canon graph, `d3-geo` + `topojson-client` for the map. Versions are pinned exactly in `site/package.json`; upgrade deliberately, in its own PR.
+- **Colours and fonts** are tokens at the top of `site/app/globals.css`. Only the brand colours above, or `color-mix()` tints of them. Fonts (Ibarra Real Nova, Inter, IBM Plex Mono) come from `next/font` in `app/[lang]/layout.tsx`.
+- **EN/ES**: every string we author lives in `site/lib/i18n.ts`; the Spanish table is typed against the English one, so a missing translation fails the build. Third-party content (video and essay titles, the compiler's canon records) stays in its original language.
+- **Real content only**: Beltrán's videos, essays and numbers (`site/lib/content.ts`, `docs/research/context.md`); never invent books, people, prices, numbers or quotes. Followings we have: YouTube 13.5K, Instagram 19K, X 22K, Substack 587; none for TikTok or Patreon. Placeholder copy must look like placeholder (`[The store is not connected yet]`).
+- **Never show the proposed introducers/editors** from the acquisitions workbook: they are real scholars who agreed to nothing.
+- **Images**: only public-domain or properly licensed sources, logged in `assets/art/SOURCES.md` before they ship. Beltrán's Drive folder is a moodboard only.
+- **Motion**: respect `prefers-reduced-motion` everywhere; every animation has a still state; reveals must fail open (content can never stay hidden because a script or a feature is missing).
+- **Homepage order** follows the Atlas direction: map hero + pamphlet signup → three pillars → Atlas → canon → books → watch → read → about → community → merch → footer.
+- **Deploys**: the target is Vercel (project root `site/`). Do not connect or deploy until the user asks for it.
+
+## The canon graph (`site/components/canon/`)
+
+- `layout.ts` builds the field: **x = year, y = Bueno band**, nothing auto-arranged (a card may slide ≤ 2.5 years right to avoid a new lane; it always prints its own date).
+- Background layers (bands, decade rules, ruptures, movements) are **not React Flow nodes**; they are drawn in `FieldUnderlay` under the graph. In the HTML mockup they were nodes, and a hover rule lifted a band over every card in its row, which is why clicks stopped working after the first one. Keep it that way; the full story is in `canon.css`.
+- Selection is our own state keyed by id (`elementsSelectable={false}`); clicking a neighbour in the panel moves the camera to it.
+- Edge strokes use `vector-effect: non-scaling-stroke`, and the graph's SVGs are exempt from the global `svg { max-width: 100% }` (it squashes React Flow's edge layer to zero width and nothing paints).
+
+## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/Temple.tsx`)
+
+- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. An engraved Doric portico (`site/public/art/portico.jpg`, AI-generated with Nano Banana Pro, no text in it; logged in `assets/art/SOURCES.md`) carries our own HTML on top: the Institute's works in the six metopes, its name on the architrave, the words MESTIZAJE, CATOLICISMO, LENGUA on the shafts. No captions or explanations of the columns: the section is about the three ideas.
+- Geometry is in the image's own pixels (2400 × 1792) at the top of `Temple.tsx`; replacing the image means re-measuring it. Selecting a pillar tints its shaft and the metopes it holds up through an SVG multiplied over the plate, and lists real titles beside it (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link as `#canon=<record id>`, which the canon graph opens and centres.
+- Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; a fully code-drawn portico (it worked, but looked drawn rather than engraved).
 
 ## Unicorn Studio (WebGL scenes)
 
-Some proposals are built as Unicorn Studio scenes and embedded with `<div data-us-project="ID">` + the SDK. Inspiration and plan: `docs/research/unicorn-inspiration.md`.
+(Mockup-phase tooling, kept for reference.) Some proposals are built as Unicorn Studio scenes and embedded with `<div data-us-project="ID">` + the SDK. Inspiration and plan: `docs/research/unicorn-inspiration.md`.
 
 - Connect the MCP (each person, each tool, logs in separately):
   - Devin: `devin mcp add unicorn-studio https://agentmcp-qbght5huyq-uc.a.run.app/mcp` (saved to `.devin/mcp_config.local.json`, not committed)
@@ -84,16 +107,21 @@ Some proposals are built as Unicorn Studio scenes and embedded with `<div data-u
 ## Local preview
 
 ```bash
-make serve          # http://localhost:8000 → proposals/index.html (gallery)
-make serve PORT=8080
+cd site
+npm ci              # first time
+npm run dev         # http://localhost:3000 → redirects to /en
+npm run build && npm start   # what Vercel will serve
+npm run lint && npm run typecheck
 ```
 
-WebGL can't read images from `file://`, so always open pages through `make serve`.
+The old mockups still open with `make serve` (http://localhost:8000/proposals/) on the branches that have them.
 
 ## Verification before you say "done"
 
-- Open the page through `make serve` in a desktop width (1440) and a mobile width (390); no console errors.
-- Check the animation with reduced motion on (DevTools → Rendering → prefers-reduced-motion).
+- `npm run lint`, `npm run typecheck` and `npm run build` pass with no errors.
+- Open the production build (`npm start`) at a desktop width (1440) and a mobile width (390), in **EN and ES**; no console errors, no horizontal scroll.
+- Check with reduced motion on (DevTools → Rendering → prefers-reduced-motion).
+- For the canon graph: click several nodes in a row (across empty band space), jump to a neighbour from the panel, open and close full screen (Esc).
 - Screenshot it and attach it to the PR.
 
 ## When you finish a session
@@ -104,6 +132,6 @@ WebGL can't read images from `file://`, so always open pages through `make serve
 
 ## Conventions
 
-- Code, comments, commits, PRs and issues in English. Talk to the user in the language they use. Copy on the mockups in English (Beltrán's audience), with Spanish where the proposal is about bilingualism.
-- CSS custom properties for every colour and font, at the top of each proposal's `style.css`.
+- Code, comments, commits, PRs and issues in English. Talk to the user in the language they use. Site copy in English and Spanish (`site/lib/i18n.ts`).
+- CSS custom properties for every colour and font, at the top of `site/app/globals.css`.
 - File names in kebab-case.

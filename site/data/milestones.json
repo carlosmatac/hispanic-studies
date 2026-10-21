@@ -1,0 +1,1718 @@
+{
+ "source": "Brief_History_of_Iberofonia_60_Milestones_Bilingual.pdf (provided by Beltran Arellanes)",
+ "note": "Bueno-class tags and MAP directives are the document's own. Proposals are labelled as proposals and never drawn as completed political unions.",
+ "chapters": [
+  {
+   "en": "Foundations of two Iberian worlds",
+   "es": "Fundamentos de dos mundos ibéricos"
+  },
+  {
+   "en": "Oceanic routes and world systems",
+   "es": "Rutas oceánicas y sistemas mundiales"
+  },
+  {
+   "en": "Separation, reform and new sovereignties",
+   "es": "Separación, reforma y nuevas soberanías"
+  },
+  {
+   "en": "Congresses, federations and shared names",
+   "es": "Congresos, federaciones y nombres comunes"
+  },
+  {
+   "en": "Literary generations and rival programs",
+   "es": "Generaciones literarias y programas rivales"
+  },
+  {
+   "en": "State networks and continental diplomacy",
+   "es": "Redes estatales y diplomacia continental"
+  },
+  {
+   "en": "Institutions and Iberofonía today",
+   "es": "Instituciones e Iberofonía hoy"
+  }
+ ],
+ "references": {
+  "A1": {
+   "en": "Breve Historia de la Iberofonía, English edition, §§10-26 and notes.",
+   "es": "Breve Historia de la Iberofonía, edición inglesa,"
+  },
+  "A2": {
+   "en": "UNESCO World Heritage Centre, Historic Centre of Guimarães.",
+   "es": "Centro del Patrimonio Mundial de la UNESCO, Centro"
+  },
+  "A3": {
+   "en": "UNESCO, General History of Africa, vol. V, Portuguese capture of Ceuta.",
+   "es": "UNESCO, Historia general de África, vol. V, toma"
+  },
+  "A4": {
+   "en": "UNESCO Memory of the World, Tordesillas nomination, Alcáçovas context.",
+   "es": "UNESCO Memoria del Mundo, candidatura de"
+  },
+  "A5": {
+   "en": "Library of Congress, first voyage journal of Vasco da Gama.",
+   "es": "Biblioteca del Congreso, diario del primer viaje de Vasco da"
+  },
+  "A6": {
+   "en": "Library of Congress, 1492: An Ongoing Voyage.",
+   "es": "Biblioteca del Congreso, 1492: An Ongoing Voyage."
+  },
+  "A7": {
+   "en": "UNESCO Memory of the World, Treaty of Tordesillas.",
+   "es": "UNESCO Memoria del Mundo, Tratado de Tordesillas."
+  },
+  "A8": {
+   "en": "Library of Congress, Laws of Burgos and New Laws exhibits.",
+   "es": "Biblioteca del Congreso, materiales sobre Leyes de Burgos"
+  },
+  "A9": {
+   "en": "Library of Congress, Interpreting the Conquest.",
+   "es": "Biblioteca del Congreso, Interpreting the Conquest."
+  },
+  "A10": {
+   "en": "UNESCO Memory of the World, First Voyage of Circumnavigation.",
+   "es": "UNESCO Memoria del Mundo, primera"
+  },
+  "A11": {
+   "en": "Library of Congress, Negotiating Empire: founding of Manila.",
+   "es": "Biblioteca del Congreso, Negotiating Empire: fundación de"
+  },
+  "A12": {
+   "en": "Portuguese Parliament, Restoration of Independence.",
+   "es": "Parlamento portugués, Restauración de la Independencia."
+  },
+  "A13": {
+   "en": "National Library of Brazil, royal court and Brazilian independence collections.",
+   "es": "Biblioteca Nacional de Brasil, colecciones"
+  },
+  "A14": {
+   "en": "Congress of Deputies, Cádiz Cortes history.",
+   "es": "Congreso de los Diputados, historia de las Cortes de Cádiz."
+  },
+  "A15": {
+   "en": "Congress of Deputies, Constitution of 1812.",
+   "es": "Congreso de los Diputados, Constitución de 1812."
+  },
+  "A16": {
+   "en": "UNESCO, Ayacucho battlefield and Callao historical record.",
+   "es": "UNESCO, campo de Ayacucho y documentación histórica"
+  },
+  "A17": {
+   "en": "US National Archives, Treaty of Guadalupe Hidalgo.",
+   "es": "Archivos Nacionales de EE. UU., Tratado de Guadalupe Hidalgo."
+  },
+  "A18": {
+   "en": "Library of Congress, Treaty of Paris of 1898.",
+   "es": "Biblioteca del Congreso, Tratado de París de 1898."
+  },
+  "A19": {
+   "en": "United Nations, decolonization of Portuguese territories.",
+   "es": "Naciones Unidas, descolonización de territorios portugueses."
+  },
+  "A20": {
+   "en": "Macao SAR Government, historical overview.",
+   "es": "Gobierno de la RAE de Macao, reseña histórica."
+  },
+  "B1": {
+   "en": "Bolívar, Carta de Jamaica, OAS",
+   "es": "Bolívar, Carta de Jamaica, OAS"
+  },
+  "B2": {
+   "en": "José Cecilio del Valle, Soñaba el abad de San Pedro",
+   "es": "José Cecilio del Valle, Soñaba el abad de San Pedro"
+  },
+  "B3": {
+   "en": "OAS, Panama Congress historical account",
+   "es": "OAS, Panama Congress historical account"
+  },
+  "B4": {
+   "en": "OAS, inter-American congresses historical library",
+   "es": "OAS, inter-American congresses historical library"
+  },
+  "B5": {
+   "en": "Library of Congress, Arturo Ardao on the name Latin America",
+   "es": "Library of Congress, Arturo Ardao on the name Latin America"
+  },
+  "B6": {
+   "en": "Biblioteca Virtual de Prensa Histórica, Las nacionalidades (1877)",
+   "es": "Biblioteca Virtual de Prensa Histórica, Las nacionalidades (1877)"
+  },
+  "B7": {
+   "en": "Oliveira Martins and Iberian civilization, historical bibliography",
+   "es": "Oliveira Martins and Iberian civilization, historical bibliography"
+  },
+  "B8": {
+   "en": "PARES, Unión Ibero-Americana (founded 1885)",
+   "es": "PARES, Unión Ibero-Americana (founded 1885)"
+  },
+  "B9": {
+   "en": "Instituto Cervantes, Madrid literary congress, 1892",
+   "es": "Instituto Cervantes, Madrid literary congress, 1892"
+  },
+  "B10": {
+   "en": "Biblioteca Nacional de España, Ángel Ganivet",
+   "es": "Biblioteca Nacional de España, Ángel Ganivet"
+  },
+  "B11": {
+   "en": "University of Texas Press, Rodó, Ariel",
+   "es": "University of Texas Press, Rodó, Ariel"
+  },
+  "B12": {
+   "en": "Catálogo colectivo, 1900 social/economic congress proceedings",
+   "es": "Catálogo colectivo, 1900 social/economic congress proceedings"
+  },
+  "B13": {
+   "en": "Biblioteca Virtual Miguel de Cervantes, Manuel Ugarte biography",
+   "es": "Biblioteca Virtual Miguel de Cervantes, Manuel Ugarte biography"
+  },
+  "B14": {
+   "en": "Biblioteca Nacional de Portugal, António Sardinha",
+   "es": "Biblioteca Nacional de Portugal, António Sardinha"
+  },
+  "B15": {
+   "en": "Biblioteca Virtual Miguel de Cervantes, Ugarte chronology",
+   "es": "Biblioteca Virtual Miguel de Cervantes, Ugarte chronology"
+  },
+  "B16": {
+   "en": "APRA, historical account of its founding",
+   "es": "APRA, historical account of its founding"
+  },
+  "B17": {
+   "en": "La raza cósmica, first-edition bibliography",
+   "es": "La raza cósmica, first-edition bibliography"
+  },
+  "B18": {
+   "en": "Biblioteca Nacional do Brasil, Gilberto Freyre",
+   "es": "Biblioteca Nacional do Brasil, Gilberto Freyre"
+  },
+  "B19": {
+   "en": "Acción Española archive, Maeztu articles",
+   "es": "Acción Española archive, Maeztu articles"
+  },
+  "B20": {
+   "en": "PARES, Delegación Nacional del Servicio Exterior de Falange",
+   "es": "PARES, Delegación Nacional del Servicio Exterior de Falange"
+  },
+  "B21": {
+   "en": "Ediciones Botas, Breve historia de México (1937), bibliographic record",
+   "es": "Ediciones Botas, Breve historia de México (1937), bibliographic record"
+  },
+  "B22": {
+   "en": "García Morente, Idea de la Hispanidad (1938)",
+   "es": "García Morente, Idea de la Hispanidad (1938)"
+  },
+  "B23": {
+   "en": "AECID, Instituto de Cultura Hispánica chronology",
+   "es": "AECID, Instituto de Cultura Hispánica chronology"
+  },
+  "B24": {
+   "en": "OEI, history and 1949 congress",
+   "es": "OEI, history and 1949 congress"
+  },
+  "B25": {
+   "en": "RAE, founding of ASALE",
+   "es": "RAE, founding of ASALE"
+  },
+  "B26": {
+   "en": "Perón, 1953 ABC address, reproduced in Geopolítica(s)",
+   "es": "Perón, 1953 ABC address, reproduced in Geopolítica(s)"
+  },
+  "B27": {
+   "en": "SEGIB, Guadalajara 1991 summit",
+   "es": "SEGIB, Guadalajara 1991 summit"
+  },
+  "B28": {
+   "en": "CPLP, founding declaration, 1996",
+   "es": "CPLP, founding declaration, 1996"
+  },
+  "B29": {
+   "en": "Bueno, España frente a Europa, 1999 excerpt",
+   "es": "Bueno, España frente a Europa, 1999 excerpt"
+  },
+  "B30": {
+   "en": "Durántez Prados, Iberofonía proposal",
+   "es": "Durántez Prados, Iberofonía proposal"
+  },
+  "C1": {
+   "en": "Diploma superior en estudios historiográficos del hispanismo: Leyenda Negra, supplied course PDF, pp. 5–7.",
+   "es": "Diploma superior en estudios historiográficos del hispanismo: Leyenda Negra, supplied course PDF, pp. 5–7."
+  },
+  "C2": {
+   "en": "Instituto Beatriz Galindo, Curso de experto universitario en materialismo político, supplied course PDF, pp. 39–40.",
+   "es": "Instituto Beatriz Galindo, Curso de experto universitario en materialismo político, supplied course PDF, pp. 39–40."
+  },
+  "C3": {
+   "en": "Yesurún Moreno Gallardo, Carl Schmitt contra el globalismo, supplied book PDF, pp. 9–10.",
+   "es": "Yesurún Moreno Gallardo, Carl Schmitt contra el globalismo, supplied book PDF, pp. 9–10."
+  }
+ },
+ "milestones": [
+  {
+   "n": 1,
+   "year": 722,
+   "date": {
+    "en": "c. 722",
+    "es": "Hacia 722"
+   },
+   "title": {
+    "en": "The Asturian political nucleus",
+    "es": "El núcleo político asturiano"
+   },
+   "body": {
+    "en": "After the conquest of the Visigothic kingdom, a Christian polity coalesced in Asturias around Pelayo; the dating and character of Covadonga remain debated. Its rulers developed institutions and a claim of continuity that later kingdoms inherited. This northern nucleus gives the map its political starting point without treating all later Iberia as already united. The centuries-long transformation of these frontier societies produced the Castilian and Portuguese centers that would eventually expand across oceans.",
+    "es": "Tras la conquista del reino visigodo, en Asturias se formó una entidad política cristiana en torno a Pelayo; la fecha y el carácter de Covadonga siguen siendo discutidos. Sus gobernantes desarrollaron instituciones y una pretensión de continuidad que heredaron reinos posteriores. Este núcleo septentrional da al mapa su punto de partida político sin presentar a toda la Iberia posterior como si ya estuviera unida. La larga transformación de aquellas sociedades de frontera dio origen a los centros castellano y portugués que acabarían expandiéndose por los océanos."
+   },
+   "map": {
+    "en": "Place a small Asturian nucleus and a Covadonga marker; expand its successor kingdoms in later frames, not in this one.",
+    "es": "Señalar un pequeño núcleo asturiano y Covadonga; ampliar los reinos sucesores solo en fotogramas posteriores."
+   },
+   "sources": [
+    "A1"
+   ],
+   "chapter": 0
+  },
+  {
+   "n": 2,
+   "year": 1143,
+   "date": {
+    "en": "1143",
+    "es": "1143"
+   },
+   "title": {
+    "en": "Portuguese kingship recognized at Zamora",
+    "es": "Reconocimiento de la realeza portuguesa en Zamora"
+   },
+   "body": {
+    "en": "The settlement at Zamora acknowledged Afonso Henriques as king in the developing relationship with Alfonso VII, although papal recognition followed in 1179. A distinct Portuguese crown and language then consolidated on the peninsula’s Atlantic flank. Its separate institutions allowed Portugal to pursue an overseas network beside Castile and, later, Spain. The durable distinction between the two crowns helps explain why Iberofonía became a global civilization with two major languages and maritime systems.",
+    "es": "El acuerdo de Zamora reconoció a Afonso Henriques como rey en la relación que se iba definiendo con Alfonso VII, aunque el reconocimiento papal llegó en 1179. Se consolidaron después una corona y una lengua portuguesas en el flanco atlántico peninsular. Sus instituciones propias permitieron a Portugal desarrollar una red ultramarina junto a Castilla y, más tarde, España. La persistencia de las dos coronas explica que Iberofonía llegara a ser una civilización mundial con dos grandes lenguas y sistemas marítimos."
+   },
+   "map": {
+    "en": "Show Portugal as a distinct crown, with Guimarães and Zamora as points; do not project a modern fixed frontier backward.",
+    "es": "Mostrar Portugal como corona distinta, con Guimarães y Zamora señalados; evitar proyectar retrospectivamente una frontera moderna."
+   },
+   "sources": [
+    "A1",
+    "A2"
+   ],
+   "chapter": 0
+  },
+  {
+   "n": 3,
+   "year": 1230,
+   "date": {
+    "en": "1230-1249",
+    "es": "1230-1249"
+   },
+   "title": {
+    "en": "Two Atlantic-facing kingdoms take shape",
+    "es": "Se perfilan dos reinos abiertos al Atlántico"
+   },
+   "body": {
+    "en": "Ferdinand III joined the crowns of León and Castile in 1230; Portuguese forces completed the conquest of the Algarve in 1249. These changes gave two neighboring crowns durable political cores and access to southern ports. Their later rivalry and cooperation grew from this medieval geography rather than from a single undivided state. Seville and the Portuguese Atlantic coast would become launching points for two linked phases of worldwide maritime expansion.",
+    "es": "Fernando III reunió las coronas de León y Castilla en 1230; las fuerzas portuguesas completaron la conquista del Algarve en 1249. Estos cambios dieron a dos coronas vecinas núcleos políticos duraderos y acceso a puertos meridionales. Su posterior rivalidad y cooperación nacieron de esta geografía medieval, no de un Estado único e indiviso. Sevilla y la costa atlántica portuguesa llegarían a ser puntos de partida de dos fases vinculadas de expansión marítima mundial."
+   },
+   "map": {
+    "en": "Animate the Castile-León union and Portugal’s southward extension as separate changes; mark Seville and the Algarve.",
+    "es": "Animar por separado la unión castellano-leonesa y el avance portugués hacia el sur; señalar Sevilla y el Algarve."
+   },
+   "sources": [
+    "A1",
+    "A2"
+   ],
+   "chapter": 0
+  },
+  {
+   "n": 4,
+   "year": 1415,
+   "date": {
+    "en": "1415",
+    "es": "1415"
+   },
+   "title": {
+    "en": "Portugal captures Ceuta",
+    "es": "Portugal toma Ceuta"
+   },
+   "body": {
+    "en": "The Portuguese seizure of Ceuta placed a royal garrison on the North African shore of the Strait of Gibraltar. It opened a sustained cycle of Atlantic and African ventures backed by the Portuguese crown. The port connected Iberian and North African commercial and diplomatic worlds. The campaign foreshadowed the oceanic expansion that redirected commerce and imperial competition on a world scale.",
+    "es": "La toma portuguesa de Ceuta instaló una guarnición real en la orilla norteafricana del estrecho de Gibraltar. Abrió un ciclo sostenido de empresas atlánticas y africanas respaldadas por la corona portuguesa. El puerto conectó los mundos comerciales y diplomáticos ibérico y norteafricano. La campaña anticipó la expansión oceánica que reorientó el comercio y la rivalidad imperial a escala mundial."
+   },
+   "map": {
+    "en": "Mark Ceuta as a coastal enclave changing control; trace later African voyages separately from territorial rule.",
+    "es": "Marcar Ceuta como enclave costero que cambia de control; trazar los viajes africanos posteriores por separado del dominio territorial."
+   },
+   "sources": [
+    "A1",
+    "A3"
+   ],
+   "chapter": 0
+  },
+  {
+   "n": 5,
+   "year": 1469,
+   "date": {
+    "en": "1469-1479",
+    "es": "1469-1479"
+   },
+   "title": {
+    "en": "The Castilian and Aragonese crowns converge",
+    "es": "Convergen las coronas castellana y aragonesa"
+   },
+   "body": {
+    "en": "The marriage of Isabella and Ferdinand in 1469 preceded their rule over Castile and Aragon from 1479. Their dynastic union preserved separate laws and institutions while coordinating diplomacy, war and Atlantic policy. It created the political base from which Castile could undertake American expansion. The composite monarchy that followed became one of the largest and most consequential political formations of the early modern world.",
+    "es": "El matrimonio de Isabel y Fernando en 1469 precedió a su gobierno sobre Castilla y Aragón desde 1479. Su unión dinástica conservó leyes e instituciones separadas mientras coordinaba diplomacia, guerra y política atlántica. Creó la base política desde la que Castilla pudo emprender su expansión americana. La monarquía compuesta posterior se convirtió en una de las formaciones políticas más extensas e influyentes de la primera modernidad."
+   },
+   "map": {
+    "en": "Join the crowns with a dynastic overlay; keep Castile and Aragon individually labeled and bounded.",
+    "es": "Vincular las coronas mediante una capa dinástica; mantener los nombres y límites propios de Castilla y Aragón."
+   },
+   "sources": [
+    "A1"
+   ],
+   "chapter": 0
+  },
+  {
+   "n": 6,
+   "year": 1479,
+   "date": {
+    "en": "1479",
+    "es": "1479"
+   },
+   "title": {
+    "en": "Treaty of Alcáçovas defines Atlantic spheres",
+    "es": "El Tratado de Alcáçovas define esferas atlánticas"
+   },
+   "body": {
+    "en": "The peace agreement settled the Castilian succession conflict and recognized Portugal’s position in Madeira, the Azores, Cape Verde and the African Atlantic. Castile retained the Canary Islands. This arrangement established a diplomatic framework for later Iberian negotiations over oceanic space. Its allocation of island bases and maritime claims helped determine where each crown would launch its world-spanning voyages.",
+    "es": "El acuerdo de paz resolvió el conflicto sucesorio castellano y reconoció la posición portuguesa en Madeira, las Azores, Cabo Verde y el Atlántico africano. Castilla conservó las Canarias. El arreglo estableció un marco diplomático para las negociaciones ibéricas posteriores sobre el espacio oceánico. La distribución de bases insulares y pretensiones marítimas ayudó a determinar desde dónde emprendería cada corona sus viajes de alcance mundial."
+   },
+   "map": {
+    "en": "Mark the island groups and distinguish sovereignty from wider spheres of navigation and claim. The Atlantic, African, Indian and Pacific passages connected American, European, African and Asian societies. The resulting geography was built through voyages, diplomacy, laws, cities and changing jurisdiction across several continents.",
+    "es": "Señalar los archipiélagos y distinguir la soberanía de las esferas más amplias de navegación y reivindicación.   Las rutas atlánticas, africanas, índicas y pacíficas conectaron sociedades americanas, europeas, africanas y asiáticas. La geografía resultante se construyó con viajes, diplomacia, leyes, ciudades y jurisdicciones cambiantes en varios continentes."
+   },
+   "sources": [
+    "A1",
+    "A4"
+   ],
+   "chapter": 0
+  },
+  {
+   "n": 7,
+   "year": 1488,
+   "date": {
+    "en": "1488",
+    "es": "1488"
+   },
+   "title": {
+    "en": "Dias rounds the Cape of Good Hope",
+    "es": "Dias dobla el cabo de Buena Esperanza"
+   },
+   "body": {
+    "en": "Bartolomeu Dias rounded southern Africa, demonstrating that the Atlantic and Indian Oceans could be connected by a navigable sea route. The voyage turned decades of Portuguese coastal exploration into a practical route toward Asian markets. It also brought Portuguese ships into waters with established African and Indian Ocean trading networks. The new passage reshaped the geography of Eurasian commerce and the competition for maritime power.",
+    "es": "Bartolomeu Dias rodeó el sur de África y demostró que el Atlántico y el Índico podían enlazarse por una ruta marítima navegable. El viaje convirtió décadas de exploración costera portuguesa en un camino viable hacia los mercados asiáticos. También introdujo naves portuguesas en aguas con redes comerciales africanas e índicas ya establecidas. El nuevo paso alteró la geografía del comercio euroasiático y la competencia por el poder naval."
+   },
+   "map": {
+    "en": "Animate the route around the Cape; label existing African and Indian Ocean ports rather than implying Portuguese control of the sea.",
+    "es": "Animar la ruta alrededor del cabo; señalar puertos africanos e índicos ya existentes sin atribuir a Portugal el dominio del mar."
+   },
+   "sources": [
+    "A1",
+    "A5"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 8,
+   "year": 1492,
+   "date": {
+    "en": "1492",
+    "es": "1492"
+   },
+   "title": {
+    "en": "Granada enters the Castilian crown",
+    "es": "Granada se incorpora a la Corona de Castilla"
+   },
+   "body": {
+    "en": "The capitulation of Granada ended the Nasrid kingdom and a centuries-long phase of Muslim sovereignty on the peninsula. The conquest gave the Catholic Monarchs new territory, prestige and resources at the moment of Atlantic expansion. Granada became part of the Castilian crown and of its developing political and cultural institutions. In world history, the event marks a decisive shift in the peninsula whose rulers would soon govern territories across several continents.",
+    "es": "La capitulación de Granada puso fin al reino nazarí y a una larga etapa de soberanía musulmana en la península. La conquista dio a los Reyes Católicos territorio, prestigio y recursos en el momento de la expansión atlántica. Granada pasó a formar parte de la Corona de Castilla y de sus instituciones políticas y culturales en desarrollo. En la historia universal, el hecho señala un giro decisivo en la península cuyos gobernantes pronto regirían territorios de varios continentes."
+   },
+   "map": {
+    "en": "Change Granada’s sovereignty polygon; annotate the surrender rather than coloring the whole peninsula as one state.",
+    "es": "Cambiar el polígono de soberanía de Granada; anotar la rendición sin colorear toda la península como un solo Estado."
+   },
+   "sources": [
+    "A1"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 9,
+   "year": 1492,
+   "date": {
+    "en": "1492",
+    "es": "1492"
+   },
+   "title": {
+    "en": "The Atlantic crossing joins two hemispheres",
+    "es": "La travesía atlántica enlaza dos hemisferios"
+   },
+   "body": {
+    "en": "Columbus’s Castilian-sponsored voyage reached Caribbean lands already inhabited by Indigenous peoples. Sustained contact then linked American, European, African and Asian histories through migration, commerce and the transfer of organisms. The resulting societies combined Indigenous, European and African languages and traditions in new cultural forms. The Columbian Exchange transformed diets, ecologies and population histories across the planet.",
+    "es": "El viaje de Colón, patrocinado por Castilla, llegó a tierras caribeñas ya habitadas por pueblos indígenas. El contacto sostenido vinculó después las historias de América, Europa, África y Asia mediante migraciones, comercio y circulación de organismos. Las sociedades resultantes combinaron lenguas y tradiciones indígenas, europeas y africanas en nuevas formas culturales. El intercambio colombino transformó dietas, ecologías e historias demográficas en todo el planeta."
+   },
+   "map": {
+    "en": "Plot the outward and return voyages and Indigenous polities; reserve imperial polygons for later stages of conquest and settlement.",
+    "es": "Trazar las rutas de ida y vuelta y los pueblos indígenas; reservar los polígonos imperiales para conquistas y asentamientos posteriores."
+   },
+   "sources": [
+    "A1",
+    "A6"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 10,
+   "year": 1494,
+   "date": {
+    "en": "1494",
+    "es": "1494"
+   },
+   "title": {
+    "en": "Treaty of Tordesillas",
+    "es": "Tratado de Tordesillas"
+   },
+   "body": {
+    "en": "Castile and Portugal agreed to a meridian 370 leagues west of the Cape Verde Islands to divide their overseas claims. The line helped place part of eastern South America within Portugal’s claimed sphere, though its exact placement and authority were contested. It expressed an unprecedented attempt by two crowns to allocate distant lands through diplomacy. Its legacy appears in the linguistic geography of South America and in the history of competing claims to global jurisdiction.",
+    "es": "Castilla y Portugal acordaron un meridiano a 370 leguas al oeste de las islas de Cabo Verde para repartir sus pretensiones ultramarinas. La línea situó parte del este suramericano en la esfera reivindicada por Portugal, aunque su posición exacta y su autoridad fueron discutidas. Expresó una tentativa inédita de dos coronas de distribuir tierras lejanas mediante la diplomacia. Su legado se aprecia en la geografía lingüística suramericana y en la historia de las pretensiones rivales de jurisdicción mundial."
+   },
+   "map": {
+    "en": "Draw the approximate treaty meridian as a claimed jurisdictional line, not as a surveyed border across continents.",
+    "es": "Dibujar el meridiano aproximado como línea jurisdiccional reivindicada, no como frontera topográfica entre continentes."
+   },
+   "sources": [
+    "A1",
+    "A7"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 11,
+   "year": 1498,
+   "date": {
+    "en": "1498-1511",
+    "es": "1498-1511"
+   },
+   "title": {
+    "en": "Portugal establishes the Cape route to India",
+    "es": "Portugal establece la ruta del cabo hacia la India"
+   },
+   "body": {
+    "en": "Vasco da Gama reached the Malabar coast in 1498 after rounding Africa; Portuguese forces later took Goa in 1510 and Malacca in 1511. This brought European fleets into the long-established commercial world of the Indian Ocean. Portuguese ports and fortresses linked Atlantic, African and Asian circuits without giving Lisbon uniform control over Asia. The route was a turning point in the globalization of maritime commerce, armed competition and missionary movement.",
+    "es": "Vasco da Gama llegó a la costa de Malabar en 1498 tras rodear África; fuerzas portuguesas tomaron después Goa en 1510 y Malaca en 1511. Esto introdujo flotas europeas en el antiguo mundo comercial del océano Índico. Puertos y fortalezas portugueses enlazaron circuitos atlánticos, africanos y asiáticos sin otorgar a Lisboa un control uniforme sobre Asia. La ruta marcó un giro en la mundialización del comercio marítimo, la competencia armada y el movimiento misionero."
+   },
+   "map": {
+    "en": "Trace the route to Calicut and mark Goa and Malacca as dated coastal positions, not a solid Portuguese-filled Indian Ocean.",
+    "es": "Trazar la ruta a Calicut y marcar Goa y Malaca como posiciones costeras fechadas, no como un océano Índico relleno de Portugal."
+   },
+   "sources": [
+    "A1",
+    "A5"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 12,
+   "year": 1500,
+   "date": {
+    "en": "1500",
+    "es": "1500"
+   },
+   "title": {
+    "en": "Cabral reaches Brazil",
+    "es": "Cabral llega al Brasil"
+   },
+   "body": {
+    "en": "Pedro Álvares Cabral’s fleet reached the South American coast while sailing toward India. Portuguese claims and trade began there, while permanent settlement and colonial administration expanded mainly in later decades. Brazil became the largest Portuguese-speaking society and an Atlantic meeting ground of Indigenous, African and European histories. Its place in the Portuguese sphere shaped the enduring two-language geography of Iberofonía.",
+    "es": "La flota de Pedro Álvares Cabral llegó a la costa suramericana mientras navegaba hacia la India. Allí comenzaron las pretensiones y los intercambios portugueses, mientras el poblamiento permanente y la administración colonial se ampliaron sobre todo en décadas posteriores. El Brasil se convirtió en la mayor sociedad de lengua portuguesa y en un espacio atlántico de encuentro de historias indígenas, africanas y europeas. Su ubicación en la esfera portuguesa configuró la geografía duradera de dos lenguas de Iberofonía."
+   },
+   "map": {
+    "en": "Mark the landfall and early coast as a claim; reveal settlements and territorial expansion in later dates.",
+    "es": "Marcar la llegada y la costa inicial como pretensión; revelar asentamientos y expansión territorial en fechas posteriores."
+   },
+   "sources": [
+    "A1",
+    "A7"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 13,
+   "year": 1512,
+   "date": {
+    "en": "1512-1542",
+    "es": "1512-1542"
+   },
+   "title": {
+    "en": "The Laws of Burgos and the New Laws",
+    "es": "Leyes de Burgos y Leyes Nuevas"
+   },
+   "body": {
+    "en": "The Laws of Burgos of 1512 and Charles V’s New Laws of 1542 established royal rules governing Indigenous communities and the encomienda. Missionaries and jurists articulated the legal standing and rights of Indigenous peoples within a shared moral and political order. These statutes became central reference points in debates about the responsibilities of the crown in America. Their world-historical significance lies in the early elaboration of legal personhood, natural law and the obligations of rulers across continents.",
+    "es": "Las Leyes de Burgos de 1512 y las Leyes Nuevas de Carlos V de 1542 establecieron normas reales para las comunidades indígenas y la encomienda. Misioneros y juristas formularon la condición jurídica y los derechos de los pueblos indígenas dentro de un orden moral y político compartido. Estas leyes se convirtieron en referencias centrales del debate sobre las responsabilidades de la corona en América. Su importancia universal reside en la temprana elaboración de la personalidad jurídica, la ley natural y las obligaciones de los gobernantes entre continentes."
+   },
+   "map": {
+    "en": "Use legal markers at Burgos and in American jurisdictions, with a dated layer showing the promulgation of each set of laws.",
+    "es": "Usar marcadores jurídicos en Burgos y las jurisdicciones americanas, con una capa fechada para la promulgación de cada conjunto de leyes."
+   },
+   "sources": [
+    "A1",
+    "A8"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 14,
+   "year": 1519,
+   "date": {
+    "en": "1519-1521",
+    "es": "1519-1521"
+   },
+   "title": {
+    "en": "The fall of Tenochtitlan",
+    "es": "Caída de Tenochtitlan"
+   },
+   "body": {
+    "en": "Cortés and numerous Indigenous allies entered Tenochtitlan, and the city came under their control in 1521. New Spain developed on an existing urban, agricultural and political landscape. Indigenous communities, Spanish settlers and later Africans shaped its institutions, faith, languages and material culture. Mexico became a pivotal center of Hispanic civilization and one of the great crossroads between the Atlantic and Pacific worlds.",
+    "es": "Cortés y numerosos aliados indígenas entraron en Tenochtitlan, y la ciudad quedó bajo su control en 1521. La Nueva España se desarrolló sobre un paisaje urbano, agrícola y político preexistente. Comunidades indígenas, pobladores españoles y, después, africanos conformaron sus instituciones, su fe, sus lenguas y su cultura material. México se convirtió en un centro decisivo de la civilización hispánica y en uno de los grandes cruces entre los mundos atlántico y pacífico."
+   },
+   "map": {
+    "en": "Show the alliance network and Tenochtitlan as an urban point first; add New Spain as a jurisdiction in later frames.",
+    "es": "Mostrar primero la red de alianzas y Tenochtitlan como punto urbano; añadir la jurisdicción novohispana en etapas posteriores."
+   },
+   "sources": [
+    "A6",
+    "A9"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 15,
+   "year": 1519,
+   "date": {
+    "en": "1519-1522",
+    "es": "1519-1522"
+   },
+   "title": {
+    "en": "The first circumnavigation",
+    "es": "Primera circunnavegación"
+   },
+   "body": {
+    "en": "The expedition led first by Magellan and then by Elcano completed the first recorded circumnavigation when the Victoria returned to Spain in 1522. Magellan died in the Philippines, and only a small remnant of the original crew survived. The voyage joined Atlantic, Pacific and Indian Ocean routes in a single demonstrated circuit. It changed geographical knowledge and made the scale and practical interconnection of the planet newly visible.",
+    "es": "La expedición dirigida primero por Magallanes y después por Elcano completó la primera circunnavegación documentada cuando la Victoria regresó a España en 1522. Magallanes murió en Filipinas y sobrevivió solo una pequeña parte de la tripulación inicial. El viaje enlazó las rutas atlánticas, pacíficas e índicas en un circuito comprobado. Transformó el conocimiento geográfico e hizo visible de un modo nuevo la escala y la interconexión práctica del planeta."
+   },
+   "map": {
+    "en": "Animate the complete voyage, the Pacific crossing, Magellan’s death at Mactan and Elcano’s return; use a route, not a sovereignty fill.",
+    "es": "Animar el viaje completo, el cruce del Pacífico, la muerte de Magallanes en Mactán y el regreso de Elcano; usar una ruta, no un relleno de soberanía."
+   },
+   "sources": [
+    "A1",
+    "A10"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 16,
+   "year": 1532,
+   "date": {
+    "en": "1532-1535",
+    "es": "1532-1535"
+   },
+   "title": {
+    "en": "Conquest and reorganization of the Andes",
+    "es": "Conquista y reorganización de los Andes"
+   },
+   "body": {
+    "en": "Pizarro’s campaigns unfolded during a succession struggle in the Inca state and involved numerous Indigenous participants. Spanish jurisdictions subsequently developed across the Andes around established cities and institutions. The resulting Peruvian center brought together Indigenous traditions, European governance and Christianity in a distinctive political and cultural sphere. Andean silver later became a major force in imperial finance and intercontinental exchange.",
+    "es": "Las campañas de Pizarro tuvieron lugar durante una pugna sucesoria en el Estado inca e implicaron a numerosos participantes indígenas. Las jurisdicciones españolas se desarrollaron después por los Andes en torno a ciudades e instituciones ya existentes. El centro peruano resultante reunió tradiciones indígenas, gobierno europeo y cristianismo en un ámbito político y cultural singular. La plata andina se convertiría después en una fuerza decisiva para las finanzas imperiales y el intercambio intercontinental."
+   },
+   "map": {
+    "en": "Map the campaign and contested centers before showing gradually expanding Spanish jurisdictions; keep Indigenous polities visible.",
+    "es": "Cartografiar campañas y centros disputados antes de mostrar la expansión gradual de las jurisdicciones españolas; mantener visibles los poderes indígenas."
+   },
+   "sources": [
+    "A1",
+    "A9"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 17,
+   "year": 1550,
+   "date": {
+    "en": "1550-1551",
+    "es": "1550-1551"
+   },
+   "title": {
+    "en": "The Valladolid debate over conquest",
+    "es": "Debate de Valladolid sobre la conquista"
+   },
+   "body": {
+    "en": "At Valladolid, Bartolomé de las Casas and Juan Ginés de Sepúlveda advanced different arguments about Indigenous societies and the principles governing relations among peoples. The discussions belonged to a larger Salamanca-centered tradition associated with Francisco de Vitoria and natural law. They placed questions of human dignity and political authority at the center of learned public debate. This intellectual tradition became an enduring part of the history of international law.",
+    "es": "En Valladolid, Bartolomé de las Casas y Juan Ginés de Sepúlveda expusieron argumentos distintos sobre las sociedades indígenas y los principios que debían regir las relaciones entre pueblos. Las discusiones formaron parte de una tradición más amplia, centrada en Salamanca y asociada con Francisco de Vitoria y la ley natural. Situaron las cuestiones de la dignidad humana y la autoridad política en el centro del debate público erudito. Esta tradición intelectual se incorporó de forma duradera a la historia del derecho internacional."
+   },
+   "map": {
+    "en": "Use Valladolid and Salamanca as intellectual nodes connected to American jurisdictions; no border change.",
+    "es": "Usar Valladolid y Salamanca como nodos intelectuales conectados con las jurisdicciones americanas; sin cambio de fronteras."
+   },
+   "sources": [
+    "A8"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 18,
+   "year": 1565,
+   "date": {
+    "en": "1565-1571",
+    "es": "1565-1571"
+   },
+   "title": {
+    "en": "The Pacific crossing and Manila",
+    "es": "La travesía del Pacífico y Manila"
+   },
+   "body": {
+    "en": "Urdaneta’s 1565 return route made regular sailing from the Philippines to New Spain practicable; Spain established Manila in 1571. The galleon trade then linked Asian goods and merchants with American silver through Acapulco. Chinese, Filipino, Mexican and other participants made this a connected commercial and cultural world, not simply a Spanish shipping lane. The route gave Hispanic civilization a durable Asian and Pacific dimension and formed a major artery of early globalization.",
+    "es": "La ruta de regreso hallada por Urdaneta en 1565 hizo practicable la navegación regular de Filipinas a Nueva España; España estableció Manila en 1571. El comercio del galeón vinculó luego productos y mercaderes asiáticos con la plata americana a través de Acapulco. Participantes chinos, filipinos, mexicanos y de otros lugares hicieron de esta red un mundo comercial y cultural conectado, no una simple vía naviera española. La ruta dio a la civilización hispánica una dimensión asiática y pacífica duradera y formó una arteria fundamental de la primera globalización."
+   },
+   "map": {
+    "en": "Draw Cebu/Manila-Acapulco as directional routes with the return crossing; distinguish Philippine centers and trade links from Spanish claims.",
+    "es": "Dibujar Cebu/Manila-Acapulco con rutas direccionales de ida y retorno; distinguir centros filipinos y vínculos comerciales de las pretensiones españolas."
+   },
+   "sources": [
+    "A1",
+    "A11"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 19,
+   "year": 1580,
+   "date": {
+    "en": "1580-1581",
+    "es": "1580-1581"
+   },
+   "title": {
+    "en": "The Iberian Union",
+    "es": "La Unión Ibérica"
+   },
+   "body": {
+    "en": "A Portuguese succession crisis brought Philip II to the Portuguese throne; the Cortes of Tomar recognized him in 1581. Portugal kept its laws and institutions under a monarch also ruling the Spanish crowns. For six decades, the same sovereign connected Brazilian, African and Asian Portuguese domains with the Spanish American and Pacific systems. This was the widest dynastic convergence of the two Iberian maritime worlds, although one ruler did not mean one uniform administration or uncontested control of the oceans.",
+    "es": "Una crisis sucesoria portuguesa llevó a Felipe II al trono de Portugal; las Cortes de Tomar lo reconocieron en 1581. Portugal conservó sus leyes e instituciones bajo un monarca que gobernaba también las coronas españolas. Durante seis décadas, el mismo soberano vinculó dominios portugueses brasileños, africanos y asiáticos con los sistemas hispanoamericanos y pacíficos. Fue la mayor convergencia dinástica de ambos mundos marítimos ibéricos, aunque un monarca común no significaba una administración uniforme ni el dominio indiscutido de los océanos."
+   },
+   "map": {
+    "en": "Apply a shared-sovereign overlay to the distinct crowns and their dated holdings; retain internal boundaries and mark Tomar.   Portugal restored its separate crown, and eighteenth-century treaties revised claims in America. The crises beginning in 1807–08 then produced constitutions, independent states and a lasting question: what common institutions could exist after imperial government?",
+    "es": "Aplicar una capa de soberano común a las coronas y posesiones fechadas; conservar fronteras internas y marcar Tomar.   Portugal restauró su corona propia y los tratados del siglo XVIII revisaron reivindicaciones americanas. Las crisis iniciadas en 1807–08 produjeron constituciones, Estados independientes y una pregunta duradera: ¿qué instituciones comunes podían existir tras el gobierno imperial?"
+   },
+   "sources": [
+    "A1",
+    "A12"
+   ],
+   "chapter": 1
+  },
+  {
+   "n": 20,
+   "year": 1640,
+   "date": {
+    "en": "1640-1668",
+    "es": "1640-1668"
+   },
+   "title": {
+    "en": "Portugal breaks from the common monarchy",
+    "es": "Portugal se separa de la monarquía común"
+   },
+   "body": {
+    "en": "The Braganza restoration in 1640 ended the shared crown in practice; Spain recognized Portuguese independence in 1668. Brazil and the Portuguese overseas network again followed a sovereign path apart from Spanish America. The rupture set two Iberian imperial systems on distinct geopolitical trajectories while their languages and societies remained historically intertwined. It was the first great political split in the previously united Iberian dynastic space, preceding the later breakups in America.",
+    "es": "La Restauración de los Braganza en 1640 puso fin de hecho a la corona compartida; España reconoció la independencia portuguesa en 1668. El Brasil y la red ultramarina portuguesa siguieron de nuevo una trayectoria soberana distinta de la América española. La ruptura situó a dos sistemas imperiales ibéricos en caminos geopolíticos separados, aunque sus lenguas y sociedades continuaron históricamente entrelazadas. Fue la primera gran división política del espacio dinástico ibérico antes unido, anterior a las posteriores fragmentaciones americanas."
+   },
+   "map": {
+    "en": "Remove the shared-sovereign overlay in 1640; add a separate 1668 recognition marker and preserve the two colonial networks.",
+    "es": "Retirar la capa de soberano común en 1640; añadir un marcador de reconocimiento en 1668 y mantener las dos redes coloniales."
+   },
+   "sources": [
+    "A1",
+    "A12"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 21,
+   "year": 1750,
+   "date": {
+    "en": "1750",
+    "es": "1750"
+   },
+   "title": {
+    "en": "Treaty of Madrid redraws South American claims",
+    "es": "El Tratado de Madrid redibuja las pretensiones suramericanas"
+   },
+   "body": {
+    "en": "Spain and Portugal negotiated new South American boundaries around occupation and natural features rather than the old Tordesillas meridian. The agreement recognized a much broader Portuguese position in the continental interior, though later treaties revised some provisions. It helps explain the eventual scale of Brazil beside multiple Spanish American successor states. The episode also shows that imperial borders were negotiated over inhabited territories, including Indigenous mission lands.",
+    "es": "España y Portugal negociaron nuevas fronteras suramericanas atendiendo a ocupaciones y accidentes naturales en vez del antiguo meridiano de Tordesillas. El acuerdo reconoció una posición portuguesa mucho más amplia en el interior continental, aunque tratados posteriores modificaron algunas cláusulas. Ayuda a explicar la extensión final del Brasil junto a varios Estados sucesores de la América española. El episodio muestra también que las fronteras imperiales se negociaron sobre territorios habitados, incluidas tierras de misiones indígenas."
+   },
+   "map": {
+    "en": "Compare the Tordesillas claim with the 1750 treaty claim; use dashed disputed zones and a separate layer for mission communities.",
+    "es": "Comparar la pretensión de Tordesillas con la del tratado de 1750; usar zonas disputadas discontinuas y una capa propia para las misiones."
+   },
+   "sources": [
+    "A1",
+    "A7"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 22,
+   "year": 1807,
+   "date": {
+    "en": "1807-1808",
+    "es": "1807-1808"
+   },
+   "title": {
+    "en": "The Portuguese court moves to Rio de Janeiro",
+    "es": "La corte portuguesa se traslada a Río de Janeiro"
+   },
+   "body": {
+    "en": "As Napoleonic forces approached Portugal, the Braganza court crossed the Atlantic and reestablished royal government in Rio. Brazil became the seat of a European monarchy, a rare reversal of the usual imperial hierarchy. The new political center and opened ports strengthened Brazil’s institutions and autonomy before independence. The move is central to the different paths by which Portuguese America stayed largely together and Spanish America fractured.",
+    "es": "Ante el avance de las fuerzas napoleónicas hacia Portugal, la corte de Braganza cruzó el Atlántico y restableció el gobierno real en Río. El Brasil pasó a ser la sede de una monarquía europea, una inversión excepcional de la jerarquía imperial habitual. El nuevo centro político y la apertura de puertos reforzaron sus instituciones y autonomía antes de la independencia. El traslado es esencial para entender las trayectorias diferentes por las que la América portuguesa permaneció en gran medida unida y la América española se fragmentó."
+   },
+   "map": {
+    "en": "Animate the court’s Lisbon-Rio transfer; label Rio as the royal seat without recoloring Brazil as independent yet.",
+    "es": "Animar el traslado de la corte Lisboa-Río; rotular Río como sede real sin colorear todavía el Brasil como independiente."
+   },
+   "sources": [
+    "A1",
+    "A13"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 23,
+   "year": 1808,
+   "date": {
+    "en": "1808",
+    "es": "1808"
+   },
+   "title": {
+    "en": "The Spanish monarchy enters a sovereignty crisis",
+    "es": "La monarquía española entra en una crisis de soberanía"
+   },
+   "body": {
+    "en": "Napoleon’s intervention and the abdications at Bayonne removed the accepted monarch and provoked resistance across Spain and America. Competing juntas asked who could legitimately govern when the king was absent. The crisis accelerated wars and constitutional experiments on both sides of the Atlantic. It made possible the dismantling of a transcontinental monarchy and the emergence of new sovereign states.",
+    "es": "La intervención napoleónica y las abdicaciones de Bayona apartaron al monarca reconocido y provocaron resistencias en España y América. Juntas rivales plantearon quién podía gobernar legítimamente en ausencia del rey. La crisis aceleró guerras y experimentos constitucionales a ambos lados del Atlántico. Hizo posible el desmantelamiento de una monarquía transcontinental y el surgimiento de nuevos Estados soberanos."
+   },
+   "map": {
+    "en": "Use an institutional crisis overlay across peninsular and American jurisdictions; animate juntas and wars rather than instant independence.",
+    "es": "Usar una capa de crisis institucional en jurisdicciones peninsulares y americanas; animar juntas y guerras, no independencias instantáneas."
+   },
+   "sources": [
+    "A1",
+    "A14"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 24,
+   "year": 1812,
+   "date": {
+    "en": "1812",
+    "es": "1812"
+   },
+   "title": {
+    "en": "The Constitution of Cádiz",
+    "es": "La Constitución de Cádiz"
+   },
+   "body": {
+    "en": "The Cortes promulgated a constitution in Cádiz while Ferdinand VII remained captive. It asserted national sovereignty and defined a constitutional monarchy whose political community encompassed territories on both sides of the Atlantic. American deputies participated in a constitutional argument that would outlive the empire. The text became a reference point for constitutional movements in Europe and Latin America.",
+    "es": "Las Cortes promulgaron en Cádiz una constitución mientras Fernando VII seguía cautivo. Afirmó la soberanía nacional y definió una monarquía constitucional cuya comunidad política abarcaba territorios a ambos lados del Atlántico. Diputados americanos participaron en un debate constitucional que sobrevivió al imperio. El texto se convirtió en referencia para movimientos constitucionales de Europa y América Latina."
+   },
+   "map": {
+    "en": "Link Cádiz to represented territories with an institutional layer rather than a new border.",
+    "es": "Vincular Cádiz con los territorios representados mediante una capa institucional, sin dibujar otra frontera."
+   },
+   "sources": [
+    "A1",
+    "A15"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 25,
+   "year": 1815,
+   "date": {
+    "en": "1815",
+    "es": "1815"
+   },
+   "title": {
+    "en": "Bolívar writes the Jamaica Letter",
+    "es": "Bolívar escribe la Carta de Jamaica"
+   },
+   "body": {
+    "en": "Writing from Kingston, Simón Bolívar reflected on the newly independent Spanish American regions and the difficulty of combining them into one republic. He nevertheless argued for solidarity among the new states and imagined an assembly to coordinate their interests. The letter became a foundational text for later Bolivarian projects, though its ideal was not an enacted constitution.",
+    "es": "Desde Kingston, Simón Bolívar reflexionó sobre las regiones hispanoamericanas recién emancipadas y la dificultad de reunirlas en una sola república. Defendió, sin embargo, la solidaridad entre los nuevos Estados e imaginó una asamblea capaz de coordinar sus intereses. La carta se convirtió en un texto fundador para proyectos bolivarianos posteriores, aunque su ideal no llegó a ser una constitución vigente."
+   },
+   "map": {
+    "en": "Place Kingston as the writing point; connect the projected republics with dashed proposal links, not a single sovereign polygon.",
+    "es": "Situar Kingston como punto de redacción; conectar las repúblicas proyectadas mediante vínculos discontinuos, no con un solo polígono soberano."
+   },
+   "sources": [
+    "B1"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 26,
+   "year": 1822,
+   "date": {
+    "en": "1822-1823",
+    "es": "1822-1823"
+   },
+   "title": {
+    "en": "Valle and the Central American federation",
+    "es": "Valle y la federación centroamericana"
+   },
+   "body": {
+    "en": "José Cecilio del Valle imagined a general congress of the American states in his 1822 essay “Soñaba el abad de San Pedro.” The Federal Republic of Central America followed in 1823 as an actual, smaller political experiment among the former provinces of Guatemala. These two scales of union show the gap between a continental vision and a working federal state.",
+    "es": "José Cecilio del Valle imaginó un congreso general de los Estados americanos en su ensayo de 1822 «Soñaba el abad de San Pedro». En 1823 surgió la República Federal de Centroamérica como experimento político real, más reducido, entre las antiguas provincias de Guatemala. Las dos escalas de unión muestran la distancia entre la visión continental y un Estado federal efectivo."
+   },
+   "map": {
+    "en": "Mark Guatemala City for Valle’s proposal; show the federation as a dated political boundary, and distinguish its member provinces.",
+    "es": "Marcar Ciudad de Guatemala para la propuesta de Valle; mostrar la federación con límite político fechado y distinguir sus provincias integrantes."
+   },
+   "sources": [
+    "B2"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 27,
+   "year": 1822,
+   "date": {
+    "en": "1822",
+    "es": "1822"
+   },
+   "title": {
+    "en": "Brazil becomes independent",
+    "es": "El Brasil se independiza"
+   },
+   "body": {
+    "en": "Dom Pedro proclaimed Brazil’s independence from Portugal in 1822, and the new empire secured control through conflicts in several provinces. It retained most of Portuguese America within one state, unlike the multiple sovereignties emerging from Spanish America. Brazil’s territorial continuity profoundly shaped the continent’s political, linguistic and economic balance. Its independence also showed that the age of Atlantic empires could produce a monarchy in the Americas rather than only republics.",
+    "es": "Dom Pedro proclamó la independencia del Brasil respecto de Portugal en 1822, y el nuevo imperio aseguró su control mediante conflictos en varias provincias. Conservó la mayor parte de la América portuguesa dentro de un solo Estado, a diferencia de las múltiples soberanías surgidas en la América española. La continuidad territorial brasileña configuró profundamente el equilibrio político, lingüístico y económico del continente. Su independencia demostró además que la era de los imperios atlánticos podía producir una monarquía americana, no solo repúblicas."
+   },
+   "map": {
+    "en": "Change Brazil’s sovereign label after the provincial conflicts; keep disputed provinces visible instead of implying instantaneous consolidation.",
+    "es": "Cambiar la etiqueta soberana del Brasil después de los conflictos provinciales; mostrar las provincias disputadas y evitar una consolidación instantánea."
+   },
+   "sources": [
+    "A1",
+    "A13"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 28,
+   "year": 1824,
+   "date": {
+    "en": "1824-1826",
+    "es": "1824-1826"
+   },
+   "title": {
+    "en": "Ayacucho and the breakup of Spanish America",
+    "es": "Ayacucho y la fragmentación de la América española"
+   },
+   "body": {
+    "en": "Sucre’s victory at Ayacucho in 1824 broke the principal royalist field army in Peru; the last major coastal stronghold at Callao surrendered in 1826. Independent states replaced most of the continental Spanish monarchy, although their borders and forms of government remained contested. Shared language, law and religious traditions survived the break in sovereignty. The resulting plurality of republics changed the world’s political map and made continental unity a recurring question in Hispanic thought.",
+    "es": "La victoria de Sucre en Ayacucho en 1824 deshizo el principal ejército realista de campaña en el Perú; la última gran plaza costera, el Callao, capituló en 1826. Estados independientes sustituyeron a la mayor parte de la monarquía española continental, aunque sus fronteras y formas de gobierno siguieron disputándose. La lengua, el derecho y las tradiciones religiosas compartidas sobrevivieron a la ruptura soberana. La pluralidad resultante de repúblicas cambió el mapa político mundial e hizo de la unidad continental una cuestión recurrente del pensamiento hispánico."
+   },
+   "map": {
+    "en": "Animate battle and final stronghold separately; fade imperial jurisdictions into successor states over years, with contested borders.",
+    "es": "Animar batalla y última plaza por separado; transformar gradualmente jurisdicciones imperiales en Estados sucesores, con fronteras disputadas."
+   },
+   "sources": [
+    "A1",
+    "A16"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 29,
+   "year": 1826,
+   "date": {
+    "en": "1826",
+    "es": "1826"
+   },
+   "title": {
+    "en": "The Amphictyonic Congress of Panama",
+    "es": "El Congreso Anfictiónico de Panamá"
+   },
+   "body": {
+    "en": "Delegates from Gran Colombia, Mexico, Peru and the Central American federation met at Panama at Bolívar’s invitation. They signed a treaty of union, league and perpetual confederation, but ratification and implementation were limited. The gathering remains the clearest nineteenth-century attempt to turn Spanish American solidarity into a permanent diplomatic structure.",
+    "es": "Delegados de la Gran Colombia, México, el Perú y la federación centroamericana se reunieron en Panamá por convocatoria de Bolívar. Firmaron un tratado de unión, liga y confederación perpetua, pero la ratificación y la aplicación fueron limitadas. La reunión sigue siendo el intento decimonónico más claro de convertir la solidaridad hispanoamericana en una estructura diplomática permanente."
+   },
+   "map": {
+    "en": "Plot Panama and the four delegations as nodes; draw treaty links as proposed cooperation, not a new superstate.   American congresses and Iberian federalists sought practical mechanisms of coordination. Cultural associations and new names for the region broadened the imagined community even where no common sovereign structure followed.",
+    "es": "Situar Panamá y las cuatro delegaciones como nodos; representar los vínculos del tratado como cooperación propuesta, no como un nuevo superestado.   Los congresos americanos y los federalistas ibéricos buscaron mecanismos prácticos de coordinación. Las asociaciones culturales y los nuevos nombres para la región ampliaron la comunidad imaginada, aunque no surgiera una estructura soberana común."
+   },
+   "sources": [
+    "B3"
+   ],
+   "chapter": 2
+  },
+  {
+   "n": 30,
+   "year": 1847,
+   "date": {
+    "en": "1847-1848",
+    "es": "1847-1848"
+   },
+   "title": {
+    "en": "The first American Congress at Lima",
+    "es": "El primer Congreso Americano de Lima"
+   },
+   "body": {
+    "en": "Representatives of several South American states met in Lima to consider security, commerce and relations among the republics. Their deliberations renewed the congress model after Panama without producing a durable continental government. The meeting matters because interstate coordination remained an active project after the first independence generation.",
+    "es": "Representantes de varios Estados suramericanos se reunieron en Lima para tratar la seguridad, el comercio y las relaciones entre repúblicas. Sus deliberaciones reactivaron el modelo congresual posterior a Panamá sin producir un gobierno continental duradero. La reunión importa porque la coordinación interestatal siguió siendo un proyecto activo después de la primera generación independentista."
+   },
+   "map": {
+    "en": "Mark Lima and the participating capitals; show negotiated links and resolutions, not a border change.",
+    "es": "Marcar Lima y las capitales participantes; mostrar vínculos negociados y resoluciones, no un cambio fronterizo."
+   },
+   "sources": [
+    "B4"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 31,
+   "year": 1848,
+   "date": {
+    "en": "1848",
+    "es": "1848"
+   },
+   "title": {
+    "en": "Treaty of Guadalupe Hidalgo",
+    "es": "Tratado de Guadalupe Hidalgo"
+   },
+   "body": {
+    "en": "The treaty ending the Mexican-American War transferred a vast northern territory from Mexico to the United States and established a new international boundary. Hispanic and Indigenous communities did not vanish when the sovereignty line moved over them. This territorial loss changed the balance of power in North America and left a lasting Spanish-speaking history within the United States. It also shows that the post-imperial map continued to change through conquest and treaty after independence.",
+    "es": "El tratado que terminó la guerra entre México y Estados Unidos transfirió a este último un vasto territorio septentrional y estableció una nueva frontera internacional. Las comunidades hispanas e indígenas no desaparecieron cuando la línea de soberanía pasó sobre ellas. La pérdida alteró el equilibrio de poder norteamericano y dejó una duradera historia hispanohablante dentro de Estados Unidos. Muestra además que el mapa posimperial siguió cambiando por conquista y tratado después de las independencias."
+   },
+   "map": {
+    "en": "Animate the 1848 cession and new border; retain population and Indigenous-land layers across the line.",
+    "es": "Animar la cesión de 1848 y la nueva frontera; conservar las capas de población y tierras indígenas a ambos lados de la línea."
+   },
+   "sources": [
+    "A1",
+    "A17"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 32,
+   "year": 1856,
+   "date": {
+    "en": "1856",
+    "es": "1856"
+   },
+   "title": {
+    "en": "“Latin America” becomes a language of union",
+    "es": "«América Latina» se convierte en lenguaje de unión"
+   },
+   "body": {
+    "en": "Francisco Bilbao and José María Torres Caicedo used Latin American vocabulary in distinct interventions during the mid-1850s. The name could support a claim of continental association against external power while also moving beyond an exclusively Spanish inheritance. Its emergence changed the imagined map: a political community could be named even where no common state existed.",
+    "es": "Francisco Bilbao y José María Torres Caicedo emplearon un vocabulario latinoamericano en intervenciones distintas a mediados de la década de 1850. El nombre podía sustentar una asociación continental frente a poderes externos y, al mismo tiempo, ir más allá de una herencia exclusivamente española. Su aparición cambió el mapa imaginado: podía nombrarse una comunidad política aunque no existiera un Estado común."
+   },
+   "map": {
+    "en": "Show Paris and the American capitals as a circulation network for speeches, poems and newspapers; avoid a single invented founding border.",
+    "es": "Mostrar París y las capitales americanas como red de circulación de discursos, poemas y periódicos; evitar una frontera fundacional inventada."
+   },
+   "sources": [
+    "B5"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 33,
+   "year": 1864,
+   "date": {
+    "en": "1864-1865",
+    "es": "1864-1865"
+   },
+   "title": {
+    "en": "The second Congress of Lima",
+    "es": "El segundo Congreso de Lima"
+   },
+   "body": {
+    "en": "Delegates again met in Lima and signed instruments for union, defensive alliance and peaceful relations among American states. The negotiations gave the older Bolivarian congress idea a new diplomatic setting. The proposed league did not supersede the sovereignty of its members, but its treaties offer concrete documentary evidence of renewed continental organization.",
+    "es": "Los delegados volvieron a reunirse en Lima y firmaron instrumentos de unión, alianza defensiva y relaciones pacíficas entre Estados americanos. Las negociaciones dieron un nuevo marco diplomático a la antigua idea bolivariana de congreso. La liga propuesta no sustituyó la soberanía de sus miembros, pero sus tratados documentan un renovado esfuerzo de organización continental."
+   },
+   "map": {
+    "en": "Link Lima to the delegations; distinguish signatures from ratified and operative commitments.",
+    "es": "Vincular Lima con las delegaciones; distinguir las firmas de los compromisos ratificados y vigentes."
+   },
+   "sources": [
+    "B4"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 34,
+   "year": 1877,
+   "date": {
+    "en": "1877",
+    "es": "1877"
+   },
+   "title": {
+    "en": "Pi y Margall’s federal alternative",
+    "es": "La alternativa federal de Pi y Margall"
+   },
+   "body": {
+    "en": "In Las nacionalidades, Francisco Pi y Margall argued that self-governing communities could federate for common purposes. Iberian federalists placed Portugal and the Spanish regions within wider constitutional debates, although there was no agreed peninsular blueprint. This is a different mechanism from restoring an old crown: unity would be constructed by pact and retained local autonomy.",
+    "es": "En Las nacionalidades, Francisco Pi y Margall sostuvo que comunidades con autogobierno podían federarse para fines comunes. Los federalistas ibéricos situaron a Portugal y a las regiones españolas en debates constitucionales más amplios, aunque no existió un diseño peninsular consensuado. El mecanismo difería de restaurar una vieja corona: la unidad se construiría mediante pactos y preservando la autonomía local."
+   },
+   "map": {
+    "en": "Draw a conceptual federation diagram centered on the peninsula; use dashed links and keep the actual 1877 state borders.",
+    "es": "Dibujar un esquema conceptual de federación peninsular con vínculos discontinuos; conservar las fronteras estatales reales de 1877."
+   },
+   "sources": [
+    "B6"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 35,
+   "year": 1879,
+   "date": {
+    "en": "1879",
+    "es": "1879"
+   },
+   "title": {
+    "en": "Oliveira Martins writes a shared Iberian history",
+    "es": "Oliveira Martins escribe una historia ibérica compartida"
+   },
+   "body": {
+    "en": "Joaquim Pedro de Oliveira Martins published História da Civilização Ibérica in Portuguese. He treated the peninsula as a historical field whose peoples followed intertwined trajectories, offering a vocabulary of civilizational kinship across the Spanish-Portuguese border. A shared history in this book does not automatically entail annexation or one state.",
+    "es": "Joaquim Pedro de Oliveira Martins publicó en portugués História da Civilização Ibérica. Trató la península como un campo histórico de trayectorias entrelazadas y ofreció un vocabulario de parentesco civilizatorio a ambos lados de la frontera hispano-portuguesa. La historia común de este libro no implica automáticamente anexión ni un Estado único."
+   },
+   "map": {
+    "en": "Use a thematic historical layer across the peninsula and bibliographic links from Portugal to later Spanish editions; no sovereignty change.",
+    "es": "Usar una capa histórica temática en la península y enlaces bibliográficos de Portugal a las ediciones españolas posteriores; sin cambio soberano."
+   },
+   "sources": [
+    "B7"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 36,
+   "year": 1885,
+   "date": {
+    "en": "1885",
+    "es": "1885"
+   },
+   "title": {
+    "en": "The Unión Ibero-Americana forms in Madrid",
+    "es": "Se funda en Madrid la Unión Ibero-Americana"
+   },
+   "body": {
+    "en": "The association built a transatlantic network through meetings, publications and advocacy for closer relations with the American republics. It made iberoamericanism a recurring civic and organizational practice rather than only an occasional anniversary speech. Its journals and committees supplied infrastructure for later congresses and cultural exchange.",
+    "es": "La asociación construyó una red transatlántica mediante reuniones, publicaciones y propuestas de acercamiento a las repúblicas americanas. Convirtió el iberoamericanismo en una práctica cívica y organizativa continuada, más allá de discursos conmemorativos ocasionales. Sus revistas y comisiones proporcionaron infraestructura para congresos e intercambios culturales posteriores."
+   },
+   "map": {
+    "en": "Plot the Madrid hub with periodical circulation and correspondence to American cities; show an association, not a government.",
+    "es": "Situar el nodo madrileño y la circulación de revistas y correspondencia hacia ciudades americanas; mostrar una asociación, no un gobierno."
+   },
+   "sources": [
+    "B8"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 37,
+   "year": 1892,
+   "date": {
+    "en": "1892",
+    "es": "1892"
+   },
+   "title": {
+    "en": "Madrid hosts multiple Hispano-American congresses",
+    "es": "Madrid acoge varios congresos hispanoamericanos"
+   },
+   "body": {
+    "en": "The centenary year brought literary, geographic and military congresses with published proceedings, including expressly Hispano-Portuguese-American meetings. These were distinct forums for language, mapping and professional exchange, not one unified movement. Their records reveal the practical institutions through which post-imperial relationships were debated.",
+    "es": "El año del centenario reunió congresos literarios, geográficos y militares con actas publicadas, entre ellos encuentros expresamente hispano-portugueses-americanos. Fueron foros distintos para la lengua, la cartografía y el intercambio profesional, no un movimiento unificado. Sus actas muestran las instituciones concretas mediante las que se debatieron las relaciones posimperiales."
+   },
+   "map": {
+    "en": "Pin the different congress venues in Madrid and draw participant/country links; use separate icons for literary, geographic and military meetings.   The crises of 1898, the spread of periodicals and lecture tours, and the mass politics of the early twentieth century generated different answers. Arielismo, Patria Grande, Lusitanian integralism, APRA and the authors of Hispanidad never formed a single school.",
+    "es": "Señalar las sedes madrileñas y las delegaciones; usar iconos diferentes para las reuniones literarias, geográficas y militares.   Las crisis de 1898, la expansión de periódicos y giras de conferencias y la política de masas de comienzos del siglo XX generaron respuestas distintas. Arielismo, Patria Grande, integralismo lusitano, APRA y los autores de la Hispanidad nunca formaron una sola escuela."
+   },
+   "sources": [
+    "B9"
+   ],
+   "chapter": 3
+  },
+  {
+   "n": 38,
+   "year": 1897,
+   "date": {
+    "en": "1897-1901",
+    "es": "1897-1901"
+   },
+   "title": {
+    "en": "Ganivet, the Generation of ’98 and regenerationism",
+    "es": "Ganivet, la Generación del 98 y el regeneracionismo"
+   },
+   "body": {
+    "en": "Ganivet’s Idearium español appeared in 1897, just before the defeat of 1898 intensified arguments over Spain’s future. Writers later grouped as the Generation of ’98 and reformers such as Joaquín Costa diagnosed national weakness in different literary and political registers. These debates made Spain’s place in the Hispanic world a question of reform, education and historical purpose, not merely lost territory.",
+    "es": "El Idearium español de Ganivet apareció en 1897, poco antes de que la derrota de 1898 intensificara las disputas sobre el futuro de España. Autores agrupados después como Generación del 98 y reformadores como Joaquín Costa diagnosticaron la debilidad nacional desde registros literarios y políticos diferentes. Aquellos debates hicieron de la posición de España en el mundo hispánico una cuestión de reforma, educación y misión histórica, no solo de pérdida territorial."
+   },
+   "map": {
+    "en": "Put Granada, Madrid and other author centers on an intellectual network; mark 1898 as a catalyst, not a shared manifesto.",
+    "es": "Situar Granada, Madrid y otros centros de autor en una red intelectual; marcar 1898 como catalizador, no como manifiesto compartido."
+   },
+   "sources": [
+    "B10"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 39,
+   "year": 1898,
+   "date": {
+    "en": "1898",
+    "es": "1898"
+   },
+   "title": {
+    "en": "Spain cedes the Philippines",
+    "es": "España cede Filipinas"
+   },
+   "body": {
+    "en": "After the Spanish-American War, the Treaty of Paris transferred the Philippines to the United States as Filipino independence forces pursued their own struggle. Spain’s last large Asian possession left the imperial system that had linked Manila and Spanish America. The transfer signaled the rise of the United States as an overseas imperial power in the Pacific. The older Asian-American connections and Filipino Catholic communities persisted beyond the end of Spanish sovereignty.",
+    "es": "Tras la guerra hispano-estadounidense, el Tratado de París transfirió Filipinas a Estados Unidos mientras las fuerzas independentistas filipinas libraban su propia lucha. La última gran posesión asiática española salió del sistema imperial que había unido Manila y la América española. La transferencia señaló el ascenso de Estados Unidos como potencia imperial ultramarina en el Pacífico. Las antiguas conexiones asiático-americanas y las comunidades católicas filipinas persistieron después del fin de la soberanía española."
+   },
+   "map": {
+    "en": "Change sovereignty in the Philippines in 1898; preserve historical galleon and cultural-network layers as past connections.",
+    "es": "Cambiar la soberanía filipina en 1898; mantener las capas históricas del galeón y de redes culturales como conexiones pasadas."
+   },
+   "sources": [
+    "A1",
+    "A18"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 40,
+   "year": 1900,
+   "date": {
+    "en": "1900",
+    "es": "1900"
+   },
+   "title": {
+    "en": "Rodó’s Ariel and the Arielista generation",
+    "es": "El Ariel de Rodó y la generación arielista"
+   },
+   "body": {
+    "en": "José Enrique Rodó published Ariel in Montevideo as an address to the youth of America. Its contrast between cultural ideals and utilitarian calculation became a portable language of continental dignity. Arielismo spread through classrooms, essays and correspondence, but it supplied an ethical and educational orientation rather than a federal constitution.",
+    "es": "José Enrique Rodó publicó Ariel en Montevideo como exhortación a la juventud de América. Su contraste entre ideales culturales y cálculo utilitario se convirtió en un lenguaje transferible de dignidad continental. El arielismo circuló por aulas, ensayos y correspondencia, pero ofrecía una orientación ética y educativa, no una constitución federal."
+   },
+   "map": {
+    "en": "Plot Montevideo and the book’s circulation to universities and journals across Spanish America; use an influence layer.",
+    "es": "Situar Montevideo y la circulación del libro hacia universidades y revistas hispanoamericanas; usar una capa de influencia."
+   },
+   "sources": [
+    "B11"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 41,
+   "year": 1900,
+   "date": {
+    "en": "1900",
+    "es": "1900"
+   },
+   "title": {
+    "en": "The Social and Economic Hispano-American Congress",
+    "es": "El Congreso Social y Económico Hispano-Americano"
+   },
+   "body": {
+    "en": "The Madrid congress placed commerce, law, migration and education on a shared agenda and published extensive proceedings. It translated the association-based iberoamericanism of the 1880s into proposals for recurring practical cooperation. Its resolutions should be mapped as negotiations and programmatic recommendations, not as treaties already in force.",
+    "es": "El congreso madrileño incorporó comercio, derecho, migración y educación a una agenda compartida y publicó extensas actas. Transformó el iberoamericanismo asociativo de la década de 1880 en propuestas de cooperación práctica continuada. Sus resoluciones deben cartografiarse como negociaciones y recomendaciones programáticas, no como tratados ya vigentes."
+   },
+   "map": {
+    "en": "Show Madrid, delegations and proposed commercial/educational links; distinguish congress proposals from enacted policy.",
+    "es": "Mostrar Madrid, delegaciones y vínculos comerciales o educativos propuestos; diferenciar las propuestas congresuales de políticas adoptadas."
+   },
+   "sources": [
+    "B12"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 42,
+   "year": 1909,
+   "date": {
+    "en": "1909-1913",
+    "es": "1909-1913"
+   },
+   "title": {
+    "en": "Altamira and Ugarte take rival programs on the road",
+    "es": "Altamira y Ugarte llevan programas distintos de gira"
+   },
+   "body": {
+    "en": "Rafael Altamira traveled from the University of Oviedo through the Americas in 1909-1910 to promote academic and cultural exchange. Manuel Ugarte addressed audiences across eighteen countries in 1911-1913 on a politically organized Patria Grande. Their tours turned abstract kinship into meetings, lectures and local host networks, while locating initiative on different sides of the Atlantic.",
+    "es": "Rafael Altamira viajó desde la Universidad de Oviedo por América en 1909-1910 para promover intercambios académicos y culturales. Manuel Ugarte habló ante públicos de dieciocho países entre 1911 y 1913 sobre una Patria Grande políticamente organizada. Sus giras transformaron el parentesco abstracto en reuniones, conferencias y redes locales, aunque situaban la iniciativa en orillas distintas del Atlántico."
+   },
+   "map": {
+    "en": "Animate two differently colored itineraries with host cities: Altamira’s academic circuit and Ugarte’s continental political tour.",
+    "es": "Animar dos itinerarios de colores distintos y sus ciudades anfitrionas: el circuito académico de Altamira y la gira política continental de Ugarte."
+   },
+   "sources": [
+    "B13"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 43,
+   "year": 1914,
+   "date": {
+    "en": "1914-1924",
+    "es": "1914-1924"
+   },
+   "title": {
+    "en": "Integralismo Lusitano and Sardinha’s peninsular alliance",
+    "es": "Integralismo Lusitano y alianza peninsular de Sardinha"
+   },
+   "body": {
+    "en": "The journal Nação Portuguesa became a venue for Integralismo Lusitano from 1914. António Sardinha later advanced an aliança peninsular grounded in the cooperation of sovereign Portugal and Spain, not the disappearance of Portugal. His traditionalist proposal supplies a Portuguese counterpart to Catholic Hispanidad while retaining its own dynastic and national assumptions.",
+    "es": "La revista Nação Portuguesa fue desde 1914 un espacio del Integralismo Lusitano. António Sardinha propuso después una aliança peninsular fundada en la cooperación de Portugal y España soberanos, no en la desaparición de Portugal. Su proyecto tradicionalista ofrece un contrapunto portugués a la Hispanidad católica, con sus propios supuestos dinásticos y nacionales."
+   },
+   "map": {
+    "en": "Link Portuguese and Spanish intellectual nodes as a proposed alliance; retain two sovereign state polygons.",
+    "es": "Vincular nodos intelectuales portugueses y españoles como alianza propuesta; conservar los dos polígonos estatales soberanos."
+   },
+   "sources": [
+    "B14"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 44,
+   "year": 1924,
+   "date": {
+    "en": "1924",
+    "es": "1924"
+   },
+   "title": {
+    "en": "Ugarte consolidates the Patria Grande program",
+    "es": "Ugarte consolida el programa de la Patria Grande"
+   },
+   "body": {
+    "en": "Ugarte’s La patria grande gathered an American-centered call for unity after his continental campaigns. He treated the Spanish American republics as politically divided parts of a broader nation and sought cooperation capable of acting internationally. The book belongs to 1924; his separately titled La reconstrucción de Hispanoamérica appeared posthumously in 1961.",
+    "es": "La patria grande reunió el llamamiento americanocéntrico a la unidad de Ugarte tras sus campañas continentales. Presentó las repúblicas hispanoamericanas como partes políticamente separadas de una nación más amplia y buscó una cooperación capaz de actuar internacionalmente. El libro corresponde a 1924; La reconstrucción de Hispanoamérica, de título distinto, apareció póstumamente en 1961."
+   },
+   "map": {
+    "en": "Show a book-publication point and an advocacy network among American republics, not an enacted federation.",
+    "es": "Mostrar un punto de publicación y una red de promoción entre repúblicas americanas, no una federación establecida."
+   },
+   "sources": [
+    "B15"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 45,
+   "year": 1924,
+   "date": {
+    "en": "1924",
+    "es": "1924"
+   },
+   "title": {
+    "en": "Haya de la Torre founds the continental APRA",
+    "es": "Haya de la Torre funda el APRA continental"
+   },
+   "body": {
+    "en": "Víctor Raúl Haya de la Torre founded the Alianza Popular Revolucionaria Americana in Mexico as a continent-wide political initiative. Its language of Indo-American coordination, economic autonomy and mass organization differed from literary Arielismo and Catholic Hispanidad. Later Peruvian party politics should be distinguished from the original continental project.",
+    "es": "Víctor Raúl Haya de la Torre fundó en México la Alianza Popular Revolucionaria Americana como iniciativa política continental. Su lenguaje de coordinación indoamericana, autonomía económica y organización de masas difería del arielismo literario y de la Hispanidad católica. Hay que distinguir la posterior política partidaria peruana del proyecto continental original."
+   },
+   "map": {
+    "en": "Place Mexico City as the founding node; connect documented chapters and exile networks as they appear over time.",
+    "es": "Situar Ciudad de México como nodo fundacional; conectar secciones documentadas y redes del exilio según aparezcan en el tiempo."
+   },
+   "sources": [
+    "B16"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 46,
+   "year": 1925,
+   "date": {
+    "en": "1925",
+    "es": "1925"
+   },
+   "title": {
+    "en": "Vasconcelos imagines an Ibero-American universal synthesis",
+    "es": "Vasconcelos imagina una síntesis universal iberoamericana"
+   },
+   "body": {
+    "en": "La raza cósmica: misión de la raza iberoamericana placed a theory of future human synthesis in the setting of Iberian America, accompanied by South American travel notes. Vasconcelos argued that the region’s historical mixture could have a universal vocation. This is a theory of civilizational possibility and cultural leadership, not a map of a state that existed in 1925.",
+    "es": "La raza cósmica: misión de la raza iberoamericana formuló una teoría de síntesis humana futura desde Iberoamérica, acompañada de notas de viajes suramericanos. Vasconcelos sostuvo que el mestizaje histórico de la región podía tener vocación universal. Es una teoría de posibilidad civilizatoria y dirección cultural, no el mapa de un Estado existente en 1925."
+   },
+   "map": {
+    "en": "Plot the author’s Mexico-South America itinerary and the publication node; use a conceptual overlay rather than ethnic polygons.",
+    "es": "Trazar el itinerario México-Suramérica del autor y el nodo editorial; usar una capa conceptual, no polígonos étnicos."
+   },
+   "sources": [
+    "B17"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 47,
+   "year": 1933,
+   "date": {
+    "en": "1933",
+    "es": "1933"
+   },
+   "title": {
+    "en": "Freyre recasts the Portuguese-Brazilian past",
+    "es": "Freyre reinterpreta el pasado luso-brasileño"
+   },
+   "body": {
+    "en": "Gilberto Freyre’s Casa-Grande & Senzala offered an influential account of the making of Brazilian society from Portuguese, African and Indigenous histories. It placed domestic life, language, religion and mixture near the center of civilizational explanation. The book later informed debates about Lusotropicalism, but its 1933 argument and subsequent uses by Portuguese state institutions belong to different moments.",
+    "es": "Casa-Grande & Senzala, de Gilberto Freyre, ofreció una explicación influyente de la formación de la sociedad brasileña a partir de historias portuguesas, africanas e indígenas. Situó la vida doméstica, la lengua, la religión y el mestizaje cerca del centro de la interpretación civilizatoria. El libro alimentó debates posteriores sobre el lusotropicalismo, pero su tesis de 1933 y los usos institucionales portugueses posteriores pertenecen a momentos distintos."
+   },
+   "map": {
+    "en": "Map Recife/Rio publication and later circulation to Portugal and Lusophone Africa as separate dated reception layers.",
+    "es": "Situar Recife/Río como nodos editoriales y la circulación posterior hacia Portugal y el África lusófona en capas de recepción fechadas."
+   },
+   "sources": [
+    "B18"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 48,
+   "year": 1934,
+   "date": {
+    "en": "1934",
+    "es": "1934"
+   },
+   "title": {
+    "en": "Maeztu’s Catholic Hispanidad takes book form",
+    "es": "La Hispanidad católica de Maeztu toma forma de libro"
+   },
+   "body": {
+    "en": "Ramiro de Maeztu assembled Defensa de la Hispanidad from essays associated with Acción Española. He described a community grounded in Catholic universalism and a historical vocation that survived the division into sovereign states. The formulation gave twentieth-century Hispanidad a powerful doctrinal text, distinct from Ugarte’s American-centered federation and from peninsular federalism.",
+    "es": "Ramiro de Maeztu reunió Defensa de la Hispanidad a partir de ensayos vinculados con Acción Española. Describió una comunidad fundada en el universalismo católico y una misión histórica que sobrevivía a la división en Estados soberanos. La formulación dio a la Hispanidad del siglo XX un texto doctrinal poderoso, distinto de la federación americanocéntrica de Ugarte y del federalismo peninsular."
+   },
+   "map": {
+    "en": "Connect Madrid and Buenos Aires with periodical and book circulation; show doctrinal influence, not a revived imperial border.   Cultural offices, language academies and education congresses made cooperation more continuous. Perón’s ABC design joined Argentina, Brazil and Chile in a proposed strategic core; the African independence era gave the Portuguese-speaking world new sovereign participants.",
+    "es": "Conectar Madrid y Buenos Aires mediante la circulación de revista y libro; mostrar influencia doctrinal, no una frontera imperial restaurada.   Oficinas culturales, academias de la lengua y congresos educativos dieron continuidad a la cooperación. El diseño ABC de Perón reunió a Argentina, Brasil y Chile en un núcleo estratégico propuesto; las independencias africanas dieron al mundo lusófono nuevos participantes soberanos."
+   },
+   "sources": [
+    "B19"
+   ],
+   "chapter": 4
+  },
+  {
+   "n": 49,
+   "year": 1937,
+   "date": {
+    "en": "1937",
+    "es": "1937"
+   },
+   "title": {
+    "en": "Falange Exterior organizes a transatlantic network",
+    "es": "Falange Exterior organiza una red transatlántica"
+   },
+   "body": {
+    "en": "During the Spanish Civil War, Falange’s exterior service coordinated branches abroad, including in parts of Hispanic America. It linked party organization, propaganda and emigrant communities under a Spanish state-centered vision of cultural unity. This was an organized political network, not the same institution or doctrine as the later Instituto de Cultura Hispánica.",
+    "es": "Durante la Guerra Civil española, el servicio exterior de Falange coordinó agrupaciones en el extranjero, incluidas algunas de Hispanoamérica. Vinculó organización partidaria, propaganda y comunidades emigrantes bajo una visión española de unidad cultural. Fue una red política organizada, no la misma institución ni la misma doctrina que el posterior Instituto de Cultura Hispánica."
+   },
+   "map": {
+    "en": "Map only documented branches and dispatch routes by date; distinguish party offices from diplomatic missions and cultural institutes.",
+    "es": "Cartografiar solo las sedes y rutas de comunicaciones documentadas y fechadas; diferenciar oficinas partidarias, misiones diplomáticas e institutos culturales."
+   },
+   "sources": [
+    "B20"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 50,
+   "year": 1937,
+   "date": {
+    "en": "1937",
+    "es": "1937"
+   },
+   "title": {
+    "en": "Vasconcelos rewrites Mexico’s national story",
+    "es": "Vasconcelos reescribe la historia nacional mexicana"
+   },
+   "body": {
+    "en": "Breve historia de México, published by Ediciones Botas, interpreted Mexico’s past through a strongly Hispanist argument. It joined an account of national events to a larger claim about the place of New Spain and Mexico within the Hispanic world. The work belongs beside La raza cósmica in a reading program, but the two books ask different questions: historical inheritance and a projected universal future.",
+    "es": "Breve historia de México, publicada por Ediciones Botas, interpretó el pasado mexicano desde una argumentación marcadamente hispanista. Unió el relato de los acontecimientos nacionales con una tesis sobre el lugar de la Nueva España y México en el mundo hispánico. Debe leerse junto a La raza cósmica, pero ambos libros plantean cuestiones distintas: la herencia histórica y un futuro universal proyectado."
+   },
+   "map": {
+    "en": "Place Mexico City as the publishing point; use a historical interpretation layer linking Mexican periods, not a new border.",
+    "es": "Situar Ciudad de México como lugar editorial; usar una capa de interpretación histórica de los periodos mexicanos, no una nueva frontera."
+   },
+   "sources": [
+    "B21"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 51,
+   "year": 1938,
+   "date": {
+    "en": "1938",
+    "es": "1938"
+   },
+   "title": {
+    "en": "García Morente lectures on the idea of Hispanidad",
+    "es": "García Morente diserta sobre la idea de Hispanidad"
+   },
+   "body": {
+    "en": "Manuel García Morente delivered the two Buenos Aires lectures later issued as Idea de la Hispanidad in 1938. His account of Spain as a historical style and of the Christian knight gave the shared-civilization argument a philosophical and ethical form. The Buenos Aires setting itself illustrates that the doctrine was discussed across the Atlantic rather than confined to Madrid.",
+    "es": "Manuel García Morente pronunció en Buenos Aires las dos conferencias publicadas en 1938 como Idea de la Hispanidad. Su interpretación de España como estilo histórico y del caballero cristiano dio una forma filosófica y ética al argumento de civilización compartida. La sede bonaerense muestra que la doctrina se debatía a través del Atlántico, no solo en Madrid."
+   },
+   "map": {
+    "en": "Pin Buenos Aires and the later edition routes; use a lecture and reception network.",
+    "es": "Marcar Buenos Aires y las rutas de ediciones posteriores; usar una red de conferencias y recepción."
+   },
+   "sources": [
+    "B22"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 52,
+   "year": 1945,
+   "date": {
+    "en": "1945",
+    "es": "1945"
+   },
+   "title": {
+    "en": "The Instituto de Cultura Hispánica is founded",
+    "es": "Se funda el Instituto de Cultura Hispánica"
+   },
+   "body": {
+    "en": "Spain established the Instituto de Cultura Hispánica after the Consejo de la Hispanidad. It organized publications, scholarships, lectures and exchange programs to sustain ties with Hispanic American countries. Its institutional reach made Hispanidad a recurring form of cultural diplomacy; the existence of contacts did not amount to a restored common government.",
+    "es": "España creó el Instituto de Cultura Hispánica después del Consejo de la Hispanidad. Organizó publicaciones, becas, conferencias e intercambios para mantener vínculos con los países hispanoamericanos. Su alcance convirtió la Hispanidad en una forma continuada de diplomacia cultural; esos contactos no constituyeron un gobierno común restaurado."
+   },
+   "map": {
+    "en": "Map Madrid headquarters, verified branches, scholarships and editorial circulation; label each as cultural diplomacy.",
+    "es": "Cartografiar sede madrileña, filiales verificadas, becas y circulación editorial; etiquetar todo como diplomacia cultural."
+   },
+   "sources": [
+    "B23"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 53,
+   "year": 1949,
+   "date": {
+    "en": "1949-1951",
+    "es": "1949-1951"
+   },
+   "title": {
+    "en": "Education and language acquire permanent forums",
+    "es": "Educación y lengua adquieren foros permanentes"
+   },
+   "body": {
+    "en": "The first Inter-Ibero-American Congress of Education met in Madrid in 1949 and gave rise to the office that became the OEI. A separate congress of Spanish-language academies in Mexico in 1951 founded ASALE. These forums made education and language cooperation durable across independent states, with different memberships and purposes from a political federation.",
+    "es": "El primer Congreso Interiberoamericano de Educación se reunió en Madrid en 1949 y dio origen a la oficina que se transformó en la OEI. Otro congreso de academias de la lengua española, celebrado en México en 1951, fundó ASALE. Ambos foros dieron continuidad a la cooperación educativa y lingüística entre Estados independientes, con miembros y propósitos distintos de los de una federación política."
+   },
+   "map": {
+    "en": "Plot the Madrid and Mexico City congress nodes; show the OEI and ASALE networks in separate institutional colors.",
+    "es": "Situar los congresos de Madrid y Ciudad de México; mostrar las redes de la OEI y ASALE con colores institucionales diferentes."
+   },
+   "sources": [
+    "B24",
+    "B25"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 54,
+   "year": 1953,
+   "date": {
+    "en": "1953",
+    "es": "1953"
+   },
+   "title": {
+    "en": "Perón proposes the Argentina-Brazil-Chile core",
+    "es": "Perón propone el núcleo Argentina-Brasil-Chile"
+   },
+   "body": {
+    "en": "In his address at Argentina’s National War College, Juan Domingo Perón argued for an effective continental union beginning with Argentina, Brazil and Chile. The ABC proposal placed the Spanish- and Portuguese-speaking giants of South America in one economic and strategic design. It was advocacy for a coordinated bloc, not a treaty that created a new state.",
+    "es": "En su discurso ante la Escuela Nacional de Guerra argentina, Juan Domingo Perón defendió una unión continental efectiva que comenzara por Argentina, Brasil y Chile. La propuesta ABC situó a los grandes países hispanohablantes y lusófono de Suramérica en un mismo diseño económico y estratégico. Fue la defensa de un bloque coordinado, no un tratado creador de un nuevo Estado."
+   },
+   "map": {
+    "en": "Connect Buenos Aires, Rio de Janeiro and Santiago as a proposed ABC triangle; keep national borders and label the scheme unrealized.",
+    "es": "Vincular Buenos Aires, Río de Janeiro y Santiago como triángulo ABC propuesto; conservar las fronteras y señalar que no se realizó."
+   },
+   "sources": [
+    "B26"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 55,
+   "year": 1961,
+   "date": {
+    "en": "1961",
+    "es": "1961"
+   },
+   "title": {
+    "en": "Ugarte’s final reconstruction appears posthumously",
+    "es": "Aparece póstumamente la reconstrucción final de Ugarte"
+   },
+   "body": {
+    "en": "The unfinished La reconstrucción de Hispanoamérica was published in Buenos Aires by Coyoacán ten years after Ugarte’s death. It restated the challenge of giving the divided American republics collective capacity in world affairs. Its posthumous date matters: it is a retrospective culmination of his thought, not a publication from the 1920s.",
+    "es": "La reconstrucción de Hispanoamérica, obra inconclusa, apareció en Buenos Aires con Coyoacán diez años después de la muerte de Ugarte. Reformuló el desafío de dar capacidad colectiva a las repúblicas americanas divididas en la política mundial. Su fecha póstuma importa: es culminación retrospectiva de su pensamiento, no una publicación de los años veinte."
+   },
+   "map": {
+    "en": "Pin Buenos Aires as the publication point and connect it to Ugarte’s earlier tour as a reception line; no sovereignty change.",
+    "es": "Marcar Buenos Aires como punto editorial y enlazarlo con la gira anterior de Ugarte como línea de recepción; sin cambio soberano."
+   },
+   "sources": [
+    "B15"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 56,
+   "year": 1974,
+   "date": {
+    "en": "1974-1975",
+    "es": "1974-1975"
+   },
+   "title": {
+    "en": "Lusophone African states gain independence",
+    "es": "Los Estados africanos lusófonos alcanzan la independencia"
+   },
+   "body": {
+    "en": "Portugal's Carnation Revolution in 1974 was followed by recognition of Guinea-Bissau and the independence of Mozambique, Angola, Cape Verde, and São Tomé and Príncipe, each on its own timetable. Portuguese remained a public language in the new states, whose institutions and political paths developed separately. Their sovereignty brought African governments and writers into the wider Iberophone conversation. The transitions also changed the strategic map of southern Africa during the Cold War.",
+    "es": "Tras la Revolución de los Claveles de 1974, Portugal reconoció a Guinea-Bisáu y alcanzaron la independencia Mozambique, Angola, Cabo Verde y Santo Tomé y Príncipe, cada cual con su propio calendario. El portugués siguió siendo una lengua pública en los nuevos Estados, cuyas instituciones y trayectorias políticas se desarrollaron por separado. Su soberanía incorporó a gobiernos y escritores africanos a la conversación iberófona. Las transiciones también alteraron el mapa estratégico del África austral durante la Guerra Fría."
+   },
+   "map": {
+    "en": "Show separate, correctly dated sovereignty changes for each African territory; retain language and migration layers after independence.   The Ibero-American summits and CPLP operate as distinct institutions, while Macao’s 1999 transition underscored the separation of cultural continuity from political control. Recent philosophical and geopolitical proposals now debate the scope of a Spanish–Portuguese space extending across several continents.",
+    "es": "Mostrar cambios de soberanía separados y correctamente fechados para cada territorio africano; mantener capas lingüísticas y migratorias tras la independencia.   Las cumbres iberoamericanas y la CPLP funcionan como instituciones distintas, mientras que la transición de Macao en 1999 mostró la separación entre continuidad cultural y control político. Las propuestas filosóficas y geopolíticas recientes debaten el alcance de un espacio hispanoportugués repartido por varios continentes."
+   },
+   "sources": [
+    "A1",
+    "A19"
+   ],
+   "chapter": 5
+  },
+  {
+   "n": 57,
+   "year": 1991,
+   "date": {
+    "en": "1991-1996",
+    "es": "1991-1996"
+   },
+   "title": {
+    "en": "Ibero-American summits and the CPLP create parallel forums",
+    "es": "Las cumbres iberoamericanas y la CPLP crean foros paralelos"
+   },
+   "body": {
+    "en": "The first Ibero-American summit brought heads of state and government together in Guadalajara in 1991. In 1996 seven sovereign Portuguese-speaking states founded the CPLP in Lisbon. These are operating interstate institutions rather than proposals for reunification; their partially overlapping linguistic worlds would later invite explicitly pan-Iberian theories.",
+    "es": "La primera cumbre iberoamericana reunió a jefes de Estado y de Gobierno en Guadalajara en 1991. En 1996 siete Estados soberanos de lengua portuguesa fundaron la CPLP en Lisboa. Son instituciones interestatales en funcionamiento, no propuestas de reunificación; sus mundos lingüísticos parcialmente superpuestos inspirarían después teorías panibéricas explícitas."
+   },
+   "map": {
+    "en": "Draw the 1991 summit network and 1996 CPLP membership as distinct, dated layers; highlight overlapping members without merging organizations.",
+    "es": "Dibujar la red de la cumbre de 1991 y los miembros de la CPLP en 1996 como capas distintas y fechadas; destacar miembros comunes sin fusionar organismos."
+   },
+   "sources": [
+    "B27",
+    "B28"
+   ],
+   "chapter": 6
+  },
+  {
+   "n": 58,
+   "year": 1999,
+   "date": {
+    "en": "1999",
+    "es": "1999"
+   },
+   "title": {
+    "en": "Bueno rereads Spain against a European frame",
+    "es": "Bueno relee España frente al marco europeo"
+   },
+   "body": {
+    "en": "Gustavo Bueno’s España frente a Europa reconstructed Spanish history around an imperial political idea and challenged accounts that subordinate Spain’s meaning to Europe alone. His materialist philosophical framework differed sharply from Catholic Hispanidad and from the diplomatic vocabulary of the summits. The book supplied a later conceptual vocabulary for debates about the historical scale of Spain and its American extension.",
+    "es": "España frente a Europa, de Gustavo Bueno, reconstruyó la historia de España en torno a una idea política imperial y discutió las lecturas que subordinan su significado únicamente a Europa. Su marco filosófico materialista difería claramente de la Hispanidad católica y del vocabulario diplomático de las cumbres. El libro aportó conceptos posteriores para debatir la escala histórica de España y su prolongación americana."
+   },
+   "map": {
+    "en": "Make Oviedo and publication/reception sites intellectual nodes; use competing interpretive overlays, not a border animation.",
+    "es": "Situar Oviedo y los espacios de publicación y recepción como nodos intelectuales; usar interpretaciones superpuestas, no una animación fronteriza."
+   },
+   "sources": [
+    "B29"
+   ],
+   "chapter": 6
+  },
+  {
+   "n": 59,
+   "year": 1999,
+   "date": {
+    "en": "1999",
+    "es": "1999"
+   },
+   "title": {
+    "en": "Macao returns to Chinese sovereignty",
+    "es": "Macao vuelve a la soberanía china"
+   },
+   "body": {
+    "en": "Portugal transferred the administration of Macao to China in 1999 under an agreed special administrative framework. The handover closed a centuries-long Portuguese political presence on the South China coast. Macao’s legal and architectural inheritances remain visible in an Asian city shaped by Chinese as well as Portuguese histories. As the map’s final point, it shows that the political end of empire did not erase the connections formed across oceans.",
+    "es": "Portugal transfirió la administración de Macao a China en 1999 bajo un marco acordado de región administrativa especial. La entrega cerró una presencia política portuguesa de siglos en la costa del mar de China Meridional. Las herencias jurídicas y arquitectónicas de Macao siguen visibles en una ciudad asiática configurada tanto por historias chinas como portuguesas. Como punto final del mapa, muestra que el fin político del imperio no borró las conexiones formadas a través de los océanos."
+   },
+   "map": {
+    "en": "Change Macao’s status and label in 1999; keep separate cultural and linguistic markers after the sovereignty transition.",
+    "es": "Cambiar el estatus y el nombre de Macao en 1999; conservar marcadores culturales y lingüísticos tras la transición soberana."
+   },
+   "sources": [
+    "A1",
+    "A20"
+   ],
+   "chapter": 6
+  },
+  {
+   "n": 60,
+   "year": 2015,
+   "date": {
+    "en": "2015-2026",
+    "es": "2015-2026"
+   },
+   "title": {
+    "en": "Iberofonía becomes an explicit pan-Iberian proposal",
+    "es": "Iberofonía se formula como propuesta panibérica explícita"
+   },
+   "body": {
+    "en": "Frigdiano Álvaro Durántez Prados and other advocates describe a multinational space joining Spanish- and Portuguese-speaking countries across America, Europe, Africa and Asia. Publications, public lectures and policy discussions have made this a concrete proposal for cooperation beyond the Ibero-American and CPLP memberships taken separately. The map should present its projected reach as an advocated network; no single political union of these populations has been created.",
+    "es": "Frigdiano Álvaro Durántez Prados y otros promotores describen un espacio multinacional de países de lenguas española y portuguesa en América, Europa, África y Asia. Publicaciones, conferencias y debates de política han convertido esta idea en una propuesta concreta de cooperación más allá de los miembros de la comunidad iberoamericana y la CPLP considerados por separado. El mapa debe presentar su alcance como red promovida; no se ha creado una sola unión política de esas poblaciones."
+   },
+   "map": {
+    "en": "Use a proposed-network layer linking verified Spanish- and Portuguese-language communities on four continents; label actual organizations separately.",
+    "es": "Usar una capa de red propuesta entre comunidades verificadas de español y portugués en cuatro continentes; rotular por separado las organizaciones existentes."
+   },
+   "sources": [
+    "B30"
+   ],
+   "chapter": 6
+  }
+ ]
+}

@@ -6,3 +6,9 @@ node_modules/
 .env.*
 *.tmp
 .devin/*.local.json
+
+# Blender working files for the pillars (regenerate with tools/blender/)
+assets/3d/*.blend
+assets/3d/*.blend1
+assets/3d/hdri/
+assets/3d/frames/
