@@ -4,10 +4,12 @@ import Image from 'next/image';
 import { SITE, SHORTS, VIDEOS, ESSAYS, channel, shortThumb, shortUrl, videoThumb, videoUrl } from '@/lib/content';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import HeroMap from '@/components/HeroMap';
+import Hero from '@/components/Hero';
+import Reel from '@/components/Reel';
+import MapTour from '@/components/MapTour';
 import Signup from '@/components/Signup';
 import CanonGraphLazy from '@/components/canon/CanonGraphLazy';
-import { TOUR, type TourCard } from '@/lib/hero-tour';
+import { TOUR, type TourCard } from '@/lib/map-tour';
 import Pillars from '@/components/Pillars';
 import ShortsRail from '@/components/ShortsRail';
 import ChannelIcon from '@/components/ChannelIcon';
@@ -70,40 +72,11 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <Header lang={lang} />
       <main id="main">
 
-        {/* HERO · the map */}
-        <section className="hero" aria-labelledby="hero-h">
-          <div className="plate-wrap">
-            <HeroMap lang={lang} cards={tourCards(lang)} />
-            <div className="cartouche">
-              <h2>{d.map.title}</h2>
-              <div className="rule" />
-              <dl>
-                <dt>{d.map.states}</dt><dd>{COUNTS.states}</dd>
-                <dt>{d.map.presence}</dt><dd>{COUNTS.presence}</dd>
-                <dt>{d.map.authors}</dt><dd>{COUNTS.authors}</dd>
-                <dt>{d.map.milestones}</dt><dd>{COUNTS.milestones}</dd>
-                <dt>{d.map.rupture}</dt><dd>1898</dd>
-              </dl>
-              <p className="src">{d.map.src}</p>
-            </div>
-          </div>
-          <div className="hero__band">
-            <div>
-              <p className="eyebrow">{d.hero.eyebrow}</p>
-              <h1 id="hero-h">{d.hero.h1a}<em>{d.hero.h1em}</em>{d.hero.h1b}</h1>
-              <p className="lede">{d.hero.lede}</p>
-            </div>
-            <div>
-              <p>{d.hero.pamphletA}<b>{SITE.pamphlet}</b>{d.hero.pamphletB}</p>
-              <Signup lang={lang} />
-              <p className="mono consent">{d.hero.consent}</p>
-              <div className="follow">
-                <span className="follow__label">{d.hero.follow}</span>
-                <SealRow lang={lang} keys={['youtube', 'instagram', 'x', 'tiktok', 'substack']} />
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* the title page */}
+        <Hero lang={lang} />
+
+        {/* the reel: the Institute in a minute, silent until played */}
+        <Reel lang={lang} src="/video/reel.mp4" poster="/video/reel-poster.jpg" />
 
         {/* I · three pillars, as a portico */}
         <Pillars lang={lang} counts={{ milestones: COUNTS.milestones, authors: COUNTS.authors }} />
@@ -116,7 +89,22 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <h2 id="atlas-h">{d.atlas.h}</h2>
             <p>{d.atlas.sub}</p>
           </div>
-          <p className="pending">{d.atlas.pending}</p>
+          <div className="plate-wrap">
+            <MapTour lang={lang} cards={tourCards(lang)} />
+            <div className="cartouche">
+              <h3>{d.map.title}</h3>
+              <div className="rule" />
+              <dl>
+                <dt>{d.map.states}</dt><dd>{COUNTS.states}</dd>
+                <dt>{d.map.presence}</dt><dd>{COUNTS.presence}</dd>
+                <dt>{d.map.authors}</dt><dd>{COUNTS.authors}</dd>
+                <dt>{d.map.milestones}</dt><dd>{COUNTS.milestones}</dd>
+                <dt>{d.map.rupture}</dt><dd>1898</dd>
+              </dl>
+              <p className="src">{d.map.src}</p>
+            </div>
+          </div>
+          <p className="pending atlas__next">{d.atlas.pending}</p>
         </section>
 
         {/* III · the canon */}
@@ -232,6 +220,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p className="eyebrow">{d.comm.eyebrow}</p>
             <h2 id="comm-h">{d.comm.h}</h2>
             <p>{d.comm.sub}</p>
+          </div>
+          <div className="community__pamphlet">
+            <p>{d.hero.pamphletA}<b>{SITE.pamphlet}</b>{d.hero.pamphletB}</p>
+            <Signup lang={lang} />
+            <p className="mono consent">{d.hero.consent}</p>
+            <div className="follow">
+              <span className="follow__label">{d.hero.follow}</span>
+              <SealRow lang={lang} keys={['youtube', 'instagram', 'x', 'tiktok', 'substack']} />
+            </div>
           </div>
           <div className="community__actions">
             <span className="pending"><ChannelIcon name="discord" /> {d.comm.discord} {d.comm.discordPending}</span>

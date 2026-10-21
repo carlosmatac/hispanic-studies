@@ -1,6 +1,6 @@
 # Hero tour: prompts for the AI clips
 
-Six short loops for the cards of the hero map's tour (`site/lib/hero-tour.ts`). Places and atmospheres only, never historical scenes or people: the rule is in [`imagery-and-rights.md`](imagery-and-rights.md). Generate with Veo (Gemini) and send them back; they are logged in `assets/art/SOURCES.md` with the model and the prompt.
+Six short loops for the cards of the Atlas map's tour (`site/lib/map-tour.ts`). Places and atmospheres only, never historical scenes or people: the rule is in [`imagery-and-rights.md`](imagery-and-rights.md). Generate with Veo (Gemini) and send them back; they are logged in `assets/art/SOURCES.md` with the model and the prompt.
 
 **For every clip:** 16:9, 1080p, 6–8 seconds, a seamless loop if the model allows it (otherwise we cross-fade the ends), slow camera, no sound needed, no text, no people in the foreground, no modern logos or cars in frame. The grade should sit on our page: warm, slightly desaturated, cream highlights, deep burgundy-brown shadows, like an old photographic print.
 

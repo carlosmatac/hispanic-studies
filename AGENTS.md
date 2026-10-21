@@ -77,7 +77,7 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 - **Never show the proposed introducers/editors** from the acquisitions workbook: they are real scholars who agreed to nothing.
 - **Images**: only public-domain or properly licensed sources, logged in `assets/art/SOURCES.md` before they ship. Beltrán's Drive folder is a moodboard only.
 - **Motion**: respect `prefers-reduced-motion` everywhere; every animation has a still state; reveals must fail open (content can never stay hidden because a script or a feature is missing).
-- **Homepage order** follows the Atlas direction: map hero + pamphlet signup → three pillars → Atlas → canon → books → watch → read → about → community → merch → footer.
+- **Homepage order** (since 2026-10-21, issue #60): title page (the eagle and the name, nothing else) → the reel → three pillars → Atlas (with the map and its tour) → canon → books → watch → read → about → community (with the pamphlet signup) → merch → footer.
 - **Deploys**: the target is Vercel (project root `site/`). Do not connect or deploy until the user asks for it.
 
 ## The canon graph (`site/components/canon/`)
@@ -92,6 +92,14 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 - The idea (decided 2026-10-21): **the three pillars hold up the Institute**. An engraved Doric portico (`site/public/art/portico.jpg`, AI-generated with Nano Banana Pro, no text in it; logged in `assets/art/SOURCES.md`) carries our own HTML on top: the Institute's works in the six metopes, its name on the architrave, the words MESTIZAJE, CATOLICISMO, LENGUA on the shafts. No captions or explanations of the columns: the section is about the three ideas.
 - Geometry is in the image's own pixels (2400 × 1792) at the top of `Temple.tsx`; replacing the image means re-measuring it. Selecting a pillar tints its shaft and the metopes it holds up through an SVG multiplied over the plate, and lists real titles beside it (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link as `#canon=<record id>`, which the canon graph opens and centres.
 - Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; a fully code-drawn portico (it worked, but looked drawn rather than engraved).
+
+## The reel (`film/`, `site/components/Reel.tsx`)
+
+- The second section is a one-minute film about the Institute, after tigranz.com: full width, silent and looping, graded on the page's own paper so it reads as part of the page; `play` opens it from the start with sound in a contained player, a click outside or Esc closes it.
+- It is made in **HyperFrames** (HTML + GSAP rendered to MP4) in `film/reel/`, from Beltrán's own videos (catalogue in `film/MATERIAL.md`; raw footage in `film/media/`, never committed). Read `film/reel/SPEC.md` before touching it.
+- **The music comes first** and the edit follows its beat grid: brief and prompts in `film/MUSIC.md`. Sound effects from earshot's code-made bank (MIT).
+- Every picture goes through the duotone LUT (`film/tools/make-duotone-lut.py`): burgundy ink on the site's paper. Only real titles, numbers and his own words on screen.
+- The delivered cut is copied to `site/public/video/reel.mp4` (+ `reel-poster.jpg`).
 
 ## Unicorn Studio (WebGL scenes)
 

@@ -1,4 +1,4 @@
-/* The hero map's automatic tour: about ten stops through the Iberophone world,
+/* The Atlas map's automatic tour: about ten stops through the Iberophone world,
    each one a milestone from site/data/milestones.json (Beltrán's sixty), with
    where the camera goes, what lights up and which routes show.
 

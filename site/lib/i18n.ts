@@ -60,6 +60,13 @@ const en = {
     ok: 'Signup is not connected yet: nothing was sent.',
     consent: 'Newsletter and publication updates · unsubscribe any time',
     follow: 'Follow the institute',
+    motto: 'Veritas prius pace',
+  },
+  reel: {
+    label: 'The Institute in one minute',
+    play: 'play',
+    playLabel: 'Play the film about the Institute, with sound',
+    close: 'Close',
   },
   pillars: {
     eyebrow: 'Three pillars',
@@ -242,6 +249,13 @@ const es: Dict = {
     ok: 'El alta aún no está conectada: no se ha enviado nada.',
     consent: 'Boletín y novedades editoriales · puedes darte de baja cuando quieras',
     follow: 'Sigue al instituto',
+    motto: 'Veritas prius pace',
+  },
+  reel: {
+    label: 'El Instituto en un minuto',
+    play: 'play',
+    playLabel: 'Ver la película sobre el Instituto, con sonido',
+    close: 'Cerrar',
   },
   pillars: {
     eyebrow: 'Tres pilares',

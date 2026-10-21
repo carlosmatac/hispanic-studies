@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { dict, type Lang } from '@/lib/i18n';
-import type { TourCard } from '@/lib/hero-tour';
+import type { TourCard } from '@/lib/map-tour';
 
 interface Inset { l: number; r: number; t: number; b: number }
 interface Place { name: Record<string, string>; tier: 'emersa' | 'submersa'; authors: number }
@@ -13,15 +13,15 @@ interface MapApi {
   flyTo(isos: string[], o?: { pad?: number; ms?: number; onDone?: () => void; inset?: Inset }): void;
 }
 
-/* The hero map runs a tour on its own: the camera flies from stop to stop
+/* The Atlas map runs a tour on its own: the camera flies from stop to stop
    (rising when the way is long, then coming down), each stop lights its
-   countries and routes and brings a card. It is an introduction, so it
-   keeps moving, but it never holds the reader:
+   countries and routes and brings a card. It keeps moving, but it never
+   holds the reader:
 
    - pointing at the map or the card, focusing anything in it, or touching
      it holds the tour; a few seconds after the reader lets go, it goes on;
    - the pause button stops it until play is pressed (WCAG 2.2.2);
-   - it waits while the hero is off screen or the tab is hidden;
+   - it waits while the map is off screen or the tab is hidden;
    - with reduced motion it does not play by itself, and the camera cuts. */
 
 const DWELL = 6500;           // ms on each stop once the camera has arrived
@@ -30,9 +30,8 @@ const RELEASE = 2600;         // ms after the reader lets go before it moves on
 const TOUCH_RELEASE = 7000;   // after a touch there is no "leave", so wait longer
 
 /* What lies on top of the map, as fractions of it: the cartouche on the left,
-   the tour card on the right, the hero's title band over the bottom. Only
-   what actually overlaps counts, so on phones (where they stack below) it is
-   all zero. */
+   the tour card on the right. Only what actually overlaps counts, so on
+   phones (where they stack below) it is all zero. */
 function covered(map: HTMLElement | null): Inset {
   const z = { l: 0, r: 0, t: 0.03, b: 0 };
   if (!map) return z;
@@ -47,10 +46,8 @@ function covered(map: HTMLElement | null): Inset {
   const plate = map.closest('.plate-wrap');
   const cart = over(plate?.querySelector('.cartouche'));
   const card = over(plate?.querySelector('.tour'));
-  const band = over(document.querySelector('.hero__band'));
   if (cart) z.l = Math.min(0.4, (cart.right - m.left) / m.width + 0.01);
   if (card) z.r = Math.min(0.45, (m.right - card.left) / m.width + 0.01);
-  if (band) z.b = Math.min(0.35, (m.bottom - band.top) / m.height);
   return z;
 }
 
@@ -60,7 +57,7 @@ const RM = '(prefers-reduced-motion: reduce)';
 const subscribeRM = (cb: () => void) => { const m = window.matchMedia(RM); m.addEventListener('change', cb); return () => m.removeEventListener('change', cb); };
 const getRM = () => window.matchMedia(RM).matches;
 
-export default function HeroMap({ lang, cards }: { lang: Lang; cards: TourCard[] }) {
+export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[] }) {
   const d = dict(lang).map;
   const t = d.tour;
   const host = useRef<HTMLDivElement>(null);
@@ -165,8 +162,8 @@ export default function HeroMap({ lang, cards }: { lang: Lang; cards: TourCard[]
 
   const c = cards[idx];
   return (
-    <div ref={wrap} className={`hero-tour${paused ? ' is-paused' : ''}`}>
-      <div ref={host} className={`hero-map${failed ? ' is-failed' : ''}`} {...handlers}>{failed ? d.failed : null}</div>
+    <div ref={wrap} className={`map-tour${paused ? ' is-paused' : ''}`}>
+      <div ref={host} className={`tour-map${failed ? ' is-failed' : ''}`} {...handlers}>{failed ? d.failed : null}</div>
 
       <aside className="tour" aria-label={t.label} aria-roledescription="carousel" {...handlers}>
         <div className="tour__card" aria-live={paused ? 'polite' : 'off'}>
