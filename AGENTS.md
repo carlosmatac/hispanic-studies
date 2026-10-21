@@ -87,11 +87,10 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 - Selection is our own state keyed by id (`elementsSelectable={false}`); clicking a neighbour in the panel moves the camera to it.
 - Edge strokes use `vector-effect: non-scaling-stroke`, and the graph's SVGs are exempt from the global `svg { max-width: 100% }` (it squashes React Flow's edge layer to zero width and nothing paints).
 
-## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/`)
+## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/`, `tools/blender/`)
 
-- Three **real, dated columns**, one per pillar: San Lorenzo de Carangas, Potosí (1728–44, mestizaje); La Compañía, Quito (1722–65, salomónicas, catolicismo); University of Salamanca (c. 1529, plateresque, lengua). Sources and licences in `assets/art/SOURCES.md`. Never swap in a column whose building and date we have not checked, and never generate one.
-- Each plate is a photograph engraved and gilded by a WebGL2 shader (`engrave.glsl.ts`) as it scrolls in; the still image underneath is the finished plate and is all that shows with reduced motion, without WebGL, or before the texture loads.
-- The page says the engraving and the gold are ours (`pillars.method` in `i18n.ts`). Keep that line.
+- Three **column types** of the Hispanic world, one per pillar, modelled by us in Blender by code: the Andean barroco mestizo column (mestizaje), the Solomonic column with the eucharistic vine (catolicismo), the plateresque balaustre after Sagredo (lengua). Types, not copies of one building; the page says so (`pillars.method` in `i18n.ts`). Change them in `tools/blender/`, never by hand-editing frames, and never with generated imagery.
+- Each plate is a 36-frame turntable (gilded render + clay pass). `EngravedPlate.tsx` turns the column with the scroll, engraves it from the clay pass, then gilds it; the pointer turns it a little more. Underneath, `still.webp` is all that shows with reduced motion, without WebGL2, or before the frames load.
 - In headless tests, launch Chrome with `--enable-unsafe-swiftshader` and scroll with `behavior: 'instant'` (the page smooth-scrolls).
 
 ## Unicorn Studio (WebGL scenes)

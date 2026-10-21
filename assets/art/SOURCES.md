@@ -51,17 +51,16 @@ Fetched from the Commons API on 2026-10-21 at full resolution, cropped to 3:4 by
 | `lengua.jpg` (crop: lower half of the folio, Spanish and Nahuatl columns with the vignette) | *Florentine Codex*, Book 1, folio 80 | Bernardino de Sahagún and Nahua collaborators | 1575–77 | Biblioteca Medicea Laurenziana, Florence (via the World Digital Library) | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:The_Florentine_Codex_(folio_80).jpg) |
 | `catolicismo.jpg` (crop: Saint Anthony with his vihuela, inside the canvas edge) | *Saint Bonaventure and Saint Anthony of Padua* | Basilio Santa Cruz Pumacallao | c. 1670–90 | Metropolitan Museum of Art, 2018.652.1 (Open Access) | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:Basilio_Santa_Cruz_Pumacallao_-_Saint_Bonaventure_and_Saint_Anthony_of_Padua_-_2018.652.1_-_Metropolitan_Museum_of_Art.jpg) · [Met](https://www.metmuseum.org/art/collection/search/764086) |
 
-## The three columns (`assets/art/pillars/columns/`, processed copies in `site/public/art/pillars/col-*`)
+## The three columns (`site/public/art/pillars/<key>/`)
 
-Photographs of the buildings, fetched from Commons on 2026-10-21. `columns/*.jpg` is our straight crop of each photograph (the crop and the EXIF rotation are the only changes). On the site, each plate is our adaptation of that crop: `col-<key>.webp` is its tone, normalised to grey, which the WebGL shader in `site/components/pillars/` engraves and gilds; `col-<key>-gilded.jpg` is the finished state, rendered with the same method by `tools/build-pillar-plates.py`, shown where WebGL or motion is off. The engraving and the gold are ours and are said to be on the page; the columns are real and dated from the sources below. Our adaptations of the CC BY-SA photograph are shared under CC BY-SA 4.0.
+Our own 3D models, rendered by us in Blender: nothing photographed or copied from a single building. How they are built, and from which sources each type follows, is in [`tools/blender/README.md`](../../tools/blender/README.md): the Andean barroco mestizo's flat carving, the Hispanic Solomonic column with its vine, and the plateresque balaustre after Diego de Sagredo, *Medidas del Romano* (Toledo, 1526); Corinthian capitals after Vignola.
 
-| Pillar | Column | Date (source) | Photograph | Licence | Source |
-| --- | --- | --- | --- | --- | --- |
-| Mestizaje | Pilaster with a carved female figure, stone portal of San Lorenzo de Carangas, Potosí (barroco mestizo) | Portal carved 1728–44; both dates are inscribed on it (es.wikipedia, *Iglesia de San Lorenzo de Carangas*) | Arabsalam, 2024 | CC BY 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:San_Lorenzo_Church_Potosi_Bolivia_154.jpg) |
-| Catolicismo | Solomonic columns of the andesite façade of La Compañía de Jesús, Quito | Façade begun 1722 (Leonardo Deubler), halted 1725, resumed 1760 (Venancio Gandolfi), finished 24 July 1765 (en/es.wikipedia, *Iglesia de la Compañía, Quito*) | Ranoutofusername, 2022 | CC BY-SA 4.0 | [Commons](https://commons.wikimedia.org/wiki/File:Compa%C3%B1%C3%ADa_de_Jes%C3%BAs,_Quito_05.jpg) |
-| Lengua | Pilaster between the eagle of Charles V and the royal arms, plateresque façade of the University of Salamanca (Escuelas Mayores) | c. 1529 (es.wikipedia, *Fachada de la Universidad de Salamanca*) | Aly Jentges, 2008 | Attribution (any use, credit the author) | [Commons](https://commons.wikimedia.org/wiki/File:Salamanca_Fachada_Plateresca_de_la_Universidad.jpg) |
+| What | Source | Licence |
+| --- | --- | --- |
+| The models, the carving pattern, the renders | Made by us (`tools/blender/`) | Ours |
+| Studio lighting reflected by the gold: *Studio Small 09* HDRI | Sergej Majboroda, [Poly Haven](https://polyhaven.com/a/studio_small_09) | CC0 |
 
-Rejected on the way, so nobody re-proposes them: the Santa Faz salomónica in Alicante (the façade was damaged in 1936 and restored, date of the column unclear); Caramuel's *Architectura civil* frontispiece (1678, real salomónicas, but too small on Commons for a tall plate).
+An earlier version of these plates used photographs of San Lorenzo de Carangas (Potosí), La Compañía (Quito) and the University of Salamanca, engraved in the browser; it was replaced by the models on 2026-10-21 and its files removed.
 
 The paintings above (`mestizaje.jpg`, `lengua.jpg`, `catolicismo.jpg`) stay on the page as small companions under each pillar's text.
 

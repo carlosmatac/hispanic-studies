@@ -27,13 +27,11 @@ drops the proposed introducers and editors — real scholars who have agreed to
 nothing — along with market and risk ratings, rights columns and decision
 fields. See `docs/research/provided-documentation.md`.
 
-## `build-pillar-plates.py`
+## `blender/`
 
-Builds the three engraved pillar plates (`site/public/art/pillars/col-*`) from
-the column crops in `assets/art/pillars/columns/`. The one tool that is not
-stdlib only: it needs Pillow and NumPy. Run it again after changing a crop or
-the engraving method in `site/components/pillars/engrave.glsl.ts`, so the still
-image and the WebGL plate stay alike.
+The 3D columns of the pillars section and their turntable renders: see
+[`blender/README.md`](blender/README.md). Needs Blender with its MCP extension,
+and Pillow for packing the frames.
 
 ## Sources and licences
 

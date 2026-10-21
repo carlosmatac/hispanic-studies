@@ -3,17 +3,17 @@ import { dict, type Lang } from '@/lib/i18n';
 import { SITE } from '@/lib/content';
 import EngravedPlate from './pillars/EngravedPlate';
 
-/* The three pillars as a plate from an architecture treatise: three real
-   columns, one from each tradition, standing under an entablature with the
+/* The three pillars as a plate from an architecture treatise: three column
+   types of the Hispanic world, one per pillar, under an entablature with the
    motto and on steps that run into the Atlas section.
 
-     Mestizaje    San Lorenzo de Carangas, Potosí (1728–44), barroco mestizo
-     Catolicismo  La Compañía de Jesús, Quito (1722–65), Solomonic columns
-     Lengua       University of Salamanca (c. 1529), plateresque
+     Mestizaje    column of the Andean barroco mestizo, flat two-plane carving
+     Catolicismo  Solomonic column with the eucharistic vine
+     Lengua       plateresque balaustre, after Sagredo, Medidas del Romano (1526)
 
-   Each plate is a photograph of the building, engraved and then gilded in
-   WebGL as it scrolls in (pillars/EngravedPlate.tsx). Photographs, paintings
-   and their licences: assets/art/SOURCES.md. */
+   The columns are our own 3D models of each type (tools/blender/), rendered
+   as turntables; pillars/EngravedPlate.tsx turns, engraves and gilds them as
+   they scroll in. Sources: assets/art/SOURCES.md. */
 
 const ROMAN = ['I', 'II', 'III'];
 
@@ -46,12 +46,7 @@ export default function Pillars({ lang }: { lang: Lang }) {
             <article key={p.key} className={`column column--${p.key}`}>
               <figure className="lamina">
                 <span className="lamina__no" aria-hidden="true">{d.pillars.plate} {ROMAN[i]}</span>
-                <EngravedPlate
-                  tex={`/art/pillars/col-${p.key}.webp`}
-                  still={`/art/pillars/col-${p.key}-gilded.jpg`}
-                  alt={p.colAlt}
-                  order={i}
-                />
+                <EngravedPlate dir={`/art/pillars/${p.key}`} alt={p.colAlt} order={i} />
                 <figcaption>
                   <span className="lamina__cap">{p.col}</span>
                   <span className="lamina__credit">{p.credit}</span>
