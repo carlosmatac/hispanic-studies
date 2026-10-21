@@ -1,0 +1,100 @@
+# The reel's music
+
+The music comes first; the film is cut to it (the method in
+gulipad.com/writings/mila-launch-video). This file is the brief for the track and the beat
+grid the edit is planned on. Once the real track exists, its beats and hits are measured
+(librosa) and `film/` is re-timed to them; the grid below is the target, not a promise.
+
+## The idea: La Folía, rebuilt
+
+**La Folía** is the Iberian ground: a chord sequence born in Portugal and Spain in the late
+1400s that Corelli, Vivaldi, Handel and Rachmaninoff all took up. It is the most
+recognisably Hispanic piece of music that is not a cliché (no flamenco "¡olé!", no mariachi),
+it belongs to the same centuries IHS writes about, and it is in the public domain.
+
+The track keeps the Folía's harmony and character (stately, minor, a little defiant) and
+dresses it in the language of motion-design reels: a tight modern beat, deep sub hits on the
+cuts, clean stops before the drops, short and punchy. Old bones, new muscle: which is what
+the Institute is.
+
+Harmony (one chord per bar, D minor):
+
+    | Dm | A  | Dm | C  | F  | C  | Dm | A  |    first half ends open (on A)
+    | Dm | A  | Dm | C  | F  | C  | Dm A | Dm |  second half closes (on Dm)
+
+## Spec
+
+- **Length**: 60 s exactly (it has to land on the logo, then ring out).
+- **Tempo**: 112 BPM, 4/4. A bar is 2.143 s; the Folía is 8 bars (17.1 s).
+- **Key**: D minor.
+- **No vocals, no choir syllables.** Beltrán's own voice goes on top in two places.
+- **Instruments**: Spanish baroque guitar (rasgueado strums and single plucked lines),
+  plucked harpsichord or a dry plucked synth, low strings (cellos, basses) playing short
+  stabs; tight modern drums (punchy kick, snap clap, palmas, cajón, closed hats); a clean
+  sub bass that hits on the downbeats; one big low impact on each drop.
+- **Mix**: dry and close, not a cathedral. Loud but not squashed (−14 LUFS integrated for the
+  web; peaks below −1 dBTP).
+- **Avoid**: EDM supersaws, trap hi-hat rolls, "epic trailer" choirs and braams, flamenco
+  vocals and "olé", mariachi trumpets, castanets as a gag, lo-fi vinyl crackle.
+
+## The beat grid (what the edit is planned on)
+
+| bars | time | section | music | picture |
+| --- | --- | --- | --- | --- |
+| 1–4 | 0.00–8.57 | **Intro** | solo baroque guitar: the Folía's first half, played freely; a soft sub swell under bar 4 | the name, built letter by letter; the eagle's stepped wings |
+| 5–8 | 8.57–17.14 | **Build** | palmas and a muted kick join; strings stab on every downbeat; a riser through bar 8; **full stop on the last beat** (silence 0.5 s) | first glimpses of Beltrán, faster and faster |
+| 9–16 | 17.14–34.29 | **Drop 1** | the whole kit and the sub; guitar rasgueado on the offbeats; cellos play the Folía bass line | the montage: Beltrán to camera, his openings, the maps and paintings, one cut per beat at its peak |
+| 17–20 | 34.29–42.86 | **Break** | half time: only strings holding the chords, a soft pulse, space | the three pillars, one bar each: MESTIZAJE · CATOLICISMO · LENGUA, and one line of Beltrán's own voice |
+| 21–26 | 42.86–55.71 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel, the essays, the canon, the books, the map; real numbers only |
+| 27–28 | 55.71–60.00 | **Lockup** | one clean hit on the downbeat of bar 27 (low impact + a final Dm chord), then it rings out | the IHS logo and the name; silence by 60 s |
+
+The key sync points: **8.57** (build starts), **17.14** (drop 1), **34.29** (break),
+**42.86** (drop 2), **55.71** (logo hit).
+
+## Making it
+
+Generate 3–4 takes, put them in `~/Descargas`, and say their names. Each one is measured
+(tempo, where the drops and the final hit land, loudness) and the best fit is chosen; the
+edit is then re-timed to it.
+
+### ElevenLabs Music (composition plan, preferred)
+
+ElevenLabs lets each section have its own length and styles, which is what the grid needs.
+Global styles: `instrumental, 112 bpm, D minor, La Folia chord progression, Spanish baroque
+guitar, modern cinematic percussion, punchy kick, palmas, cajon, deep sub bass, short low
+string stabs, dry close mix, motion design showreel`. Negative global styles: `vocals,
+choir, EDM supersaw, trap hi-hats, trailer braams, flamenco singing, mariachi, lo-fi`.
+
+| section | length | styles | negative |
+| --- | --- | --- | --- |
+| Intro | 8.6 s | solo Spanish baroque guitar playing La Folia, free, intimate, soft sub swell at the end | drums |
+| Build | 8.6 s | palmas, muted kick on every beat, low string stabs on downbeats, rising tension, riser, hard stop with half a second of silence at the end | |
+| Drop 1 | 17.1 s | full modern beat, punchy kick and sub on downbeats, guitar rasgueado on offbeats, cellos playing the La Folia bass line, driving, confident | |
+| Break | 8.6 s | half time, sustained strings only, soft pulse, spacious, room for a spoken voice | drums, kick |
+| Drop 2 | 12.9 s | full beat returns bigger, two guitars, higher strings, builds in the last bar | |
+| Lockup | 4.3 s | one big low impact and a final D minor chord, then ring out to silence | drums after the hit |
+
+The same as one prompt, for the plain text box:
+
+> Instrumental motion-design showreel track, exactly 60 seconds, 112 BPM, D minor, built on
+> the La Folía chord progression (Dm A Dm C F C Dm A). 0–8 s: solo Spanish baroque guitar
+> plays the Folía, intimate. 8–17 s: palmas and a muted kick join, low string stabs on the
+> downbeats, a riser, then a hard stop. 17 s: the drop: punchy modern beat, deep sub bass on
+> the downbeats, cajón, guitar rasgueado on the offbeats, cellos on the Folía bass line.
+> 34–43 s: half-time break, strings only, spacious. 43–56 s: the beat returns bigger. 56 s: one
+> big low hit and a final D minor chord ringing out to silence at 60 s. Dry, close, confident.
+> No vocals, no choir, no EDM supersaws, no trailer braams, no flamenco singing.
+
+### Suno (if ElevenLabs does not land the structure)
+
+Style: `instrumental, La Folia, Spanish baroque guitar, modern cinematic beat, palmas, cajon,
+sub bass, string stabs, 112 bpm, D minor, motion design`. Exclude: `vocals, choir, edm,
+trap`. Lyrics field (structure tags only, no words): `[Intro: solo guitar] [Build] [Stop]
+[Drop] [Break: strings only] [Drop] [Final hit] [End]`.
+
+## Rights
+
+The Folía as a composition is public domain. The recording is whatever the generator makes:
+use a plan that grants commercial use (ElevenLabs paid plans; Suno Pro or Premier), and log
+the final track in `assets/art/SOURCES.md` with the tool, the plan, the date and the prompt.
+Sound effects come from earshot's code-made bank (MIT, github.com/Leonxlnx/earshot).

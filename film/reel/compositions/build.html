@@ -1,0 +1,32 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; color: #28231e; }
+    .bd-line { position: absolute; left: 150px; top: 330px; white-space: nowrap; font-weight: 600; font-size: 132px; line-height: 1; letter-spacing: -0.02em; color: #470b15; }
+    .bd-line--alt { color: #28231e; font-style: italic; font-weight: 500; top: 520px; }
+    #bd-note { position: absolute; left: 150px; bottom: 90px; font-family: Inter, sans-serif; font-weight: 500; font-size: 30px; color: #470b15; }
+  </style>
+  <div id="root" data-composition-id="build" data-width="1920" data-height="1080">
+    <p id="bd-l0" class="bd-line clip" data-start="0.0" data-duration="2.1429">You Were Given a History</p>
+    <p id="bd-l1" class="bd-line bd-line--alt clip" data-start="0.5357" data-duration="1.6071">With 300 Years Cut Out of It</p>
+    <p id="bd-l2" class="bd-line clip" data-start="2.1429" data-duration="2.1429">The Black Legend</p>
+    <p id="bd-l3" class="bd-line bd-line--alt clip" data-start="2.6786" data-duration="1.6071">Latino vs. Hispanic</p>
+    <p id="bd-l4" class="bd-line clip" data-start="4.2857" data-duration="2.1429">The Bicontinental Spain</p>
+    <p id="bd-l5" class="bd-line bd-line--alt clip" data-start="4.8214" data-duration="1.6071">Nobody Talks About</p>
+    <p id="bd-l6" class="bd-line clip" data-start="6.4286" data-duration="2.1429">Spain Built the New World.</p>
+    <p id="bd-l7" class="bd-line bd-line--alt clip" data-start="6.9643" data-duration="1.6071">England Rebuilt the Old.</p>
+    <p id="bd-note" class="clip" data-start="0" data-duration="8.5715">[Draft: Beltrán's clips go here]</p>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const B = 60 / 112;
+      for (let i = 0; i < 8; i++) {
+        const t = Math.floor(i / 2) * 4 * B + (i % 2) * B;
+        tl.fromTo(`#bd-l${i}`, { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, t + 0.02);
+      }
+      window.__timelines["build"] = tl;
+    })();
+  </script>
+</template>

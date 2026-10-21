@@ -1,0 +1,60 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; color: #28231e; }
+    .mt-shot { position: absolute; inset: 0; background: #f9f3dd; }
+    .mt-shot img { position: absolute; left: 150px; top: 120px; width: 1100px; height: 619px; object-fit: cover; }
+    .mt-shot img.mt-tall { left: 150px; top: 60px; width: 540px; height: 960px; }
+    .mt-title { position: absolute; left: 1290px; right: 120px; top: 220px; font-weight: 600; font-size: 84px; line-height: 1; color: #470b15; }
+    .mt-tall + .mt-title { left: 760px; font-size: 110px; }
+    #mt-note { position: absolute; left: 150px; bottom: 90px; font-family: Inter, sans-serif; font-weight: 500; font-size: 30px; color: #470b15; }
+  </style>
+  <div id="root" data-composition-id="montage" data-width="1920" data-height="1080">
+    <div id="mt-s0" class="mt-shot clip" data-start="0.0" data-duration="4.2857">
+      <img src="assets/img/yt-BISc6y6fIuM.jpg" alt="" />
+      <p class="mt-title">The "Wild" West Was a LIE</p>
+    </div>
+    <div id="mt-s1" class="mt-shot clip" data-start="4.2857" data-duration="4.2857">
+      <img src="assets/img/yt-3LYcIzK8mxo.jpg" alt="" />
+      <p class="mt-title">There Was No Mexico Before Cortes</p>
+    </div>
+    <div id="mt-s2" class="mt-shot clip" data-start="8.5714" data-duration="4.2857">
+      <img src="assets/img/yt-JNLr7NM_buA.jpg" alt="" />
+      <p class="mt-title">Assimilation Is OVER</p>
+    </div>
+    <div id="mt-s3" class="mt-shot clip" data-start="12.8571" data-duration="4.2857">
+      <img src="assets/img/yt-5Yug5P6lbCc.jpg" alt="" />
+      <p class="mt-title">Spain vs. The False Messiah</p>
+    </div>
+    <div id="mt-s4" class="mt-shot clip" data-start="17.1429" data-duration="4.2857">
+      <img src="assets/img/yt-NJKfmnwbOXQ.jpg" alt="" />
+      <p class="mt-title">How to be Catholic</p>
+    </div>
+    <div id="mt-s5" class="mt-shot clip" data-start="21.4286" data-duration="4.2857">
+      <img src="assets/img/yt-Xinb9TN9aOM.jpg" alt="" />
+      <p class="mt-title">Why Mexico Keeps FAILING at the World Cup</p>
+    </div>
+    <div id="mt-s6" class="mt-shot clip" data-start="25.7143" data-duration="4.2857">
+      <img src="assets/img/yt-XnwLiEsrPdA.jpg" class="mt-tall" alt="" />
+      <p class="mt-title">Cross of Burgundy</p>
+    </div>
+    <div id="mt-s7" class="mt-shot clip" data-start="30.0" data-duration="4.2857">
+      <img src="assets/img/yt-lwJfzpmMTD8.jpg" class="mt-tall" alt="" />
+      <p class="mt-title">Why are indigenous Bolivians waving a Spanish imperial flag?</p>
+    </div>
+    <p id="mt-note" class="clip" data-start="0" data-duration="17.1428">[Draft: Beltrán's clips go here]</p>
+  </div>
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      const B = 60 / 112;
+      for (let i = 0; i < 8; i++) {
+        const t = i * 4 * B;
+        tl.fromTo(`#mt-s${i} img`, { scale: 1.1, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "expo.out" }, t);
+        tl.fromTo(`#mt-s${i} .mt-title`, { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16 }, t + B);
+      }
+      window.__timelines["montage"] = tl;
+    })();
+  </script>
+</template>

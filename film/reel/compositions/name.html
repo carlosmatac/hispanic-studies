@@ -1,0 +1,79 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; }
+
+    /* bars 1–2: the eagle opens its wings, the name lands under it */
+    #name-page { position: absolute; inset: 0; }
+    #name-eagle-wrap { position: absolute; left: 50%; top: 50%; width: 1020px; height: 723px; margin: -362px 0 0 -510px; }
+    #name-eagle { width: 100%; height: 100%; display: block; }
+    #name-small { position: absolute; left: 0; right: 0; top: 618px; text-align: center; font-style: italic; font-weight: 500; font-size: 64px; color: #28231e; }
+    #name-big { position: absolute; left: 0; right: 0; top: 690px; text-align: center; font-weight: 600; font-size: 218px; line-height: 1; letter-spacing: -0.025em; color: #470b15; white-space: nowrap; }
+    #name-small span, #name-big span { display: inline-block; }
+
+    /* the stepped wipe: seven bands, each a step of the wings */
+    .name-step { position: absolute; left: 0; width: 1920px; height: 155px; background: #470b15; }
+
+    /* bars 3–4: the claim, paper on burgundy */
+    #name-claim { position: absolute; inset: 0; background: #470b15; }
+    .name-line { position: absolute; left: 150px; font-weight: 600; font-size: 168px; line-height: 1; letter-spacing: -0.02em; color: #f9f3dd; white-space: nowrap; }
+    .name-line span { display: inline-block; }
+    .name-line em { font-style: italic; font-weight: 500; }
+    #name-l1 { top: 300px; }
+    #name-l2 { top: 520px; }
+  </style>
+
+  <div id="root" data-composition-id="name" data-width="1920" data-height="1080">
+    <div id="name-page" class="clip" data-start="0" data-duration="4.4">
+      <div id="name-eagle-wrap"><img id="name-eagle" src="assets/img/ihs-logo.svg" alt="" /></div>
+      <p id="name-small"><span>Institute</span> <span>for</span></p>
+      <p id="name-big"><span>H</span><span>i</span><span>s</span><span>p</span><span>a</span><span>n</span><span>o</span> <span>S</span><span>t</span><span>u</span><span>d</span><span>i</span><span>e</span><span>s</span></p>
+    </div>
+
+    <div id="name-claim" class="clip" data-start="4.2857" data-duration="4.2857">
+      <p id="name-l1" class="name-line"><span>One</span> <span>civilization,</span></p>
+      <p id="name-l2" class="name-line"><span><em>two</em></span> <span><em>languages,</em></span> <span>four</span> <span>continents.</span></p>
+    </div>
+
+    <div id="name-wipe" class="clip" data-start="3.7" data-duration="4.87" data-layout-ignore>
+      <div class="name-step" style="top: 0px"></div>
+      <div class="name-step" style="top: 154px"></div>
+      <div class="name-step" style="top: 308px"></div>
+      <div class="name-step" style="top: 462px"></div>
+      <div class="name-step" style="top: 616px"></div>
+      <div class="name-step" style="top: 770px"></div>
+      <div class="name-step" style="top: 924px"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const B = 60 / 112;              // a beat
+      const bar = (n) => n * 4 * B;    // the start of bar n+1, from 0
+      const tl = gsap.timeline({ paused: true });
+
+      // bar 1: the body is there on frame 0; the wings open in seven steps
+      tl.fromTo("#name-eagle-wrap", { clipPath: "inset(0% 44% 0% 44%)", y: 120 }, { clipPath: "inset(0% 0% 0% 0%)", y: 120, duration: 3.5 * B, ease: "steps(7)" }, 0);
+      // bar 2: the eagle rises, the name arrives under it
+      tl.fromTo("#name-eagle-wrap", { scale: 1, y: 120 }, { scale: 0.62, y: -150, duration: 0.7, ease: "power3.inOut", immediateRender: false }, bar(1) - 0.35);
+      tl.fromTo("#name-small span", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.07, ease: "power2.out" }, bar(1));
+      tl.fromTo("#name-big span", { opacity: 0, filter: "blur(10px)", y: 30 }, { opacity: 1, filter: "blur(0px)", y: 0, duration: 0.45, stagger: 0.035, ease: "expo.out" }, bar(1) + B);
+
+      // the steps sweep in from the left, one band after another, and become the ground
+      tl.fromTo("#name-wipe .name-step", { xPercent: -100 }, { xPercent: 0, duration: 0.42, stagger: { each: 0.035, from: "end" }, ease: "power3.in" }, bar(2) - 0.6);
+      // then leave to the right as the claim is already there under them
+      tl.fromTo("#name-wipe .name-step", { xPercent: 0 }, { xPercent: 100, duration: 0.5, stagger: { each: 0.035 }, ease: "power3.out", immediateRender: false }, bar(2));
+
+      // bar 3: "One civilization," word by word, on the beat
+      tl.fromTo("#name-l1 span", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, stagger: B, ease: "power2.out" }, bar(2) + 0.12);
+      // bar 4: "two languages, four continents." a word a beat
+      tl.fromTo("#name-l2 span", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, stagger: B, ease: "power2.out" }, bar(3) - 0.04);
+
+      // the steps come back from the right and leave paper for the next scene
+      tl.fromTo("#name-wipe .name-step", { xPercent: 100, backgroundColor: "#f9f3dd" }, { xPercent: 0, backgroundColor: "#f9f3dd", duration: 0.4, stagger: { each: 0.03, from: "end" }, ease: "power3.in", immediateRender: false }, bar(4) - 0.55);
+
+      window.__timelines["name"] = tl;
+    })();
+  </script>
+</template>

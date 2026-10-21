@@ -1,0 +1,48 @@
+<!doctype html>
+<html
+  lang="en"
+  data-resolution="landscape"
+  data-composition-variables='[
+    {"id":"color-ground","type":"color","label":"Paper","default":"#F9F3DD"},
+    {"id":"color-ink","type":"color","label":"Ink","default":"#28231E"},
+    {"id":"color-accent","type":"color","label":"Burgundy","default":"#470B15"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* The Institute for Hispano Studies in one minute. Cut to a 112 BPM
+         grid (film/MUSIC.md): a bar is 2.142857 s, the scenes tile it. */
+      :root {
+        --paper: #f9f3dd;
+        --ink: #28231e;
+        --burgundy: #470b15;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; background: var(--paper); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="60" data-width="1920" data-height="1080">
+      <!-- bars 1–4: the name -->
+      <div id="name" data-composition-id="name" data-composition-src="compositions/name.html" data-start="0" data-duration="8.5714" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- bars 5–8: the build, Beltrán in glimpses -->
+      <div id="build" data-composition-id="build" data-composition-src="compositions/build.html" data-start="8.5714" data-duration="8.5715" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- bars 9–16: drop one, the montage -->
+      <div id="montage" data-composition-id="montage" data-composition-src="compositions/montage.html" data-start="17.1429" data-duration="17.1428" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- bars 17–20: the break, three pillars -->
+      <div id="pillars" data-composition-id="pillars" data-composition-src="compositions/pillars.html" data-start="34.2857" data-duration="8.5714" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- bars 21–26: drop two, what the Institute makes -->
+      <div id="works" data-composition-id="works" data-composition-src="compositions/works.html" data-start="42.8571" data-duration="12.8572" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- bars 27–28: the mark -->
+      <div id="lockup" data-composition-id="lockup" data-composition-src="compositions/lockup.html" data-start="55.7143" data-duration="4.2857" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

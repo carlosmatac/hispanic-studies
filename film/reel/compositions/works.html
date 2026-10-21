@@ -1,0 +1,263 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; color: #28231e; }
+    .wk-shot { position: absolute; inset: 0; background: #f9f3dd; }
+    /* every shot names one work: a big word, one real figure under it */
+    .wk-word { position: absolute; left: 150px; top: 120px; font-weight: 600; font-size: 190px; line-height: 0.9; letter-spacing: -0.025em; color: #470b15; white-space: nowrap; }
+    .wk-word span { display: inline-block; }
+    .wk-fig { position: absolute; left: 156px; top: 310px; font-family: Inter, sans-serif; font-weight: 500; font-size: 38px; color: #28231e; white-space: nowrap; }
+
+    /* watch: his own thumbnails, a wall that slides in */
+    #wk-watch .wk-word { top: 640px; }
+    #wk-watch .wk-fig { top: 830px; }
+    #wk-wall { position: absolute; left: 690px; top: 110px; display: grid; grid-template-columns: repeat(3, 340px); gap: 20px; }
+    .wk-thumb { width: 340px; height: 191px; object-fit: cover; display: block; }
+
+    /* read: the essays, as a contents page */
+    #wk-list { position: absolute; left: 150px; top: 420px; width: 1620px; list-style: none; }
+    #wk-list li { display: flex; justify-content: space-between; gap: 40px; align-items: baseline; padding: 14px 0; border-top: 2px solid #470b15; font-size: 44px; }
+    #wk-list li b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #wk-list li span { font-family: Inter, sans-serif; font-weight: 500; font-size: 30px; white-space: nowrap; color: #470b15; }
+
+    /* the canon and the Atlas: every text, every milestone, as a dot on its year */
+    .wk-axis { position: absolute; left: 150px; width: 1620px; bottom: 260px; height: 400px; }
+    .wk-axis::after { content: ""; position: absolute; left: 0; right: 0; bottom: -10px; height: 3px; background: #28231e; }
+    .wk-dot { position: absolute; width: 24px; height: 24px; margin-left: -12px; border-radius: 50%; background: #470b15; }
+    .wk-tick { position: absolute; bottom: -70px; translate: -50% 0; font-family: Inter, sans-serif; font-weight: 500; font-size: 32px; white-space: nowrap; }
+
+    /* books: the series as spines */
+    #wk-shelf { position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }
+    .wk-spine { width: 128px; height: 820px; background: #470b15; position: relative; }
+    .wk-spine:nth-child(2) { height: 760px; } .wk-spine:nth-child(4) { height: 790px; } .wk-spine:nth-child(5) { height: 740px; }
+    .wk-spine--paper { background: #ede3c8; outline: 3px solid #470b15; outline-offset: -3px; }
+    .wk-spine span { position: absolute; left: 0; right: 0; bottom: 40px; display: grid; place-items: center; writing-mode: vertical-rl; rotate: 180deg; font-weight: 600; font-size: 40px; white-space: nowrap; color: #f9f3dd; }
+    .wk-spine--paper span { color: #470b15; }
+    #wk-books .wk-word { font-size: 150px; }
+    #wk-books .wk-fig { top: 290px; }
+
+    /* follow: four real figures, landing on the beats */
+    #wk-follow { background: #470b15; }
+    #wk-nums { position: absolute; left: 150px; width: 1620px; top: 360px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
+    .wk-num { color: #f9f3dd; }
+    .wk-num b { display: block; font-weight: 600; font-size: 150px; line-height: 1; letter-spacing: -0.03em; }
+    .wk-num span { display: block; margin-top: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 38px; }
+    #wk-join { position: absolute; left: 150px; top: 120px; font-weight: 500; font-style: italic; font-size: 92px; color: #f9f3dd; }
+  </style>
+
+  <div id="root" data-composition-id="works" data-width="1920" data-height="1080">
+    <div id="wk-watch" class="wk-shot clip" data-start="0" data-duration="2.1429">
+      <div id="wk-wall">
+        <img class="wk-thumb" src="assets/img/yt-BISc6y6fIuM.jpg" alt="" />
+        <img class="wk-thumb" src="assets/img/yt-JNLr7NM_buA.jpg" alt="" />
+        <img class="wk-thumb" src="assets/img/yt-3LYcIzK8mxo.jpg" alt="" />
+        <img class="wk-thumb" src="assets/img/yt-5Yug5P6lbCc.jpg" alt="" />
+        <img class="wk-thumb" src="assets/img/yt-NJKfmnwbOXQ.jpg" alt="" />
+        <img class="wk-thumb" src="assets/img/yt-Xinb9TN9aOM.jpg" alt="" />
+      </div>
+      <p class="wk-word"><span>Watch</span></p>
+      <p class="wk-fig">13.5K subscribers on YouTube</p>
+    </div>
+
+    <div id="wk-read" class="wk-shot clip" data-start="2.1429" data-duration="2.1428">
+      <p class="wk-word"><span>Read</span></p>
+      <p class="wk-fig">Essays and translations on Substack</p>
+      <ul id="wk-list">
+        <li><b>The Catholic-Hispanic Position on Racism</b><span>Francisco Elías de Tejada</span></li>
+        <li><b>The Vikings Did Not Discover America</b><span>Iván Vélez</span></li>
+        <li><b>Oiréis hablar de mí: A Tribute to José Vasconcelos</b><span>Ismael Carvallo Robledo</span></li>
+        <li><b>Spain and America</b><span>Gustavo Bueno</span></li>
+        <li><b>Aryan Indigenismo and Manifest Destiny</b><span>Beltrán Arellanes</span></li>
+        <li><b>The Black Legend: Threat to Hispanic Civilization</b><span>Alicia Melchor Herrera</span></li>
+      </ul>
+    </div>
+
+    <div id="wk-canon" class="wk-shot clip" data-start="4.2857" data-duration="2.1429">
+      <p class="wk-word"><span>The</span> <span>canon</span></p>
+      <p class="wk-fig">Fifty texts, 1818 to 1999</p>
+      <div class="wk-axis">
+        <i class="wk-dot" style="left:66px;bottom:0px"></i>
+        <i class="wk-dot" style="left:100px;bottom:0px"></i>
+        <i class="wk-dot" style="left:307px;bottom:0px"></i>
+        <i class="wk-dot" style="left:374px;bottom:0px"></i>
+        <i class="wk-dot" style="left:382px;bottom:0px"></i>
+        <i class="wk-dot" style="left:457px;bottom:0px"></i>
+        <i class="wk-dot" style="left:465px;bottom:0px"></i>
+        <i class="wk-dot" style="left:482px;bottom:0px"></i>
+        <i class="wk-dot" style="left:498px;bottom:0px"></i>
+        <i class="wk-dot" style="left:573px;bottom:0px"></i>
+        <i class="wk-dot" style="left:606px;bottom:0px"></i>
+        <i class="wk-dot" style="left:656px;bottom:0px"></i>
+        <i class="wk-dot" style="left:673px;bottom:0px"></i>
+        <i class="wk-dot" style="left:698px;bottom:0px"></i>
+        <i class="wk-dot" style="left:706px;bottom:30px"></i>
+        <i class="wk-dot" style="left:723px;bottom:0px"></i>
+        <i class="wk-dot" style="left:731px;bottom:0px"></i>
+        <i class="wk-dot" style="left:748px;bottom:0px"></i>
+        <i class="wk-dot" style="left:789px;bottom:0px"></i>
+        <i class="wk-dot" style="left:789px;bottom:30px"></i>
+        <i class="wk-dot" style="left:831px;bottom:0px"></i>
+        <i class="wk-dot" style="left:856px;bottom:0px"></i>
+        <i class="wk-dot" style="left:864px;bottom:30px"></i>
+        <i class="wk-dot" style="left:889px;bottom:0px"></i>
+        <i class="wk-dot" style="left:914px;bottom:0px"></i>
+        <i class="wk-dot" style="left:939px;bottom:0px"></i>
+        <i class="wk-dot" style="left:947px;bottom:30px"></i>
+        <i class="wk-dot" style="left:947px;bottom:60px"></i>
+        <i class="wk-dot" style="left:947px;bottom:90px"></i>
+        <i class="wk-dot" style="left:955px;bottom:0px"></i>
+        <i class="wk-dot" style="left:980px;bottom:0px"></i>
+        <i class="wk-dot" style="left:989px;bottom:30px"></i>
+        <i class="wk-dot" style="left:989px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1030px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1030px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1047px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1072px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1080px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1080px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1138px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1188px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1205px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1213px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1238px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1304px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1313px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1329px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1387px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1479px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1570px;bottom:0px"></i>
+        <span class="wk-tick" style="left:66px">1818</span><span class="wk-tick" style="left:748px">1900</span><span class="wk-tick" style="left:1570px">1999</span>
+      </div>
+    </div>
+
+    <div id="wk-atlas" class="wk-shot clip" data-start="6.4286" data-duration="2.1428">
+      <p class="wk-word"><span>The</span> <span>Atlas</span></p>
+      <p class="wk-fig">Sixty milestones, c. 722 to 2026</p>
+      <div class="wk-axis">
+        <i class="wk-dot" style="left:27px;bottom:0px"></i>
+        <i class="wk-dot" style="left:540px;bottom:0px"></i>
+        <i class="wk-dot" style="left:646px;bottom:0px"></i>
+        <i class="wk-dot" style="left:871px;bottom:0px"></i>
+        <i class="wk-dot" style="left:937px;bottom:0px"></i>
+        <i class="wk-dot" style="left:949px;bottom:30px"></i>
+        <i class="wk-dot" style="left:960px;bottom:0px"></i>
+        <i class="wk-dot" style="left:965px;bottom:0px"></i>
+        <i class="wk-dot" style="left:965px;bottom:30px"></i>
+        <i class="wk-dot" style="left:967px;bottom:60px"></i>
+        <i class="wk-dot" style="left:972px;bottom:90px"></i>
+        <i class="wk-dot" style="left:974px;bottom:120px"></i>
+        <i class="wk-dot" style="left:989px;bottom:0px"></i>
+        <i class="wk-dot" style="left:998px;bottom:0px"></i>
+        <i class="wk-dot" style="left:998px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1013px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1035px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1054px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1072px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1145px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1279px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1348px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1350px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1354px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1358px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1367px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1367px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1369px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1372px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1397px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1398px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1408px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1418px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1434px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1436px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1443px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1452px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1458px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1459px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1462px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1462px;bottom:90px"></i>
+        <i class="wk-dot" style="left:1473px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1479px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1491px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1491px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1492px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1502px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1503px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1507px;bottom:60px"></i>
+        <i class="wk-dot" style="left:1507px;bottom:90px"></i>
+        <i class="wk-dot" style="left:1508px;bottom:120px"></i>
+        <i class="wk-dot" style="left:1516px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1521px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1526px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1536px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1552px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1572px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1582px;bottom:0px"></i>
+        <i class="wk-dot" style="left:1582px;bottom:30px"></i>
+        <i class="wk-dot" style="left:1602px;bottom:0px"></i>
+        <span class="wk-tick" style="left:27px">c. 722</span><span class="wk-tick" style="left:965px">1492</span><span class="wk-tick" style="left:1459px">1898</span><span class="wk-tick" style="left:1602px">2026</span>
+      </div>
+    </div>
+
+    <div id="wk-books" class="wk-shot clip" data-start="8.5714" data-duration="2.1429">
+      <p class="wk-word"><span>De</span> <span>Indiis</span><br /><span>Editions</span></p>
+      <p class="wk-fig" style="top: 470px">Six series of books, in translation</p>
+      <div id="wk-shelf">
+        <div class="wk-spine"><span>Race, Mixture and Difference</span></div>
+        <div class="wk-spine wk-spine--paper"><span>Indo-Hispanic Thought and Its Critics</span></div>
+        <div class="wk-spine"><span>Classics and Critics of Hispanidad</span></div>
+        <div class="wk-spine wk-spine--paper"><span>Hispanic Political Theology</span></div>
+        <div class="wk-spine"><span>Pan-Iberian and Lusophone Thought</span></div>
+        <div class="wk-spine wk-spine--paper"><span>Literary Continentalism</span></div>
+      </div>
+    </div>
+
+    <div id="wk-follow" class="wk-shot clip" data-start="10.7143" data-duration="2.1429">
+      <p id="wk-join">Join the argument.</p>
+      <div id="wk-nums">
+        <p class="wk-num"><b>13.5K</b><span>YouTube</span></p>
+        <p class="wk-num"><b>19K</b><span>Instagram</span></p>
+        <p class="wk-num"><b>22K</b><span>X</span></p>
+        <p class="wk-num"><b>587</b><span>Substack</span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const B = 60 / 112;
+      const bar = (n) => n * 4 * B;
+      const tl = gsap.timeline({ paused: true });
+      const word = (id, t) => tl.fromTo(`${id} .wk-word span`, { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.08, ease: "power2.out" }, t);
+      const fig = (id, t) => tl.fromTo(`${id} .wk-fig`, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, t);
+
+      // watch: the wall slides in from the right, one thumbnail an eighth note apart
+      tl.fromTo("#wk-wall .wk-thumb", { x: 900 }, { x: 0, duration: 0.5, stagger: B / 2, ease: "expo.out" }, 0);
+      word("#wk-watch", B); fig("#wk-watch", 2 * B);
+
+      // read: the contents page fills line by line
+      word("#wk-read", bar(1)); fig("#wk-read", bar(1) + B);
+      tl.fromTo("#wk-list li", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, stagger: B / 2, ease: "power3.out" }, bar(1) + 0.1);
+
+      // the canon: fifty dots fall onto their years, left to right
+      word("#wk-canon", bar(2)); fig("#wk-canon", bar(2) + B);
+      tl.fromTo("#wk-canon .wk-dot", { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.022, ease: "power3.out" }, bar(2) + 0.1);
+      tl.fromTo("#wk-canon .wk-tick", { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: 0.2 }, bar(2) + 0.3);
+
+      // the Atlas: sixty, the same way, over twelve centuries
+      word("#wk-atlas", bar(3)); fig("#wk-atlas", bar(3) + B);
+      tl.fromTo("#wk-atlas .wk-dot", { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.018, ease: "power3.out" }, bar(3) + 0.1);
+      tl.fromTo("#wk-atlas .wk-tick", { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: 0.2 }, bar(3) + 0.3);
+
+      // books: the spines rise onto the shelf, one an eighth note apart
+      word("#wk-books", bar(4)); fig("#wk-books", bar(4) + B);
+      tl.fromTo(".wk-spine", { yPercent: 105 }, { yPercent: 0, duration: 0.45, stagger: B / 2, ease: "expo.out" }, bar(4));
+
+      // follow: a figure on each beat
+      tl.fromTo("#wk-join", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18 }, bar(5));
+      tl.fromTo(".wk-num", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, stagger: B * 0.75, ease: "expo.out" }, bar(5) + 0.15);
+
+      window.__timelines["works"] = tl;
+    })();
+  </script>
+</template>
