@@ -242,138 +242,87 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 
 /* ==========================================================================
    PILLARS — three pillars hold up the Institute (components/pillars/Temple)
-   A Doric portico after Vignola: cornice; a frieze of metopes (the works)
-   between triglyphs; architrave; columns under triglyphs 1, 3 and 5; steps.
+   An engraved Doric portico (an image, no text in it) with everything that
+   means something laid over it: the works in the metopes, the name on the
+   architrave, the three words on the shafts. Beside it, what rests on the
+   chosen pillar, so the two are seen together.
    ========================================================================== */
 
-.pillars { padding-bottom: 0; }
-.temple {
-  --tri: clamp(14px, 1.8vw, 24px);
-  --shaft-w: clamp(64px, 8.4vw, 118px);
-  --word: clamp(32px, 4vw, 54px);
-  --frieze-cols: var(--tri) repeat(6, minmax(0, 1fr) var(--tri));
-  max-width: 1120px; margin: 0 auto;
+.pillars { padding-bottom: clamp(52px, 7vw, 104px); border-bottom: var(--rule); }
+.portico { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: clamp(26px, 3.4vw, 56px); align-items: center; }
+
+.portico__plate { position: relative; container-type: inline-size; box-shadow: 0 1px 0 var(--grid-light), 0 18px 40px -28px color-mix(in srgb, var(--ink) 45%, transparent); }
+.portico__plate > img { display: block; width: 100%; height: auto; }
+.portico__tint { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: multiply; }
+.portico__tint rect, .portico__tint path { fill: var(--burgundy); opacity: 0; transition: opacity 0.35s; }
+.portico__tint .is-lit { opacity: 0.92; }
+
+/* the works, in the metopes */
+.portico__frieze { position: absolute; inset: 0; pointer-events: none; }
+.portico__metope {
+  position: absolute; pointer-events: auto; display: grid; place-items: center; text-align: center;
+  font-family: var(--display); font-weight: 600; font-size: 1.6cqw; line-height: 1; color: var(--ink);
+  text-decoration: none; transition: color 0.35s;
+}
+.portico__metope:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.portico__metope.is-lit { color: var(--paper); }
+.portico.has-sel .portico__metope:not(.is-lit) { color: color-mix(in srgb, var(--ink) 45%, var(--paper)); }
+.portico__architrave {
+  position: absolute; margin: 0; max-width: none; display: grid; place-items: center;
+  font-family: var(--display); font-weight: 600; font-size: 1.05cqw; line-height: 1;
+  letter-spacing: 0.55em; text-indent: 0.55em; text-transform: uppercase; color: var(--burgundy);
 }
 
-/* entablature */
-.temple__ent { position: relative; z-index: 2; }
-.temple__cornice { display: grid; margin-inline: calc(var(--tri) * -0.9); }
-.temple__cornice i { display: block; border: 1px solid var(--ink); border-bottom: 0; }
-.temple__cornice i:nth-child(1) { height: 7px; border-inline: 0; }                       /* cyma */
-.temple__cornice i:nth-child(2) { height: 13px; margin-inline: 4px; background: var(--paper-deep); }  /* corona */
-.temple__cornice i:nth-child(3) { height: 6px; margin-inline: calc(var(--tri) * 0.6); }   /* bed moulding */
-
-.temple__frieze { display: grid; grid-template-columns: var(--frieze-cols); border: 1px solid var(--ink); }
-.temple__bay { display: contents; }
-.tri {
-  /* a triglyph: two full grooves and a half groove at each edge */
-  background:
-    linear-gradient(90deg, var(--ink) 0 1px, transparent 1px calc(100% - 1px), var(--ink) calc(100% - 1px)),
-    linear-gradient(90deg, transparent 0 28%, color-mix(in srgb, var(--ink) 55%, transparent) 28% calc(28% + 1px), transparent calc(28% + 1px) calc(72% - 1px), color-mix(in srgb, var(--ink) 55%, transparent) calc(72% - 1px) 72%, transparent 72%),
-    var(--paper-deep);
+/* the three pillars: the words, on the shafts */
+.portico__col {
+  position: absolute; display: grid; place-items: center; padding: 0; border: 0; background: none;
+  cursor: pointer; color: inherit; font: inherit;
 }
-.tri:first-child { background-position: 0 0; }
-.metope {
-  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
-  min-height: clamp(64px, 6.2vw, 88px); padding: 10px 6px; text-align: center; text-decoration: none; color: var(--ink);
-  transition: background 0.3s, color 0.3s;
+.portico__col:focus-visible { outline: 2px solid var(--burgundy); outline-offset: 2px; }
+.portico__word {
+  /* sits on the light middle third of the shaft, between necking and base */
+  margin-top: 4cqw; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
+  font-family: var(--display); font-weight: 600; font-size: 3.9cqw; line-height: 1;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--burgundy);
+  text-shadow: 0 0 0.18em var(--paper), 0 0 0.18em var(--paper), 0 0 0.35em var(--paper);
+  transition: color 0.35s, text-shadow 0.35s;
 }
-.metope b { font-family: var(--display); font-weight: 600; font-size: clamp(14px, 1.5vw, 21px); line-height: 1.05; }
-.metope small { font-family: var(--mono); font-size: 10px; line-height: 1.3; color: var(--ink-muted); transition: color 0.3s; }
-.metope:hover b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-.metope.is-lit { background: var(--burgundy); color: var(--paper); }
-.metope.is-lit small { color: color-mix(in srgb, var(--paper) 72%, transparent); }
-.temple.has-sel .metope:not(.is-lit) { color: color-mix(in srgb, var(--ink) 55%, var(--paper)); }
+.portico.has-sel .portico__col:not(.is-sel) .portico__word { color: color-mix(in srgb, var(--burgundy) 45%, var(--paper)); }
+.portico__col.is-sel .portico__word { color: var(--paper); text-shadow: none; }
 
-.temple__architrave {
-  margin: 0; max-width: none; padding: 11px 8px 10px; text-align: center;
-  border: 1px solid var(--ink); border-top: 0;
-  /* the taenia above and two fasciae, as hairlines */
-  box-shadow: inset 0 3px 0 -2px var(--ink), inset 0 -6px 0 -5px color-mix(in srgb, var(--ink) 40%, transparent);
-  font-family: var(--display); font-weight: 600; font-size: clamp(10px, 1.05vw, 14px); line-height: 1;
-  letter-spacing: 0.48em; text-indent: 0.48em; text-transform: uppercase;
+/* beside the plate */
+.portico__panel { align-self: stretch; display: flex; flex-direction: column; justify-content: center; min-height: 100%; }
+.panel__kicker { margin: 0 0 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); }
+.panel__name { font-size: clamp(26px, 2.5vw, 36px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--burgundy); }
+.panel__sub { margin: 10px 0 18px; font-size: 14.5px; line-height: 1.5; color: var(--ink-muted); }
+.panel__list, .panel__pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--grid); border-block: 1px solid var(--grid); }
+.panel__list a, .panel__pillars button {
+  width: 100%; display: grid; gap: 3px; padding: 12px 2px 13px; text-align: left; background: var(--paper);
+  text-decoration: none; color: var(--ink); border: 0; font: inherit; cursor: pointer; transition: background 0.15s;
 }
-
-/* columns, centred under triglyphs 1, 3 and 5 */
-.temple__cols { display: grid; grid-template-columns: var(--frieze-cols); align-items: stretch; }
-.col {
-  grid-row: 1; justify-self: center; width: calc(var(--shaft-w) * 1.55);
-  display: flex; flex-direction: column; align-items: center;
-  padding: 0; border: 0; background: none; font: inherit; color: var(--ink); cursor: pointer;
-}
-.col:nth-child(1) { grid-column: 3; }
-.col:nth-child(2) { grid-column: 7; }
-.col:nth-child(3) { grid-column: 11; }
-.col:focus-visible { outline: none; }
-.col:focus-visible .col__shaft { outline: 2px solid var(--burgundy); outline-offset: 6px; }
-.col__cap, .col__base { display: block; width: 100%; height: auto; overflow: visible; }
-.col__cap { aspect-ratio: 160 / 46; }
-.col__base { aspect-ratio: 160 / 40; }
-.col__cap *, .col__base * { fill: var(--paper); stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; transition: fill 0.3s; }
-.col__shaft { position: relative; flex: 1; width: var(--shaft-w); display: flex; align-items: center; justify-content: center; padding: clamp(16px, 2vw, 26px) 0; }
-.col__shaft-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.col__shaft-art path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
-.col__hatch path { stroke-width: 0.8; transition: stroke 0.3s; }
-.col__word {
-  position: relative; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
-  font-family: var(--display); font-weight: 600; font-size: var(--word); line-height: 1;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--burgundy);
-  transition: color 0.3s;
-}
-.temple.has-sel .col:not(.is-sel) .col__word { color: color-mix(in srgb, var(--burgundy) 45%, var(--paper)); }
-.col.is-sel .col__shaft { background: var(--burgundy); clip-path: polygon(4% 100%, 12% 0, 88% 0, 96% 100%); }
-.col.is-sel .col__hatch path { stroke: color-mix(in srgb, var(--paper) 40%, transparent); }
-.col.is-sel .col__word { color: var(--paper); }
-
-.temple__steps { display: grid; margin-inline: calc(var(--tri) * -0.5); }
-.temple__steps i { display: block; height: clamp(9px, 0.9vw, 13px); border: 1px solid var(--ink); border-bottom: 0; background: var(--paper-deep); }
-.temple__steps i:nth-child(2) { margin-inline: -10px; }
-.temple__steps i:nth-child(3) { margin-inline: -20px; border-bottom: 1px solid var(--ink); }
-
-/* under the columns, what each pillar means */
-.temple__subs { display: grid; grid-template-columns: var(--frieze-cols); margin-top: 22px; }
-.temple__subs p {
-  grid-row: 1; justify-self: center; width: min(300px, calc(var(--shaft-w) * 2.6)); margin: 0;
-  text-align: center; font-size: 14.5px; line-height: 1.5; color: var(--ink-muted); transition: color 0.3s;
-}
-.temple__subs p:nth-child(1) { grid-column: 2 / 5; }
-.temple__subs p:nth-child(2) { grid-column: 6 / 9; }
-.temple__subs p:nth-child(3) { grid-column: 10 / 13; }
-.temple__subs p.is-sel { color: var(--ink); }
-
-/* what rests on the chosen pillar */
-.temple__rests { margin-top: clamp(30px, 3.6vw, 48px); padding: clamp(24px, 2.6vw, 34px) 0 clamp(52px, 6vw, 88px); border-top: var(--rule); min-height: 15em; }
-.rests__hint { margin: 0; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--ink-muted); max-width: none; }
-.temple__rests:has(.rests__list) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: clamp(24px, 4vw, 64px); }
-.rests__kicker { margin: 0 0 6px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); }
-.rests__head h3 { font-size: clamp(26px, 2.6vw, 38px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--burgundy); }
-.rests__sub { display: none; margin: 10px 0 0; font-size: 14.5px; color: var(--ink-muted); }
-.rests__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--grid); border: 1px solid var(--grid); }
-.rests__list a { height: 100%; display: grid; align-content: start; gap: 4px; padding: 14px 16px 15px; background: var(--paper); text-decoration: none; color: var(--ink); transition: background 0.15s; }
-.rests__list a:hover { background: var(--paper-deep); }
-.rests__work { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); }
-.rests__title { font-family: var(--display); font-weight: 600; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.2; }
-.rests__meta { font-size: 13px; color: var(--ink-muted); }
+.panel__list a:hover, .panel__pillars button:hover { background: color-mix(in srgb, var(--paper-deep) 55%, var(--paper)); }
+.panel__work { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); }
+.panel__title { font-family: var(--display); font-weight: 600; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.2; }
+.panel__meta { font-size: 12.5px; color: var(--ink-muted); }
+.panel__pname { font-family: var(--display); font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--burgundy); }
+.panel__psub { font-size: 14px; line-height: 1.45; color: var(--ink-muted); }
 @media (prefers-reduced-motion: no-preference) {
-  .rests__list li { animation: rest-in 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
-  .rests__list li:nth-child(2) { animation-delay: 0.04s; }
-  .rests__list li:nth-child(3) { animation-delay: 0.08s; }
-  .rests__list li:nth-child(4) { animation-delay: 0.12s; }
-  .rests__list li:nth-child(5) { animation-delay: 0.16s; }
+  .panel__list li, .panel__name, .panel__sub { animation: rest-in 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+  .panel__list li:nth-child(2) { animation-delay: 0.04s; }
+  .panel__list li:nth-child(3) { animation-delay: 0.08s; }
+  .panel__list li:nth-child(4) { animation-delay: 0.12s; }
+  .panel__list li:nth-child(5) { animation-delay: 0.16s; }
 }
 @keyframes rest-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* as it scrolls in, the pillars rise and the entablature settles on them;
-   CSS only, and only where scroll-driven animation exists and motion is welcome */
-@keyframes col-rise { from { clip-path: inset(100% -40px 0 -40px); } to { clip-path: inset(-40px -40px 0 -40px); } }
-@keyframes ent-settle { from { opacity: 0; transform: translateY(-48px); } to { opacity: 1; transform: none; } }
+/* as the plate scrolls in, the three words are cut into the shafts one by one */
+@keyframes word-in { from { clip-path: inset(0 0 0 100%); opacity: 0.2; } to { clip-path: inset(0); opacity: 1; } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .temple { view-timeline: --temple block; }
-    .col { animation: col-rise linear both; animation-timeline: --temple; animation-range: entry 5% entry 70%; }
-    .col:nth-child(2) { animation-range: entry 12% entry 77%; }
-    .col:nth-child(3) { animation-range: entry 19% entry 84%; }
-    .temple__ent { animation: ent-settle linear both; animation-timeline: --temple; animation-range: entry 60% entry 100%; }
+    .portico__plate { view-timeline: --plate block; }
+    .portico__word { animation: word-in linear both; animation-timeline: --plate; animation-range: entry 25% entry 65%; }
+    .portico__col:nth-of-type(2) .portico__word { animation-range: entry 37% entry 77%; }
+    .portico__col:nth-of-type(3) .portico__word { animation-range: entry 49% entry 89%; }
   }
 }
 
@@ -562,6 +511,8 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 
 @media (max-width: 1040px) {
   .hero__band { grid-template-columns: 1fr; }
+  .portico { grid-template-columns: 1fr; }
+  .portico__panel { min-height: 0; }
   .watch__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .watch__grid .is-lead { grid-row: auto; }
   .chan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -572,24 +523,7 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .foot__say { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
-  .temple { --frieze-cols: repeat(3, minmax(0, 1fr)); }
-  .temple__frieze { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .temple__frieze > .tri, .temple__bay > .tri { display: none; }
-  .metope { min-height: 64px; border-left: 1px solid var(--ink); }
-  .temple__bay:nth-child(3n + 2) .metope { border-left: 0; }
-  .temple__bay:nth-child(-n + 4) .metope { border-bottom: 1px solid var(--ink); }
-  .metope small { display: none; }
-  .temple__architrave { letter-spacing: 0.24em; text-indent: 0.24em; }
-  .col:nth-child(1) { grid-column: 1; }
-  .col:nth-child(2) { grid-column: 2; }
-  .col:nth-child(3) { grid-column: 3; }
-  .temple__subs { display: none; }
-  .temple__steps { margin-inline: 0; }
-  .temple__steps i:nth-child(2) { margin-inline: -5px; }
-  .temple__steps i:nth-child(3) { margin-inline: -10px; }
-  .temple__rests:has(.rests__list) { grid-template-columns: 1fr; }
-  .rests__sub { display: block; }
-  .rests__list { grid-template-columns: 1fr; }
+  .portico__frieze, .portico__architrave { display: none; }
   .watch__grid { grid-template-columns: 1fr; }
   .watch__grid .is-lead { grid-column: auto; grid-row: auto; }
   .rail__nav { display: none; }

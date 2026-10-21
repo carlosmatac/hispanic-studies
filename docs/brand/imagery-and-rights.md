@@ -40,6 +40,7 @@ Allowed uses, each one abstract or non-documentary:
 - Gradient and noise fields used as section grounds.
 - The **Caribbean / Miami register**, which has essentially no usable material in his folder (one item, Albizu Campos) and no public-domain tradition to draw on — because the thing he is pointing at, "tropical, fresco, neón", is a *contemporary* Miami mood, not a historical one. Generated imagery here is honest: there is no original it could be mistaken for. It lives in Merch, which is the commercial register.
 - Product mockups for merch (a tee, a print, a tote), clearly a mockup.
+- **Architectural illustration of no particular building**, as a ground for our own content (amended 2026-10-21 for the pillars' portico): an idealised order or elevation that depicts no real monument, carries no generated text, and on which every word is ours, laid over it in HTML. It must not be presented, captioned or dated as a historical print.
 
 Rules when we do use it:
 - Logged in `assets/art/SOURCES.md` as `AI-generated` with the model and the prompt. No ambiguity in the repo about what is real.

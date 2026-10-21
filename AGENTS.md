@@ -89,9 +89,9 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 
 ## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/Temple.tsx`)
 
-- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. A Doric portico drawn in line: the frieze's metopes are the Institute's works (Atlas, Canon, Books, Watch, Read, Community), the architrave carries its name, and the three column shafts are the words MESTIZAJE, CATOLICISMO, LENGUA. No captions or explanations of the columns themselves: the section is about the three ideas, not about architecture.
-- Choosing a pillar lights the works that rest on it and lists real titles below (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link as `#canon=<record id>`, which the canon graph opens and centres.
-- Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns rendered in Blender (the pipeline is kept in `tools/blender/`); gold of any kind.
+- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. An engraved Doric portico (`site/public/art/portico.jpg`, AI-generated with Nano Banana Pro, no text in it; logged in `assets/art/SOURCES.md`) carries our own HTML on top: the Institute's works in the six metopes, its name on the architrave, the words MESTIZAJE, CATOLICISMO, LENGUA on the shafts. No captions or explanations of the columns: the section is about the three ideas.
+- Geometry is in the image's own pixels (2400 × 1792) at the top of `Temple.tsx`; replacing the image means re-measuring it. Selecting a pillar tints its shaft and the metopes it holds up through an SVG multiplied over the plate, and lists real titles beside it (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link as `#canon=<record id>`, which the canon graph opens and centres.
+- Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; a fully code-drawn portico (it worked, but looked drawn rather than engraved).
 
 ## Unicorn Studio (WebGL scenes)
 
