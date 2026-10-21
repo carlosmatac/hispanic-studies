@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import HeroMap from '@/components/HeroMap';
 import Signup from '@/components/Signup';
 import CanonGraphLazy from '@/components/canon/CanonGraphLazy';
+import { TOUR, type TourCard } from '@/lib/hero-tour';
 import Pillars from '@/components/Pillars';
 import ShortsRail from '@/components/ShortsRail';
 import ChannelIcon from '@/components/ChannelIcon';
@@ -25,6 +26,36 @@ const COUNTS = {
   milestones: milestones.milestones.length,
 };
 
+type Milestone = { n: number; date: { en: string; es: string }; title: { en: string; es: string }; body: { en: string; es: string } };
+const MILESTONES = new Map((milestones.milestones as Milestone[]).map((m) => [m.n, m]));
+// the first sentence of a milestone's text: a card has room for one
+const firstSentence = (s: string) => (s.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? s).trim();
+
+function tourCards(lang: 'en' | 'es'): TourCard[] {
+  const t = dict(lang).map.tour;
+  const total = MILESTONES.size;
+  return TOUR.map((stop, i) => {
+    const m = stop.milestone ? MILESTONES.get(stop.milestone) : undefined;
+    const last = i === TOUR.length - 1;
+    const media = stop.media;
+    const mediaText = !media ? undefined : media.kind === 'pending' ? media.what[lang] : media.credit[lang];
+    if (!m) {
+      return {
+        ...stop, mediaText,
+        kicker: t.introKicker, title: dict(lang).map.title, text: t.introText,
+        link: { href: '#atlas', label: t.atlas },
+      };
+    }
+    return {
+      ...stop, mediaText,
+      kicker: last ? `${m.date[lang]} · ${t.outroKicker}` : `${m.date[lang]} · ${t.milestone} ${m.n} ${t.of} ${total}`,
+      title: m.title[lang],
+      text: firstSentence(m.body[lang]),
+      link: stop.canon ? { href: `#canon=${stop.canon}`, label: t.canon } : { href: '#atlas', label: t.atlas },
+    };
+  });
+}
+
 const fmtDate = (iso: string, lang: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 
@@ -42,7 +73,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* HERO · the map */}
         <section className="hero" aria-labelledby="hero-h">
           <div className="plate-wrap">
-            <HeroMap lang={lang} />
+            <HeroMap lang={lang} cards={tourCards(lang)} />
             <div className="cartouche">
               <h2>{d.map.title}</h2>
               <div className="rule" />

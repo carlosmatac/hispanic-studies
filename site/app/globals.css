@@ -202,17 +202,55 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 .cartouche dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
 .cartouche .src { margin-top: 12px; font-size: 9.5px; color: var(--ink-muted); line-height: 1.45; }
 
-.readout {
-  position: absolute; right: clamp(22px, 3vw, 44px); top: clamp(22px, 3vw, 44px);
-  z-index: 2; width: min(236px, 42vw); padding: 13px 15px;
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  border: 1px solid var(--grid); font-family: var(--mono); font-size: 11px; line-height: 1.5;
+/* the tour: a card that follows the camera from stop to stop (HeroMap.tsx) */
+.hero-tour { position: relative; }
+.tour {
+  position: absolute; right: clamp(22px, 3vw, 44px); top: clamp(22px, 3vw, 44px); z-index: 2;
+  width: min(340px, 30vw);
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  border: 1px solid var(--ink); outline: 1px solid var(--grid); outline-offset: 3px;
+  box-shadow: 0 14px 30px -22px color-mix(in srgb, var(--ink) 55%, transparent);
 }
-.readout strong { display: block; font-family: var(--display); font-size: 17px; font-weight: 600; margin-bottom: 5px; }
-.readout .hint { color: var(--ink-muted); }
-.readout dl { margin: 7px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; }
-.readout dt { color: var(--ink-muted); }
-.readout dd { margin: 0; text-align: right; }
+.tour__card { min-height: 15rem; }
+.tour__body { display: grid; gap: 0; }
+@media (prefers-reduced-motion: no-preference) { .tour__body { animation: tour-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both; } }
+@keyframes tour-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.tour__media { position: relative; margin: 0; aspect-ratio: 16 / 9; overflow: hidden; background: var(--paper-deep); border-bottom: 1px solid var(--grid); }
+.tour__media img, .tour__media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* a line engraving on white: shown whole, the white taken by the paper */
+.tour__media img[src*="galleon"] { object-fit: contain; mix-blend-mode: multiply; padding: 6px; background: var(--paper); }
+.tour__media figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 10px 6px;
+  font-family: var(--mono); font-size: 9.5px; line-height: 1.35; color: var(--paper);
+  background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 78%, transparent));
+}
+.tour__media--image:has(img[src*="galleon"]) figcaption { color: var(--ink-muted); background: none; }
+.tour__media--pending { display: grid; place-items: center; padding: 14px; border: 1px dashed var(--grid); border-bottom-style: solid; background: repeating-linear-gradient(135deg, var(--paper) 0 9px, color-mix(in srgb, var(--paper-deep) 70%, var(--paper)) 9px 18px); }
+.tour__pending { font-family: var(--mono); font-size: 10.5px; line-height: 1.45; color: var(--ink-muted); text-align: center; }
+.tour__kicker { margin: 14px 16px 6px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--burgundy); }
+.tour__title { margin: 0 16px; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.15; }
+.tour__text { margin: 8px 16px 0; font-size: 13.5px; line-height: 1.5; color: var(--ink-muted); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.tour__link { justify-self: start; margin: 10px 16px 14px; font-size: 13.5px; font-weight: 500; color: var(--burgundy); text-decoration: none; border-bottom: 1px solid currentColor; }
+.tour__link:hover { border-bottom-width: 2px; }
+.tour__body--place { padding-bottom: 14px; }
+
+.tour__controls { position: relative; display: flex; align-items: center; gap: 4px; padding: 7px 10px; border-top: 1px solid var(--grid); }
+.tour__btn {
+  width: 28px; height: 28px; display: grid; place-items: center; padding: 0; cursor: pointer;
+  background: none; border: 1px solid transparent; color: var(--ink); font-size: 18px; line-height: 1;
+}
+.tour__btn:hover { border-color: var(--grid); }
+.tour__pause { width: 8px; height: 10px; border-inline: 3px solid currentColor; }
+.tour__play { width: 0; height: 0; border-style: solid; border-width: 5.5px 0 5.5px 9px; border-color: transparent transparent transparent currentColor; margin-left: 2px; }
+.tour__dots { list-style: none; margin: 0 0 0 auto; padding: 0; display: flex; gap: 2px; }
+.tour__dots button { width: 14px; height: 20px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.tour__dots button::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--grid); transition: background 0.2s, transform 0.2s; }
+.tour__dots button:hover::before { background: var(--ink-muted); }
+.tour__dots button.is-on::before { background: var(--burgundy); transform: scale(1.35); }
+/* how long until the next stop: a hairline that fills */
+.tour__clock { position: absolute; left: 0; top: -1px; height: 2px; width: 0; background: var(--burgundy); }
+.tour__clock.is-running { animation: tour-clock var(--dwell) linear forwards; }
+@keyframes tour-clock { to { width: 100%; } }
 
 .hero__band {
   position: relative; z-index: 3;
@@ -516,7 +554,8 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .watch__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .watch__grid .is-lead { grid-row: auto; }
   .chan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .readout { position: static; width: auto; margin: 0 clamp(16px, 3vw, 44px) clamp(16px, 3vw, 44px); }
+  .tour { position: static; width: auto; margin: 0 clamp(16px, 3vw, 44px) clamp(16px, 3vw, 44px); }
+  .tour__card { min-height: 0; }
   .cartouche { position: static; max-width: none; margin: clamp(16px, 3vw, 44px); }
   .plate-wrap::after { inset: 8px; }
   .foot__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -536,7 +575,14 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .brand__name { font-size: 13px; }
   .map .labels { display: none; }
   .plate-wrap::after { inset: 6px; }
-  .cartouche, .readout { margin: 14px; }
+  .cartouche, .tour { margin: 14px; }
+  /* phones: the tour card holds one height whatever the stop, so the page
+     under it never jumps while someone reads; the cartouche's figures are
+     already in the card and the title band, so it stays off the small screen */
+  .cartouche { display: none; }
+  .tour__card { height: calc((100vw - 30px) / 2 + 13.5rem); overflow: hidden; }
+  .tour__media { aspect-ratio: 2 / 1; }
+  .tour__text { -webkit-line-clamp: 3; }
 }
 @media (max-width: 420px) {
   .foot__cols { grid-template-columns: 1fr; }

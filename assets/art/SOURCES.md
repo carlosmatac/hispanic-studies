@@ -53,6 +53,15 @@ Prompt (verbatim):
 
 (Gemini only offered 4:3; that is what was used.)
 
+## The hero map's tour (`site/public/art/tour/`)
+
+| File | Work | Licence | Source |
+| --- | --- | --- | --- |
+| `puebla-desembarco-1862.jpg` (16:9 crop, 1280 px) | Dióscoro Puebla, *Primer desembarco de Cristóbal Colón en América*, 1862, Museo del Prado | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:Desembarco_de_Col%C3%B3n_de_Di%C3%B3scoro_Puebla.jpg) |
+| `galleon-cabrera-bueno-1734.jpg` | The galleon above (`assets/art/galleon-cabrera-bueno-1734.jpg`), after José González Cabrera Bueno, *Navegación especulativa y práctica*, Manila 1734 | Public domain | see the first table |
+
+AI video clips for the tour's places (not historical scenes) are logged here when they arrive, with the model and the prompt.
+
 ## Paintings once used in the pillars (`assets/art/pillars/`)
 
 Kept here, not on the page since 2026-10-21 (the pillars are now typographic); candidates for the book series in Books. All pre-1900 and public domain on Commons; our only change is the 3:4 crop.
