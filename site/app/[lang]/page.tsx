@@ -75,7 +75,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* I · three pillars, as a portico */}
-        <Pillars lang={lang} />
+        <Pillars lang={lang} counts={{ milestones: COUNTS.milestones, authors: COUNTS.authors }} />
 
         {/* II · the Atlas (next version) */}
         <section className="atlas" id="atlas" aria-labelledby="atlas-h">
@@ -196,7 +196,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* community */}
-        <section className="community" aria-labelledby="comm-h">
+        <section className="community" id="community" aria-labelledby="comm-h">
           <div className="section-head">
             <p className="eyebrow">{d.comm.eyebrow}</p>
             <h2 id="comm-h">{d.comm.h}</h2>

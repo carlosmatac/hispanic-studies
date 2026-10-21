@@ -8,7 +8,7 @@ The website for **Beltrán Arellanes** and his **Institute for Hispano Studies**
 
 Decided (handoff: `docs/handoff/2026-10-20-real-project.md`):
 - **Direction: O · Atlas** (`proposals/o-atlas/` on the mockup branches): the sober reference-work register Beltrán asked for.
-- **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.** One exception, decided 2026-10-21: **gold leaf** (`--gold*` tokens) for the gilding of the pillars and the motto on their frieze, nowhere else.
+- **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.**
 - From P · Tornaviaje only two things came over: the **footer** and the **canon as a React Flow graph**.
 
 Still parked (do not build on a guess): CMS/editing, payments and merch (#9), the newsletter provider behind the pamphlet signup, the Discord invite link.
@@ -87,11 +87,11 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 - Selection is our own state keyed by id (`elementsSelectable={false}`); clicking a neighbour in the panel moves the camera to it.
 - Edge strokes use `vector-effect: non-scaling-stroke`, and the graph's SVGs are exempt from the global `svg { max-width: 100% }` (it squashes React Flow's edge layer to zero width and nothing paints).
 
-## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/`, `tools/blender/`)
+## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/Temple.tsx`)
 
-- Three **column types** of the Hispanic world, one per pillar, modelled by us in Blender by code: the Andean barroco mestizo column (mestizaje), the Solomonic column with the eucharistic vine (catolicismo), the plateresque balaustre after Sagredo (lengua). Types, not copies of one building; the page says so (`pillars.method` in `i18n.ts`). Change them in `tools/blender/`, never by hand-editing frames, and never with generated imagery.
-- Each plate is a 36-frame turntable (gilded render + clay pass). `EngravedPlate.tsx` turns the column with the scroll, engraves it from the clay pass, then gilds it; the pointer turns it a little more. Underneath, `still.webp` is all that shows with reduced motion, without WebGL2, or before the frames load.
-- In headless tests, launch Chrome with `--enable-unsafe-swiftshader` and scroll with `behavior: 'instant'` (the page smooth-scrolls).
+- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. A Doric portico drawn in line: the frieze's metopes are the Institute's works (Atlas, Canon, Books, Watch, Read, Community), the architrave carries its name, and the three column shafts are the words MESTIZAJE, CATOLICISMO, LENGUA. No captions or explanations of the columns themselves: the section is about the three ideas, not about architecture.
+- Choosing a pillar lights the works that rest on it and lists real titles below (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link as `#canon=<record id>`, which the canon graph opens and centres.
+- Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns rendered in Blender (the pipeline is kept in `tools/blender/`); gold of any kind.
 
 ## Unicorn Studio (WebGL scenes)
 

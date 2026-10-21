@@ -29,7 +29,7 @@ fields. See `docs/research/provided-documentation.md`.
 
 ## `blender/`
 
-The 3D columns of the pillars section and their turntable renders: see
+3D columns tried for the pillars section and set aside (not on the site): see
 [`blender/README.md`](blender/README.md). Needs Blender with its MCP extension,
 and Pillow for packing the frames.
 

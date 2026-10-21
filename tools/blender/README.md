@@ -1,5 +1,7 @@
 # The pillar columns, in Blender
 
+> **Not on the site.** These 3D columns were tried for the pillars section on 2026-10-21 and set aside: the section is now typographic (`site/components/pillars/Temple.tsx`). The pipeline is kept in case the models are wanted elsewhere (a cover, the store). `pack_frames.py` would write to `site/public/art/pillars/`, which no page reads any more.
+
 The three columns in the pillars section are our own 3D models of three column
 types of the Hispanic world, built by code (bmesh) so they can be rebuilt,
 adjusted and re-rendered:

@@ -324,6 +324,21 @@ function Graph({ lang }: { lang: Lang }) {
     rf.setCenter(c.position.x + (c.width ?? 0) / 2, c.position.y + (c.height ?? 0) / 2, { zoom, duration: reduced ? 0 : 520 });
   }, [cardById, rf, reduced]);
 
+  /* Links from elsewhere on the page (the pillars) point at a record with
+     `#canon=<id>`: scroll to the canon, select it and centre on it. */
+  useEffect(() => {
+    const fromHash = () => {
+      const m = /^#canon=(.+)$/.exec(window.location.hash);
+      const id = m ? decodeURIComponent(m[1]) : null;
+      if (!id || !RECORDS.has(id)) return;
+      document.getElementById('canon')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      window.setTimeout(() => go(id), 60);
+    };
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+    return () => window.removeEventListener('hashchange', fromHash);
+  }, [go, reduced]);
+
   const onNodeClick = useCallback<NodeMouseHandler>((_, n) => setSel({ type: 'node', id: n.id }), []);
   const onEdgeClick = useCallback<EdgeMouseHandler>((_, e) => setSel({ type: 'edge', id: e.id }), []);
   const onPaneClick = useCallback(() => setSel(null), []);

@@ -46,15 +46,22 @@ const en = {
     follow: 'Follow the institute',
   },
   pillars: {
-    eyebrow: 'Three trunks',
-    plate: 'Plate',
-    method: 'Three column types of the Hispanic world, modelled by us in 3D after the rules of their period, not copied from a single building. As you scroll each one turns, is engraved, and is gilded over burgundy bole, the way retablos were. Move the pointer over a column to turn it.',
-    h: 'Everything here hangs off one of three.',
-    sub: 'Mestizaje, Catholicism and language. The three pillars are how the videos, the essays, the books and the canon are organised, not a slogan.',
+    eyebrow: 'Three pillars',
+    h: 'Everything the Institute does rests on three.',
+    architrave: 'Institute for Hispano Studies',
+    works: {
+      atlas: 'Atlas', canon: 'Canon', books: 'Books', watch: 'Watch', read: 'Read', community: 'Community',
+    },
+    worksSub: {
+      milestones: 'milestones', authors: 'authors', books: 'De Indiis Editions', videos: 'videos', essays: 'essays', community: 'Reconquista Syndicate',
+    },
+    hint: 'Choose a pillar to see what rests on it.',
+    rests: 'Rests on',
+    series: 'Series',
     items: [
-      { key: 'mestizaje', name: 'Mestizaje', sub: 'Castas, transculturación, La raza cósmica, Indo-American thought, and the Black Legend on race.', n: 'Series: Race, Mixture and Difference · Indo-Hispanic Thought and Its Critics — 8 priority titles', col: 'Column of the Andean barroco mestizo, 17th–18th c.: a shaft in ringed thirds, flat two-plane carving of vines and flowers', credit: 'Our 3D model of the type; Corinthian capital after Vignola', colAlt: 'A gilded column whose shaft is divided by rings into three bands, each carved flat with interlaced vines, leaves and flowers, under a Corinthian capital.', art: 'Cuzco School, Marriage of Martín de Loyola and Beatriz Ñusta, 1718', alt: 'Detail of a Cuzco School painting: a Spanish captain and an Inca princess, in a feathered Andean dress, stand side by side at their wedding.' },
-      { key: 'catolicismo', name: 'Catholicism', sub: 'Guadalupe, evangelisation, the School of Salamanca, and Catholic political thought on both sides of the Atlantic.', n: 'Series: Classics and Critics of Hispanidad · Hispanic Political Theology — 6 priority titles', col: 'Solomonic column with the eucharistic vine, 17th–18th c.', credit: 'Our 3D model of the type; Corinthian capital after Vignola', colAlt: 'A gilded Solomonic column twisting six times, with a vine of leaves and grapes running in its groove, under a Corinthian capital.', art: 'Basilio Santa Cruz Pumacallao, Saint Bonaventure and Saint Anthony of Padua, c. 1670–90. Metropolitan Museum of Art', alt: 'Two haloed Franciscan saints, painted in Cuzco by a Quechua artist, play the guitar and the vihuela.' },
-      { key: 'lengua', name: 'Language', sub: 'Spanish and Portuguese, the academies, Iberofonía, and translation as the work of the publishing house itself.', n: 'Series: Pan-Iberian and Lusophone Thought · Literary Continentalism — 14 priority titles', col: 'Plateresque balaustre, after Diego de Sagredo, Medidas del Romano (Toledo, 1526)', credit: 'Our 3D model of the type; Corinthian capital after Vignola', colAlt: 'A gilded balaustre column: a stack of turned vases with gadroons, fluting and collars of acanthus leaves, under a Corinthian capital.', art: 'Bernardino de Sahagún and Nahua scholars, Florentine Codex, Book 1, folio 80, 1575–77. Biblioteca Medicea Laurenziana', alt: 'A manuscript page in two columns, Spanish on the left and Nahuatl on the right, with a painted vignette of a feast.' },
+      { key: 'mestizaje', name: 'Mestizaje', sub: 'Castas, transculturación, La raza cósmica, Indo-American thought, and the Black Legend on race.', n: 'Race, Mixture and Difference · Indo-Hispanic Thought and Its Critics' },
+      { key: 'catolicismo', name: 'Catholicism', sub: 'Guadalupe, evangelisation, the School of Salamanca, and Catholic political thought on both sides of the Atlantic.', n: 'Classics and Critics of Hispanidad · Hispanic Political Theology' },
+      { key: 'lengua', name: 'Language', sub: 'Spanish and Portuguese, the academies, Iberofonía, and translation as the work of the publishing house itself.', n: 'Pan-Iberian and Lusophone Thought · Literary Continentalism' },
     ],
   },
   atlas: {
@@ -205,15 +212,22 @@ const es: Dict = {
     follow: 'Sigue al instituto',
   },
   pillars: {
-    eyebrow: 'Tres troncos',
-    plate: 'Lám.',
-    method: 'Tres tipos de columna del mundo hispánico, modelados por nosotros en 3D según las reglas de su época, no copiados de un edificio concreto. Al bajar, cada una gira, se graba y se dora sobre bol burdeos, como se doraban los retablos. Pasa el cursor por una columna para girarla.',
-    h: 'Todo lo de aquí cuelga de uno de los tres.',
-    sub: 'Mestizaje, catolicismo y lengua. Los tres pilares son la forma en que se organizan los vídeos, los ensayos, los libros y el canon; no son un lema.',
+    eyebrow: 'Tres pilares',
+    h: 'Todo lo que hace el Instituto se apoya en tres.',
+    architrave: 'Institute for Hispano Studies',
+    works: {
+      atlas: 'Atlas', canon: 'Canon', books: 'Libros', watch: 'Ver', read: 'Leer', community: 'Comunidad',
+    },
+    worksSub: {
+      milestones: 'hitos', authors: 'autores', books: 'De Indiis Editions', videos: 'vídeos', essays: 'ensayos', community: 'Reconquista Syndicate',
+    },
+    hint: 'Elige un pilar para ver qué se apoya en él.',
+    rests: 'Se apoya en',
+    series: 'Colecciones',
     items: [
-      { key: 'mestizaje', name: 'Mestizaje', sub: 'Castas, transculturación, La raza cósmica, pensamiento indoamericano y la Leyenda Negra sobre la raza.', n: 'Colecciones: Raza, mezcla y diferencia · Pensamiento indohispánico y sus críticos — 8 títulos prioritarios', col: 'Columna del barroco mestizo andino, ss. XVII–XVIII: fuste en tercios anillados, talla plana a dos planos de tallos y flores', credit: 'Modelo 3D nuestro del tipo; capitel corintio según Vignola', colAlt: 'Una columna dorada cuyo fuste se divide con anillos en tres tercios, cada uno tallado en plano con tallos entrelazados, hojas y flores, bajo un capitel corintio.', art: 'Escuela cuzqueña, Matrimonio de Martín de Loyola con Beatriz Ñusta, 1718', alt: 'Detalle de un cuadro de la escuela cuzqueña: un capitán español y una princesa inca, con traje andino de plumas, juntos en su boda.' },
-      { key: 'catolicismo', name: 'Catolicismo', sub: 'Guadalupe, evangelización, la Escuela de Salamanca y el pensamiento político católico a ambos lados del Atlántico.', n: 'Colecciones: Clásicos y críticos de la Hispanidad · Teología política hispánica — 6 títulos prioritarios', col: 'Columna salomónica con la vid eucarística, ss. XVII–XVIII', credit: 'Modelo 3D nuestro del tipo; capitel corintio según Vignola', colAlt: 'Una columna salomónica dorada de seis vueltas, con una vid de hojas y racimos corriendo por la estría, bajo un capitel corintio.', art: 'Basilio Santa Cruz Pumacallao, San Buenaventura y san Antonio de Padua, h. 1670–90. Metropolitan Museum of Art', alt: 'Dos santos franciscanos con aureola, pintados en Cuzco por un artista quechua, tocan la guitarra y la vihuela.' },
-      { key: 'lengua', name: 'Lengua', sub: 'Español y portugués, las academias, la Iberofonía y la traducción como tarea misma de la editorial.', n: 'Colecciones: Pensamiento panibérico y lusófono · Continentalismo literario — 14 títulos prioritarios', col: 'Balaustre plateresco, según Diego de Sagredo, Medidas del Romano (Toledo, 1526)', credit: 'Modelo 3D nuestro del tipo; capitel corintio según Vignola', colAlt: 'Una columna abalaustrada dorada: jarrones torneados superpuestos, con gallones, acanaladuras y coronas de hojas de acanto, bajo un capitel corintio.', art: 'Bernardino de Sahagún y los sabios nahuas, Códice Florentino, libro 1, folio 80, 1575–77. Biblioteca Medicea Laurenziana', alt: 'Una página manuscrita a dos columnas, español a la izquierda y náhuatl a la derecha, con una viñeta pintada de un banquete.' },
+      { key: 'mestizaje', name: 'Mestizaje', sub: 'Castas, transculturación, La raza cósmica, pensamiento indoamericano y la Leyenda Negra sobre la raza.', n: 'Raza, mezcla y diferencia · Pensamiento indohispánico y sus críticos' },
+      { key: 'catolicismo', name: 'Catolicismo', sub: 'Guadalupe, evangelización, la Escuela de Salamanca y el pensamiento político católico a ambos lados del Atlántico.', n: 'Clásicos y críticos de la Hispanidad · Teología política hispánica' },
+      { key: 'lengua', name: 'Lengua', sub: 'Español y portugués, las academias, la Iberofonía y la traducción como tarea misma de la editorial.', n: 'Pensamiento panibérico y lusófono · Continentalismo literario' },
     ],
   },
   atlas: {
