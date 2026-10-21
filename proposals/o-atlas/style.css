@@ -36,7 +36,7 @@
   --map-emersa: #7b2230;
   --map-submersa: #9c6a52;
 
-  --display: "Ibarra Real Nova", Georgia, serif;
+  --display: "Ibarra Real Nova", Georgia, serif;   /* theme.js overrides */
   --body: Inter, system-ui, -apple-system, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
 
@@ -167,6 +167,20 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 }
 .lang button[aria-pressed="true"] { background: var(--burgundy); color: var(--paper); }
 
+/* the theme switcher: same control as P, in O's square-cornered idiom */
+.themer { display: flex; gap: 5px; }
+.themer button {
+  display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+  padding: 5px 9px; background: none; border: 1px solid var(--grid);
+  font-size: 12px; transition: border-color 0.15s, background 0.15s;
+}
+.themer button:hover { border-color: var(--burgundy); }
+.themer button[aria-pressed="true"] { background: var(--burgundy); border-color: var(--burgundy); color: var(--paper); }
+.themer__dots { display: inline-flex; }
+.themer__dots i { width: 10px; height: 10px; display: block; border: 1.5px solid var(--paper); }
+.themer__dots i + i { margin-left: -4px; }
+.themer--compact .themer__name { display: none; }
+
 /* ==========================================================================
    HERO — the map. Register: Atlas (neutral paper).
    ========================================================================== */
@@ -192,10 +206,10 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); }
 
 /* --- map ink -------------------------------------------------------------- */
 
-.map .ocean { fill: #e2d8c2; }
+.map .ocean { fill: color-mix(in srgb, var(--grid) 55%, var(--paper)); }
 .map .graticule { fill: none; stroke: var(--grid); stroke-width: calc(0.7px * var(--u, 1)); opacity: 0.5; }
 .map .sphere { fill: none; stroke: var(--grid); stroke-width: calc(1.4px * var(--u, 1)); }
-.map .rest path { fill: #f2ebdc; stroke: #b9ae9b; stroke-width: calc(0.6px * var(--u, 1)); }
+.map .rest path { fill: var(--paper); stroke: color-mix(in srgb, var(--grid) 80%, var(--ink)); stroke-width: calc(0.6px * var(--u, 1)); }
 
 .map .ib path { stroke: var(--paper); stroke-width: calc(0.7px * var(--u, 1)); transition: fill 0.18s; }
 .map .ib path[data-tier="emersa"] { fill: var(--map-emersa); }

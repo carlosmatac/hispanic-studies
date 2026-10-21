@@ -46,6 +46,18 @@
   .tag-us { display: inline-block; margin-left: 6px; padding: 1px 6px; border: 1px solid var(--accent); border-radius: 999px; font-size: 10px; letter-spacing: 0.08em; }
   .o { --accent: #7B2230; }
   .grid--now { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+  .grid--now2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 1180px; }
+  @media (max-width: 900px) { .grid--now2 { grid-template-columns: 1fr; } }
+  .p { --accent: #D9A441; }
+  .thumb--p { background: #0b0a09; display: grid; place-items: center; aspect-ratio: 16 / 7; overflow: hidden; }
+  .thumb--p::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(38% 52% at 50% 48%, rgba(217,164,65,.30), transparent 70%),
+      linear-gradient(90deg, #1a1512 0 11%, transparent 11% 22%, #231c17 22% 30%, transparent 30% 70%, #231c17 70% 78%, transparent 78% 89%, #1a1512 89%),
+      linear-gradient(0deg, #0b0a09, #15110e);
+  }
+  .thumb--p::after { background: none; }
   .grid--now .card h2 { font-family: "Ibarra Real Nova", serif; font-weight: 600; font-size: 40px; }
   .row-head--now { border-top: 0; margin-top: 0; }
   .intro--now { padding-top: 14px; }
@@ -74,11 +86,11 @@
   </div>
 </header>
 <div class="row-head row-head--now">
-  <h2>After the first meeting: the direction we are building</h2>
-  <p>14 October 2026 · one consolidated direction, map-led and functional</p>
+  <h2>After the first meeting: the two directions we are building</h2>
+  <p>14 October 2026 · two consolidated directions, both map-led, same content, opposite registers</p>
 </div>
 <p class="intro intro--now">Beltrán liked all fourteen directions below and rejected the register: <i>“demasiado bonito… lo veo para un museo, para una galería”</i>, <i>“yo quiero algo más militante”</i>. He asked for a mix rather than a winner, with the map first. <b>O · Atlas</b> is that mix, built on the documents he handed over: 60 dated milestones that step across a real map, a canon of 50 texts, and the De Indiis acquisitions programme.</p>
-<div class="grid grid--now">
+<div class="grid grid--now grid--now2">
   <a class="card o" href="o-atlas/">
     <div class="thumb thumb--o"></div>
     <div class="card__body">
@@ -86,6 +98,15 @@
       <h2>Atlas</h2>
       <p>Equal Earth plate of the Iberophone world, the 60 milestones stepped like a Prezi, the Bueno field of 50 canonical texts, De Indiis by series. EN/ES.</p>
       <small>Natural Earth · his own canon dataset · his own 60-milestone chronology</small>
+    </div>
+  </a>
+  <a class="card p" href="p-tornaviaje/">
+    <div class="thumb thumb--p"></div>
+    <div class="card__body">
+      <span class="card__k">P · current direction</span>
+      <h2>Tornaviaje</h2>
+      <p>The same content, the opposite register. One continuous dark room, and the chronology becomes a corridor of paintings you fly down — sixty milestones hung on the walls.</p>
+      <small>27 sourced works · three switchable registers: Desierto · Caribe · Virreinal</small>
     </div>
   </a>
 </div>

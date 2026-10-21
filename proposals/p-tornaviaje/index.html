@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Tornaviaje</title>
+<meta name="description" content="A think tank for Hispanic-Catholic civilisation and Pan-Iberian geopolitics, and the publishing house that translates its canon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="fonts" rel="stylesheet" href="">
+<link rel="stylesheet" href="style.css">
+<script type="module">
+  import { fontHref, applyTheme, storedTheme } from '../shared/theme.js';
+  document.getElementById('fonts').href = fontHref();
+  applyTheme(storedTheme());
+</script>
+<script>
+  (function () {
+    var h = document.documentElement;
+    h.classList.add('js-motion');
+    setTimeout(function () {
+      if (!window.__motionReady) h.classList.remove('js-motion');
+    }, 2500);
+  }());
+</script>
+</head>
+<body>
+
+<div class="proposal-tag">
+  <a href="../">← All directions</a>
+  <span>P · Tornaviaje — not final copy</span>
+</div>
+
+<!-- one space, behind everything, for the whole page -->
+<div class="space" aria-hidden="true">
+  <div class="space__lamp" id="lamp"></div>
+  <div class="space__grain"></div>
+</div>
+
+<header class="capsule" id="capsule">
+  <a class="capsule__brand" href="#top">
+    <span class="capsule__mark" aria-hidden="true"></span>
+    <span class="capsule__name">Hispano Studies</span>
+  </a>
+  <nav class="capsule__nav" aria-label="Main">
+    <a href="#watch" data-i18n="nav.watch">Watch</a>
+    <a href="#voyage" data-i18n="nav.corridor">Corridor</a>
+    <a href="#world" data-i18n="nav.world">World</a>
+    <a href="#canon" data-i18n="nav.canon">Canon</a>
+    <a href="#books" data-i18n="nav.books">Books</a>
+    <a href="#read" data-i18n="nav.read">Read</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+  </nav>
+  <div class="capsule__tools">
+    <div id="themer"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="es" aria-pressed="false">ES</button>
+    </div>
+  </div>
+  <svg class="capsule__ring" viewBox="0 0 40 40" aria-hidden="true">
+    <circle cx="20" cy="20" r="17"></circle>
+    <circle cx="20" cy="20" r="17" id="ring"></circle>
+  </svg>
+</header>
+
+<main id="top">
+
+  <!-- ===================================================================
+       HERO — the hang, seen all at once, with what this place is
+       =================================================================== -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wall" id="wall" aria-hidden="true"></div>
+    <div class="hero__in">
+      <p class="kicker" data-i18n="hero.kicker">Institute for Hispano Studies · De Indiis Editions</p>
+      <h1 class="giant" id="hero-h" data-i18n-html="hero.h1">Four continents. Two languages.<br><em>One argument that never ended.</em></h1>
+      <p class="hero__lede" data-i18n="hero.lede">A think tank for Hispanic-Catholic civilisation and Pan-Iberian geopolitics — and the publishing house that translates its canon. Short video, long essays, and the books almost none of which were ever put into English.</p>
+      <div class="hero__cta">
+        <a class="btn btn--solid" href="#watch" data-i18n="hero.cta1">Start with the videos</a>
+        <a class="btn btn--ghost" href="#join" data-i18n="hero.cta2">Get the free pamphlet</a>
+      </div>
+      <ul class="hero__facts">
+        <li><b id="s-authors">0</b><span data-i18n="hero.f1">authors in the corpus</span></li>
+        <li><b id="s-texts">0</b><span data-i18n="hero.f2">canonical texts</span></li>
+        <li><b id="s-milestones">0</b><span data-i18n="hero.f3">dated milestones</span></li>
+        <li><b id="s-states">0</b><span data-i18n="hero.f4">states, language official</span></li>
+      </ul>
+    </div>
+    <p class="hero__cue mono" data-i18n="hero.cue">Scroll</p>
+  </section>
+
+  <!-- ===================================================================
+       WATCH — the way most people arrive
+       =================================================================== -->
+  <section class="watch" id="watch" aria-labelledby="watch-h">
+    <div class="head">
+      <p class="kicker" data-reveal data-i18n="watch.kicker">Watch</p>
+      <h2 class="big" id="watch-h" data-reveal data-i18n="watch.h">Three hundred years, cut out of the story.</h2>
+      <p class="head__sub" data-reveal data-i18n="watch.sub">Short video on YouTube, Instagram, X and TikTok. The same cuts everywhere, because the argument travels better than the platform.</p>
+    </div>
+
+    <div class="channels" id="channels" data-reveal-stagger="70"></div>
+
+    <p class="rowlabel mono" data-i18n="watch.shorts">Shorts</p>
+    <div class="shorts" id="shorts"></div>
+
+    <p class="rowlabel mono" data-i18n="watch.long">Long form</p>
+    <div class="longs" id="longs" data-reveal-stagger="80"></div>
+  </section>
+
+  <!-- ===================================================================
+       THE CORRIDOR — the chronology, as its own section
+       =================================================================== -->
+  <section class="voyage" id="voyage" aria-labelledby="voy-h">
+    <div class="voyage__intro">
+      <p class="kicker" data-reveal data-i18n="voy.kicker">The corridor · c. 722 to 2026</p>
+      <h2 class="big" id="voy-h" data-reveal data-i18n="voy.h">Walk the chronology.</h2>
+      <p class="head__sub" data-reveal data-i18n="voy.sub">Sixty dated milestones in seven chapters, hung on the walls. Scroll to move down the hall; every stop carries its map treatment and its source. Use the rail to jump.</p>
+    </div>
+
+    <div class="voyage__stage">
+      <div class="corridor" id="corridor"></div>
+      <div class="corridor__fog" aria-hidden="true"></div>
+
+      <div class="hud">
+        <div class="plaque plaque--way" id="way" aria-live="polite">
+          <p class="way__meta mono"><span id="w-n">01 / 14</span> · <span id="w-chapter"></span></p>
+          <p class="way__year giant" id="w-year">722</p>
+          <h3 class="way__title" id="w-title"></h3>
+          <p class="way__body" id="w-body"></p>
+          <div class="way__treat">
+            <b class="mono" data-i18n="voy.treatment">How the map draws it</b>
+            <i id="w-map"></i>
+          </div>
+          <p class="way__src mono" id="w-src"></p>
+        </div>
+      </div>
+
+      <div class="meter">
+        <span class="meter__from mono">722</span>
+        <div class="meter__track" id="rail" role="tablist" aria-label="Milestones"><i id="meter-fill"></i></div>
+        <span class="meter__to mono">2026</span>
+      </div>
+    </div>
+    <div class="voyage__steps" id="voyage-steps" aria-hidden="true"></div>
+  </section>
+
+  <!-- ===================================================================
+       THE WORLD
+       =================================================================== -->
+  <section class="world" id="world" aria-labelledby="world-h">
+    <div class="head head--center">
+      <p class="kicker" data-reveal data-i18n="world.kicker">What came out of it</p>
+      <h2 class="big" id="world-h" data-reveal data-i18n="world.h">Twenty-nine states still speak it.</h2>
+      <p class="head__sub" data-reveal data-i18n="world.sub">Spanish and Portuguese are official on four continents, and the routes that joined them ran for three hundred years.</p>
+    </div>
+    <!-- the chart hangs like everything else in this room: framed, lit from
+         above, with the same gold rule as the corridor's pictures -->
+    <figure class="plate" data-reveal>
+      <div class="plate__lamp" aria-hidden="true"></div>
+      <div class="plate__in">
+        <div class="world__map" id="world-map"></div>
+
+        <div class="cartouche">
+          <h3 data-i18n-html="world.cart">The Iberophone<br>World</h3>
+          <div class="cartouche__rule"></div>
+          <dl>
+            <dt data-i18n="world.c1">States, language official</dt><dd id="c-states">—</dd>
+            <dt data-i18n="world.c2">Territories of presence</dt><dd id="c-presence">—</dd>
+            <dt data-i18n="world.c3">Sea routes drawn</dt><dd id="c-routes">—</dd>
+            <dt data-i18n="world.c4">The rupture</dt><dd>1898</dd>
+          </dl>
+        </div>
+
+        <div class="readout mono" id="readout" aria-live="polite">
+          <span class="readout__hint" data-i18n="world.hint">Point at a country.</span>
+        </div>
+      </div>
+      <figcaption class="mono" data-i18n="world.cap">Equal-area projection · Natural Earth geometry · routes after the Carrera de Indias, the Manila galleon and the Carreira da Índia</figcaption>
+    </figure>
+  </section>
+
+  <!-- ===================================================================
+       CANON — the chart
+       =================================================================== -->
+  <section class="canon" id="canon" aria-labelledby="canon-h">
+    <div class="head">
+      <p class="kicker" data-reveal data-i18n="canon.kicker">The canon · fifty texts</p>
+      <h2 class="big" id="canon-h" data-reveal data-i18n="canon.h">A living argument, not a reading list.</h2>
+      <p class="head__sub" data-reveal data-i18n="canon.sub">Placed by the kind of unity each one presupposes, and joined by what actually connects them. Every line is an evidence claim: solid where the reception is documented, dashed where it is only probable, red where the two argued against each other. Click anything to read it.</p>
+    </div>
+    <div class="canon__chart" id="canon-chart"></div>
+    <p class="fine" data-i18n="canon.fine">Classification adapted from Gustavo Bueno, “España y América” (2001). Portuguese, Brazilian, Lusophone African, Asian, Indigenous, Black Atlantic, Equatoguinean and Filipino traditions remain historically distinct. Their presence here does not imply their assent to a Hispanic or Iberophone project.</p>
+  </section>
+
+  <!-- ===================================================================
+       BOOKS
+       =================================================================== -->
+  <section class="books" id="books" aria-labelledby="books-h">
+    <div class="head">
+      <p class="kicker" data-reveal data-i18n="books.kicker">De Indiis Editions</p>
+      <h2 class="big" id="books-h" data-reveal data-i18n="books.h">Most of this was never translated.</h2>
+    </div>
+    <div class="drift" id="drift-a"></div>
+    <div class="drift drift--back" id="drift-b"></div>
+    <p class="fine" data-i18n="books.fine">Ranks are editorial recommendations from the acquisitions programme, not publication announcements. Proposed introducers and editors are not listed: they are scholars who have not agreed to participate. Covers are placeholders.</p>
+  </section>
+
+  <!-- ===================================================================
+       READ
+       =================================================================== -->
+  <section class="read" id="read" aria-labelledby="read-h">
+    <div class="head">
+      <p class="kicker" data-reveal data-i18n="read.kicker">Read · on Substack</p>
+      <h2 class="big" id="read-h" data-reveal data-i18n="read.h">Essays and first translations.</h2>
+    </div>
+    <div class="essays" id="essays" data-reveal-stagger="70"></div>
+  </section>
+
+  <!-- ===================================================================
+       ABOUT
+       =================================================================== -->
+  <section class="about" id="about" aria-labelledby="about-h">
+    <div class="head">
+      <p class="kicker" data-reveal data-i18n="about.kicker">The mission</p>
+      <h2 class="big" id="about-h" data-reveal data-i18n="about.h">A tradition that was forgotten, not refuted.</h2>
+    </div>
+    <div class="about__cols" data-reveal-stagger="90">
+      <p data-i18n="about.p1">The Institute studies and defends Hispanic civilisation: its history, its Catholic inheritance, its mestizaje and its two languages. De Indiis Editions translates and republishes the canon of that argument.</p>
+      <p data-i18n="about.p2">The claim is not that this tradition was defeated. It is that most of it was never translated, and an argument you cannot read is an argument you cannot answer.</p>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       JOIN
+       =================================================================== -->
+  <section class="cta" id="join" aria-labelledby="cta-h">
+    <p class="kicker" data-reveal data-i18n="cta.kicker">De Indiis Editions · free</p>
+    <h2 class="giant" id="cta-h" data-reveal data-i18n-html="cta.h">Take the <em>whole argument</em><br>home with you.</h2>
+    <p class="cta__lede" data-reveal data-i18n="cta.lede">Two hundred years of theory and praxis, in one pamphlet: where these ideas came from, who argued them, and what to read first.</p>
+    <form class="enrol" id="signup" data-reveal>
+      <input id="email" type="email" required placeholder="your@email.com" data-i18n-attr="placeholder:cta.ph">
+      <button type="submit"><span data-i18n="cta.btn">Send it</span><i aria-hidden="true">→</i></button>
+      <p class="enrol__ok mono" data-i18n="cta.ok">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+    </form>
+    <div class="cta__alt" data-reveal>
+      <a href="#" data-i18n="cta.discord">Reconquista Syndicate · Discord</a>
+      <a href="https://www.patreon.com/HispanicAmericanStudies">Patreon</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__cols">
+    <div class="foot__say">
+      <p class="foot__motto" data-i18n="foot.motto">Veritas prius pace</p>
+      <p class="foot__blurb" data-i18n="foot.blurb">A think tank for Hispanic-Catholic civilisation and Pan-Iberian geopolitics, and the publishing house that translates its canon.</p>
+    </div>
+    <div><h4 data-i18n="foot.explore">Explore</h4><ul>
+      <li><a href="#watch" data-i18n="nav.watch">Watch</a></li>
+      <li><a href="#voyage" data-i18n="nav.corridor">Corridor</a></li>
+      <li><a href="#world" data-i18n="nav.world">World</a></li>
+      <li><a href="#canon" data-i18n="nav.canon">Canon</a></li>
+      <li><a href="#books" data-i18n="nav.books">Books</a></li>
+    </ul></div>
+    <div><h4 data-i18n="foot.channels">Channels</h4><ul id="foot-channels"></ul></div>
+    <div><h4 data-i18n="foot.look">Look</h4><div id="themer-foot"></div>
+      <p class="foot__note" data-i18n="foot.note">Three registers, one institute.</p>
+    </div>
+  </div>
+  <div class="foot__marquee" aria-hidden="true"><div class="foot__ticker" id="foot-ticker"></div></div>
+  <!-- an SVG wordmark scales to the container, so it can never be clipped -->
+  <svg class="foot__word" viewBox="0 0 1000 118" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+    <text x="500" y="100" text-anchor="middle">HISPANO STUDIES</text>
+  </svg>
+  <p class="foot__base mono">
+    <span data-i18n="foot.legal">Hispano Studies LLC</span>
+    <span data-i18n="foot.draft">Draft direction P · Tornaviaje · October 2026</span>
+  </p>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
