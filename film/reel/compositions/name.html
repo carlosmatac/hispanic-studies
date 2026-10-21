@@ -10,6 +10,9 @@
     #op-l2 { top: 470px; font-style: italic; font-weight: 500; color: #28231e; }
     #op-langs { position: absolute; left: 158px; top: 720px; font-family: Inter, sans-serif; font-weight: 500; font-size: 40px; letter-spacing: 0.02em; color: #470b15; }
 
+    .op-w { display: inline-block; white-space: nowrap; }
+    .op-ch { display: inline-block; }
+
     /* bars 3–4: the Iberophone world, from Iberia out to the four continents */
     #op-world { position: absolute; inset: 0; background: #f9f3dd; }
     #op-map { position: absolute; left: 0; top: 190px; width: 1920px; height: 935px; transform-origin: 56.3% 20.5%; }
@@ -23,14 +26,14 @@
 
   <div id="root" data-composition-id="name" data-width="1920" data-height="1080">
     <div id="op-claim" class="clip" data-start="0" data-duration="4.2857">
-      <p id="op-l1" class="op-line">One civilization,</p>
-      <p id="op-l2" class="op-line">two languages,</p>
+      <p id="op-l1" class="op-line"><span class="op-w"><span class="op-ch">O</span><span class="op-ch">n</span><span class="op-ch">e</span></span> <span class="op-w"><span class="op-ch">c</span><span class="op-ch">i</span><span class="op-ch">v</span><span class="op-ch">i</span><span class="op-ch">l</span><span class="op-ch">i</span><span class="op-ch">z</span><span class="op-ch">a</span><span class="op-ch">t</span><span class="op-ch">i</span><span class="op-ch">o</span><span class="op-ch">n</span><span class="op-ch">,</span></span></p>
+      <p id="op-l2" class="op-line"><span class="op-w"><span class="op-ch">t</span><span class="op-ch">w</span><span class="op-ch">o</span></span> <span class="op-w"><span class="op-ch">l</span><span class="op-ch">a</span><span class="op-ch">n</span><span class="op-ch">g</span><span class="op-ch">u</span><span class="op-ch">a</span><span class="op-ch">g</span><span class="op-ch">e</span><span class="op-ch">s</span><span class="op-ch">,</span></span></p>
       <p id="op-langs">español · português</p>
     </div>
 
     <div id="op-world" class="clip" data-start="4.2857" data-duration="4.2857">
       <div id="op-map"><img src="assets/img/iberophone-map.jpg" alt="" /></div>
-      <p id="op-l3">four continents.</p>
+      <p id="op-l3"><span class="op-w"><span class="op-ch">f</span><span class="op-ch">o</span><span class="op-ch">u</span><span class="op-ch">r</span></span> <span class="op-w"><span class="op-ch">c</span><span class="op-ch">o</span><span class="op-ch">n</span><span class="op-ch">t</span><span class="op-ch">i</span><span class="op-ch">n</span><span class="op-ch">e</span><span class="op-ch">n</span><span class="op-ch">t</span><span class="op-ch">s</span><span class="op-ch">.</span></span></p>
       <p id="op-c1" class="op-cont" style="left: 500px; top: 640px">América</p>
       <p id="op-c2" class="op-cont" style="left: 1150px; top: 250px">Europa</p>
       <p id="op-c3" class="op-cont" style="left: 1380px; top: 640px">África</p>
@@ -54,15 +57,18 @@
       const bar = (n) => n * 4 * B;
       const tl = gsap.timeline({ paused: true });
 
-      // bar 1: "One civilization," printed left to right in seven steps, on the eighth notes
-      tl.fromTo("#op-l1", { clipPath: "inset(0% 88% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 3.5 * B, ease: "steps(7)" }, 0);
+      // bar 1: "One civilization," letter by letter, fast and soft: each letter rises
+      // a little out of a blur; the line is done by the third beat
+      const letters = (sel, t, each) => tl.fromTo(sel + " .op-ch", { opacity: 0, y: 34, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, stagger: each, ease: "expo.out" }, t);
+      letters("#op-l1", 0.02, 0.055);
       // bar 2: "two languages," the same way, and the two names under it
-      tl.fromTo("#op-l2", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 2.5 * B, ease: "steps(5)" }, bar(1));
-      tl.fromTo("#op-langs", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16 }, bar(1) + 3 * B);
+      letters("#op-l2", bar(1), 0.06);
+      tl.fromTo("#op-langs", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2 }, bar(1) + 2.5 * B);
 
       // bar 3: the map, close on Iberia, pulls back to the whole world
       tl.fromTo("#op-map", { scale: 3.4 }, { scale: 1, duration: 1.7, ease: "power3.inOut" }, bar(2));
-      tl.fromTo("#op-l3", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 2 * B, ease: "steps(4)" }, bar(2) + B);
+      letters("#op-l3", bar(2) + B * 0.75, 0.045);
       // bar 4: one continent a beat
       tl.fromTo(".op-cont", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, stagger: B / 2, ease: "expo.out" }, bar(3) - 0.04);
 

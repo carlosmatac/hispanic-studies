@@ -24,7 +24,7 @@ Harmony (one chord per bar, D minor):
 
 ## Spec
 
-- **Length**: 60 s exactly (it has to land on the logo, then ring out).
+- **Length**: 66.4 s, 31 bars (it has to land on the logo, then ring out).
 - **Tempo**: 112 BPM, 4/4. A bar is 2.143 s; the Folía is 8 bars (17.1 s).
 - **Key**: D minor.
 - **No vocals, no choir syllables.** Beltrán's own voice goes on top in two places.
@@ -45,11 +45,11 @@ Harmony (one chord per bar, D minor):
 | 5–8 | 8.57–17.14 | **Build** | palmas and a muted kick join; strings stab on every downbeat; a riser through bar 8; **full stop on the last beat** (silence 0.5 s) | first glimpses of Beltrán, faster and faster |
 | 9–16 | 17.14–34.29 | **Drop 1** | the whole kit and the sub; guitar rasgueado on the offbeats; cellos play the Folía bass line | the montage: Beltrán to camera, his openings, the maps and paintings, one cut per beat at its peak |
 | 17–20 | 34.29–42.86 | **Break** | half time: only strings holding the chords, a soft pulse, space | the three pillars, one bar each: MESTIZAJE · CATOLICISMO · LENGUA, and one line of Beltrán's own voice |
-| 21–26 | 42.86–55.71 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel, the essays, the canon, the books, the map; real numbers only |
-| 27–28 | 55.71–60.00 | **Lockup** | one clean hit on the downbeat of bar 27 (low impact + a final Dm chord), then it rings out | the IHS logo and the name; silence by 60 s |
+| 21–29 | 42.86–62.14 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel (1 bar), the essays (2), the canon (2), the Atlas (2), the books (1), the followings (1) |
+| 30–31 | 62.14–66.43 | **Lockup** | one clean hit on the downbeat of bar 30 (low impact + a final Dm chord), then it rings out | the IHS logo and the name; silence by 66.4 s |
 
 The key sync points: **8.57** (build starts), **17.14** (drop 1), **34.29** (break),
-**42.86** (drop 2), **55.71** (logo hit).
+**42.86** (drop 2), **62.14** (logo hit).
 
 ## Making it
 
@@ -71,18 +71,18 @@ choir, EDM supersaw, trap hi-hats, trailer braams, flamenco singing, mariachi, l
 | Build | 8.6 s | palmas, muted kick on every beat, low string stabs on downbeats, rising tension, riser, hard stop with half a second of silence at the end | |
 | Drop 1 | 17.1 s | full modern beat, punchy kick and sub on downbeats, guitar rasgueado on offbeats, cellos playing the La Folia bass line, driving, confident | |
 | Break | 8.6 s | half time, sustained strings only, soft pulse, spacious, room for a spoken voice | drums, kick |
-| Drop 2 | 12.9 s | full beat returns bigger, two guitars, higher strings, builds in the last bar | |
+| Drop 2 | 19.3 s | full beat returns bigger, two guitars, higher strings, builds in the last bar | |
 | Lockup | 4.3 s | one big low impact and a final D minor chord, then ring out to silence | drums after the hit |
 
 The same as one prompt, for the plain text box:
 
-> Instrumental motion-design showreel track, exactly 60 seconds, 112 BPM, D minor, built on
+> Instrumental motion-design showreel track, exactly 66 seconds, 112 BPM, D minor, built on
 > the La Folía chord progression (Dm A Dm C F C Dm A). 0–8 s: solo Spanish baroque guitar
 > plays the Folía, intimate. 8–17 s: palmas and a muted kick join, low string stabs on the
 > downbeats, a riser, then a hard stop. 17 s: the drop: punchy modern beat, deep sub bass on
 > the downbeats, cajón, guitar rasgueado on the offbeats, cellos on the Folía bass line.
-> 34–43 s: half-time break, strings only, spacious. 43–56 s: the beat returns bigger. 56 s: one
-> big low hit and a final D minor chord ringing out to silence at 60 s. Dry, close, confident.
+> 34–43 s: half-time break, strings only, spacious. 43–62 s: the beat returns bigger. 62 s: one
+> big low hit and a final D minor chord ringing out to silence at 66 s. Dry, close, confident.
 > No vocals, no choir, no EDM supersaws, no trailer braams, no flamenco singing.
 
 ### Suno (if ElevenLabs does not land the structure)

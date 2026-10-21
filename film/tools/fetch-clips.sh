@@ -12,7 +12,12 @@ while read -r name id a b; do
   [ -f "$name.mp4" ] && continue
   "$YTDLP" --js-runtimes "node:$NODE" --no-progress -q -S "res:1080,vcodec:h264,acodec:m4a" \
     --download-sections "*$a-$b" --force-keyframes-at-cuts --merge-output-format mp4 \
-    -o "$name.%(ext)s" -- "$id"
+    -o "$name.raw.%(ext)s" -- "$id"
+  # a keyframe every half second: HyperFrames seeks every frame, and a clip
+  # cut with one keyframe freezes in the render
+  ffmpeg -v error -y -i "$name.raw.mp4" -c:v libx264 -preset medium -crf 16 -r 30 -g 15 -keyint_min 15 \
+    -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart "$name.mp4"
+  rm -f "$name.raw.mp4"
   echo "ok $name"
 done <<'LIST'
 know      3LYcIzK8mxo 859.30 863.30

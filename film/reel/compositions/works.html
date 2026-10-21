@@ -3,31 +3,72 @@
     @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
     @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
     #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; color: #28231e; }
-    .wk-shot { position: absolute; inset: 0; background: #f9f3dd; }
-    /* every shot names one work: a big word, one real figure under it */
+    .wk-shot { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; }
     .wk-word { position: absolute; left: 150px; top: 120px; font-weight: 600; font-size: 190px; line-height: 0.9; letter-spacing: -0.025em; color: #470b15; white-space: nowrap; }
     .wk-word span { display: inline-block; }
     .wk-fig { position: absolute; left: 156px; top: 310px; font-family: Inter, sans-serif; font-weight: 500; font-size: 38px; color: #28231e; white-space: nowrap; }
+    /* a paper slab that keeps the title readable over a moving world */
+    .wk-slab { position: absolute; left: 0; top: 0; width: 1020px; height: 380px; background: #f9f3dd; }
 
-    /* watch: his own thumbnails, a wall that slides in */
+    /* after its entrance a title becomes a small chip, so the world can be seen */
+    .wk-chip { position: absolute; left: 60px; top: 46px; padding: 12px 26px 14px; background: #f9f3dd; border: 3px solid #470b15; white-space: nowrap; z-index: 3; }
+    .wk-chip b { font-weight: 600; font-size: 46px; color: #470b15; }
+    .wk-chip span { margin-left: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #28231e; }
+
+    /* watch */
     #wk-watch .wk-word { top: 640px; }
     #wk-watch .wk-fig { top: 830px; }
     #wk-wall { position: absolute; left: 690px; top: 110px; display: grid; grid-template-columns: repeat(3, 340px); gap: 20px; }
     .wk-thumb { width: 340px; height: 191px; object-fit: cover; display: block; }
 
-    /* read: the essays, as a contents page */
-    #wk-list { position: absolute; left: 150px; top: 420px; width: 1620px; list-style: none; }
-    #wk-list li { display: flex; justify-content: space-between; gap: 40px; align-items: baseline; padding: 14px 0; border-top: 2px solid #470b15; font-size: 44px; }
-    #wk-list li b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    #wk-list li span { font-family: Inter, sans-serif; font-weight: 500; font-size: 30px; white-space: nowrap; color: #470b15; }
+    /* read: eight essays as cards in space */
+    #rd-stage { position: absolute; inset: 0; perspective: 1700px; perspective-origin: 51% 58%; }
+    #rd-ring { position: absolute; left: 980px; top: 660px; width: 0; height: 0; transform-style: preserve-3d; }
+    .rd-arm { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+    .rd-card { position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 26px 30px; background: #f9f3dd; border: 3px solid #470b15; outline: 1px solid #470b15; outline-offset: 6px; backface-visibility: hidden; display: flex; flex-direction: column; }
+    .rd-k { font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; color: #470b15; margin-bottom: 14px; }
+    .rd-card h3 { font-weight: 600; font-size: 40px; line-height: 1.05; color: #28231e; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .rd-by { margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }
+    #wk-read .wk-word, #wk-read .wk-fig { z-index: 2; }
 
-    /* the canon and the Atlas: every text, every milestone, as a dot on its year */
-    .wk-axis { position: absolute; left: 150px; width: 1620px; bottom: 260px; height: 400px; }
-    .wk-axis::after { content: ""; position: absolute; left: 0; right: 0; bottom: -10px; height: 3px; background: #28231e; }
-    .wk-dot { position: absolute; width: 24px; height: 24px; margin-left: -12px; border-radius: 50%; background: #470b15; }
-    .wk-tick { position: absolute; bottom: -70px; translate: -50% 0; font-family: Inter, sans-serif; font-weight: 500; font-size: 32px; white-space: nowrap; }
+    /* the canon: the real graph, as on the site */
+    #cn-world { position: absolute; left: 0; top: 0; width: 3300px; height: 3200px; transform-origin: 0 0; }
+    #cn-edges { position: absolute; left: 0; top: 0; width: 3300px; height: 3200px; overflow: visible; }
+    .cn-e { fill: none; stroke: #470b15; stroke-width: 2.4; stroke-dasharray: 1 1; }
+    .cn-e--probable { stroke-width: 2; }
+    .cn-e--opposition { stroke: #28231e; stroke-width: 2.2; }
+    .cn-e--wrote { stroke: #b5aa96; stroke-width: 1.6; }
+    .cn-s { fill: none; stroke: #470b15; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 0.001 0.045; }
+    .cn-n { position: absolute; }
+    .cg-node { position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; width: 100%; height: 100%; overflow: hidden; padding: 7px 10px 7px 11px; font-family: Inter, sans-serif; font-size: 11.5px; line-height: 1.2; color: #28231e; background: #f9f3dd; }
+    .cg-node__yr { flex: none; font-family: "IBM Plex Mono", monospace; font-size: 10px; color: #470b15; letter-spacing: 0.02em; }
+    .cg-node__t { flex: none; font-family: "Ibarra Real Nova", serif; font-weight: 600; font-size: 13px; line-height: 1.12; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .cg-node__a { flex: none; font-size: 10.5px; color: #6a625a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cg-node--text { border: 1px solid #28231e; }
+    .cg-node--text .cg-node__t { font-style: italic; }
+    .cg-node--author { justify-content: center; padding: 8px 15px; border-radius: 999px; background: #470b15; color: #f9f3dd; border: 1px solid #470b15; }
+    .cg-node--author .cg-node__a { color: #d9cdb6; }
+    .cg-node--author.is-counter { background: #f9f3dd; color: #28231e; border: 1.5px dashed #470b15; }
+    .cg-node--author.is-counter .cg-node__a { color: #6a625a; }
+    .cg-node--corpus { justify-content: center; border: 1px dotted #28231e; border-radius: 8px; background: #ede3c8; }
+    .cg-node--corpus .cg-node__t { font-weight: 400; font-style: italic; }
+    .cg-node--periodical { border: 1px solid #28231e; transform: skewX(-10deg); justify-content: center; }
+    .cg-node--periodical .cg-node__in { transform: skewX(10deg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .cg-node--institution { justify-content: center; padding-inline: 20px; background: #28231e; clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 11px 100%, 0 50%); }
+    .cg-node--institution::before { content: ""; position: absolute; inset: 1px; z-index: 0; background: #f9f3dd; clip-path: polygon(10.5px 0, calc(100% - 10.5px) 0, 100% 50%, calc(100% - 10.5px) 100%, 10.5px 100%, 0 50%); }
+    .cg-node--institution .cg-node__in { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
-    /* books: the series as spines */
+    /* the Atlas: milestones pinned on the Iberophone map */
+    #at-world { position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }
+    #at-world > img { position: absolute; inset: 0; width: 3584px; height: 1746px; display: block; }
+    .at-lead { position: absolute; inset: 0; width: 3584px; height: 1746px; overflow: visible; }
+    .at-lead path { fill: none; stroke: #470b15; stroke-width: 4; stroke-dasharray: 0.02 0.02; }
+    .at-pin { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: #470b15; border: 6px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15; }
+    .at-card { position: absolute; width: 560px; padding: 24px 30px 28px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; }
+    .at-k { font-family: "IBM Plex Mono", monospace; font-size: 24px; color: #470b15; margin-bottom: 10px; }
+    .at-card h3 { font-weight: 600; font-size: 46px; line-height: 1.05; color: #28231e; }
+
+    /* books */
     #wk-shelf { position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }
     .wk-spine { width: 128px; height: 820px; background: #470b15; position: relative; }
     .wk-spine:nth-child(2) { height: 760px; } .wk-spine:nth-child(4) { height: 790px; } .wk-spine:nth-child(5) { height: 740px; }
@@ -35,9 +76,8 @@
     .wk-spine span { position: absolute; left: 0; right: 0; bottom: 40px; display: grid; place-items: center; writing-mode: vertical-rl; rotate: 180deg; font-weight: 600; font-size: 40px; white-space: nowrap; color: #f9f3dd; }
     .wk-spine--paper span { color: #470b15; }
     #wk-books .wk-word { font-size: 150px; }
-    #wk-books .wk-fig { top: 290px; }
 
-    /* follow: four real figures, landing on the beats */
+    /* follow */
     #wk-follow { background: #470b15; }
     #wk-nums { position: absolute; left: 150px; width: 1620px; top: 360px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
     .wk-num { color: #f9f3dd; }
@@ -47,7 +87,7 @@
   </style>
 
   <div id="root" data-composition-id="works" data-width="1920" data-height="1080">
-    <div id="wk-watch" class="wk-shot clip" data-start="0" data-duration="2.1429">
+    <div id="wk-watch" class="wk-shot clip" data-start="0.0" data-duration="2.1429">
       <div id="wk-wall">
         <img class="wk-thumb" src="assets/img/yt-BISc6y6fIuM.jpg" alt="" />
         <img class="wk-thumb" src="assets/img/yt-JNLr7NM_buA.jpg" alt="" />
@@ -60,146 +100,261 @@
       <p class="wk-fig">13.5K subscribers on YouTube</p>
     </div>
 
-    <div id="wk-read" class="wk-shot clip" data-start="2.1429" data-duration="2.1428">
-      <p class="wk-word"><span>Read</span></p>
-      <p class="wk-fig">Essays and translations on Substack</p>
-      <ul id="wk-list">
-        <li><b>The Catholic-Hispanic Position on Racism</b><span>Francisco Elías de Tejada</span></li>
-        <li><b>The Vikings Did Not Discover America</b><span>Iván Vélez</span></li>
-        <li><b>Oiréis hablar de mí: A Tribute to José Vasconcelos</b><span>Ismael Carvallo Robledo</span></li>
-        <li><b>Spain and America</b><span>Gustavo Bueno</span></li>
-        <li><b>Aryan Indigenismo and Manifest Destiny</b><span>Beltrán Arellanes</span></li>
-        <li><b>The Black Legend: Threat to Hispanic Civilization</b><span>Alicia Melchor Herrera</span></li>
-      </ul>
-    </div>
-
-    <div id="wk-canon" class="wk-shot clip" data-start="4.2857" data-duration="2.1429">
-      <p class="wk-word"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig">Fifty texts, 1818 to 1999</p>
-      <div class="wk-axis">
-        <i class="wk-dot" style="left:66px;bottom:0px"></i>
-        <i class="wk-dot" style="left:100px;bottom:0px"></i>
-        <i class="wk-dot" style="left:307px;bottom:0px"></i>
-        <i class="wk-dot" style="left:374px;bottom:0px"></i>
-        <i class="wk-dot" style="left:382px;bottom:0px"></i>
-        <i class="wk-dot" style="left:457px;bottom:0px"></i>
-        <i class="wk-dot" style="left:465px;bottom:0px"></i>
-        <i class="wk-dot" style="left:482px;bottom:0px"></i>
-        <i class="wk-dot" style="left:498px;bottom:0px"></i>
-        <i class="wk-dot" style="left:573px;bottom:0px"></i>
-        <i class="wk-dot" style="left:606px;bottom:0px"></i>
-        <i class="wk-dot" style="left:656px;bottom:0px"></i>
-        <i class="wk-dot" style="left:673px;bottom:0px"></i>
-        <i class="wk-dot" style="left:698px;bottom:0px"></i>
-        <i class="wk-dot" style="left:706px;bottom:30px"></i>
-        <i class="wk-dot" style="left:723px;bottom:0px"></i>
-        <i class="wk-dot" style="left:731px;bottom:0px"></i>
-        <i class="wk-dot" style="left:748px;bottom:0px"></i>
-        <i class="wk-dot" style="left:789px;bottom:0px"></i>
-        <i class="wk-dot" style="left:789px;bottom:30px"></i>
-        <i class="wk-dot" style="left:831px;bottom:0px"></i>
-        <i class="wk-dot" style="left:856px;bottom:0px"></i>
-        <i class="wk-dot" style="left:864px;bottom:30px"></i>
-        <i class="wk-dot" style="left:889px;bottom:0px"></i>
-        <i class="wk-dot" style="left:914px;bottom:0px"></i>
-        <i class="wk-dot" style="left:939px;bottom:0px"></i>
-        <i class="wk-dot" style="left:947px;bottom:30px"></i>
-        <i class="wk-dot" style="left:947px;bottom:60px"></i>
-        <i class="wk-dot" style="left:947px;bottom:90px"></i>
-        <i class="wk-dot" style="left:955px;bottom:0px"></i>
-        <i class="wk-dot" style="left:980px;bottom:0px"></i>
-        <i class="wk-dot" style="left:989px;bottom:30px"></i>
-        <i class="wk-dot" style="left:989px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1030px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1030px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1047px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1072px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1080px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1080px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1138px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1188px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1205px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1213px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1238px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1304px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1313px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1329px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1387px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1479px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1570px;bottom:0px"></i>
-        <span class="wk-tick" style="left:66px">1818</span><span class="wk-tick" style="left:748px">1900</span><span class="wk-tick" style="left:1570px">1999</span>
+    <div id="wk-read" class="wk-shot clip" data-start="2.1429" data-duration="4.2857">
+      <div id="rd-stage">
+        <div id="rd-ring">
+          <div id="rd-a0" class="rd-arm"><article id="rd-c0" class="rd-card">
+            <p class="rd-k">Substack · 19 Dec 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco Elías de Tejada</p>
+          </article></div>
+          <div id="rd-a1" class="rd-arm"><article id="rd-c1" class="rd-card">
+            <p class="rd-k">Substack · 29 Dec 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">Iván Vélez</p>
+          </article></div>
+          <div id="rd-a2" class="rd-arm"><article id="rd-c2" class="rd-card">
+            <p class="rd-k">Substack · 17 Sep 2025</p><h3>Oiréis hablar de mí: A Tribute to José Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo</p>
+          </article></div>
+          <div id="rd-a3" class="rd-arm"><article id="rd-c3" class="rd-card">
+            <p class="rd-k">Substack · 2 Jun 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla</p>
+          </article></div>
+          <div id="rd-a4" class="rd-arm"><article id="rd-c4" class="rd-card">
+            <p class="rd-k">Substack · 17 Apr 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno</p>
+          </article></div>
+          <div id="rd-a5" class="rd-arm"><article id="rd-c5" class="rd-card">
+            <p class="rd-k">Substack · 21 May 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno</p>
+          </article></div>
+          <div id="rd-a6" class="rd-arm"><article id="rd-c6" class="rd-card">
+            <p class="rd-k">Substack · 6 Apr 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">Beltrán Arellanes</p>
+          </article></div>
+          <div id="rd-a7" class="rd-arm"><article id="rd-c7" class="rd-card">
+            <p class="rd-k">Substack · 12 Apr 2025</p><h3>The Black Legend: Threat to Hispanic Civilization (Part 1)</h3><p class="rd-by">Alicia Melchor Herrera</p>
+          </article></div>
+        </div>
       </div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>Read</span></p>
+      <p class="wk-fig" style="top: 250px">Essays and translations on Substack</p>
     </div>
 
-    <div id="wk-atlas" class="wk-shot clip" data-start="6.4286" data-duration="2.1428">
-      <p class="wk-word"><span>The</span> <span>Atlas</span></p>
-      <p class="wk-fig">Sixty milestones, c. 722 to 2026</p>
-      <div class="wk-axis">
-        <i class="wk-dot" style="left:27px;bottom:0px"></i>
-        <i class="wk-dot" style="left:540px;bottom:0px"></i>
-        <i class="wk-dot" style="left:646px;bottom:0px"></i>
-        <i class="wk-dot" style="left:871px;bottom:0px"></i>
-        <i class="wk-dot" style="left:937px;bottom:0px"></i>
-        <i class="wk-dot" style="left:949px;bottom:30px"></i>
-        <i class="wk-dot" style="left:960px;bottom:0px"></i>
-        <i class="wk-dot" style="left:965px;bottom:0px"></i>
-        <i class="wk-dot" style="left:965px;bottom:30px"></i>
-        <i class="wk-dot" style="left:967px;bottom:60px"></i>
-        <i class="wk-dot" style="left:972px;bottom:90px"></i>
-        <i class="wk-dot" style="left:974px;bottom:120px"></i>
-        <i class="wk-dot" style="left:989px;bottom:0px"></i>
-        <i class="wk-dot" style="left:998px;bottom:0px"></i>
-        <i class="wk-dot" style="left:998px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1013px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1035px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1054px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1072px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1145px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1279px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1348px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1350px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1354px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1358px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1367px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1367px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1369px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1372px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1397px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1398px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1408px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1418px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1434px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1436px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1443px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1452px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1458px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1459px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1462px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1462px;bottom:90px"></i>
-        <i class="wk-dot" style="left:1473px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1479px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1491px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1491px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1492px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1502px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1503px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1507px;bottom:60px"></i>
-        <i class="wk-dot" style="left:1507px;bottom:90px"></i>
-        <i class="wk-dot" style="left:1508px;bottom:120px"></i>
-        <i class="wk-dot" style="left:1516px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1521px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1526px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1536px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1552px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1572px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1582px;bottom:0px"></i>
-        <i class="wk-dot" style="left:1582px;bottom:30px"></i>
-        <i class="wk-dot" style="left:1602px;bottom:0px"></i>
-        <span class="wk-tick" style="left:27px">c. 722</span><span class="wk-tick" style="left:965px">1492</span><span class="wk-tick" style="left:1459px">1898</span><span class="wk-tick" style="left:1602px">2026</span>
+    <div id="wk-canon" class="wk-shot clip" data-start="6.4286" data-duration="4.2857">
+      <div id="cn-world">
+        <svg id="cn-edges" viewBox="0 0 3300 3200">
+            <path class="cn-e cn-e--documented" d="M211.49999212449598,234.99998818674396 C299.92368679114884,234.99998818674396 -15.923698604404848,320.99998818674396 72.49999606224799,320.99998818674396" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M1673.4999173072076,960 C1747.3663208343119,960 1502.6335925351436,776.999988186744 1576.4999960622479,776.999988186744" pathLength="1" />
+            <path class="cn-e cn-e--probable" d="M1673.4999173072076,960 C1768.6642255852012,960 1417.3356877842543,862.999988186744 1512.4999960622479,862.999988186744" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2099.5001890120966,2231.0000866305445 C2107.000043315272,2231.0000866305445 2107.000043315272,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2067.499992124496,2970.9998897429437 C2090.9999448714716,2970.9998897429437 2090.9999448714716,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M1635.499992124496,2488.9998897429437 C1733.5752172249333,2488.9998897429437 1366.4247709618105,2231.0000866305445 1464.4999960622479,2231.0000866305445" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M1603.499992124496,2231.0000866305445 C1613.999994093372,2231.0000866305445 1613.999994093372,2231.0000866305445 1624.4999960622479,2231.0000866305445" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M1959.499992124496,2316.9998897429437 C2063.9999448714716,2316.9998897429437 2063.9999448714716,862.999988186744 2168.4998976184474,862.999988186744" pathLength="1" />
+            <path class="cn-e cn-e--probable" d="M1715.499992124496,776.999988186744 C1829.9999448714718,776.999988186744 1829.9999448714718,1378.9998897429437 1944.4998976184477,1378.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M835.5000413463962,2231.0000866305445 C938.0610112483688,2231.0000866305445 545.9390261602754,2118.9998897429437 648.499996062248,2118.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M1453.5000118132562,2316.9998897429437 C1545.049183770157,2316.9998897429437 1212.950824105347,2231.0000866305445 1304.4999960622479,2231.0000866305445" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M1827.499992124496,2118.9998897429437 C1901.3663866556878,2118.9998897429437 1656.6336999748564,776.999988186744 1730.5000945060483,776.999988186744" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M1587.499992124496,234.99998818674396 C1758.0000433152723,234.99998818674396 1758.0000433152723,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2099.5001890120966,1551.0000866305443 C2177.0808978957666,1551.0000866305443 1914.9191887347777,234.99998818674396 1992.4998976184477,234.99998818674396" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2099.5001890120966,1551.0000866305443 C2197.575442343226,1551.0000866305443 1830.4248411749188,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2153.500015751008,1648 C2312.4221525665853,1648 1545.5779576904713,874 1704.5000945060483,874" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2157.5001102570563,1809.0000866305443 C2249.049282213957,1809.0000866305443 1916.9509225491474,1722.9998897429437 2008.5000945060483,1722.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--probable" d="M2051.499992124496,862.999988186744 C2134.6789813046835,862.999988186744 1845.321105325861,948.999988186744 1928.5000945060483,948.999988186744" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2227.499992124496,2970.9998897429437 C2478.0000433152723,2970.9998897429437 2478.0000433152723,122.99998818674395 2728.5000945060483,122.99998818674395" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2323.499992124496,2772.9998897429437 C2613.876901982187,2772.9998897429437 534.1230862045572,788 824.499996062248,788" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2323.499992124496,2772.9998897429437 C2374.0000433152723,2772.9998897429437 2374.0000433152723,234.99998818674396 2424.5000945060483,234.99998818674396" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2323.499992124496,2772.9998897429437 C2362.4712034986023,2772.9998897429437 2257.5286862443413,2686.9998897429437 2296.4998976184474,2686.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2323.499992124496,2772.9998897429437 C2557.9999448714716,2772.9998897429437 2557.9999448714716,320.99998818674396 2792.4998976184474,320.99998818674396" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M1705.500015751008,1045.9999015561996 C1809.6933509864864,1045.9999015561996 1408.3066608267695,960 1512.4999960622479,960" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M1619.499992124496,36.99998818674395 C2029.9999448714716,36.99998818674395 2029.9999448714716,2231.0000866305445 2440.4998976184474,2231.0000866305445" pathLength="1" />
+            <path class="cn-e cn-e--opposition" d="M2259.4117864793348,2687.9998818674394 C2405.9559404926913,2687.9998818674394 2405.9559404926913,2772.9998897429437 2552.5000945060483,2772.9998897429437" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2787.499992124496,36.99998818674395 C2870.6790478775238,36.99998818674395 2581.32084186542,246 2664.4998976184474,246" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2404.499984248992,235.9999803112399 C2476.4719679684117,235.9999803112399 2240.4397082538667,408.0000787550403 2312.4116919732865,408.0000787550403" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M2500.500181136593,580.0000787550404 C2589.2414053391476,580.0000787550404 2271.7588703034935,492.99988974294354 2360.5000945060483,492.99988974294354" pathLength="1" />
+            <path class="cn-e cn-e--documented" d="M3220.499984248992,37.99998031123992 C3373.8378262777637,37.99998031123992 2649.1622524772765,48 2802.5000945060483,48" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M835.5000413463962,2231.0000866305445 C923.923736013049,2231.0000866305445 608.0763506174953,2328 696.5000452841482,2328" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M1587.499992124496,234.99998818674396 C1675.9236867911488,234.99998818674396 1360.076301395595,332 1448.4999960622479,332" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M1603.499992124496,2231.0000866305445 C1690.6421161432588,2231.0000866305445 1381.357872043485,2328 1468.4999960622479,2328" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M1635.499992124496,2488.9998897429437 C1723.9236867911488,2488.9998897429437 1408.076301395595,2586 1496.4999960622479,2586" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M1715.499992124496,776.999988186744 C1813.5752172249333,776.999988186744 1446.4247709618105,1045.9999015561996 1544.4999960622479,1045.9999015561996" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M1763.499992124496,2231.0000866305445 C1845.3153316306145,2231.0000866305445 1562.6846565561293,2328 1644.4999960622479,2328" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M1869.499992124496,776.999988186744 C1965.8392065755058,776.999988186744 1608.1608800550384,874 1704.5000945060483,874" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2051.499992124496,862.999988186744 C2139.923718103247,862.999988186744 1824.0761716396967,1045.9999015561996 1912.4998976184477,1045.9999015561996" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2067.499992124496,2970.9998897429437 C2155.92365547904,2970.9998897429437 1840.0764311515045,3068 1928.5000945060483,3068" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2067.499992124496,1120.9998897429437 C2155.92365547904,1120.9998897429437 1840.0764311515045,1218 1928.5000945060483,1218" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2083.499992124496,1378.9998897429437 C2171.923718103247,1378.9998897429437 1856.0761716396967,1476 1944.4998976184477,1476" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2147.499992124496,1722.9998897429437 C2235.92365547904,1722.9998897429437 1920.0764311515045,1906 2008.5000945060483,1906" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2253.499992124496,2231.0000866305445 C2349.839264054303,2231.0000866305445 1992.1606256886407,2500 2088.4998976184474,2500" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2099.5001890120966,1551.0000866305443 C2110.000043315272,1551.0000866305443 2110.000043315272,788 2120.4998976184474,788" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2323.499992124496,2772.9998897429437 C2411.92365547904,2772.9998897429437 2096.0764311515045,2870 2184.5000945060483,2870" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2563.499992124496,234.99998818674396 C2651.92365547904,234.99998818674396 2336.0764311515045,676 2424.5000945060483,676" pathLength="1" />
+            <path class="cn-e cn-e--wrote" d="M2435.499992124496,2686.9998897429437 C2443.0000433152723,2686.9998897429437 2443.0000433152723,2697.999803112399 2450.5000945060483,2697.999803112399" pathLength="1" />
+            <path class="cn-s" d="M211.49999212449598,234.99998818674396 C299.92368679114884,234.99998818674396 -15.923698604404848,320.99998818674396 72.49999606224799,320.99998818674396" pathLength="1" />
+            <path class="cn-s" d="M1673.4999173072076,960 C1747.3663208343119,960 1502.6335925351436,776.999988186744 1576.4999960622479,776.999988186744" pathLength="1" />
+            <path class="cn-s" d="M1673.4999173072076,960 C1768.6642255852012,960 1417.3356877842543,862.999988186744 1512.4999960622479,862.999988186744" pathLength="1" />
+            <path class="cn-s" d="M2099.5001890120966,2231.0000866305445 C2107.000043315272,2231.0000866305445 2107.000043315272,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
+            <path class="cn-s" d="M2067.499992124496,2970.9998897429437 C2090.9999448714716,2970.9998897429437 2090.9999448714716,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
+            <path class="cn-s" d="M1635.499992124496,2488.9998897429437 C1733.5752172249333,2488.9998897429437 1366.4247709618105,2231.0000866305445 1464.4999960622479,2231.0000866305445" pathLength="1" />
+            <path class="cn-s" d="M1603.499992124496,2231.0000866305445 C1613.999994093372,2231.0000866305445 1613.999994093372,2231.0000866305445 1624.4999960622479,2231.0000866305445" pathLength="1" />
+            <path class="cn-s" d="M1959.499992124496,2316.9998897429437 C2063.9999448714716,2316.9998897429437 2063.9999448714716,862.999988186744 2168.4998976184474,862.999988186744" pathLength="1" />
+            <path class="cn-s" d="M1715.499992124496,776.999988186744 C1829.9999448714718,776.999988186744 1829.9999448714718,1378.9998897429437 1944.4998976184477,1378.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M835.5000413463962,2231.0000866305445 C938.0610112483688,2231.0000866305445 545.9390261602754,2118.9998897429437 648.499996062248,2118.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M1453.5000118132562,2316.9998897429437 C1545.049183770157,2316.9998897429437 1212.950824105347,2231.0000866305445 1304.4999960622479,2231.0000866305445" pathLength="1" />
+            <path class="cn-s" d="M1827.499992124496,2118.9998897429437 C1901.3663866556878,2118.9998897429437 1656.6336999748564,776.999988186744 1730.5000945060483,776.999988186744" pathLength="1" />
+            <path class="cn-s" d="M1587.499992124496,234.99998818674396 C1758.0000433152723,234.99998818674396 1758.0000433152723,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M2099.5001890120966,1551.0000866305443 C2177.0808978957666,1551.0000866305443 1914.9191887347777,234.99998818674396 1992.4998976184477,234.99998818674396" pathLength="1" />
+            <path class="cn-s" d="M2099.5001890120966,1551.0000866305443 C2197.575442343226,1551.0000866305443 1830.4248411749188,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M2153.500015751008,1648 C2312.4221525665853,1648 1545.5779576904713,874 1704.5000945060483,874" pathLength="1" />
+            <path class="cn-s" d="M2157.5001102570563,1809.0000866305443 C2249.049282213957,1809.0000866305443 1916.9509225491474,1722.9998897429437 2008.5000945060483,1722.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M2051.499992124496,862.999988186744 C2134.6789813046835,862.999988186744 1845.321105325861,948.999988186744 1928.5000945060483,948.999988186744" pathLength="1" />
+            <path class="cn-s" d="M2227.499992124496,2970.9998897429437 C2478.0000433152723,2970.9998897429437 2478.0000433152723,122.99998818674395 2728.5000945060483,122.99998818674395" pathLength="1" />
+            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2613.876901982187,2772.9998897429437 534.1230862045572,788 824.499996062248,788" pathLength="1" />
+            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2374.0000433152723,2772.9998897429437 2374.0000433152723,234.99998818674396 2424.5000945060483,234.99998818674396" pathLength="1" />
+            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2362.4712034986023,2772.9998897429437 2257.5286862443413,2686.9998897429437 2296.4998976184474,2686.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2557.9999448714716,2772.9998897429437 2557.9999448714716,320.99998818674396 2792.4998976184474,320.99998818674396" pathLength="1" />
+            <path class="cn-s" d="M1705.500015751008,1045.9999015561996 C1809.6933509864864,1045.9999015561996 1408.3066608267695,960 1512.4999960622479,960" pathLength="1" />
+            <path class="cn-s" d="M1619.499992124496,36.99998818674395 C2029.9999448714716,36.99998818674395 2029.9999448714716,2231.0000866305445 2440.4998976184474,2231.0000866305445" pathLength="1" />
+            <path class="cn-s" d="M2259.4117864793348,2687.9998818674394 C2405.9559404926913,2687.9998818674394 2405.9559404926913,2772.9998897429437 2552.5000945060483,2772.9998897429437" pathLength="1" />
+            <path class="cn-s" d="M2787.499992124496,36.99998818674395 C2870.6790478775238,36.99998818674395 2581.32084186542,246 2664.4998976184474,246" pathLength="1" />
+            <path class="cn-s" d="M2404.499984248992,235.9999803112399 C2476.4719679684117,235.9999803112399 2240.4397082538667,408.0000787550403 2312.4116919732865,408.0000787550403" pathLength="1" />
+            <path class="cn-s" d="M2500.500181136593,580.0000787550404 C2589.2414053391476,580.0000787550404 2271.7588703034935,492.99988974294354 2360.5000945060483,492.99988974294354" pathLength="1" />
+            <path class="cn-s" d="M3220.499984248992,37.99998031123992 C3373.8378262777637,37.99998031123992 2649.1622524772765,48 2802.5000945060483,48" pathLength="1" />
+        </svg>
+          <div class="cn-n" style="left: 72px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Francisco de Vitoria</span><span class="cg-node__a">c.1483–1546</span></div></div>
+          <div class="cn-n" style="left: 72px; top: 294px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Twentieth-century international-law/Catholic revivals</span></div></div>
+          <div class="cn-n" style="left: 232px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1818</span><span class="cg-node__t">Carta de Jamaica</span><span class="cg-node__a">Simón Bolívar</span></div></div>
+          <div class="cn-n" style="left: 296px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1822</span><span class="cg-node__t">Soñaba el abad de San Pedro, y yo también sé soñar</span><span class="cg-node__a">José Cecilio del Valle</span></div></div>
+          <div class="cn-n" style="left: 648px; top: 2092px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">José Santander</span><span class="cg-node__a">1817–1888</span></div></div>
+          <div class="cn-n" style="left: 696px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Andrés Bello</span><span class="cg-node__a">1781–1865</span></div></div>
+          <div class="cn-n" style="left: 696px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1847</span><span class="cg-node__t">Gramática de la lengua castellana destinada al uso de los americanos: prologue and related cultural writings</span><span class="cg-node__a">Andrés Bello</span></div></div>
+          <div class="cn-n" style="left: 824px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1855</span><span class="cg-node__t">El Estado federal de Panamá</span><span class="cg-node__a">Justo Arosemena Quesada</span></div></div>
+          <div class="cn-n" style="left: 840px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1856</span><span class="cg-node__t">Iniciativa de la América: idea de un Congreso Federal de las Repúblicas</span><span class="cg-node__a">Francisco Bilbao Barquín</span></div></div>
+          <div class="cn-n" style="left: 1000px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1865</span><span class="cg-node__t">Unión latino-americana, pensamiento de Bolívar para formar una liga americana</span><span class="cg-node__a">Torres Caicedo</span></div></div>
+          <div class="cn-n" style="left: 1000px; top: 2204px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1866</span><span class="cg-node__t">Os brahamanes</span><span class="cg-node__a">Francisco Luís Gomes</span></div></div>
+          <div class="cn-n" style="left: 1032px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1868</span><span class="cg-node__t">Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días</span><span class="cg-node__a">Juan Martínez</span></div></div>
+          <div class="cn-n" style="left: 1064px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1870</span><span class="cg-node__t">Antillean federation essays and speeches: new selection</span><span class="cg-node__a">Eugenio M. de Hostos</span></div></div>
+          <div class="cn-n" style="left: 1208px; top: 2944px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1879</span><span class="cg-node__t">História da civilização ibérica</span><span class="cg-node__a">Joaquim Martins</span></div></div>
+          <div class="cn-n" style="left: 1272px; top: 2092px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1883</span><span class="cg-node__t">O abolicionismo</span><span class="cg-node__a">Joaquim Nabuco</span></div></div>
+          <div class="cn-n" style="left: 1304px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Joseph-Anténor Firmin</span><span class="cg-node__a">1850–1911</span></div></div>
+          <div class="cn-n" style="left: 1304px; top: 2290px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Gobineau/racist anthropology</span></div></div>
+          <div class="cn-n" style="left: 1368px; top: 2376px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1889</span><span class="cg-node__t">Filipinas dentro de cien años</span><span class="cg-node__a">José Rizal</span></div></div>
+          <div class="cn-n" style="left: 1400px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1891</span><span class="cg-node__t">Nuestra América</span><span class="cg-node__a">José Martí</span></div></div>
+          <div class="cn-n" style="left: 1448px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Manuel González Prada</span><span class="cg-node__a">1844–1918</span></div></div>
+          <div class="cn-n" style="left: 1448px; top: 294px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1894</span><span class="cg-node__t">Pájinas libres</span><span class="cg-node__a">Manuel González Prada</span></div></div>
+          <div class="cn-n" style="left: 1464px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Miguel y Jugo</span><span class="cg-node__a">1864–1936</span></div></div>
+          <div class="cn-n" style="left: 1468px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1895</span><span class="cg-node__t">En torno al casticismo</span><span class="cg-node__a">Miguel y Jugo</span></div></div>
+          <div class="cn-n" style="left: 1480px; top: 10px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Andrés de Castro</span><span class="cg-node__a">1863–1897</span></div></div>
+          <div class="cn-n" style="left: 1496px; top: 2462px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Ángel Ganivet García</span><span class="cg-node__a">1865–1898</span></div></div>
+          <div class="cn-n" style="left: 1496px; top: 2548px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1897</span><span class="cg-node__t">Idearium español</span><span class="cg-node__a">Ángel Ganivet García</span></div></div>
+          <div class="cn-n" style="left: 1512px; top: 836px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Later Ariel–Caliban repertoire</span></div></div>
+          <div class="cn-n" style="left: 1512px; top: 922px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1898</span><span class="cg-node__t">El triunfo de Calibán and hemispheric writings</span><span class="cg-node__a">Rubén Darío</span></div></div>
+          <div class="cn-n" style="left: 1576px; top: 750px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">José Enrique Rodó</span><span class="cg-node__a">1871–1917</span></div></div>
+          <div class="cn-n" style="left: 1544px; top: 1008px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1900</span><span class="cg-node__t">Ariel</span><span class="cg-node__a">José Enrique Rodó</span></div></div>
+          <div class="cn-n" style="left: 1624px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Riva-Agüero</span><span class="cg-node__a">1885–1944</span></div></div>
+          <div class="cn-n" style="left: 1644px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1905</span><span class="cg-node__t">Carácter de la literatura del Perú independiente</span><span class="cg-node__a">Riva-Agüero</span></div></div>
+          <div class="cn-n" style="left: 1624px; top: 1094px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1905</span><span class="cg-node__t">A América Latina: males de origem</span><span class="cg-node__a">Manoel do Bomfim</span></div></div>
+          <div class="cn-n" style="left: 1688px; top: 2092px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Alcides Arguedas Díaz</span><span class="cg-node__a">1879–1946</span></div></div>
+          <div class="cn-n" style="left: 1730px; top: 750px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Franz Tamayo Solares</span><span class="cg-node__a">1879–1956</span></div></div>
+          <div class="cn-n" style="left: 1704px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1910</span><span class="cg-node__t">Creación de la pedagogía nacional</span><span class="cg-node__a">Franz Tamayo Solares</span></div></div>
+          <div class="cn-n" style="left: 1752px; top: 922px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1913</span><span class="cg-node__t">La creación de un continente</span><span class="cg-node__a">Francisco Rey</span></div></div>
+          <div class="cn-n" style="left: 1778px; top: 2204px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1914</span><span class="cg-node__t">La leyenda negra y la verdad histórica</span><span class="cg-node__a">Julián y Loyot</span></div></div>
+          <div class="cn-n" style="left: 1820px; top: 2290px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Alfonso Reyes Ochoa</span><span class="cg-node__a">1889–1959</span></div></div>
+          <div class="cn-n" style="left: 1816px; top: 2376px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1917</span><span class="cg-node__t">España y el programa americanista</span><span class="cg-node__a">Rafael y Crevea</span></div></div>
+          <div class="cn-n" style="left: 1884px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1920</span><span class="cg-node__t">La caída del águila</span><span class="cg-node__a">Carlos Gagini Chavarría</span></div></div>
+          <div class="cn-n" style="left: 1912px; top: 836px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Manuel Ugarte</span><span class="cg-node__a">1875–1951</span></div></div>
+          <div class="cn-n" style="left: 1928px; top: 922px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Ramos</span></div></div>
+          <div class="cn-n" style="left: 1912px; top: 1008px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1923</span><span class="cg-node__t">El destino de un continente</span><span class="cg-node__a">Manuel Ugarte</span></div></div>
+          <div class="cn-n" style="left: 1928px; top: 1094px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">J. C. Mariátegui</span><span class="cg-node__a">1894–1930</span></div></div>
+          <div class="cn-n" style="left: 1928px; top: 2944px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">António Sardinha</span><span class="cg-node__a">1887–1925</span></div></div>
+          <div class="cn-n" style="left: 1928px; top: 3030px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1924</span><span class="cg-node__t">A aliança peninsular: antecedentes e possibilidades</span><span class="cg-node__a">António Sardinha</span></div></div>
+          <div class="cn-n" style="left: 1928px; top: 1180px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1924</span><span class="cg-node__t">La unidad de la América Indo-Española and related essays</span><span class="cg-node__a">J. C. Mariátegui</span></div></div>
+          <div class="cn-n" style="left: 1928px; top: 1266px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1924</span><span class="cg-node__t">Eurindia: ensayo de estética fundado en la experiencia histórica de las culturas americanas</span><span class="cg-node__a">Ricardo Rojas</span></div></div>
+          <div class="cn-n" style="left: 1944px; top: 1352px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">José Vasconcelos Calderón</span><span class="cg-node__a">1882–1959</span></div></div>
+          <div class="cn-n" style="left: 1944px; top: 1438px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1925</span><span class="cg-node__t">La raza cósmica: misión de la raza iberoamericana. Notas de viajes a la América del Sur</span><span class="cg-node__a">José Vasconcelos Calderón</span></div></div>
+          <div class="cn-n" style="left: 1960px; top: 1524px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Víctor Raúl Haya</span><span class="cg-node__a">1895–1979</span></div></div>
+          <div class="cn-n" style="left: 1960px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Zacarías de Vizcarra</span><span class="cg-node__a">1879–1963</span></div></div>
+          <div class="cn-n" style="left: 1992px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Julio McPartland</span><span class="cg-node__a">1903–1929</span></div></div>
+          <div class="cn-n" style="left: 1992px; top: 1610px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1928</span><span class="cg-node__t">Seis ensayos en busca de nuestra expresión</span><span class="cg-node__a">Pedro Henríquez Ureña</span></div></div>
+          <div class="cn-n" style="left: 2008px; top: 1696px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Augusto César Sandino</span><span class="cg-node__a">1895–1934</span></div></div>
+          <div class="cn-n" style="left: 2008px; top: 1782px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Bolívar</span></div></div>
+          <div class="cn-n" style="left: 2008px; top: 1868px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1929</span><span class="cg-node__t">Plan de realización del supremo sueño de Bolívar</span><span class="cg-node__a">Augusto César Sandino</span></div></div>
+          <div class="cn-n" style="left: 2008px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1929</span><span class="cg-node__t">El mínimum vital</span><span class="cg-node__a">Vicente Mónico</span></div></div>
+          <div class="cn-n" style="left: 2088px; top: 2944px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Fernando Pessoa</span><span class="cg-node__a">1888–1935</span></div></div>
+          <div class="cn-n" style="left: 2114px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Ramiro y Whitney</span><span class="cg-node__a">1874–1936</span></div></div>
+          <div class="cn-n" style="left: 2088px; top: 2376px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1934</span><span class="cg-node__t">Insularismo: ensayos de interpretación puertorriqueña</span><span class="cg-node__a">Antonio Pizarro</span></div></div>
+          <div class="cn-n" style="left: 2088px; top: 2462px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1934</span><span class="cg-node__t">Defensa de la Hispanidad</span><span class="cg-node__a">Ramiro y Whitney</span></div></div>
+          <div class="cn-n" style="left: 2120px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1936</span><span class="cg-node__t">El antiimperialismo y el APRA</span><span class="cg-node__a">Víctor Raúl Haya</span></div></div>
+          <div class="cn-n" style="left: 2120px; top: 2660px; width: 140px; height: 56px"><div class="cg-node cg-node--periodical"><span class="cg-node__in"><span class="cg-node__t">Claridade</span><span class="cg-node__a">Mindelo, 1936–1960, irregular</span></span></div></div>
+          <div class="cn-n" style="left: 2168px; top: 836px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Camila Henríquez Ureña</span><span class="cg-node__a">1894–1973</span></div></div>
+          <div class="cn-n" style="left: 2184px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1939</span><span class="cg-node__t">Pensamiento y poesía en la vida española</span><span class="cg-node__a">María Zambrano Alarcón</span></div></div>
+          <div class="cn-n" style="left: 2184px; top: 2746px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Gilberto Freyre</span><span class="cg-node__a">1900–1987</span></div></div>
+          <div class="cn-n" style="left: 2184px; top: 922px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1940</span><span class="cg-node__t">Contrapunteo cubano del tabaco y el azúcar</span><span class="cg-node__a">Fernando Ortiz Fernández</span></div></div>
+          <div class="cn-n" style="left: 2184px; top: 2832px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1940</span><span class="cg-node__t">O mundo que o português criou</span><span class="cg-node__a">Gilberto Freyre</span></div></div>
+          <div class="cn-n" style="left: 2264px; top: 208px; width: 140px; height: 56px"><div class="cg-node cg-node--institution"><span class="cg-node__in"><span class="cg-node__t">Instituto de Cultura Hispánica</span><span class="cg-node__a">Madrid, established 1945; subsequent reorganizations</span></span></div></div>
+          <div class="cn-n" style="left: 2296px; top: 2660px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Baltasar da Silva</span><span class="cg-node__a">1907–1989</span></div></div>
+          <div class="cn-n" style="left: 2296px; top: 294px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1947</span><span class="cg-node__t">Hispanoamérica del dolor</span><span class="cg-node__a">Jaime Eyzaguirre Gutiérrez</span></div></div>
+          <div class="cn-n" style="left: 2312px; top: 380px; width: 140px; height: 56px"><div class="cg-node cg-node--periodical"><span class="cg-node__in"><span class="cg-node__t">Cuadernos Hispanoamericanos</span><span class="cg-node__a">Madrid, from 1948</span></span></div></div>
+          <div class="cn-n" style="left: 2360px; top: 466px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Joint 1999 Orthography and later works</span></div></div>
+          <div class="cn-n" style="left: 2360px; top: 552px; width: 140px; height: 56px"><div class="cg-node cg-node--institution"><span class="cg-node__in"><span class="cg-node__t">ASALE / RAE collaboration</span><span class="cg-node__a">ASALE founded in Mexico 1951; modern joint policy</span></span></div></div>
+          <div class="cn-n" style="left: 2392px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1953</span><span class="cg-node__t">América como conciencia</span><span class="cg-node__a">Leopoldo Zea Aguilar</span></div></div>
+          <div class="cn-n" style="left: 2424px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Mário Pinto de Andrade</span><span class="cg-node__a">1928–1990</span></div></div>
+          <div class="cn-n" style="left: 2424px; top: 638px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1955</span><span class="cg-node__t">Qu'est-ce que le luso-tropicalisme?</span><span class="cg-node__a">Mário Pinto de Andrade</span></div></div>
+          <div class="cn-n" style="left: 2440px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Sánchez-Albornoz</span><span class="cg-node__a">1893–1984</span></div></div>
+          <div class="cn-n" style="left: 2450px; top: 2660px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1956</span><span class="cg-node__t">Cabo Verde visto por Gilberto Freyre: apontamentos lidos ao microfone de Rádio Barlavento</span><span class="cg-node__a">Baltasar da Silva</span></div></div>
+          <div class="cn-n" style="left: 2488px; top: 2944px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1959</span><span class="cg-node__t">Um Fernando Pessoa</span><span class="cg-node__a">Agostinho da Silva</span></div></div>
+          <div class="cn-n" style="left: 2552px; top: 2746px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Onésimo Silveira</span><span class="cg-node__a">1935–2021</span></div></div>
+          <div class="cn-n" style="left: 2616px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1967</span><span class="cg-node__t">El Uruguay como problema: en la cuenca del Plata entre Argentina y Brasil</span><span class="cg-node__a">Alberto Methol Ferré</span></div></div>
+          <div class="cn-n" style="left: 2632px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1968</span><span class="cg-node__t">Historia de la nación latinoamericana</span><span class="cg-node__a">Jorge A. Ramos</span></div></div>
+          <div class="cn-n" style="left: 2648px; top: 10px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Eduardo Chivambo Mondlane</span><span class="cg-node__a">1920–1969</span></div></div>
+          <div class="cn-n" style="left: 2664px; top: 208px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1970</span><span class="cg-node__t">National Liberation and Culture / Libertação nacional e cultura</span><span class="cg-node__a">Amílcar Cabral</span></div></div>
+          <div class="cn-n" style="left: 2728px; top: 96px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Agostinho Neto</span><span class="cg-node__a">1922–1979</span></div></div>
+          <div class="cn-n" style="left: 2802px; top: 10px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1977</span><span class="cg-node__t">Historia y tragedia de Guinea Ecuatorial</span><span class="cg-node__a">Donato Ndongo</span></div></div>
+          <div class="cn-n" style="left: 2792px; top: 294px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Abdias do Nascimento</span><span class="cg-node__a">1914–2011</span></div></div>
+          <div class="cn-n" style="left: 2952px; top: 2204px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1988</span><span class="cg-node__t">Culture and History: Occasional Notes on the Process of Philippine Becoming</span><span class="cg-node__a">Nick Joaquín</span></div></div>
+          <div class="cn-n" style="left: 3080px; top: 10px; width: 140px; height: 56px"><div class="cg-node cg-node--institution"><span class="cg-node__in"><span class="cg-node__t">CPLP</span><span class="cg-node__a">1996 onward; Timor-Leste 2002; Equatorial Guinea 2014</span></span></div></div>
+          <div class="cn-n" style="left: 3128px; top: 208px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1999</span><span class="cg-node__t">A nau de Ícaro, seguido de Imagem e miragem da lusofonia</span><span class="cg-node__a">Eduardo de Faria</span></div></div>
       </div>
+      <div class="wk-slab" id="cn-slab"></div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
+      <p class="wk-fig" style="top: 250px">Fifty texts, 1818 to 1999, and who read whom</p>
+      <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
     </div>
 
-    <div id="wk-books" class="wk-shot clip" data-start="8.5714" data-duration="2.1429">
+    <div id="wk-atlas" class="wk-shot clip" data-start="10.7143" data-duration="4.2857">
+      <div id="at-world">
+        <img src="assets/img/iberophone-map.jpg" alt="" />
+          <i id="at-p0" class="at-pin" style="left: 1994px; top: 358px"></i>
+          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l0" d="M1994 358 L2064 178" pathLength="1" /></svg>
+          <i id="at-p1" class="at-pin" style="left: 1288px; top: 571px"></i>
+          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l1" d="M1288 571 L1348 581" pathLength="1" /></svg>
+          <i id="at-p2" class="at-pin" style="left: 1053px; top: 600px"></i>
+          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l2" d="M1053 600 L1003 710" pathLength="1" /></svg>
+          <i id="at-p3" class="at-pin" style="left: 1348px; top: 959px"></i>
+          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l3" d="M1348 959 L1268 1059" pathLength="1" /></svg>
+          <i id="at-p4" class="at-pin" style="left: 1707px; top: 1042px"></i>
+          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l4" d="M1707 1042 L1777 1132" pathLength="1" /></svg>
+          <i id="at-p5" class="at-pin" style="left: 3266px; top: 672px"></i>
+          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l5" d="M3266 672 L3186 482" pathLength="1" /></svg>
+          <article id="at-c0" class="at-card" style="left: 2064px; top: 108px">
+            <p class="at-k">2015-2026 · Milestone 60 of 60</p><h3>Iberofonía becomes an explicit pan-Iberian proposal</h3>
+          </article>
+          <article id="at-c1" class="at-card" style="left: 1348px; top: 511px">
+            <p class="at-k">1492 · Milestone 9 of 60</p><h3>The Atlantic crossing joins two hemispheres</h3>
+          </article>
+          <article id="at-c2" class="at-card" style="left: 443px; top: 640px">
+            <p class="at-k">1519-1521 · Milestone 14 of 60</p><h3>The fall of Tenochtitlan</h3>
+          </article>
+          <article id="at-c3" class="at-card" style="left: 708px; top: 989px">
+            <p class="at-k">1532-1535 · Milestone 16 of 60</p><h3>Conquest and reorganization of the Andes</h3>
+          </article>
+          <article id="at-c4" class="at-card" style="left: 1777px; top: 1062px">
+            <p class="at-k">1807-1808 · Milestone 22 of 60</p><h3>The Portuguese court moves to Rio de Janeiro</h3>
+          </article>
+          <article id="at-c5" class="at-card" style="left: 2626px; top: 412px">
+            <p class="at-k">1565-1571 · Milestone 18 of 60</p><h3>The Pacific crossing and Manila</h3>
+          </article>
+      </div>
+      <div class="wk-slab" id="at-slab"></div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>Atlas</span></p>
+      <p class="wk-fig" style="top: 250px">Sixty milestones, c. 722 to 2026</p>
+      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>sixty milestones, c. 722 to 2026</span></p>
+    </div>
+
+    <div id="wk-books" class="wk-shot clip" data-start="15.0" data-duration="2.1429">
       <p class="wk-word"><span>De</span> <span>Indiis</span><br /><span>Editions</span></p>
       <p class="wk-fig" style="top: 470px">Six series of books, in translation</p>
       <div id="wk-shelf">
@@ -212,7 +367,7 @@
       </div>
     </div>
 
-    <div id="wk-follow" class="wk-shot clip" data-start="10.7143" data-duration="2.1429">
+    <div id="wk-follow" class="wk-shot clip" data-start="17.1429" data-duration="2.1428">
       <p id="wk-join">Join the argument.</p>
       <div id="wk-nums">
         <p class="wk-num"><b>13.5K</b><span>YouTube</span></p>
@@ -226,36 +381,79 @@
   <script>
     (() => {
       const B = 60 / 112;
-      const bar = (n) => n * 4 * B;
       const tl = gsap.timeline({ paused: true });
-      const word = (id, t) => tl.fromTo(`${id} .wk-word span`, { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.08, ease: "power2.out" }, t);
-      const fig = (id, t) => tl.fromTo(`${id} .wk-fig`, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, t);
+      const word = (id, t) => tl.fromTo(id + " .wk-word span", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.08, ease: "power2.out" }, t);
+      const fig = (id, t) => tl.fromTo(id + " .wk-fig", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, t);
+      // a camera over a world: chained moves, each starting from where the last one ends
+      const cam = (cx, cy, k) => ({ x: 960 - cx * k, y: 540 - cy * k, scale: k });
+      const move = (sel, from, to, t, d, ease, first) => tl.fromTo(sel, from, { ...to, duration: d, ease, immediateRender: !!first }, t);
 
-      // watch: the wall slides in from the right, one thumbnail an eighth note apart
-      tl.fromTo("#wk-wall .wk-thumb", { x: 900 }, { x: 0, duration: 0.5, stagger: B / 2, ease: "expo.out" }, 0);
-      word("#wk-watch", B); fig("#wk-watch", 2 * B);
+      // WATCH: the word arrives out of the portico's metope, large, and settles; the wall slides in
+      tl.fromTo("#wk-watch .wk-word", { scale: 2.6, x: 540, y: -200, opacity: 1 }, { scale: 1, x: 0, y: 0, duration: 0.7, ease: "expo.out" }, 0.0);
+      tl.fromTo("#wk-wall .wk-thumb", { x: 900 }, { x: 0, duration: 0.5, stagger: B / 2, ease: "expo.out" }, 0.0 + 0.1);
+      fig("#wk-watch", 0.0 + B);
 
-      // read: the contents page fills line by line
-      word("#wk-read", bar(1)); fig("#wk-read", bar(1) + B);
-      tl.fromTo("#wk-list li", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, stagger: B / 2, ease: "power3.out" }, bar(1) + 0.1);
+      // READ: eight essays fly in from the depth into a turning ring, then fold into a wall
+      word("#wk-read", 2.1429 + 0.1); fig("#wk-read", 2.1429 + B);
+      const grid = [[-705, -165], [-235, -165], [235, -165], [705, -165], [-705, 165], [-235, 165], [235, 165], [705, 165]];
+      for (let i = 0; i < 8; i++) {
+        tl.fromTo("#rd-a" + i, { rotationY: i * 45 }, { rotationY: i * 45, duration: 0.01 }, 2.1429);
+        tl.fromTo("#rd-c" + i, { z: -2600, opacity: 0, y: (i % 2 ? 70 : -70) }, { z: 760, opacity: 1, y: (i % 2 ? 70 : -70), duration: 0.8, ease: "expo.out" }, 2.1429 + i * 0.06);
+        // the fold: arms straighten, cards come forward into a tilted wall of two rows
+        tl.fromTo("#rd-a" + i, { rotationY: i * 45 }, { rotationY: 0, duration: 0.85, ease: "power3.inOut", immediateRender: false }, 2.1429 + 2.35 + i * 0.03);
+        tl.fromTo("#rd-c" + i, { z: 760, x: 0, y: (i % 2 ? 70 : -70) }, { z: 0, x: grid[i][0], y: grid[i][1], duration: 0.85, ease: "power3.inOut", immediateRender: false }, 2.1429 + 2.35 + i * 0.03);
+      }
+      tl.fromTo("#rd-ring", { rotationY: 30, rotationX: 8 }, { rotationY: -110, rotationX: 8, duration: 2.35, ease: "power1.inOut" }, 2.1429);
+      tl.fromTo("#rd-ring", { rotationY: -110, rotationX: 8 }, { rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }, 2.1429 + 2.35);
+      tl.fromTo("#rd-ring", { rotationY: -372, rotationX: 10 }, { rotationY: -366, rotationX: 10, duration: 0.6, ease: "none", immediateRender: false }, 2.1429 + 3.3);
 
-      // the canon: fifty dots fall onto their years, left to right
-      word("#wk-canon", bar(2)); fig("#wk-canon", bar(2) + B);
-      tl.fromTo("#wk-canon .wk-dot", { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.022, ease: "power3.out" }, bar(2) + 0.1);
-      tl.fromTo("#wk-canon .wk-tick", { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: 0.2 }, bar(2) + 0.3);
+      // THE CANON: the camera starts close on La raza cósmica and pulls out to the whole field,
+      // the cards appearing and the edges drawing outwards from it, dots running along them
+      word("#wk-canon", 6.4286 + 0.1); fig("#wk-canon", 6.4286 + B);
+      // the camera follows a real chain of readers: Ariel → Rodó → Vasconcelos → La raza cósmica → Haya
+      move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), 6.4286, 0.7, "power2.inOut", true);
+      move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), 6.4286 + 0.75, 0.8, "power2.inOut");
+      move("#cn-world", cam(2014, 1380, 2.0), cam(2030, 1520, 2.3), 6.4286 + 1.6, 0.55, "power2.inOut");
+      move("#cn-world", cam(2030, 1520, 2.3), cam(1830, 1300, 0.85), 6.4286 + 2.2, 1.3, "expo.inOut");
+      move("#cn-world", cam(1830, 1300, 0.85), cam(1830, 1300, 0.8), 6.4286 + 3.5, 0.786, "none");
+      const nd = [1.5, 1.5, 1.5, 1.472, 1.388, 1.425, 1.486, 1.007, 0.956, 0.855, 1.225, 1.278, 0.755, 1.5, 0.987, 1.07, 1.147, 1.216, 0.561, 1.053, 0.957, 1.016, 1.107, 1.238, 1.261, 1.354, 0.442, 0.356, 0.497, 0.269, 0.987, 1.081, 0.151, 0.87, 0.473, 0.376, 0.292, 0.994, 1.071, 1.168, 0.491, 0.428, 0.363, 0.281, 0.236, 1.5, 1.5, 0.211, 0.216, 0.25, 0.319, 0.379, 1.008, 1.048, 0.483, 0.549, 0.627, 0.717, 1.116, 1.5, 1.053, 1.221, 1.303, 0.612, 1.49, 0.584, 1.174, 1.5, 0.548, 1.5, 1.146, 1.5, 1.084, 1.024, 0.988, 0.92, 0.816, 1.23, 0.909, 1.211, 1.5, 1.5, 1.5, 1.009, 0.987, 1.5, 1.379, 1.5, 1.5, 1.411, 1.5, 1.5, 1.5];
+      document.querySelectorAll("#cn-world .cn-n").forEach((el, i) => tl.fromTo(el, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 6.4286 + nd[i]));
+      const ed = [2.3, 0.66, 0.629, 1.471, 1.943, 1.617, 1.431, 0.674, 0.333, 1.974, 1.576, 0.365, 0.865, 0.678, 0.408, 0.273, 0.885, 0.624, 1.087, 0.869, 0.937, 2.187, 1.185, 0.516, 0.443, 2.233, 2.026, 1.544, 1.37, 2.3, 2.045, 1.442, 1.517, 1.845, 0.605, 1.479, 0.666, 0.563, 2.3, 0.385, 0.471, 0.939, 1.667, 0.527, 2.281, 1.507, 2.206];
+      document.querySelectorAll("#cn-edges .cn-e").forEach((el, i) => tl.fromTo(el, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, 6.4286 + ed[i]));
+      tl.fromTo("#cn-edges .cn-s", { strokeDashoffset: 0, opacity: 0 }, { strokeDashoffset: -0.6, opacity: 1, duration: 3.986, ease: "none" }, 6.4286 + 0.3);
+      const toChip = (id, slab, chip, t) => {
+        tl.fromTo(id + " .wk-word, " + id + " .wk-fig", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }, t);
+        tl.fromTo(slab, { opacity: 0.94 }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
+        tl.fromTo(chip, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }, t + 0.1);
+      };
+      tl.fromTo("#cn-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 6.4286);
+      toChip("#wk-canon", "#cn-slab", "#cn-chip", 6.4286 + 1.05);
 
-      // the Atlas: sixty, the same way, over twelve centuries
-      word("#wk-atlas", bar(3)); fig("#wk-atlas", bar(3) + B);
-      tl.fromTo("#wk-atlas .wk-dot", { y: -260, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.018, ease: "power3.out" }, bar(3) + 0.1);
-      tl.fromTo("#wk-atlas .wk-tick", { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: 0.2 }, bar(3) + 0.3);
+      // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
+      word("#wk-atlas", 10.7143 + 0.1); fig("#wk-atlas", 10.7143 + B);
+      const route = [[1994, 358], [1288, 571], [1053, 600], [1348, 959], [1707, 1042], [3266, 672]];
+      const k = 1.25;
+      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), 10.7143, 0.55, "power2.inOut", true);
+      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), 10.7143 + 0.6, 0.55, "power2.inOut");
+      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), 10.7143 + 1.2, 0.5, "power2.inOut");
+      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), 10.7143 + 1.75, 0.5, "power2.inOut");
+      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), 10.7143 + 2.3, 1.1, "expo.inOut");
+      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.545), 10.7143 + 3.4, 0.886, "none");
+      [0, 0.45, 1.05, 1.62, 2.15, 2.75].forEach((t, i) => {
+        tl.fromTo("#at-p" + i, { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, 10.7143 + t);
+        tl.fromTo("#at-l" + i, { strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, 10.7143 + t + 0.05);
+        tl.fromTo("#at-c" + i, { opacity: 0, y: 30, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }, 10.7143 + t + 0.12);
+      });
+      tl.fromTo("#at-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 10.7143);
+      toChip("#wk-atlas", "#at-slab", "#at-chip", 10.7143 + 1.05);
 
-      // books: the spines rise onto the shelf, one an eighth note apart
-      word("#wk-books", bar(4)); fig("#wk-books", bar(4) + B);
-      tl.fromTo(".wk-spine", { yPercent: 105 }, { yPercent: 0, duration: 0.45, stagger: B / 2, ease: "expo.out" }, bar(4));
+      // BOOKS: the spines rise onto the shelf, one an eighth note apart
+      word("#wk-books", 15.0); fig("#wk-books", 15.0 + B);
+      tl.fromTo(".wk-spine", { yPercent: 105 }, { yPercent: 0, duration: 0.45, stagger: B / 2, ease: "expo.out" }, 15.0);
 
-      // follow: a figure on each beat
-      tl.fromTo("#wk-join", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18 }, bar(5));
-      tl.fromTo(".wk-num", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, stagger: B * 0.75, ease: "expo.out" }, bar(5) + 0.15);
+      // FOLLOW: a figure on each beat
+      tl.fromTo("#wk-join", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18 }, 17.1429);
+      tl.fromTo(".wk-num", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, stagger: B * 0.75, ease: "expo.out" }, 17.1429 + 0.15);
 
       window.__timelines["works"] = tl;
     })();
