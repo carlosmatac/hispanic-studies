@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Institute for Hispano Studies · Atlas</title>
+<meta name="description" content="A reference atlas of the Iberophone world: 60 dated milestones, a canon of Hispanist thought, and the books that carry it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="fonts" rel="stylesheet" href="">
+<script type="module">
+  // fonts and theme before first paint, so nothing flashes in the wrong face
+  import { fontHref, applyTheme, storedTheme } from '../shared/theme.js';
+  document.getElementById('fonts').href = fontHref([
+    'Ibarra+Real+Nova:ital,wght@0,400;0,600;1,400;1,600',
+    'Inter:wght@400;500;600', 'IBM+Plex+Mono:wght@400;500',
+  ]);
+  applyTheme(storedTheme(), { plate: true });
+</script>
+<link rel="stylesheet" href="style.css">
+<script>
+  /* Set before first paint so revealed content never flashes in and out.
+     The timer is the safety net: if the module fails to load or boot throws,
+     the class comes off and every section is simply visible. Content must
+     never be able to stay hidden because some script did not arrive. */
+  (function () {
+    var h = document.documentElement;
+    h.classList.add('js-motion');
+    setTimeout(function () {
+      if (!window.__motionReady) h.classList.remove('js-motion');
+    }, 2500);
+  }());
+</script>
+</head>
+<body>
+
+<div class="proposal-tag">
+  <a href="../">← All directions</a>
+  <span>O · Atlas — draft after the first meeting · not final copy</span>
+</div>
+
+<header class="bar">
+  <a class="brand" href="#top">
+    <span class="brand__mark" aria-hidden="true"></span>
+    <span class="brand__name">Institute for<br>Hispano Studies</span>
+  </a>
+  <nav class="nav" aria-label="Main">
+    <a href="#atlas" aria-current="page" data-i18n="nav.atlas">Atlas</a>
+    <a href="#canon" data-i18n="nav.canon">Canon</a>
+    <a href="#books" data-i18n="nav.books">Books</a>
+    <a href="#watch" data-i18n="nav.watch">Watch</a>
+    <a href="#read" data-i18n="nav.read">Read</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="#merch" data-i18n="nav.merch">Merch</a>
+  </nav>
+  <div class="tools">
+    <div id="themer" class="themer--compact"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="es" aria-pressed="false">ES</button>
+    </div>
+    <span class="mono" data-i18n="nav.cart">Cart 0</span>
+  </div>
+</header>
+
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+
+<main id="top">
+
+  <!-- ===================================================================
+       HERO · the map
+       =================================================================== -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="plate-wrap">
+      <div id="hero-map"></div>
+
+      <div class="cartouche">
+        <h2 data-i18n-html="cart.title">The Iberophone<br>World</h2>
+        <div class="rule"></div>
+        <dl>
+          <dt data-i18n="cart.states">States, language official</dt><dd id="c-states">—</dd>
+          <dt data-i18n="cart.presence">Territories of presence</dt><dd id="c-presence">—</dd>
+          <dt data-i18n="cart.authors">Authors in the corpus</dt><dd id="c-authors">—</dd>
+          <dt data-i18n="cart.milestones">Dated milestones</dt><dd id="c-milestones">—</dd>
+          <dt data-i18n="cart.rupture">The rupture</dt><dd>1898</dd>
+        </dl>
+        <p class="src" data-i18n="cart.src">Equal-area projection · Natural Earth geometry · routes after the Carrera de Indias, the Manila galleon and the Carreira da Índia</p>
+      </div>
+
+      <div class="readout" id="readout" aria-live="polite">
+        <span class="hint" data-i18n="readout.hint">Point at a country to read it.</span>
+      </div>
+    </div>
+
+    <div class="hero__band" data-reveal>
+      <div>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Institute for Hispano Studies · De Indiis Editions</p>
+        <h1 id="hero-h" class="wipe" data-i18n-html="hero.h1">One civilization, <em>two languages,</em> four continents.</h1>
+        <p class="lede" data-i18n="hero.lede">Spanish and Portuguese are official in twenty-nine states on four continents. That space has a history, an intellectual tradition and a two-hundred-year argument about what it is. This is the reference for it.</p>
+      </div>
+      <div>
+        <p data-i18n-html="hero.pamphlet">Start with <b>Hispanic Reunification: 200 Years of Theory and Praxis</b> — the free pamphlet from De Indiis Editions.</p>
+        <form class="signup" id="signup">
+          <label class="sr" for="email" data-i18n="hero.emailLabel">Email address</label>
+          <input id="email" type="email" required placeholder="your@email.com" data-i18n-attr="placeholder:hero.emailPlaceholder">
+          <button type="submit" data-i18n="hero.cta">Get the free PDF</button>
+          <p class="signup__ok mono" data-i18n="hero.ok">Confirm in your inbox. (Mockup: nothing is sent.)</p>
+        </form>
+        <p class="mono consent" data-i18n="hero.consent">Newsletter and publication updates · unsubscribe any time</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       THREE PILLARS · the trunks
+       =================================================================== -->
+  <section class="pillars" aria-labelledby="pillars-h">
+    <span class="numeral" aria-hidden="true">I<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="pillars.eyebrow">Three trunks</p>
+      <h2 class="wipe" id="pillars-h" data-i18n="pillars.h">Everything here hangs off one of three.</h2>
+      <p data-i18n="pillars.sub">Mestizaje, Catholicism and language. The three pillars are how the videos, the essays, the books and the canon are organised, not a slogan.</p>
+    </div>
+    <div class="pillars__grid" data-reveal-stagger="110">
+      <a class="pillar pillar--mestizaje" href="#canon">
+        <svg class="pillar__glyph" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M6 5c0 11 7 15 13 19s5 12 5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M42 5c0 11-7 15-13 19s-5 12-5 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M24 29v14" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+        </svg>
+        <h3 data-i18n="pillars.mestizaje">Mestizaje</h3>
+        <p data-i18n="pillars.mestizajeSub">Castas, transculturación, <i>La raza cósmica</i>, Indo-American thought, and the Black Legend on race.</p>
+        <span class="pillar__count" data-i18n="pillars.mestizajeN">Series: Race, Mixture and Difference · Indo-Hispanic Thought and Its Critics — 8 priority titles</span>
+      </a>
+      <a class="pillar pillar--catolicismo" href="#canon">
+        <svg class="pillar__glyph" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <ellipse cx="24" cy="24" rx="9.5" ry="15" stroke="currentColor" stroke-width="2.2"/>
+          <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M24 3v4M24 41v4M10 24H6M42 24h-4"/>
+            <path d="M12.5 10.5 9.8 7.8M35.5 37.5l2.7 2.7M12.5 37.5l-2.7 2.7M35.5 10.5l2.7-2.7"/>
+          </g>
+        </svg>
+        <h3 data-i18n="pillars.catolicismo">Catholicism</h3>
+        <p data-i18n="pillars.catolicismoSub">Guadalupe, evangelisation, the School of Salamanca, and Catholic political thought on both sides of the Atlantic.</p>
+        <span class="pillar__count" data-i18n="pillars.catolicismoN">Series: Classics and Critics of Hispanidad · Hispanic Political Theology — 6 priority titles</span>
+      </a>
+      <a class="pillar pillar--lengua" href="#canon">
+        <svg class="pillar__glyph" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M9 17c3-5 7-5 10 0s7 5 10 0 7-5 10 0" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M16 25v18M32 25v18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <h3 data-i18n="pillars.lengua">Language</h3>
+        <p data-i18n="pillars.lenguaSub">Spanish and Portuguese, the academies, Iberofonía, and translation as the work of the publishing house itself.</p>
+        <span class="pillar__count" data-i18n="pillars.lenguaN">Series: Pan-Iberian and Lusophone Thought · Literary Continentalism — 14 priority titles</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       ATLAS · 60 milestones, stepped
+       =================================================================== -->
+  <section class="atlas" id="atlas" aria-labelledby="atlas-h">
+    <span class="numeral" aria-hidden="true">II<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="atlas.eyebrow">The Atlas · sixty milestones, c. 722 to 2026</p>
+      <h2 class="wipe" id="atlas-h" data-i18n="atlas.h">Step through it and the map moves with you.</h2>
+      <p data-i18n="atlas.sub">One chronological sequence in seven chapters. Each milestone carries its own map treatment and its own source. A treaty, a voyage, a cultural network and an actual change of sovereignty are drawn differently, and proposals are labelled as proposals.</p>
+    </div>
+
+    <div class="atlas__scroll">
+      <div class="atlas__sticky">
+        <div class="atlas__stage">
+          <div class="atlas__plate">
+            <div id="atlas-map"></div>
+          </div>
+
+          <div class="atlas__frame">
+            <span class="atlas__ghost" id="f-ghost" aria-hidden="true">722</span>
+            <p class="frame__n"><span id="f-n">01 / 60</span> · <span class="frame__chapter" id="f-chapter">Foundations of two Iberian worlds</span></p>
+            <p class="frame__date" id="f-date">c. 722</p>
+            <h3 id="f-title">The Asturian political nucleus</h3>
+            <p class="frame__body" id="f-body"></p>
+            <div class="frame__map">
+              <b data-i18n="atlas.treatment">Map treatment</b>
+              <i id="f-map"></i>
+              <p class="frame__src" id="f-src"></p>
+            </div>
+            <div class="stepper">
+              <button type="button" id="f-prev" aria-label="Previous milestone">&larr;</button>
+              <button type="button" id="f-next" aria-label="Next milestone">&rarr;</button>
+              <span class="stepper__pos" data-i18n="atlas.keys">scroll, or use the arrow keys</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="rail">
+          <div class="rail__track" id="rail" role="tablist" aria-label="Milestones"></div>
+          <div class="rail__years"><span>722</span><span>1492</span><span>1800</span><span>1898</span><span>2026</span></div>
+        </div>
+      </div>
+
+      <!-- invisible scroll steps: one per milestone on the spine. The rail
+           still reaches all sixty. -->
+      <div class="atlas__steps" id="atlas-steps" aria-hidden="true"></div>
+    </div>
+
+    <div class="rail__legend" id="rail-legend"></div>
+  </section>
+
+  <!-- ===================================================================
+       CANON · the 50 canonical texts
+       =================================================================== -->
+  <section class="canon" id="canon" aria-labelledby="canon-h">
+    <span class="numeral" aria-hidden="true">III<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="canon.eyebrow">The canon · fifty texts, 1818 to 1999</p>
+      <h2 class="wipe" id="canon-h" data-i18n="canon.h">A living argument, not a reading list.</h2>
+      <p data-i18n="canon.sub">Every text is placed by the kind of unity it presupposes. Hispanists have been monarchists and Marxists, liberals and nationalists; the point is the dispute, which is why the authors who argued against Hispanic unity are on the chart too, drawn with a broken outline.</p>
+    </div>
+    <div class="canon__chart" id="canon-chart"></div>
+    <div class="canon__readout" id="canon-readout">
+      <p class="t" data-i18n="canon.pick">Point at a text to read it.</p>
+      <p class="a" data-i18n="canon.pickSub">Fifty works, eight positions, one hundred and eighty years.</p>
+    </div>
+    <p class="canon__disclaimer" data-i18n="canon.disclaimer">Classification adapted from Gustavo Bueno, “España y América” (2001). Portuguese, Brazilian, Lusophone African, Asian, Indigenous, Black Atlantic, Equatoguinean and Filipino traditions remain historically distinct. Their presence on this chart does not imply their assent to a Hispanic or Iberophone project.</p>
+  </section>
+
+  <!-- ===================================================================
+       BOOKS · virreinal / baroque register
+       =================================================================== -->
+  <section class="books reg--virreinal" id="books" aria-labelledby="books-h">
+    <span class="numeral" aria-hidden="true">IV<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="books.eyebrow">De Indiis Editions</p>
+      <h2 class="wipe" id="books-h" data-i18n="books.h">Translating a canon, not a bookshelf.</h2>
+      <p data-i18n="books.sub">Fifty priority acquisitions across thirteen series. Most of these works were read widely in their day and were never translated. Each edition places its text inside the tradition it came from.</p>
+    </div>
+    <div class="books__series" id="books-series" role="group" aria-label="Series"></div>
+    <div class="books__grid" id="books-grid" data-reveal-stagger="60"></div>
+    <p class="books__note" data-i18n="books.note">Ranks are editorial recommendations from the acquisitions programme, not publication announcements. Proposed introducers and editors are not listed: they are scholars who have not agreed to participate. Covers are placeholders.</p>
+  </section>
+
+  <!-- ===================================================================
+       WATCH · Southwest register
+       =================================================================== -->
+  <section class="watch reg--southwest" id="watch" aria-labelledby="watch-h">
+    <span class="numeral" aria-hidden="true">V<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="watch.eyebrow">Watch · 13.5K on YouTube, 22K on X, 19K on Instagram</p>
+      <h2 class="wipe" id="watch-h" data-i18n="watch.h">Three hundred years, cut out of the story.</h2>
+      <p data-i18n="watch.sub">Short video is where most people arrive. Every one of them points back into the Atlas.</p>
+    </div>
+    <div class="watch__grid" id="watch-grid" data-reveal-stagger="70"></div>
+  </section>
+
+  <!-- ===================================================================
+       READ · neutral register
+       =================================================================== -->
+  <section class="read" id="read" aria-labelledby="read-h">
+    <span class="numeral" aria-hidden="true">VI<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="read.eyebrow">Read · on Substack</p>
+      <h2 class="wipe" id="read-h" data-i18n="read.h">Essays and translations.</h2>
+      <p data-i18n="read.sub">Mostly first translations into English of the Gustavo Bueno school, alongside Vasconcelos and Elías de Tejada.</p>
+    </div>
+    <div class="read__list" id="read-list" data-reveal-stagger="60"></div>
+  </section>
+
+  <!-- ===================================================================
+       ABOUT
+       =================================================================== -->
+  <section class="about" id="about" aria-labelledby="about-h">
+    <span class="numeral" aria-hidden="true">VII<i></i></span>
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="about.eyebrow">The mission</p>
+      <h2 class="wipe" id="about-h" data-i18n="about.h">A tradition that was forgotten, not refuted.</h2>
+    </div>
+    <p class="lede" data-i18n="about.p1">The Institute for Hispano Studies studies and defends Hispanic civilization: its history, its Catholic inheritance, its mestizaje and its two languages. De Indiis Editions translates and republishes the canon of that argument.</p>
+    <p data-i18n="about.p2">The claim is not that this tradition was defeated. It is that most of it was never translated, and that an argument you cannot read is an argument you cannot answer.</p>
+  </section>
+
+  <!-- ===================================================================
+       COMMUNITY · militant register
+       =================================================================== -->
+  <section class="community reg--militant" aria-labelledby="comm-h">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="comm.eyebrow">Reconquista Syndicate</p>
+      <h2 class="wipe" id="comm-h" data-i18n="comm.h">Join the argument.</h2>
+      <p data-i18n="comm.sub">A Discord of readers, translators and people who are tired of losing this debate for lack of sources.</p>
+    </div>
+    <div class="community__actions" data-reveal>
+      <a class="btn btn--solid" href="#" data-i18n="comm.discord">Join the Discord</a>
+      <a class="btn btn--ghost" href="https://www.patreon.com/HispanicAmericanStudies" data-i18n="comm.patreon">Support on Patreon</a>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       MERCH · Caribbean / Miami register
+       =================================================================== -->
+  <section class="merch reg--caribbean" id="merch" aria-labelledby="merch-h">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow" data-i18n="merch.eyebrow">Merch</p>
+      <h2 class="wipe" id="merch-h" data-i18n="merch.h">Wear the argument.</h2>
+      <p data-i18n="merch.sub">Placeholder section. The store is not connected in this draft.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__grid">
+    <div>
+      <h4 data-i18n="foot.explore">Explore</h4>
+      <ul>
+        <li><a href="#atlas" data-i18n="nav.atlas">Atlas</a></li>
+        <li><a href="#canon" data-i18n="nav.canon">Canon</a></li>
+        <li><a href="#books" data-i18n="nav.books">Books</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.watchread">Watch and read</h4>
+      <ul id="foot-channels"></ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.community">Community</h4>
+      <ul>
+        <li><a href="#" data-i18n="foot.discord">Discord · Reconquista Syndicate</a></li>
+        <li><a href="https://www.patreon.com/HispanicAmericanStudies">Patreon</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="foot.sources">Sources</h4>
+      <ul>
+        <li><a href="https://www.naturalearthdata.com/">Natural Earth · public domain</a></li>
+        <li><span data-i18n="foot.canonSrc">Canon chart after Gustavo Bueno (2001)</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot__base">
+    <span data-i18n="foot.legal">Hispano Studies LLC · Veritas prius pace</span>
+    <span data-i18n="foot.draft">Draft direction O · Atlas · October 2026 · not final copy</span>
+  </div>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
