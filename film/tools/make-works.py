@@ -51,6 +51,20 @@ graph = json.loads((ROOT / "site/data/canon-graph.json").read_text())
 EDGE_KIND = {e["id"]: e["kind"] for e in graph["edges"]}
 MILES = {m["n"]: m for m in json.loads((ROOT / "site/data/milestones.json").read_text())["milestones"]}
 
+# ---------------------------------------------------------------- the frieze between shots
+# The portico of the pillars scene (bar 20) ends with a dive into the "Watch" metope. Every
+# later shot leaves the same way: the frieze slides in from the right and the camera dives
+# into the next metope. The metopes are in the film's order, so the frieze always runs right.
+pillars = (ROOT / "film/reel/compositions/pillars.html").read_text()
+GRADE = re.search(r'<img (data-color-grading="[^"]*")[^>]*id="pil-plate"', pillars).group(1)
+TINT = "\n".join("            " + re.sub(r' data-hf-id="[^"]*"', "", t).replace('id="pil-sh', 'id="fz-sh')
+                 for t in re.findall(r'<path[^>]*id="pil-sh\d"[^>]*/>', pillars))
+METOPES = [(258, 218), (582, 227), (915, 227), (1248, 227), (1582, 226), (1916, 218)]
+LABELS = ["Watch", "Read", "Canon", "Atlas", "Books", "Community"]
+mets = "\n".join(f'          <p id="fz-m{i}" class="fz-met" style="left: {x}px; width: {w}px">{LABELS[i]}</p>'
+                 for i, (x, w) in enumerate(METOPES))
+fz_x = [round(x + w / 2, 1) for x, w in METOPES]
+
 # ---------------------------------------------------------------- read: 3D cards
 ring_r = 760
 cards = []
@@ -185,6 +199,17 @@ page = f'''<template>
     .wk-spine--paper span {{ color: #470b15; }}
     #wk-books .wk-word {{ font-size: 150px; }}
 
+    /* the frieze: the top of the portico, held by the three pillars */
+    #fz {{ position: absolute; inset: 0; z-index: 5; overflow: hidden; }}
+    #fz-pane {{ position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; }}
+    #fz-world {{ position: absolute; left: 0; top: 0; width: 2400px; height: 1792px; transform-origin: 0 0; }}
+    #fz-world > img {{ position: absolute; inset: 0; width: 2400px; height: 1792px; display: block; }}
+    #fz-tint {{ position: absolute; inset: 0; width: 2400px; height: 1792px; mix-blend-mode: multiply; }}
+    #fz-tint path {{ fill: #470b15; opacity: 0.92; }}
+    #fz-arch {{ position: absolute; left: 175px; width: 2050px; top: 322px; height: 52px; display: grid; place-items: center; font-weight: 600; font-size: 34px; letter-spacing: 0.5em; text-indent: 0.5em; text-transform: uppercase; color: #470b15; white-space: nowrap; }}
+    .fz-met {{ position: absolute; top: 131px; height: 157px; display: grid; place-items: center; font-weight: 600; font-size: 40px; color: #28231e; }}
+    #fz-fill {{ position: absolute; left: 1916px; width: 218px; top: 131px; height: 157px; background: #470b15; opacity: 0; }}
+
     /* follow */
     #wk-follow {{ background: #470b15; }}
     #wk-nums {{ position: absolute; left: 150px; width: 1620px; top: 360px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }}
@@ -256,13 +281,28 @@ page = f'''<template>
         <p class="wk-num"><b>587</b><span>Substack</span></p>
       </div>
     </div>
+
+    <div id="fz" class="clip" data-start="0" data-duration="{END}" data-layout-ignore>
+      <div id="fz-pane">
+        <div id="fz-world">
+          <img {GRADE} src="assets/img/portico.jpg" alt="" />
+          <svg id="fz-tint" viewBox="0 0 2400 1792">
+{TINT}
+          </svg>
+          <p id="fz-arch">Institute for Hispano Studies</p>
+          <i id="fz-fill"></i>
+{mets}
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     (() => {{
       const B = 60 / 112;
       const tl = gsap.timeline({{ paused: true }});
-      const word = (id, t) => tl.fromTo(id + " .wk-word span", {{ opacity: 0, filter: "blur(10px)" }}, {{ opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.08, ease: "power2.out" }}, t);
+      // a title arrives out of the metope the camera dived into: large in the middle, then home
+      const arrive = (sel, t, dx, dy) => tl.fromTo(sel, {{ scale: 2.4, x: dx, y: dy }}, {{ scale: 1, x: 0, y: 0, duration: 0.7, ease: "expo.out" }}, t);
       const fig = (id, t) => tl.fromTo(id + " .wk-fig", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.2, ease: "power2.out" }}, t);
       // a camera over a world: chained moves, each starting from where the last one ends
       const cam = (cx, cy, k) => ({{ x: 960 - cx * k, y: 540 - cy * k, scale: k }});
@@ -270,11 +310,11 @@ page = f'''<template>
 
       // WATCH: the word arrives out of the portico's metope, large, and settles; the wall slides in
       tl.fromTo("#wk-watch .wk-word", {{ scale: 2.6, x: 540, y: -200, opacity: 1 }}, {{ scale: 1, x: 0, y: 0, duration: 0.7, ease: "expo.out" }}, {W0});
-      tl.fromTo("#wk-wall .wk-thumb", {{ x: 900 }}, {{ x: 0, duration: 0.5, stagger: B / 2, ease: "expo.out" }}, {W0} + 0.1);
-      fig("#wk-watch", {W0} + B);
+      tl.fromTo("#wk-wall .wk-thumb", {{ x: 900 }}, {{ x: 0, duration: 0.5, stagger: 0.11, ease: "expo.out" }}, {W0} + 0.1);
+      fig("#wk-watch", {W0} + 0.6 * B);
 
       // READ: eight essays fly in from the depth into a turning ring, then fold into a wall
-      word("#wk-read", {R0} + 0.1); fig("#wk-read", {R0} + B);
+      arrive("#wk-read .wk-word", {R0}, 660, 383); fig("#wk-read", {R0} + B);
       const grid = {json.dumps([[round(x), round(y)] for x, y in zip(*grid)])};
       for (let i = 0; i < 8; i++) {{
         tl.fromTo("#rd-a" + i, {{ rotationY: i * 45 }}, {{ rotationY: i * 45, duration: 0.01 }}, {R0});
@@ -289,7 +329,7 @@ page = f'''<template>
 
       // THE CANON: the camera starts close on La raza cósmica and pulls out to the whole field,
       // the cards appearing and the edges drawing outwards from it, dots running along them
-      word("#wk-canon", {C0} + 0.1); fig("#wk-canon", {C0} + B);
+      arrive("#wk-canon .wk-word", {C0}, 510, 383); fig("#wk-canon", {C0} + 0.8 * B);
       // the camera follows a real chain of readers: Ariel → Rodó → Vasconcelos → La raza cósmica → Haya
       move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), {C0}, 0.7, "power2.inOut", true);
       move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), {C0} + 0.75, 0.8, "power2.inOut");
@@ -310,7 +350,7 @@ page = f'''<template>
       toChip("#wk-canon", "#cn-slab", "#cn-chip", {C0} + 1.05);
 
       // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
-      word("#wk-atlas", {A0} + 0.1); fig("#wk-atlas", {A0} + B);
+      arrive("#wk-atlas .wk-word", {A0}, 515, 383); fig("#wk-atlas", {A0} + 0.8 * B);
       const route = {json.dumps([list(p) for _, p, _ in STOPS])};
       const k = 1.25;
       move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), {A0}, 0.55, "power2.inOut", true);
@@ -328,12 +368,33 @@ page = f'''<template>
       toChip("#wk-atlas", "#at-slab", "#at-chip", {A0} + 1.05);
 
       // BOOKS: the spines rise onto the shelf, one an eighth note apart
-      word("#wk-books", {K0}); fig("#wk-books", {K0} + B);
-      tl.fromTo(".wk-spine", {{ yPercent: 105 }}, {{ yPercent: 0, duration: 0.45, stagger: B / 2, ease: "expo.out" }}, {K0});
+      arrive("#wk-books .wk-word", {K0}, 530, 285); fig("#wk-books", {K0} + 0.6 * B);
+      tl.fromTo(".wk-spine", {{ yPercent: 105 }}, {{ yPercent: 0, duration: 0.45, stagger: 0.11, ease: "expo.out" }}, {K0});
 
       // FOLLOW: a figure on each beat
-      tl.fromTo("#wk-join", {{ opacity: 0, filter: "blur(8px)" }}, {{ opacity: 1, filter: "blur(0px)", duration: 0.18 }}, {F0});
+      arrive("#wk-join", {F0}, 438, 365);
       tl.fromTo(".wk-num", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.35, stagger: B * 0.75, ease: "expo.out" }}, {F0} + 0.15);
+
+      // THE FRIEZE between shots: the shot is pushed out to the left, the top of the portico
+      // slides in from the right and glides to the next metope (lit in burgundy), and the camera
+      // dives into it, as it dived into "Watch" at the end of the pillars
+      const MX = {json.dumps(fz_x)};
+      const KF = 1.64, CY = 255;
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-canon", "#wk-atlas", "#wk-books"];
+      tl.set("#fz-pane", {{ x: 1920 }}, 0);
+      [{R0}, {C0}, {A0}, {K0}, {F0}].forEach((t, i) => {{
+        const m = MX[i + 1], t0 = t - 0.78;
+        tl.set(".fz-met", {{ color: "#28231e" }}, t0);
+        tl.set("#fz-m" + (i + 1), {{ color: "#470b15" }}, t0);
+        tl.fromTo(outgoing[i], {{ x: 0 }}, {{ x: -1920, duration: 0.4, ease: "power3.inOut", immediateRender: false }}, t0);
+        tl.fromTo("#fz-pane", {{ x: 1920 }}, {{ x: 0, duration: 0.4, ease: "power3.inOut", immediateRender: false }}, t0);
+        tl.fromTo("#fz-world", cam(m + 260, CY, KF), {{ ...cam(m, CY, KF), duration: 0.42, ease: "power2.out", immediateRender: false }}, t0);
+        tl.fromTo("#fz-world", cam(m, CY, KF), {{ ...cam(m, 210, 9), duration: 0.32, ease: "power3.in", immediateRender: false }}, t - 0.32);
+        tl.set("#fz-pane", {{ x: 1920 }}, t);
+      }});
+      // the last metope, Community, fills with burgundy on the way in: the next shot is burgundy
+      tl.fromTo("#fz-fill", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.24, ease: "power2.in" }}, {F0} - 0.26);
+      tl.fromTo("#fz-m5", {{ color: "#470b15" }}, {{ color: "#f9f3dd", duration: 0.24, ease: "power2.in", immediateRender: false }}, {F0} - 0.26);
 
       window.__timelines["works"] = tl;
     }})();

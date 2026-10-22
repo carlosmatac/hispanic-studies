@@ -77,6 +77,17 @@
     .wk-spine--paper span { color: #470b15; }
     #wk-books .wk-word { font-size: 150px; }
 
+    /* the frieze: the top of the portico, held by the three pillars */
+    #fz { position: absolute; inset: 0; z-index: 5; overflow: hidden; }
+    #fz-pane { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; }
+    #fz-world { position: absolute; left: 0; top: 0; width: 2400px; height: 1792px; transform-origin: 0 0; }
+    #fz-world > img { position: absolute; inset: 0; width: 2400px; height: 1792px; display: block; }
+    #fz-tint { position: absolute; inset: 0; width: 2400px; height: 1792px; mix-blend-mode: multiply; }
+    #fz-tint path { fill: #470b15; opacity: 0.92; }
+    #fz-arch { position: absolute; left: 175px; width: 2050px; top: 322px; height: 52px; display: grid; place-items: center; font-weight: 600; font-size: 34px; letter-spacing: 0.5em; text-indent: 0.5em; text-transform: uppercase; color: #470b15; white-space: nowrap; }
+    .fz-met { position: absolute; top: 131px; height: 157px; display: grid; place-items: center; font-weight: 600; font-size: 40px; color: #28231e; }
+    #fz-fill { position: absolute; left: 1916px; width: 218px; top: 131px; height: 157px; background: #470b15; opacity: 0; }
+
     /* follow */
     #wk-follow { background: #470b15; }
     #wk-nums { position: absolute; left: 150px; width: 1620px; top: 360px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
@@ -376,13 +387,35 @@
         <p class="wk-num"><b>587</b><span>Substack</span></p>
       </div>
     </div>
+
+    <div id="fz" class="clip" data-start="0" data-duration="19.2857" data-layout-ignore>
+      <div id="fz-pane">
+        <div id="fz-world">
+          <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:{&quot;src&quot;:&quot;assets/luts/ihs-duotone.cube&quot;,&quot;intensity&quot;:1},&quot;colorSpace&quot;:&quot;rec709&quot;}" src="assets/img/portico.jpg" alt="" />
+          <svg id="fz-tint" viewBox="0 0 2400 1792">
+            <path id="fz-sh0" d="M433 505 L425 800 L418 1100 L415 1400 L416 1540 L642 1540 L642 1400 L640 1100 L633 800 L625 505 Z" />
+            <path id="fz-sh1" d="M1101 505 L1093 800 L1085 1100 L1083 1400 L1084 1540 L1309 1540 L1310 1400 L1307 1100 L1301 800 L1293 505 Z" />
+            <path id="fz-sh2" d="M1768 505 L1760 800 L1753 1100 L1750 1400 L1751 1540 L1976 1540 L1977 1400 L1975 1100 L1969 800 L1960 505 Z" />
+          </svg>
+          <p id="fz-arch">Institute for Hispano Studies</p>
+          <i id="fz-fill"></i>
+          <p id="fz-m0" class="fz-met" style="left: 258px; width: 218px">Watch</p>
+          <p id="fz-m1" class="fz-met" style="left: 582px; width: 227px">Read</p>
+          <p id="fz-m2" class="fz-met" style="left: 915px; width: 227px">Canon</p>
+          <p id="fz-m3" class="fz-met" style="left: 1248px; width: 227px">Atlas</p>
+          <p id="fz-m4" class="fz-met" style="left: 1582px; width: 226px">Books</p>
+          <p id="fz-m5" class="fz-met" style="left: 1916px; width: 218px">Community</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
     (() => {
       const B = 60 / 112;
       const tl = gsap.timeline({ paused: true });
-      const word = (id, t) => tl.fromTo(id + " .wk-word span", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, stagger: 0.08, ease: "power2.out" }, t);
+      // a title arrives out of the metope the camera dived into: large in the middle, then home
+      const arrive = (sel, t, dx, dy) => tl.fromTo(sel, { scale: 2.4, x: dx, y: dy }, { scale: 1, x: 0, y: 0, duration: 0.7, ease: "expo.out" }, t);
       const fig = (id, t) => tl.fromTo(id + " .wk-fig", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, t);
       // a camera over a world: chained moves, each starting from where the last one ends
       const cam = (cx, cy, k) => ({ x: 960 - cx * k, y: 540 - cy * k, scale: k });
@@ -390,11 +423,11 @@
 
       // WATCH: the word arrives out of the portico's metope, large, and settles; the wall slides in
       tl.fromTo("#wk-watch .wk-word", { scale: 2.6, x: 540, y: -200, opacity: 1 }, { scale: 1, x: 0, y: 0, duration: 0.7, ease: "expo.out" }, 0.0);
-      tl.fromTo("#wk-wall .wk-thumb", { x: 900 }, { x: 0, duration: 0.5, stagger: B / 2, ease: "expo.out" }, 0.0 + 0.1);
-      fig("#wk-watch", 0.0 + B);
+      tl.fromTo("#wk-wall .wk-thumb", { x: 900 }, { x: 0, duration: 0.5, stagger: 0.11, ease: "expo.out" }, 0.0 + 0.1);
+      fig("#wk-watch", 0.0 + 0.6 * B);
 
       // READ: eight essays fly in from the depth into a turning ring, then fold into a wall
-      word("#wk-read", 2.1429 + 0.1); fig("#wk-read", 2.1429 + B);
+      arrive("#wk-read .wk-word", 2.1429, 660, 383); fig("#wk-read", 2.1429 + B);
       const grid = [[-705, -165], [-235, -165], [235, -165], [705, -165], [-705, 165], [-235, 165], [235, 165], [705, 165]];
       for (let i = 0; i < 8; i++) {
         tl.fromTo("#rd-a" + i, { rotationY: i * 45 }, { rotationY: i * 45, duration: 0.01 }, 2.1429);
@@ -409,7 +442,7 @@
 
       // THE CANON: the camera starts close on La raza cósmica and pulls out to the whole field,
       // the cards appearing and the edges drawing outwards from it, dots running along them
-      word("#wk-canon", 6.4286 + 0.1); fig("#wk-canon", 6.4286 + B);
+      arrive("#wk-canon .wk-word", 6.4286, 510, 383); fig("#wk-canon", 6.4286 + 0.8 * B);
       // the camera follows a real chain of readers: Ariel → Rodó → Vasconcelos → La raza cósmica → Haya
       move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), 6.4286, 0.7, "power2.inOut", true);
       move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), 6.4286 + 0.75, 0.8, "power2.inOut");
@@ -430,7 +463,7 @@
       toChip("#wk-canon", "#cn-slab", "#cn-chip", 6.4286 + 1.05);
 
       // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
-      word("#wk-atlas", 10.7143 + 0.1); fig("#wk-atlas", 10.7143 + B);
+      arrive("#wk-atlas .wk-word", 10.7143, 515, 383); fig("#wk-atlas", 10.7143 + 0.8 * B);
       const route = [[1994, 358], [1288, 571], [1053, 600], [1348, 959], [1707, 1042], [3266, 672]];
       const k = 1.25;
       move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), 10.7143, 0.55, "power2.inOut", true);
@@ -448,12 +481,33 @@
       toChip("#wk-atlas", "#at-slab", "#at-chip", 10.7143 + 1.05);
 
       // BOOKS: the spines rise onto the shelf, one an eighth note apart
-      word("#wk-books", 15.0); fig("#wk-books", 15.0 + B);
-      tl.fromTo(".wk-spine", { yPercent: 105 }, { yPercent: 0, duration: 0.45, stagger: B / 2, ease: "expo.out" }, 15.0);
+      arrive("#wk-books .wk-word", 15.0, 530, 285); fig("#wk-books", 15.0 + 0.6 * B);
+      tl.fromTo(".wk-spine", { yPercent: 105 }, { yPercent: 0, duration: 0.45, stagger: 0.11, ease: "expo.out" }, 15.0);
 
       // FOLLOW: a figure on each beat
-      tl.fromTo("#wk-join", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18 }, 17.1429);
+      arrive("#wk-join", 17.1429, 438, 365);
       tl.fromTo(".wk-num", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, stagger: B * 0.75, ease: "expo.out" }, 17.1429 + 0.15);
+
+      // THE FRIEZE between shots: the shot is pushed out to the left, the top of the portico
+      // slides in from the right and glides to the next metope (lit in burgundy), and the camera
+      // dives into it, as it dived into "Watch" at the end of the pillars
+      const MX = [367.0, 695.5, 1028.5, 1361.5, 1695.0, 2025.0];
+      const KF = 1.64, CY = 255;
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-canon", "#wk-atlas", "#wk-books"];
+      tl.set("#fz-pane", { x: 1920 }, 0);
+      [2.1429, 6.4286, 10.7143, 15.0, 17.1429].forEach((t, i) => {
+        const m = MX[i + 1], t0 = t - 0.78;
+        tl.set(".fz-met", { color: "#28231e" }, t0);
+        tl.set("#fz-m" + (i + 1), { color: "#470b15" }, t0);
+        tl.fromTo(outgoing[i], { x: 0 }, { x: -1920, duration: 0.4, ease: "power3.inOut", immediateRender: false }, t0);
+        tl.fromTo("#fz-pane", { x: 1920 }, { x: 0, duration: 0.4, ease: "power3.inOut", immediateRender: false }, t0);
+        tl.fromTo("#fz-world", cam(m + 260, CY, KF), { ...cam(m, CY, KF), duration: 0.42, ease: "power2.out", immediateRender: false }, t0);
+        tl.fromTo("#fz-world", cam(m, CY, KF), { ...cam(m, 210, 9), duration: 0.32, ease: "power3.in", immediateRender: false }, t - 0.32);
+        tl.set("#fz-pane", { x: 1920 }, t);
+      });
+      // the last metope, Community, fills with burgundy on the way in: the next shot is burgundy
+      tl.fromTo("#fz-fill", { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "power2.in" }, 17.1429 - 0.26);
+      tl.fromTo("#fz-m5", { color: "#470b15" }, { color: "#f9f3dd", duration: 0.24, ease: "power2.in", immediateRender: false }, 17.1429 - 0.26);
 
       window.__timelines["works"] = tl;
     })();

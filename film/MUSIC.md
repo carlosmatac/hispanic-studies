@@ -45,11 +45,16 @@ Harmony (one chord per bar, D minor):
 | 5–8 | 8.57–17.14 | **Build** | palmas and a muted kick join; strings stab on every downbeat; a riser through bar 8; **full stop on the last beat** (silence 0.5 s) | first glimpses of Beltrán, faster and faster |
 | 9–16 | 17.14–34.29 | **Drop 1** | the whole kit and the sub; guitar rasgueado on the offbeats; cellos play the Folía bass line | the montage: Beltrán to camera, his openings, the maps and paintings, one cut per beat at its peak |
 | 17–20 | 34.29–42.86 | **Break** | half time: only strings holding the chords, a soft pulse, space | the three pillars, one bar each: MESTIZAJE · CATOLICISMO · LENGUA, and one line of Beltrán's own voice |
-| 21–29 | 42.86–62.14 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel (1 bar), the essays (2), the canon (2), the Atlas (2), the books (1), the followings (1) |
+| 21–29 | 42.86–62.14 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel (1 bar), the essays (2), the canon (2), the Atlas (2), the books (1), the followings (1); between each, the portico's frieze sweeps in (0.8 s before the change) and the camera dives into the next metope on the downbeat |
 | 30–31 | 62.14–66.43 | **Lockup** | one clean hit on the downbeat of bar 30 (low impact + a final Dm chord), then it rings out | the IHS logo and the name; silence by 66.4 s |
 
 The key sync points: **8.57** (build starts), **17.14** (drop 1), **34.29** (break),
 **42.86** (drop 2), **62.14** (logo hit).
+
+Inside drop 2 the picture changes on the downbeats of bars 22, 24, 26, 28 and 29 (**45.00,
+49.29, 53.57, 57.86, 60.00**), each preceded by a frieze sweep that starts 0.78 s earlier. These
+get a whoosh into a soft low thump from earshot; the music only needs to keep its downbeats
+clear there (no fills that smear across them).
 
 ## Making it
 

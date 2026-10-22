@@ -65,11 +65,11 @@
         <p data-hf-id="hf-76ns" id="pil-w1" class="pil-sword" style="left: 1077px"><span data-hf-id="hf-g6mg">Catolicismo</span></p>
         <p data-hf-id="hf-dcg4" id="pil-w2" class="pil-sword" style="left: 1744px"><span data-hf-id="hf-q723">Lengua</span></p>
         <p data-hf-id="hf-yun1" id="pil-arch">Institute for Hispano Studies</p>
-        <p data-hf-id="hf-2mq1" id="pil-m0" class="pil-met" style="left: 258px; width: 218px; top: 131px; height: 157px">Atlas</p>
-        <p data-hf-id="hf-gyx4" id="pil-m1" class="pil-met" style="left: 582px; width: 227px; top: 131px; height: 157px">Canon</p>
-        <p data-hf-id="hf-0xmq" id="pil-m2" class="pil-met" style="left: 915px; width: 227px; top: 131px; height: 157px">Books</p>
-        <p data-hf-id="hf-04qw" id="pil-m3" class="pil-met" style="left: 1248px; width: 227px; top: 131px; height: 157px">Watch</p>
-        <p data-hf-id="hf-cclu" id="pil-m4" class="pil-met" style="left: 1582px; width: 226px; top: 131px; height: 157px">Read</p>
+        <p data-hf-id="hf-2mq1" id="pil-m0" class="pil-met" style="left: 258px; width: 218px; top: 131px; height: 157px">Watch</p>
+        <p data-hf-id="hf-gyx4" id="pil-m1" class="pil-met" style="left: 582px; width: 227px; top: 131px; height: 157px">Read</p>
+        <p data-hf-id="hf-0xmq" id="pil-m2" class="pil-met" style="left: 915px; width: 227px; top: 131px; height: 157px">Canon</p>
+        <p data-hf-id="hf-04qw" id="pil-m3" class="pil-met" style="left: 1248px; width: 227px; top: 131px; height: 157px">Atlas</p>
+        <p data-hf-id="hf-cclu" id="pil-m4" class="pil-met" style="left: 1582px; width: 226px; top: 131px; height: 157px">Books</p>
         <p data-hf-id="hf-w7yk" id="pil-m5" class="pil-met" style="left: 1916px; width: 218px; top: 131px; height: 157px">Community</p>
       </div>
     </div>
@@ -105,8 +105,9 @@
       // the name lands on the architrave on the fourth beat, then the works fill the metopes
       tl.fromTo("#pil-arch", { opacity: 0, scaleX: 1.35 }, { opacity: 1, scaleX: 1, duration: 0.35, ease: "expo.out" }, T + 3 * B - 0.25);
       tl.fromTo(".pil-met", { opacity: 0 }, { opacity: 1, duration: 0.08, stagger: 0.045 }, T + 1.4);
-      // and the camera dives into "Watch", the first of them, as drop two begins
-      tl.fromTo("#pil-world", fit, { ...cam(1361, 210, 9), duration: 0.32, ease: "power3.in", immediateRender: false }, T + 4 * B - 0.32);
+      // and the camera dives into "Watch", the first of them, as drop two begins (the metopes are
+      // in the film's order, so every later shot can leave by the same frieze, always to the right)
+      tl.fromTo("#pil-world", fit, { ...cam(367, 210, 9), duration: 0.32, ease: "power3.in", immediateRender: false }, T + 4 * B - 0.32);
 
       window.__timelines["pillars"] = tl;
     })();

@@ -64,9 +64,9 @@ const en = {
   },
   reel: {
     label: 'The Institute in one minute',
-    play: 'play',
-    playLabel: 'Play the film about the Institute, with sound',
-    close: 'Close',
+    soundOn: 'Sound on',
+    soundOff: 'Sound off',
+    soundLabel: 'Sound of the film about the Institute',
   },
   pillars: {
     eyebrow: 'Three pillars',
@@ -253,9 +253,9 @@ const es: Dict = {
   },
   reel: {
     label: 'El Instituto en un minuto',
-    play: 'play',
-    playLabel: 'Ver la película sobre el Instituto, con sonido',
-    close: 'Cerrar',
+    soundOn: 'Activar sonido',
+    soundOff: 'Silenciar',
+    soundLabel: 'Sonido de la película sobre el Instituto',
   },
   pillars: {
     eyebrow: 'Tres pilares',
