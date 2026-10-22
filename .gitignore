@@ -21,3 +21,4 @@ film/reel/.hyperframes/
 film/reel/.media/
 film/reel/node_modules/
 film/reel/assets/clips/
+__pycache__/
