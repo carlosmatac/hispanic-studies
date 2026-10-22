@@ -1,4 +1,7 @@
 import { notFound } from 'next/navigation';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { dict, isLang } from '@/lib/i18n';
 import Image from 'next/image';
 import { SITE, SHORTS, VIDEOS, ESSAYS, channel, shortThumb, shortUrl, videoThumb, videoUrl } from '@/lib/content';
@@ -14,6 +17,12 @@ import Pillars from '@/components/Pillars';
 import ShortsRail from '@/components/ShortsRail';
 import ChannelIcon from '@/components/ChannelIcon';
 import { SealRow, ChannelBadge, ChannelGrid } from '@/components/Channels';
+
+// The reel's address carries a fingerprint of the file, read at build time: a new cut gets a
+// new URL, so no browser or CDN keeps playing the old one.
+const stamp = (file: string) => createHash('sha1').update(readFileSync(path.join(process.cwd(), 'public', file))).digest('hex').slice(0, 10);
+const REEL = `/video/reel.mp4?v=${stamp('video/reel.mp4')}`;
+const REEL_POSTER = `/video/reel-poster.jpg?v=${stamp('video/reel-poster.jpg')}`;
 
 // Server-only reads: the cartouche counts what the data actually holds.
 import iberophone from '@/public/data/iberophone.json';
@@ -76,7 +85,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <Hero lang={lang} />
 
         {/* the reel: the Institute in a minute, silent until played */}
-        <Reel lang={lang} src="/video/reel.mp4" poster="/video/reel-poster.jpg" />
+        <Reel lang={lang} src={REEL} poster={REEL_POSTER} />
 
         {/* I · three pillars, as a portico */}
         <Pillars lang={lang} counts={{ milestones: COUNTS.milestones, authors: COUNTS.authors }} />
