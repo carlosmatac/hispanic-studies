@@ -78,7 +78,7 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 - **Images**: only public-domain or properly licensed sources, logged in `assets/art/SOURCES.md` before they ship. Beltrán's Drive folder is a moodboard only.
 - **Motion**: respect `prefers-reduced-motion` everywhere; every animation has a still state; reveals must fail open (content can never stay hidden because a script or a feature is missing).
 - **Homepage order** (since 2026-10-21, issue #60): title page (the eagle and the name, nothing else) → the reel → three pillars → Atlas (with the map and its tour) → canon → books → watch → read → about → community (with the pamphlet signup) → merch → footer.
-- **Deploys**: the target is Vercel (project root `site/`). Do not connect or deploy until the user asks for it.
+- **Deploys**: Vercel (project root `site/`). Previews for Beltrán sit behind a password: `site/proxy.ts` asks for one whenever the `SITE_PASSWORD` env var is set (any user name; Vercel's own password protection is a paid add-on). Locally, without the variable, the site is open. Deploy only when the user asks.
 
 ## The canon graph (`site/components/canon/`)
 
