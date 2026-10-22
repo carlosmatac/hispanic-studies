@@ -12,7 +12,7 @@
   </style>
 
   <div id="root" data-composition-id="lockup" data-width="1920" data-height="1080">
-    <div id="lock-card" class="clip" data-start="0" data-duration="4.2857">
+    <div id="lock-card" class="clip" data-start="0" data-duration="5.263">
       <div id="lock-eagle"><img src="assets/img/ihs-logo.svg" alt="" /></div>
       <p id="lock-small">Institute for</p>
       <p id="lock-big">Hispano Studies</p>
@@ -22,14 +22,13 @@
 
   <script>
     (() => {
-      const B = 60 / 112;
       const tl = gsap.timeline({ paused: true });
-      // the hit: the eagle is simply there on the downbeat (a hit is not eased)
+      // the hits of the track's ending (69.94, 70.20, 70.47, 71.56 s): the eagle, the two lines, the address
       tl.fromTo("#lock-eagle", { scale: 1.18 }, { scale: 1, duration: 0.6, ease: "expo.out" }, 0);
       // the name wipes in from the eagle outwards, a beat later
-      tl.fromTo("#lock-small", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.out" }, B * 0.5);
-      tl.fromTo("#lock-big", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "expo.out" }, B);
-      tl.fromTo("#lock-url", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 2 * B);
+      tl.fromTo("#lock-small", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.out" }, 0.267);
+      tl.fromTo("#lock-big", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "expo.out" }, 0.534);
+      tl.fromTo("#lock-url", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 1.625);
       window.__timelines["lockup"] = tl;
     })();
   </script>

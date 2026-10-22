@@ -1,11 +1,51 @@
 # The reel's music
 
 The music comes first; the film is cut to it (the method in
-gulipad.com/writings/mila-launch-video). This file is the brief for the track and the beat
-grid the edit is planned on. Once the real track exists, its beats and hits are measured
-(librosa) and `film/` is re-timed to them; the grid below is the target, not a promise.
+gulipad.com/writings/mila-launch-video).
 
-## The idea: La Folía, rebuilt
+## The track we use
+
+`film/reel/assets/audio/music.mp3`: ElevenLabs Music, 2026-10-22, made from the brief below.
+It is 78 s long with 3.8 s of silence before the first note and 2.8 s after the last, and it
+did not keep the grid we asked for, so the film was re-cut to the track as it is (measured with
+librosa: onsets, low-band hits, harmonic/percussive energy, chords).
+
+- Pulse about 75 BPM (a quarter is ~0.80 s, the eighths at ~0.40 s carry the rhythm); the
+  guitar intro is played freely.
+- **Video time = track time − 3.80 s.** The film is 71.4 s, the length of the music.
+
+| video s | track s | the music | the picture |
+| --- | --- | --- | --- |
+| 0.02 | 3.82 | the guitar begins | "One civilization," letter by letter |
+| 4.33 | 8.13 | second guitar phrase | the map pulls back to four continents |
+| 7.92 | 11.72 | third phrase | Beltrán: "To know who we are…" |
+| 11.52 | 15.32 | fourth phrase | the mosaic of him, faster and faster |
+| 15.44 | 19.24 | a low hit; the bass leaves, soft section | montage: "Mexico was not destroyed in 1521…", "Cowboys are Hispanic." |
+| 22.24 | 26.04 | a hit, then the music almost stops | "Hispanic," stamped; then "War, law, love, and faith" in the near-silence |
+| 28.63 | 32.43 | the beat comes back, a long rise on A | the three pillars, one painting each |
+| 35.44 | 39.24 | the rise peaks | the portico; the camera dives into "Watch" |
+| 38.16 | 41.96 | **the drop** (D) | Watch |
+| 41.21 / 43.59 | 45.01 / 47.39 | hits (43.59 is the biggest) | Read; its ring of essays folds on 43.59 |
+| 46.23 | 50.03 | hit | the canon |
+| 51.73 | 55.53 | hit | the Atlas |
+| 57.34 | 61.14 | **the climax** (back on D) | De Indiis Editions |
+| 60.67 | 64.47 | hit | "Join the argument." |
+| 62.27 · 63.74 · 64.54 · 65.33 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | 13.5K · 19K · 22K · 587 |
+| 66.14 | 69.94 | **the last hit**, two more and the final chord (71.56) | the eagle, the name, hispanostudies.com |
+| 71.40 | 75.20 | silence | end (the page loops it) |
+
+Every shot change in the works is preceded by the frieze sweep (0.78 s before the hit).
+
+## The mix
+
+`film/tools/mix-reel.py <render> <out>` lays the music under the render: Beltrán's voice
+comes from the render itself (his clips), the music dips up to 9 dB under it, and the sound
+effects (earshot's bank, MIT) sit on their frames, listed in the script's `CUES` table. The
+mix is normalised to −14 LUFS, peaks under −1.5 dBTP. Change a scene's timing, change its cues.
+
+## The brief it was made from
+
+### The idea: La Folía, rebuilt
 
 **La Folía** is the Iberian ground: a chord sequence born in Portugal and Spain in the late
 1400s that Corelli, Vivaldi, Handel and Rachmaninoff all took up. It is the most
@@ -22,7 +62,7 @@ Harmony (one chord per bar, D minor):
     | Dm | A  | Dm | C  | F  | C  | Dm | A  |    first half ends open (on A)
     | Dm | A  | Dm | C  | F  | C  | Dm A | Dm |  second half closes (on Dm)
 
-## Spec
+### Spec
 
 - **Length**: 66.4 s, 31 bars (it has to land on the logo, then ring out).
 - **Tempo**: 112 BPM, 4/4. A bar is 2.143 s; the Folía is 8 bars (17.1 s).
@@ -37,7 +77,7 @@ Harmony (one chord per bar, D minor):
 - **Avoid**: EDM supersaws, trap hi-hat rolls, "epic trailer" choirs and braams, flamenco
   vocals and "olé", mariachi trumpets, castanets as a gag, lo-fi vinyl crackle.
 
-## The beat grid (what the edit is planned on)
+### The beat grid we asked for (the track did not keep it)
 
 | bars | time | section | music | picture |
 | --- | --- | --- | --- | --- |
@@ -56,13 +96,13 @@ Inside drop 2 the picture changes on the downbeats of bars 22, 24, 26, 28 and 29
 get a whoosh into a soft low thump from earshot; the music only needs to keep its downbeats
 clear there (no fills that smear across them).
 
-## Making it
+### Making it
 
 Generate 3–4 takes, put them in `~/Descargas`, and say their names. Each one is measured
 (tempo, where the drops and the final hit land, loudness) and the best fit is chosen; the
 edit is then re-timed to it.
 
-### ElevenLabs Music (composition plan, preferred)
+#### ElevenLabs Music (composition plan, preferred)
 
 ElevenLabs lets each section have its own length and styles, which is what the grid needs.
 Global styles: `instrumental, 112 bpm, D minor, La Folia chord progression, Spanish baroque
@@ -90,7 +130,7 @@ The same as one prompt, for the plain text box:
 > big low hit and a final D minor chord ringing out to silence at 66 s. Dry, close, confident.
 > No vocals, no choir, no EDM supersaws, no trailer braams, no flamenco singing.
 
-### Suno (if ElevenLabs does not land the structure)
+#### Suno (if ElevenLabs does not land the structure)
 
 Style: `instrumental, La Folia, Spanish baroque guitar, modern cinematic beat, palmas, cajon,
 sub bass, string stabs, 112 bpm, D minor, motion design`. Exclude: `vocals, choir, edm,

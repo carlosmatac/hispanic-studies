@@ -97,10 +97,10 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 
 - The second section is a one-minute film about the Institute, after tigranz.com: full width, silent and looping, graded on the page's own paper so it reads as part of the page. It never shrinks or moves: a `Sound on` / `Sound off` switch (it follows the pointer over the film) turns the sound on in place.
 - It is made in **HyperFrames** (HTML + GSAP rendered to MP4) in `film/reel/`, from Beltrán's own videos (catalogue in `film/MATERIAL.md`; raw footage in `film/media/`, never committed). Read `film/reel/SPEC.md` before touching it.
-- **The music comes first** and the edit follows its beat grid: brief and prompts in `film/MUSIC.md`. Sound effects from earshot's code-made bank (MIT).
+- **The music comes first** and the edit follows it: the track (ElevenLabs, `film/reel/assets/audio/music.mp3`), the hits every scene is cut on, and the brief are in `film/MUSIC.md`. The sound is mixed after the render by `film/tools/mix-reel.py`: music dipping under Beltrán's voice, plus sound effects from earshot's code-made bank (MIT).
 - After the pillars, every shot of the works leaves the same way: the frieze of the portico slides in from the right and the camera dives into the next metope (in the film the metopes are in the film's order: Watch, Read, Canon, Atlas, Books, Community).
 - Every picture goes through the duotone LUT (`film/tools/make-duotone-lut.py`): burgundy ink on the site's paper. Only real titles, numbers and his own words on screen.
-- The delivered cut is copied to `site/public/video/reel.mp4` (+ `reel-poster.jpg`).
+- The delivered cut (the mixed file) is encoded to `site/public/video/reel.mp4` (+ `reel-poster.jpg`).
 
 ## Unicorn Studio (WebGL scenes)
 

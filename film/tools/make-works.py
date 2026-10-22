@@ -26,8 +26,14 @@ def bar(n):
     return round(n * 4 * B, 4)
 
 
-# shot boundaries (local seconds), one bar = 2.1429 s
-W0, R0, C0, A0, K0, F0, END = bar(0), bar(1), bar(3), bar(5), bar(7), bar(8), bar(9)
+# shot boundaries (local seconds): each shot starts on a hit measured in the track
+# (film/MUSIC.md). The scene starts on the drop, 41.964 s into the track.
+DROP = 41.964
+def at(track):
+    return round(track - DROP, 3)
+W0, R0, C0, A0, K0, F0, END = 0.0, at(45.006), at(50.029), at(55.525), at(61.137), at(64.467), at(69.937)
+# the followings land on the hits of the breakdown
+NUMS = [at(66.065), at(67.537), at(68.344), at(69.133)]
 
 esc = html.escape
 
@@ -310,7 +316,7 @@ page = f'''<template>
 
       // WATCH: the word arrives out of the portico's metope, large, and settles; the wall slides in
       tl.fromTo("#wk-watch .wk-word", {{ scale: 2.6, x: 540, y: -200, opacity: 1 }}, {{ scale: 1, x: 0, y: 0, duration: 0.7, ease: "expo.out" }}, {W0});
-      tl.fromTo("#wk-wall .wk-thumb", {{ x: 900 }}, {{ x: 0, duration: 0.5, stagger: 0.11, ease: "expo.out" }}, {W0} + 0.1);
+      tl.fromTo("#wk-wall .wk-thumb", {{ x: 900 }}, {{ x: 0, duration: 0.5, stagger: 0.2, ease: "expo.out" }}, {W0} + 0.1);
       fig("#wk-watch", {W0} + 0.6 * B);
 
       // READ: eight essays fly in from the depth into a turning ring, then fold into a wall
@@ -325,17 +331,17 @@ page = f'''<template>
       }}
       tl.fromTo("#rd-ring", {{ rotationY: 30, rotationX: 8 }}, {{ rotationY: -110, rotationX: 8, duration: 2.35, ease: "power1.inOut" }}, {R0});
       tl.fromTo("#rd-ring", {{ rotationY: -110, rotationX: 8 }}, {{ rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }}, {R0} + 2.35);
-      tl.fromTo("#rd-ring", {{ rotationY: -372, rotationX: 10 }}, {{ rotationY: -366, rotationX: 10, duration: 0.6, ease: "none", immediateRender: false }}, {R0} + 3.3);
+      tl.fromTo("#rd-ring", {{ rotationY: -372, rotationX: 10 }}, {{ rotationY: -360, rotationX: 10, duration: {round(C0 - R0 - 3.3, 3)}, ease: "none", immediateRender: false }}, {R0} + 3.3);
 
       // THE CANON: the camera starts close on La raza cósmica and pulls out to the whole field,
       // the cards appearing and the edges drawing outwards from it, dots running along them
       arrive("#wk-canon .wk-word", {C0}, 510, 383); fig("#wk-canon", {C0} + 0.8 * B);
       // the camera follows a real chain of readers: Ariel → Rodó → Vasconcelos → La raza cósmica → Haya
-      move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), {C0}, 0.7, "power2.inOut", true);
-      move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), {C0} + 0.75, 0.8, "power2.inOut");
-      move("#cn-world", cam(2014, 1380, 2.0), cam(2030, 1520, 2.3), {C0} + 1.6, 0.55, "power2.inOut");
-      move("#cn-world", cam(2030, 1520, 2.3), cam(1830, 1300, 0.85), {C0} + 2.2, 1.3, "expo.inOut");
-      move("#cn-world", cam(1830, 1300, 0.85), cam(1830, 1300, 0.8), {C0} + 3.5, {round(A0 - C0 - 3.5, 3)}, "none");
+      move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), {C0}, 0.85, "power2.inOut", true);
+      move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), {C0} + 0.9, 0.95, "power2.inOut");
+      move("#cn-world", cam(2014, 1380, 2.0), cam(2030, 1520, 2.3), {C0} + 1.9, 0.65, "power2.inOut");
+      move("#cn-world", cam(2030, 1520, 2.3), cam(1830, 1300, 0.85), {C0} + 2.6, 1.5, "expo.inOut");
+      move("#cn-world", cam(1830, 1300, 0.85), cam(1830, 1300, 0.78), {C0} + 4.1, {round(A0 - C0 - 4.1, 3)}, "none");
       const nd = {json.dumps(node_delay)};
       document.querySelectorAll("#cn-world .cn-n").forEach((el, i) => tl.fromTo(el, {{ opacity: 0, scale: 0.85 }}, {{ opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }}, {C0} + nd[i]));
       const ed = {json.dumps(edge_delay)};
@@ -353,13 +359,13 @@ page = f'''<template>
       arrive("#wk-atlas .wk-word", {A0}, 515, 383); fig("#wk-atlas", {A0} + 0.8 * B);
       const route = {json.dumps([list(p) for _, p, _ in STOPS])};
       const k = 1.25;
-      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), {A0}, 0.55, "power2.inOut", true);
-      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), {A0} + 0.6, 0.55, "power2.inOut");
-      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), {A0} + 1.2, 0.5, "power2.inOut");
-      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), {A0} + 1.75, 0.5, "power2.inOut");
-      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), {A0} + 2.3, 1.1, "expo.inOut");
-      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.545), {A0} + 3.4, {round(K0 - A0 - 3.4, 3)}, "none");
-      [0, 0.45, 1.05, 1.62, 2.15, 2.75].forEach((t, i) => {{
+      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), {A0}, 0.65, "power2.inOut", true);
+      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), {A0} + 0.72, 0.65, "power2.inOut");
+      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), {A0} + 1.44, 0.6, "power2.inOut");
+      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), {A0} + 2.1, 0.6, "power2.inOut");
+      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), {A0} + 2.76, 1.3, "expo.inOut");
+      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.54), {A0} + 4.1, {round(K0 - A0 - 4.1, 3)}, "none");
+      [0, 0.54, 1.26, 1.94, 2.58, 3.3].forEach((t, i) => {{
         tl.fromTo("#at-p" + i, {{ scale: 0 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)" }}, {A0} + t);
         tl.fromTo("#at-l" + i, {{ strokeDashoffset: 1, opacity: 1 }}, {{ strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }}, {A0} + t + 0.05);
         tl.fromTo("#at-c" + i, {{ opacity: 0, y: 30, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }}, {A0} + t + 0.12);
@@ -367,13 +373,13 @@ page = f'''<template>
       tl.fromTo("#at-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {A0});
       toChip("#wk-atlas", "#at-slab", "#at-chip", {A0} + 1.05);
 
-      // BOOKS: the spines rise onto the shelf, one an eighth note apart
+      // BOOKS, on the climax: the spines rise onto the shelf, one an eighth apart
       arrive("#wk-books .wk-word", {K0}, 530, 285); fig("#wk-books", {K0} + 0.6 * B);
-      tl.fromTo(".wk-spine", {{ yPercent: 105 }}, {{ yPercent: 0, duration: 0.45, stagger: 0.11, ease: "expo.out" }}, {K0});
+      tl.fromTo(".wk-spine", {{ yPercent: 105 }}, {{ yPercent: 0, duration: 0.45, stagger: 0.4, ease: "expo.out" }}, {K0});
 
-      // FOLLOW: a figure on each beat
+      // FOLLOW: a figure on each hit of the breakdown
       arrive("#wk-join", {F0}, 438, 365);
-      tl.fromTo(".wk-num", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.35, stagger: B * 0.75, ease: "expo.out" }}, {F0} + 0.15);
+      {json.dumps(NUMS)}.forEach((t, i) => tl.fromTo(".wk-num:nth-child(" + (i + 1) + ")", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }}, t));
 
       // THE FRIEZE between shots: the shot is pushed out to the left, the top of the portico
       // slides in from the right and glides to the next metope (lit in burgundy), and the camera

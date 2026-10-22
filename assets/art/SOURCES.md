@@ -89,4 +89,5 @@ The glyphs are the [Simple Icons](https://simpleicons.org/) paths (CC0 1.0), set
 | The three pillar paintings | `assets/art/pillars/` (see above) | Public domain |
 | The Iberophone map (`iberophone-map.jpg`) | A capture of this site's own map plate (Natural Earth geometry) | Ours; Natural Earth is public domain |
 | Ibarra Real Nova | Google Fonts (`film/reel/assets/fonts/OFL.txt`) | SIL Open Font License |
-| Music | Not yet: brief in `film/MUSIC.md`. Log the generator, plan, date and prompt here when it lands | — |
+| Music (`film/reel/assets/audio/music.mp3`) | ElevenLabs Music, generated 2026-10-22 from the brief and prompts in `film/MUSIC.md` (file `2026-10-22-20-34-30.mp3`) | Generated for IHS; commercial use needs a paid ElevenLabs plan: confirm the plan it was made on |
+| Sound effects | earshot's code-made bank (github.com/Leonxlnx/earshot), rendered by `film/tools/mix-reel.py` | MIT |
