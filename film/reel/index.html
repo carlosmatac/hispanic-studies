@@ -1,0 +1,49 @@
+<!doctype html>
+<html
+  lang="en"
+  data-resolution="landscape"
+  data-composition-variables='[
+    {"id":"color-ground","type":"color","label":"Paper","default":"#F9F3DD"},
+    {"id":"color-ink","type":"color","label":"Ink","default":"#28231E"},
+    {"id":"color-accent","type":"color","label":"Burgundy","default":"#470B15"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* The Institute for Hispano Studies in one minute. Cut to the music
+         (film/MUSIC.md): every scene starts on a hit measured in the track,
+         video time = track time - 3.80 s. */
+      :root {
+        --paper: #f9f3dd;
+        --ink: #28231e;
+        --burgundy: #470b15;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--paper); }
+      #root { position: relative; width: 100%; height: 100%; background: var(--paper); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="71.4" data-width="1920" data-height="1080">
+      <!-- the first guitar phrase: the name -->
+      <div id="name" data-composition-id="name" data-composition-src="compositions/name.html" data-start="0" data-duration="7.916" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- the second phrase: Beltrán, then glimpses of him -->
+      <div id="build" data-composition-id="build" data-composition-src="compositions/build.html" data-start="7.916" data-duration="7.519" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- the soft section and the stop: his own lines -->
+      <div id="montage" data-composition-id="montage" data-composition-src="compositions/montage.html" data-start="15.435" data-duration="13.195" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- the return and the long rise on A: the pillars, the portico -->
+      <div id="pillars" data-composition-id="pillars" data-composition-src="compositions/pillars.html" data-start="28.63" data-duration="9.534" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- the drop and the climax: what the Institute makes -->
+      <div id="works" data-composition-id="works" data-composition-src="compositions/works.html" data-start="38.164" data-duration="27.973" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <!-- the last hit: the mark -->
+      <div id="lockup" data-composition-id="lockup" data-composition-src="compositions/lockup.html" data-start="66.137" data-duration="5.263" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

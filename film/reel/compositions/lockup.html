@@ -1,0 +1,35 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; }
+    #lock-card { position: absolute; inset: 0; }
+    #lock-eagle { position: absolute; left: 50%; top: 170px; width: 470px; height: 333px; margin-left: -235px; }
+    #lock-eagle img { width: 100%; height: 100%; display: block; }
+    #lock-small { position: absolute; left: 0; right: 0; top: 540px; text-align: center; font-style: italic; font-weight: 500; font-size: 56px; color: #28231e; }
+    #lock-big { position: absolute; left: 0; right: 0; top: 600px; text-align: center; font-weight: 600; font-size: 168px; line-height: 1; letter-spacing: -0.025em; color: #470b15; white-space: nowrap; }
+    #lock-url { position: absolute; left: 0; right: 0; top: 842px; text-align: center; font-family: Inter, sans-serif; font-weight: 500; font-size: 34px; letter-spacing: 0.04em; color: #28231e; }
+  </style>
+
+  <div id="root" data-composition-id="lockup" data-width="1920" data-height="1080">
+    <div id="lock-card" class="clip" data-start="0" data-duration="5.263">
+      <div id="lock-eagle"><img src="assets/img/ihs-logo.svg" alt="" /></div>
+      <p id="lock-small">Institute for</p>
+      <p id="lock-big">Hispano Studies</p>
+      <p id="lock-url">hispanostudies.com</p>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const tl = gsap.timeline({ paused: true });
+      // the hits of the track's ending (69.94, 70.20, 70.47, 71.56 s): the eagle, the two lines, the address
+      tl.fromTo("#lock-eagle", { scale: 1.18 }, { scale: 1, duration: 0.6, ease: "expo.out" }, 0);
+      // the name wipes in from the eagle outwards, a beat later
+      tl.fromTo("#lock-small", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.out" }, 0.267);
+      tl.fromTo("#lock-big", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "expo.out" }, 0.534);
+      tl.fromTo("#lock-url", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 1.625);
+      window.__timelines["lockup"] = tl;
+    })();
+  </script>
+</template>

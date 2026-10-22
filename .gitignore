@@ -12,3 +12,13 @@ assets/3d/*.blend
 assets/3d/*.blend1
 assets/3d/hdri/
 assets/3d/frames/
+
+# raw footage for the reel, never committed
+film/media/
+# the reel's renders and HyperFrames' working files (the delivered cut is copied into site/public/video)
+film/reel/renders/
+film/reel/.hyperframes/
+film/reel/.media/
+film/reel/node_modules/
+film/reel/assets/clips/
+__pycache__/

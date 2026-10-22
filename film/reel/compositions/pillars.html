@@ -1,0 +1,116 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; }
+
+    /* one pillar each. The painting is printed in burgundy
+       (an engraving treatment) and the word stands beside it, alternating sides */
+    .pil-shot { position: absolute; inset: 0; background: #f9f3dd; }
+    .pil-plate { position: absolute; top: 70px; width: 700px; height: 940px; overflow: hidden; }
+    .pil-plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pil-word { position: absolute; font-weight: 600; font-size: 196px; line-height: 0.9; letter-spacing: -0.02em; color: #470b15; white-space: nowrap; }
+    .pil-word span { display: inline-block; }
+    .pil-cap { position: absolute; font-family: Inter, sans-serif; font-weight: 500; font-size: 30px; line-height: 1.35; color: #28231e; width: 760px; }
+
+    #pil-a .pil-plate { left: 120px; }
+    #pil-a .pil-word { left: 900px; top: 380px; }
+    #pil-a .pil-cap { left: 906px; top: 580px; }
+    #pil-b .pil-plate { right: 120px; }
+    #pil-b .pil-word { left: 100px; top: 380px; }
+    #pil-b .pil-cap { left: 106px; top: 580px; }
+    #pil-c .pil-plate { left: 120px; }
+    #pil-c .pil-word { left: 900px; top: 380px; }
+    #pil-c .pil-cap { left: 906px; top: 580px; }
+
+    /* then the portico of the site, engraved. The camera starts on the middle
+       shaft, rises to its capital and pulls back while the three pillars light
+       one a beat; the name lands on the architrave, the works in the metopes,
+       and the camera dives into "Watch", which becomes the next shot */
+    #pil-temple { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; }
+    #pil-world { position: absolute; left: 0; top: 0; width: 2400px; height: 1792px; transform-origin: 0 0; }
+    #pil-plate { position: absolute; inset: 0; width: 2400px; height: 1792px; display: block; }
+    #pil-tint { position: absolute; inset: 0; width: 2400px; height: 1792px; mix-blend-mode: multiply; }
+    #pil-tint path { fill: #470b15; opacity: 0; }
+    .pil-sword { position: absolute; top: 505px; height: 1035px; width: 240px; display: grid; place-items: center; }
+    .pil-sword span { writing-mode: vertical-rl; rotate: 180deg; white-space: nowrap; font-weight: 600; font-size: 96px; letter-spacing: 0.12em; color: #f9f3dd; }
+    #pil-arch { position: absolute; left: 175px; width: 2050px; top: 322px; height: 52px; display: grid; place-items: center; font-weight: 600; font-size: 34px; letter-spacing: 0.5em; text-indent: 0.5em; text-transform: uppercase; color: #470b15; white-space: nowrap; }
+    .pil-met { position: absolute; display: grid; place-items: center; font-weight: 600; font-size: 40px; color: #28231e; }
+  </style>
+
+  <div data-hf-id="hf-01i0" id="root" data-composition-id="pillars" data-width="1920" data-height="1080">
+    <div data-hf-id="hf-8t7d" id="pil-a" class="pil-shot clip" data-start="0" data-duration="2.27">
+      <div data-hf-id="hf-ezqs" class="pil-plate"><img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.12,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:{&quot;src&quot;:&quot;assets/luts/ihs-duotone.cube&quot;,&quot;intensity&quot;:1},&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-ehhi" id="pil-a-img" src="assets/img/mestizaje.jpg" alt=""></div>
+      <p data-hf-id="hf-ghv3" class="pil-word"><span data-hf-id="hf-5wzj">Mestizaje</span></p>
+      <p data-hf-id="hf-glfy" class="pil-cap">Cuzco School, the marriage of Martín de Loyola and Beatriz Ñusta, 1718</p>
+    </div>
+    <div data-hf-id="hf-s9p9" id="pil-b" class="pil-shot clip" data-start="2.27" data-duration="2.27">
+      <div data-hf-id="hf-y6bw" class="pil-plate"><img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.12,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:{&quot;src&quot;:&quot;assets/luts/ihs-duotone.cube&quot;,&quot;intensity&quot;:1},&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-jm62" id="pil-b-img" src="assets/img/catolicismo.jpg" alt=""></div>
+      <p data-hf-id="hf-8z9r" class="pil-word"><span data-hf-id="hf-nq28">Catolicismo</span></p>
+      <p data-hf-id="hf-x0tj" class="pil-cap">Basilio Santa Cruz Pumacallao, Cuzco, c. 1670–90</p>
+    </div>
+    <div data-hf-id="hf-9ci7" id="pil-c" class="pil-shot clip" data-start="4.54" data-duration="2.27">
+      <div data-hf-id="hf-wzet" class="pil-plate"><img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0.12,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:{&quot;src&quot;:&quot;assets/luts/ihs-duotone.cube&quot;,&quot;intensity&quot;:1},&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-xyus" id="pil-c-img" src="assets/img/lengua.jpg" alt=""></div>
+      <p data-hf-id="hf-8kyq" class="pil-word"><span data-hf-id="hf-7wcb">Lengua</span></p>
+      <p data-hf-id="hf-ana3" class="pil-cap">Sahagún and Nahua scholars, the Florentine Codex, 1575–77</p>
+    </div>
+    <div data-hf-id="hf-xhhq" id="pil-temple" class="clip" data-start="6.81" data-duration="2.724">
+      <div data-hf-id="hf-l86f" id="pil-world">
+        <img data-color-grading="{&quot;preset&quot;:null,&quot;intensity&quot;:1,&quot;adjust&quot;:{&quot;exposure&quot;:0,&quot;contrast&quot;:0,&quot;highlights&quot;:0,&quot;shadows&quot;:0,&quot;whites&quot;:0,&quot;blacks&quot;:0,&quot;temperature&quot;:0,&quot;tint&quot;:0,&quot;vibrance&quot;:0,&quot;saturation&quot;:0},&quot;details&quot;:{&quot;vignette&quot;:0,&quot;vignetteMidpoint&quot;:0.5,&quot;vignetteRoundness&quot;:0,&quot;vignetteFeather&quot;:0.65,&quot;grain&quot;:0,&quot;grainSize&quot;:0.25,&quot;grainRoughness&quot;:0.5},&quot;effects&quot;:{&quot;blur&quot;:0,&quot;pixelate&quot;:0,&quot;chromaBleed&quot;:0,&quot;tapeDamage&quot;:0,&quot;tapeTracking&quot;:0,&quot;tapeNoise&quot;:1,&quot;tapeSpeed&quot;:0.5,&quot;filmArtifacts&quot;:0,&quot;halftone&quot;:0,&quot;halftoneSize&quot;:0,&quot;twoInkPrint&quot;:0,&quot;twoInkPrintSize&quot;:0,&quot;ascii&quot;:0,&quot;asciiSize&quot;:0.06578947368421052,&quot;asciiInvert&quot;:0,&quot;asciiStyle&quot;:0,&quot;asciiColor&quot;:1,&quot;asciiRotation&quot;:0,&quot;dither&quot;:0,&quot;ditherSize&quot;:0,&quot;bloom&quot;:0,&quot;bloomRadius&quot;:8,&quot;monoScreen&quot;:0,&quot;monoScreenSize&quot;:0,&quot;monoScreenAngle&quot;:0,&quot;monoScreenSpread&quot;:0,&quot;monoScreenShape&quot;:0,&quot;monoScreenInvert&quot;:0,&quot;scanlines&quot;:0,&quot;scanlineCount&quot;:0,&quot;scanlineSoftness&quot;:0,&quot;chromaticAberration&quot;:0,&quot;chromaticAngle&quot;:0,&quot;crtCurvature&quot;:0,&quot;digitalGlitch&quot;:0,&quot;digitalGlitchColorSplit&quot;:0,&quot;digitalGlitchLineTear&quot;:0,&quot;digitalGlitchPixelate&quot;:0,&quot;digitalGlitchBlockAmount&quot;:0,&quot;digitalGlitchBlockDisplacement&quot;:0,&quot;digitalGlitchBlockOpacity&quot;:0,&quot;digitalGlitchSpeed&quot;:0,&quot;engraving&quot;:0,&quot;engravingSpacing&quot;:0.4117647058823529,&quot;engravingMinThickness&quot;:0.2,&quot;engravingMaxThickness&quot;:0.4571428571428572,&quot;engravingAngle&quot;:0.25,&quot;engravingContrast&quot;:0.4666666666666667,&quot;engravingSharpness&quot;:0.59,&quot;engravingWave&quot;:0.2,&quot;engravingWaveFrequency&quot;:0.2222222222222222,&quot;crosshatch&quot;:0,&quot;crosshatchSpacing&quot;:0.28,&quot;crosshatchThickness&quot;:0.25,&quot;crosshatchAngle&quot;:0.25,&quot;crosshatchContrast&quot;:0.3333333333333333,&quot;crosshatchEdges&quot;:0.5,&quot;crosshatchLineWeight&quot;:0,&quot;crosshatchWave&quot;:0.33,&quot;crosshatchWaveFrequency&quot;:0.2222222222222222,&quot;kuwahara&quot;:0,&quot;kuwaharaRadius&quot;:0.14285714285714285,&quot;kuwaharaSharpness&quot;:0.3125,&quot;kuwaharaSaturation&quot;:0.5},&quot;lut&quot;:{&quot;src&quot;:&quot;assets/luts/ihs-duotone.cube&quot;,&quot;intensity&quot;:1},&quot;colorSpace&quot;:&quot;rec709&quot;}" data-hf-id="hf-zrqz" id="pil-plate" src="assets/img/portico.jpg" alt="">
+        <svg data-hf-id="hf-xbur" id="pil-tint" viewBox="0 0 2400 1792">
+          <path data-hf-id="hf-130g" id="pil-sh0" d="M433 505 L425 800 L418 1100 L415 1400 L416 1540 L642 1540 L642 1400 L640 1100 L633 800 L625 505 Z" />
+          <path data-hf-id="hf-8f0t" id="pil-sh1" d="M1101 505 L1093 800 L1085 1100 L1083 1400 L1084 1540 L1309 1540 L1310 1400 L1307 1100 L1301 800 L1293 505 Z" />
+          <path data-hf-id="hf-lu3b" id="pil-sh2" d="M1768 505 L1760 800 L1753 1100 L1750 1400 L1751 1540 L1976 1540 L1977 1400 L1975 1100 L1969 800 L1960 505 Z" />
+        </svg>
+        <p data-hf-id="hf-j2wv" id="pil-w0" class="pil-sword" style="left: 409px"><span data-hf-id="hf-tttr">Mestizaje</span></p>
+        <p data-hf-id="hf-76ns" id="pil-w1" class="pil-sword" style="left: 1077px"><span data-hf-id="hf-g6mg">Catolicismo</span></p>
+        <p data-hf-id="hf-dcg4" id="pil-w2" class="pil-sword" style="left: 1744px"><span data-hf-id="hf-q723">Lengua</span></p>
+        <p data-hf-id="hf-yun1" id="pil-arch">Institute for Hispano Studies</p>
+        <p data-hf-id="hf-2mq1" id="pil-m0" class="pil-met" style="left: 258px; width: 218px; top: 131px; height: 157px">Watch</p>
+        <p data-hf-id="hf-gyx4" id="pil-m1" class="pil-met" style="left: 582px; width: 227px; top: 131px; height: 157px">Read</p>
+        <p data-hf-id="hf-0xmq" id="pil-m2" class="pil-met" style="left: 915px; width: 227px; top: 131px; height: 157px">Canon</p>
+        <p data-hf-id="hf-04qw" id="pil-m3" class="pil-met" style="left: 1248px; width: 227px; top: 131px; height: 157px">Atlas</p>
+        <p data-hf-id="hf-cclu" id="pil-m4" class="pil-met" style="left: 1582px; width: 226px; top: 131px; height: 157px">Books</p>
+        <p data-hf-id="hf-w7yk" id="pil-m5" class="pil-met" style="left: 1916px; width: 218px; top: 131px; height: 157px">Community</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const B = 60 / 112;
+      // the music comes back at 0 (28.63 s in the track) and climbs on A to the drop at
+      // 9.534 s: a painting every 2.27 s, then the portico, its camera on the track's quarters
+      const P = 2.27, T = 6.81, Q = (9.534 - 6.81) / 4;
+      const tl = gsap.timeline({ paused: true });
+
+      // each pillar: the plate rises out of the paper in steps, the word lands a beat later,
+      // the caption after it; the plate keeps a slow push while the shot holds
+      [["#pil-a", -1], ["#pil-b", 1], ["#pil-c", -1]].forEach(([id, side], i) => {
+        const t0 = i * P;
+        tl.fromTo(`${id} .pil-plate`, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "steps(5)" }, t0);
+        tl.fromTo(`${id} .pil-plate img`, { scale: 1.12 }, { scale: 1.0, duration: P, ease: "power2.out" }, t0);
+        tl.fromTo(`${id} .pil-word span`, { opacity: 0, x: 60 * side, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, t0 + B - 0.08);
+        tl.fromTo(`${id} .pil-cap`, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, t0 + 2 * B);
+      });
+
+      // one continuous camera on the engraved portico (image pixels, 2400 x 1792)
+      const cam = (cx, cy, k) => ({ x: 960 - cx * k, y: 540 - cy * k, scale: k });
+      const fit = { x: (1920 - 2400 * (1080 / 1792)) / 2, y: 0, scale: 1080 / 1792 };
+      tl.fromTo("#pil-world", cam(1197, 1250, 2.1), { ...cam(1197, 470, 2.1), duration: 0.62, ease: "power2.inOut" }, T);
+      tl.fromTo("#pil-world", cam(1197, 470, 2.1), { ...fit, duration: 1.2, ease: "expo.inOut", immediateRender: false }, T + 0.53);
+      // the three pillars light one a beat: the middle one first, under the camera
+      [[1, 0], [0, 1], [2, 2]].forEach(([i, k]) => {
+        tl.fromTo("#pil-sh" + i, { opacity: 0 }, { opacity: 0.92, duration: 0.18, ease: "power2.out" }, T + k * Q);
+        tl.fromTo("#pil-w" + i + " span", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2 }, T + k * Q + 0.04);
+      });
+      // the name lands on the architrave on the fourth beat, then the works fill the metopes
+      tl.fromTo("#pil-arch", { opacity: 0, scaleX: 1.35 }, { opacity: 1, scaleX: 1, duration: 0.35, ease: "expo.out" }, T + 3 * Q - 0.25);
+      tl.fromTo(".pil-met", { opacity: 0 }, { opacity: 1, duration: 0.08, stagger: 0.045 }, T + 1.78);
+      // and the camera dives into "Watch", the first of them, landing on the drop (the metopes are
+      // in the film's order, so every later shot can leave by the same frieze, always to the right)
+      tl.fromTo("#pil-world", fit, { ...cam(367, 210, 9), duration: 0.32, ease: "power3.in", immediateRender: false }, T + 4 * Q - 0.32);
+
+      window.__timelines["pillars"] = tl;
+    })();
+  </script>
+</template>

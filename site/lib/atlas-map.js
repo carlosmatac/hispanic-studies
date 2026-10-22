@@ -320,6 +320,7 @@ export function drawMap(host, data, opts = {}) {
   let raf = 0;
 
   const easeOut = (t) => 1 - (1 - t) ** 3;
+  const easeInOut = (t) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
 
   /* --u is user units per screen pixel. Anything that should keep a fixed size
      on screen — type, hairlines, port dots — is written as
@@ -334,16 +335,19 @@ export function drawMap(host, data, opts = {}) {
   const sane = (b) => Array.isArray(b) && b.length === 4
     && b.every(Number.isFinite) && b[2] > 0 && b[3] > 0;
 
-  function animateTo(box, ms = 450) {
+  function animateTo(box, ms = 450, ease = easeOut, onDone = null) {
     // A bad box must never reach the viewBox: once it does it feeds back into
     // the next interpolation and the numbers run away.
     const target = sane(box) ? box : full;
     cancelAnimationFrame(raf);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!sane(current)) current = full.slice();
+    let done = false;
+    const finish = () => { if (!done) { done = true; if (onDone) onDone(); } };
     if (reduce || ms === 0) {
       current = target.slice();
       apply();
+      finish();
       return;
     }
     const from = current.slice();
@@ -352,13 +356,15 @@ export function drawMap(host, data, opts = {}) {
     // the easing blow up.
     let t0 = null;
     const settle = () => {
+      cancelAnimationFrame(raf);
       current = target.slice();
       apply();
+      finish();
     };
     const tick = (now) => {
       if (t0 === null) t0 = now;
       const t = Math.min(1, Math.max(0, (now - t0) / ms));
-      const k = easeOut(t);
+      const k = ease(t);
       current = from.map((v, i) => v + (target[i] - v) * k);
       apply();
       if (t < 1) raf = requestAnimationFrame(tick);
@@ -371,39 +377,76 @@ export function drawMap(host, data, opts = {}) {
     animateTo.guard = setTimeout(settle, ms + 80);
   }
 
-  /** Fit the given ISO ids, with padding, or go back to the whole world. */
-  function frameTo(isos, pad = 0.42) {
+  /** The viewBox that fits the given ISO ids with padding, or the whole world
+      when they cannot be fitted. */
+  function boxFor(isos, pad = 0.42, inset = null) {
     // Only features that actually project to something: a geometry clipped
     // away by the antimeridian yields an empty box, and an empty box poisons
     // the bounds of the whole collection.
     const list = [...isos]
       .map((i) => features.get(i))
       .filter((f) => f && Number.isFinite(geoPath(projection).bounds(f)[0][0]));
-    if (!list.length) return animateTo(full);
+    if (!list.length) return full;
     const b = geoPath(projection).bounds({ type: 'FeatureCollection', features: list });
     let [[bx0, by0], [bx1, by1]] = b;
-    if (![bx0, by0, bx1, by1].every(Number.isFinite)) return animateTo(full);
+    if (![bx0, by0, bx1, by1].every(Number.isFinite)) return full;
     const w = Math.max(bx1 - bx0, 40);
     const h = Math.max(by1 - by0, 26);
     const px = w * pad;
     const py = h * pad;
     bx0 -= px; by0 -= py; bx1 += px; by1 += py;
-    // keep the plate's aspect so nothing squashes
+    return fit(bx0, by0, bx1, by1, inset);
+  }
+
+  // Keep the plate's aspect so nothing squashes; if the box does not fit,
+  // show the whole world (clamping each side would break the aspect).
+  // `inset` ({ l, r, t, b }, fractions of the plate) is what sits on top of
+  // the map — a cartouche, a card, the hero's title band — so the target is
+  // centred in the window left free, not hidden behind them. MIN_W keeps the
+  // camera from coming so close that the 1:110m coastlines show their steps.
+  const MIN_W = 250;
+  function fit(bx0, by0, bx1, by1, inset = null) {
+    const { l = 0, r = 0, t = 0, b = 0 } = inset || {};
+    const fw = Math.max(0.2, 1 - l - r), fh = Math.max(0.2, 1 - t - b);
     const aspect = WIDTH / height;
-    let vw = bx1 - bx0;
-    let vh = by1 - by0;
-    if (vw / vh > aspect) vh = vw / aspect; else vw = vh * aspect;
-    // Clamping each side independently would break the aspect and squash the
-    // plate. If the needed box does not fit, show the whole world instead.
-    if (vw > WIDTH || vh > height) return animateTo(full);
+    const w = bx1 - bx0, h = by1 - by0;
+    let vw = Math.max(w / fw, (aspect * h) / fh, MIN_W);
+    let vh = vw / aspect;
+    if (vw > WIDTH || vh > height) return full;
     const cx = (bx0 + bx1) / 2;
     const cy = (by0 + by1) / 2;
-    animateTo([
-      Math.max(0, Math.min(WIDTH - vw, cx - vw / 2)),
-      Math.max(0, Math.min(height - vh, cy - vh / 2)),
+    const x0 = cx - (l + fw / 2) * vw;
+    const y0 = cy - (t + fh / 2) * vh;
+    return [
+      Math.max(0, Math.min(WIDTH - vw, x0)),
+      Math.max(0, Math.min(height - vh, y0)),
       vw, vh,
-    ]);
+    ];
   }
+
+  /** Fit the given ISO ids, with padding, or go back to the whole world. */
+  function frameTo(isos, pad = 0.42, ms = 450) {
+    animateTo(boxFor(isos, pad), ms);
+  }
+
+  /** Travel to the given ISO ids like a camera: when the way is long, first
+      rise until both the place we are leaving and the one we are going to are
+      in view, then come down onto it. Calls onDone on arrival. */
+  function flyTo(isos, { pad = 0.42, ms = 2200, onDone = null, inset = null } = {}) {
+    const target = isos && isos.length ? boxFor(isos, pad, inset) : full;
+    const from = sane(current) ? current : full;
+    const area = (b) => b[2] * b[3];
+    const ux0 = Math.min(from[0], target[0]), uy0 = Math.min(from[1], target[1]);
+    const ux1 = Math.max(from[0] + from[2], target[0] + target[2]);
+    const uy1 = Math.max(from[1] + from[3], target[1] + target[3]);
+    const union = fit(ux0, uy0, ux1, uy1);
+    const far = area(union) > 2.2 * Math.max(area(from), area(target));
+    if (!far) return animateTo(target, ms, easeInOut, onDone);
+    // pull back a little further than the bare union, so the rise reads
+    const up = fit(...grow(union, 1.15));
+    animateTo(up, ms * 0.45, easeInOut, () => animateTo(target, ms * 0.55, easeInOut, onDone));
+  }
+  const grow = ([x, y, w, h], k) => [x - (w * (k - 1)) / 2, y - (h * (k - 1)) / 2, x + w + (w * (k - 1)) / 2, y + h + (h * (k - 1)) / 2];
 
   window.addEventListener('resize', apply, { passive: true });
   apply();
@@ -489,7 +532,8 @@ export function drawMap(host, data, opts = {}) {
       portLayer.style.display = ids && !ids.size ? 'none' : '';
     },
     frameTo,
-    reset: () => animateTo(full),
+    flyTo,
+    reset: (ms = 450) => animateTo(full, ms),
     /** Unmount: stop listening and clear the host. */
     destroy() {
       window.removeEventListener('resize', apply);

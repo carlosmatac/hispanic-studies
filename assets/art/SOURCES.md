@@ -53,6 +53,15 @@ Prompt (verbatim):
 
 (Gemini only offered 4:3; that is what was used.)
 
+## The hero map's tour (`site/public/art/tour/`)
+
+| File | Work | Licence | Source |
+| --- | --- | --- | --- |
+| `puebla-desembarco-1862.jpg` (16:9 crop, 1280 px) | Dióscoro Puebla, *Primer desembarco de Cristóbal Colón en América*, 1862, Museo del Prado | Public domain | [Commons](https://commons.wikimedia.org/wiki/File:Desembarco_de_Col%C3%B3n_de_Di%C3%B3scoro_Puebla.jpg) |
+| `galleon-cabrera-bueno-1734.jpg` | The galleon above (`assets/art/galleon-cabrera-bueno-1734.jpg`), after José González Cabrera Bueno, *Navegación especulativa y práctica*, Manila 1734 | Public domain | see the first table |
+
+AI video clips for the tour's places (not historical scenes) are logged here when they arrive, with the model and the prompt.
+
 ## Paintings once used in the pillars (`assets/art/pillars/`)
 
 Kept here, not on the page since 2026-10-21 (the pillars are now typographic); candidates for the book series in Books. All pre-1900 and public domain on Commons; our only change is the 3:4 crop.
@@ -70,3 +79,15 @@ Our own models, built and rendered by us in Blender; set aside on 2026-10-21. Th
 ## Platform icons (`site/components/ChannelIcon.tsx`)
 
 The glyphs are the [Simple Icons](https://simpleicons.org/) paths (CC0 1.0), set in our burgundy inside our own seal ring. They identify each platform where we link to it, which is what the platforms' brand guidelines allow; they are not altered beyond colour and scale.
+
+## The reel (`film/reel/`, delivered as `site/public/video/reel.mp4`)
+
+| What | Source | Rights |
+| --- | --- | --- |
+| Clips of Beltrán talking (13 fragments, list in `film/tools/fetch-clips.sh`) | His own YouTube videos and Shorts (@hispano_studies); catalogue in `film/MATERIAL.md`. Only shots of him: no third-party footage, no burnt-in captions (cropped out) | His own work, used on his own site |
+| Video thumbnails (`film/reel/assets/img/yt-*.jpg`) | His YouTube thumbnails (i.ytimg.com) | His own work |
+| The three pillar paintings | `assets/art/pillars/` (see above) | Public domain |
+| The Iberophone map (`iberophone-map.jpg`) | A capture of this site's own map plate (Natural Earth geometry) | Ours; Natural Earth is public domain |
+| Ibarra Real Nova | Google Fonts (`film/reel/assets/fonts/OFL.txt`) | SIL Open Font License |
+| Music (`film/reel/assets/audio/music.mp3`) | ElevenLabs Music, generated 2026-10-22 from the brief and prompts in `film/MUSIC.md` (file `2026-10-22-20-34-30.mp3`) | Generated for IHS; commercial use needs a paid ElevenLabs plan: confirm the plan it was made on |
+| Sound effects | earshot's code-made bank (github.com/Leonxlnx/earshot), rendered by `film/tools/mix-reel.py` | MIT |

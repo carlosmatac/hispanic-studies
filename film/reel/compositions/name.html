@@ -1,0 +1,81 @@
+<template>
+  <style>
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
+    #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; }
+
+    /* bars 1–2: the claim, a line a bar, printed in steps */
+    .op-line { position: absolute; left: 150px; font-weight: 600; font-size: 200px; line-height: 1; letter-spacing: -0.025em; color: #470b15; white-space: nowrap; }
+    #op-l1 { top: 230px; }
+    #op-l2 { top: 470px; font-style: italic; font-weight: 500; color: #28231e; }
+    #op-langs { position: absolute; left: 158px; top: 720px; font-family: Inter, sans-serif; font-weight: 500; font-size: 40px; letter-spacing: 0.02em; color: #470b15; }
+
+    .op-w { display: inline-block; white-space: nowrap; }
+    .op-ch { display: inline-block; }
+
+    /* bars 3–4: the Iberophone world, from Iberia out to the four continents */
+    #op-world { position: absolute; inset: 0; background: #f9f3dd; }
+    #op-map { position: absolute; left: 0; top: 190px; width: 1920px; height: 935px; transform-origin: 56.3% 20.5%; }
+    #op-map img { width: 100%; height: 100%; display: block; }
+    #op-l3 { position: absolute; left: 150px; top: 40px; font-weight: 600; font-size: 132px; line-height: 1; letter-spacing: -0.025em; color: #470b15; white-space: nowrap; }
+    .op-cont { position: absolute; font-weight: 600; font-style: italic; font-size: 64px; color: #28231e; white-space: nowrap; }
+
+    /* the stepped wipe that hands over to the next scene */
+    .op-step { position: absolute; left: 0; width: 1920px; height: 155px; background: #f9f3dd; }
+  </style>
+
+  <div id="root" data-composition-id="name" data-width="1920" data-height="1080">
+    <div id="op-claim" class="clip" data-start="0" data-duration="4.326">
+      <p id="op-l1" class="op-line"><span class="op-w"><span class="op-ch">O</span><span class="op-ch">n</span><span class="op-ch">e</span></span> <span class="op-w"><span class="op-ch">c</span><span class="op-ch">i</span><span class="op-ch">v</span><span class="op-ch">i</span><span class="op-ch">l</span><span class="op-ch">i</span><span class="op-ch">z</span><span class="op-ch">a</span><span class="op-ch">t</span><span class="op-ch">i</span><span class="op-ch">o</span><span class="op-ch">n</span><span class="op-ch">,</span></span></p>
+      <p id="op-l2" class="op-line"><span class="op-w"><span class="op-ch">t</span><span class="op-ch">w</span><span class="op-ch">o</span></span> <span class="op-w"><span class="op-ch">l</span><span class="op-ch">a</span><span class="op-ch">n</span><span class="op-ch">g</span><span class="op-ch">u</span><span class="op-ch">a</span><span class="op-ch">g</span><span class="op-ch">e</span><span class="op-ch">s</span><span class="op-ch">,</span></span></p>
+      <p id="op-langs">español · português</p>
+    </div>
+
+    <div id="op-world" class="clip" data-start="4.326" data-duration="3.59">
+      <div id="op-map"><img src="assets/img/iberophone-map.jpg" alt="" /></div>
+      <p id="op-l3"><span class="op-w"><span class="op-ch">f</span><span class="op-ch">o</span><span class="op-ch">u</span><span class="op-ch">r</span></span> <span class="op-w"><span class="op-ch">c</span><span class="op-ch">o</span><span class="op-ch">n</span><span class="op-ch">t</span><span class="op-ch">i</span><span class="op-ch">n</span><span class="op-ch">e</span><span class="op-ch">n</span><span class="op-ch">t</span><span class="op-ch">s</span><span class="op-ch">.</span></span></p>
+      <p id="op-c1" class="op-cont" style="left: 500px; top: 640px">América</p>
+      <p id="op-c2" class="op-cont" style="left: 1150px; top: 250px">Europa</p>
+      <p id="op-c3" class="op-cont" style="left: 1380px; top: 640px">África</p>
+      <p id="op-c4" class="op-cont" style="left: 1560px; top: 440px">Asia</p>
+    </div>
+
+    <div id="op-wipe" class="clip" data-start="7.446" data-duration="0.47" data-layout-ignore>
+      <div class="op-step" style="top: 0px"></div>
+      <div class="op-step" style="top: 154px"></div>
+      <div class="op-step" style="top: 308px"></div>
+      <div class="op-step" style="top: 462px"></div>
+      <div class="op-step" style="top: 616px"></div>
+      <div class="op-step" style="top: 770px"></div>
+      <div class="op-step" style="top: 924px"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      // the guitar's phrases, measured in the track: 0.02, 4.33, 7.92 (next scene)
+      const P2 = 4.326, END = 7.916, Q = 0.4;
+      const tl = gsap.timeline({ paused: true });
+
+      // bar 1: "One civilization," letter by letter, fast and soft: each letter rises
+      // a little out of a blur; the line is done by the third beat
+      const letters = (sel, t, each) => tl.fromTo(sel + " .op-ch", { opacity: 0, y: 34, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, stagger: each, ease: "expo.out" }, t);
+      letters("#op-l1", 0.02, 0.055);
+      // then "two languages," the same way, and the two names under it
+      letters("#op-l2", 1.9, 0.06);
+      tl.fromTo("#op-langs", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2 }, 3.25);
+
+      // the second phrase: the map, close on Iberia, pulls back to the whole world
+      tl.fromTo("#op-map", { scale: 3.4 }, { scale: 1, duration: 1.7, ease: "power3.inOut" }, P2);
+      letters("#op-l3", P2 + Q, 0.045);
+      // one continent an eighth
+      tl.fromTo(".op-cont", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, stagger: Q, ease: "expo.out" }, P2 + 1.55);
+
+      // the paper steps sweep in from the right and become the next scene's ground
+      tl.fromTo("#op-wipe .op-step", { xPercent: 100 }, { xPercent: 0, duration: 0.3, stagger: { each: 0.025, from: "end" }, ease: "power3.in" }, END - 0.47);
+
+      window.__timelines["name"] = tl;
+    })();
+  </script>
+</template>
