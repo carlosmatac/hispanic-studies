@@ -3,11 +3,12 @@ of the reel (bars 21-29). Everything on screen comes from the site's own data:
 
   - Watch: his real thumbnails (film/reel/assets/img/yt-*.jpg)
   - Read: the eight essays in site/lib/content.ts, as cards flying in 3D
-  - The canon: the real graph (93 cards, 47 edges) as laid out on the site,
-    captured by film/tools/capture-canon-geom.mjs into film/reel/data/
+  - The canon: the fifty works as the site's cards (site/data/canon-works.json),
+    in the same five bindings, on burgundy
   - The Atlas: milestones from site/data/milestones.json pinned on the map
   - De Indiis Editions: the series names (site/lib/i18n.ts)
-  - Follow: the followings we have verified (site/lib/content.ts)
+  - Follow: the channels' own logos (Simple Icons, CC0, as on the site) and one total
+    that stays true as they grow: the verified followings add up to more than 50,000
 
     python3 film/tools/make-works.py
 """
@@ -52,9 +53,10 @@ SERIES = ["Race, Mixture and Difference", "Indo-Hispanic Thought and Its Critics
           "Hispanic Political Theology", "Pan-Iberian and Lusophone Thought", "Literary Continentalism"]
 THUMBS = ["BISc6y6fIuM", "JNLr7NM_buA", "3LYcIzK8mxo", "5Yug5P6lbCc", "NJKfmnwbOXQ", "Xinb9TN9aOM"]
 
-geom = json.loads((ROOT / "film/reel/data/canon-geom.json").read_text())
-graph = json.loads((ROOT / "site/data/canon-graph.json").read_text())
-EDGE_KIND = {e["id"]: e["kind"] for e in graph["edges"]}
+WORKS = json.loads((ROOT / "site/data/canon-works.json").read_text())["works"]
+# the channels' glyphs, straight from the site's seal component
+icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text()
+GLYPHS = dict(re.findall(r"^  (\w+): '([^']+)',$", icon_src, flags=re.M))
 MILES = {m["n"]: m for m in json.loads((ROOT / "site/data/milestones.json").read_text())["milestones"]}
 
 # ---------------------------------------------------------------- the frieze between shots
@@ -80,28 +82,31 @@ for i, (t, a, d) in enumerate(ESSAYS):
           </article></div>''')
 grid = [((i % 4) - 1.5) * 470 for i in range(8)], [((i // 4) - 0.5) * 330 for i in range(8)]
 
-# ---------------------------------------------------------------- canon: the real graph
-FOCUS = (1800, 1250)                    # the middle of the 1900–1930 cluster the camera tours
-def strip(h):
-    return re.sub(r'<div[^>]*react-flow__handle[^>]*></div>', '', h)
-
-nodes_html, node_delay = [], []
-for n in geom["nodes"]:
-    cx, cy = n["x"] + n["w"] / 2, n["y"] + n["h"] / 2
-    dist = math.hypot(cx - FOCUS[0], cy - FOCUS[1])
-    node_delay.append(round(min(1.5, dist / 1500 * 1.5), 3))
-    nodes_html.append(f'          <div class="cn-n" style="left: {n["x"]}px; top: {n["y"]}px; width: {n["w"]}px; height: {n["h"]}px">'
-                      f'<div class="{esc(n["cls"])}">{strip(n["html"])}</div></div>')
-edges_html, sparks_html, edge_delay = [], [], []
-for e in geom["edges"]:
-    kind = EDGE_KIND.get(e["id"], "documented")
-    nums = [float(v) for v in re.findall(r"-?\d+\.?\d*", e["d"])]
-    mx, my = sum(nums[0::2]) / (len(nums) / 2), sum(nums[1::2]) / (len(nums) / 2)
-    edge_delay.append(round(min(2.2, math.hypot(mx - FOCUS[0], my - FOCUS[1]) / 1500 * 2.0) + 0.1, 3))
-    edges_html.append(f'            <path class="cn-e cn-e--{kind}" d="{e["d"]}" pathLength="1" />')
-    if kind != "wrote":
-        sparks_html.append(f'            <path class="cn-s" d="{e["d"]}" pathLength="1" />')
-
+# ---------------------------------------------------------------- canon: the fifty works as cards
+# the same cards as the site's canon page: ten to a row, in order of year, five bindings
+BINDINGS = ["paper", "burgundy", "vellum", "leather", "ink"]
+CW, CH, GX, GY = 236, 315, 44, 52
+COLS = 10
+def split_title(t):
+    i = t.find(": ")
+    return (t[:i], t[i + 2:]) if i > 0 else (t, "")
+card_pos, cards_html = {}, []
+for i, w in enumerate(WORKS):
+    n = int(w["id"][1:])
+    col, row = i % COLS, i // COLS
+    x, y = 120 + col * (CW + GX), 140 + row * (CH + GY)
+    card_pos[w["id"]] = (x + CW / 2, y + CH / 2)
+    tilt = round(((n * 37) % 33 - 16) / 10, 1)
+    title, sub = split_title(w["title"])
+    long = " is-long" if len(title) > 46 else ""
+    counter = " cc--counter" if w["counter"] else ""
+    cards_html.append(
+        f'          <div class="cc-slot" style="left: {x}px; top: {y}px"><div id="cc-{w["id"]}" class="cc cc--{BINDINGS[(n * 3) % 5]}{counter}" style="rotate: {tilt}deg">'
+        f'<p class="cc-top"><b>{w["year"]}</b><span>{esc(w["code"])}</span></p>'
+        f'<p class="cc-t{long}">{esc(title)}</p>'
+        f'<p class="cc-foot"><i></i><b>{esc(w["author"])}</b><span>{esc(w["life"])}</span></p></div></div>')
+CANON_W = 120 * 2 + COLS * CW + (COLS - 1) * GX
+CANON_H = 140 * 2 + 5 * CH + 4 * GY
 # ---------------------------------------------------------------- atlas: milestones on the map
 # pins in the map image's own pixels (3584 x 1746), card offsets beside them
 STOPS = [
@@ -123,6 +128,7 @@ for i, (n, (px, py), (dx, dy)) in enumerate(STOPS):
           </article>''')
 
 # ---------------------------------------------------------------- page
+logos = "\n".join(f'        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="{GLYPHS[k]}" /></svg></div>' for k in ["youtube", "instagram", "x", "tiktok", "substack"])
 thumbs = "\n".join(f'        <img class="wk-thumb" src="assets/img/yt-{t}.jpg" alt="" />' for t in THUMBS)
 spines = "\n".join(f'        <div class="wk-spine{" wk-spine--paper" if i % 2 else ""}"><span>{esc(s)}</span></div>' for i, s in enumerate(SERIES))
 
@@ -159,32 +165,31 @@ page = f'''<template>
     .rd-by {{ margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }}
     #wk-read .wk-word, #wk-read .wk-fig {{ z-index: 2; }}
 
-    /* the canon: the real graph, as on the site */
-    #cn-world {{ position: absolute; left: 0; top: 0; width: 3300px; height: 3200px; transform-origin: 0 0; }}
-    #cn-edges {{ position: absolute; left: 0; top: 0; width: 3300px; height: 3200px; overflow: visible; }}
-    .cn-e {{ fill: none; stroke: #470b15; stroke-width: 2.4; stroke-dasharray: 1 1; }}
-    .cn-e--probable {{ stroke-width: 2; }}
-    .cn-e--opposition {{ stroke: #28231e; stroke-width: 2.2; }}
-    .cn-e--wrote {{ stroke: #b5aa96; stroke-width: 1.6; }}
-    .cn-s {{ fill: none; stroke: #470b15; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 0.001 0.045; }}
-    .cn-n {{ position: absolute; }}
-    .cg-node {{ position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; width: 100%; height: 100%; overflow: hidden; padding: 7px 10px 7px 11px; font-family: Inter, sans-serif; font-size: 11.5px; line-height: 1.2; color: #28231e; background: #f9f3dd; }}
-    .cg-node__yr {{ flex: none; font-family: "IBM Plex Mono", monospace; font-size: 10px; color: #470b15; letter-spacing: 0.02em; }}
-    .cg-node__t {{ flex: none; font-family: "Ibarra Real Nova", serif; font-weight: 600; font-size: 13px; line-height: 1.12; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
-    .cg-node__a {{ flex: none; font-size: 10.5px; color: #6a625a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
-    .cg-node--text {{ border: 1px solid #28231e; }}
-    .cg-node--text .cg-node__t {{ font-style: italic; }}
-    .cg-node--author {{ justify-content: center; padding: 8px 15px; border-radius: 999px; background: #470b15; color: #f9f3dd; border: 1px solid #470b15; }}
-    .cg-node--author .cg-node__a {{ color: #d9cdb6; }}
-    .cg-node--author.is-counter {{ background: #f9f3dd; color: #28231e; border: 1.5px dashed #470b15; }}
-    .cg-node--author.is-counter .cg-node__a {{ color: #6a625a; }}
-    .cg-node--corpus {{ justify-content: center; border: 1px dotted #28231e; border-radius: 8px; background: #ede3c8; }}
-    .cg-node--corpus .cg-node__t {{ font-weight: 400; font-style: italic; }}
-    .cg-node--periodical {{ border: 1px solid #28231e; transform: skewX(-10deg); justify-content: center; }}
-    .cg-node--periodical .cg-node__in {{ transform: skewX(10deg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }}
-    .cg-node--institution {{ justify-content: center; padding-inline: 20px; background: #28231e; clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 11px 100%, 0 50%); }}
-    .cg-node--institution::before {{ content: ""; position: absolute; inset: 1px; z-index: 0; background: #f9f3dd; clip-path: polygon(10.5px 0, calc(100% - 10.5px) 0, 100% 50%, calc(100% - 10.5px) 100%, 10.5px 100%, 0 50%); }}
-    .cg-node--institution .cg-node__in {{ position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }}
+    /* the canon: the fifty works as the site's cards, on burgundy */
+    #wk-canon {{ background: #470b15; background-image: radial-gradient(70% 80% at 55% 45%, rgba(139, 94, 75, 0.55), transparent 75%); }}
+    #cn-world {{ position: absolute; left: 0; top: 0; width: {CANON_W}px; height: {CANON_H}px; transform-origin: 0 0; }}
+    .cc-slot {{ position: absolute; width: {CW}px; height: {CH}px; }}
+    .cc {{ --bg: #f9f3dd; --fg: #28231e; --ac: #470b15; --ln: rgba(40, 35, 30, 0.3);
+      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px; background: var(--bg); color: var(--fg);
+      box-shadow: 0 3px 6px rgba(20, 6, 8, 0.25), 0 30px 50px -22px rgba(20, 6, 8, 0.75); }}
+    .cc::before {{ content: ""; position: absolute; inset: 8px; border: 1.5px solid var(--ln); }}
+    .cc--burgundy {{ --bg: #5a1420; --fg: #f9f3dd; --ac: #dcc8ad; --ln: rgba(249, 243, 221, 0.3); }}
+    .cc--leather {{ --bg: #8b5e4b; --fg: #f9f3dd; --ac: #f9f3dd; --ln: rgba(249, 243, 221, 0.36); }}
+    .cc--ink {{ --bg: #28231e; --fg: #f9f3dd; --ac: #c9a993; --ln: rgba(249, 243, 221, 0.24); }}
+    .cc--vellum {{ --bg: #ede3c8; }}
+    .cc--counter::before {{ border-style: dashed; }}
+    .cc-top {{ display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: var(--ac); }}
+    .cc-top b {{ font-weight: 500; font-size: 18px; }}
+    .cc-t {{ font-style: italic; font-weight: 600; font-size: 29px; line-height: 1.06; }}
+    .cc-t.is-long {{ font-size: 23px; line-height: 1.1; }}
+    .cc-foot {{ margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }}
+    .cc-foot i {{ display: block; width: 34px; height: 1.5px; background: var(--ac); margin-bottom: 8px; }}
+    .cc-foot b {{ font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }}
+    .cc-foot span {{ font-family: "IBM Plex Mono", monospace; font-size: 13px; opacity: 0.75; }}
+    #wk-canon .wk-slab {{ background: #470b15; }}
+    #wk-canon .wk-word {{ color: #f9f3dd; }}
+    #wk-canon .wk-fig {{ color: #ede3c8; }}
+    #wk-canon .wk-chip {{ background: #f9f3dd; }}
 
     /* the Atlas: milestones pinned on the Iberophone map */
     #at-world {{ position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }}
@@ -198,12 +203,16 @@ page = f'''<template>
 
     /* books */
     #wk-shelf {{ position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }}
-    .wk-spine {{ width: 128px; height: 820px; background: #470b15; position: relative; }}
+    .wk-spine {{ width: 128px; height: 820px; background: #470b15; position: relative; box-shadow: 0 30px 50px -20px rgba(20, 6, 8, 0.7); }}
+    .wk-spine:nth-child(3n) {{ background: #28231e; }}
     .wk-spine:nth-child(2) {{ height: 760px; }} .wk-spine:nth-child(4) {{ height: 790px; }} .wk-spine:nth-child(5) {{ height: 740px; }}
-    .wk-spine--paper {{ background: #ede3c8; outline: 3px solid #470b15; outline-offset: -3px; }}
+    .wk-spine--paper {{ background: #f9f3dd !important; outline: 3px solid #470b15; outline-offset: -3px; }}
     .wk-spine span {{ position: absolute; left: 0; right: 0; bottom: 40px; display: grid; place-items: center; writing-mode: vertical-rl; rotate: 180deg; font-weight: 600; font-size: 40px; white-space: nowrap; color: #f9f3dd; }}
     .wk-spine--paper span {{ color: #470b15; }}
-    #wk-books .wk-word {{ font-size: 150px; }}
+    #wk-books .wk-word {{ font-size: 150px; color: #f9f3dd; }}
+    #wk-books {{ background: #8b5e4b; background-image: radial-gradient(80% 90% at 30% 40%, rgba(249, 243, 221, 0.12), transparent 70%); }}
+    #wk-books .wk-fig {{ color: #f9f3dd; }}
+    #wk-books::before {{ content: ""; position: absolute; inset: 22px; border: 2px solid rgba(249, 243, 221, 0.3); outline: 1.5px solid rgba(249, 243, 221, 0.16); outline-offset: 7px; }}
 
     /* the frieze: the top of the portico, held by the three pillars */
     #fz {{ position: absolute; inset: 0; z-index: 5; overflow: hidden; }}
@@ -216,13 +225,15 @@ page = f'''<template>
     .fz-met {{ position: absolute; top: 131px; height: 157px; display: grid; place-items: center; font-weight: 600; font-size: 40px; color: #28231e; }}
     #fz-fill {{ position: absolute; left: 1916px; width: 218px; top: 131px; height: 157px; background: #470b15; opacity: 0; }}
 
-    /* follow */
-    #wk-follow {{ background: #470b15; }}
-    #wk-nums {{ position: absolute; left: 150px; width: 1620px; top: 360px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }}
-    .wk-num {{ color: #f9f3dd; }}
-    .wk-num b {{ display: block; font-weight: 600; font-size: 150px; line-height: 1; letter-spacing: -0.03em; }}
-    .wk-num span {{ display: block; margin-top: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 38px; }}
-    #wk-join {{ position: absolute; left: 150px; top: 120px; font-weight: 500; font-style: italic; font-size: 92px; color: #f9f3dd; }}
+    /* follow: the channels' logos and one total that stays true as they grow */
+    #wk-follow {{ background: #2f070d; background-image: radial-gradient(70% 80% at 50% 60%, rgba(71, 11, 21, 0.95), transparent 75%); }}
+    #wk-join {{ position: absolute; left: 0; right: 0; top: 110px; text-align: center; font-weight: 500; font-style: italic; font-size: 92px; color: #f9f3dd; }}
+    #wk-logos {{ position: absolute; left: 0; right: 0; top: 300px; display: flex; justify-content: center; gap: 64px; }}
+    .wk-logo {{ width: 128px; height: 128px; display: grid; place-items: center; border-radius: 50%; border: 2px solid rgba(249, 243, 221, 0.55); outline: 1px solid rgba(249, 243, 221, 0.25); outline-offset: 8px; }}
+    .wk-logo svg {{ width: 62px; height: 62px; fill: #f9f3dd; }}
+    #wk-total {{ position: absolute; left: 0; right: 0; top: 520px; text-align: center; font-weight: 600; font-size: 250px; line-height: 1; letter-spacing: -0.03em; color: #f9f3dd; }}
+    #wk-total-sub {{ position: absolute; left: 0; right: 0; top: 790px; text-align: center; font-family: Inter, sans-serif; font-weight: 500; font-size: 40px; color: #ede3c8; }}
+    #wk-handle {{ position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 34px; letter-spacing: 0.06em; color: #c9a993; }}
   </style>
 
   <div id="root" data-composition-id="works" data-width="1920" data-height="1080">
@@ -231,7 +242,7 @@ page = f'''<template>
 {thumbs}
       </div>
       <p class="wk-word"><span>Watch</span></p>
-      <p class="wk-fig">13.5K subscribers on YouTube</p>
+      <p class="wk-fig">Videos and Shorts on YouTube</p>
     </div>
 
     <div id="wk-read" class="wk-shot clip" data-start="{R0}" data-duration="{round(C0 - R0, 4)}">
@@ -246,15 +257,11 @@ page = f'''<template>
 
     <div id="wk-canon" class="wk-shot clip" data-start="{C0}" data-duration="{round(A0 - C0, 4)}">
       <div id="cn-world">
-        <svg id="cn-edges" viewBox="0 0 3300 3200">
-{chr(10).join(edges_html)}
-{chr(10).join(sparks_html)}
-        </svg>
-{chr(10).join(nodes_html)}
+{chr(10).join(cards_html)}
       </div>
       <div class="wk-slab" id="cn-slab"></div>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig" style="top: 250px">Fifty texts, 1818 to 1999, and who read whom</p>
+      <p class="wk-fig" style="top: 250px">Fifty classic texts, 1818 to 1999</p>
       <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
     </div>
 
@@ -280,12 +287,12 @@ page = f'''<template>
 
     <div id="wk-follow" class="wk-shot clip" data-start="{F0}" data-duration="{round(END - F0, 4)}">
       <p id="wk-join">Join the argument.</p>
-      <div id="wk-nums">
-        <p class="wk-num"><b>13.5K</b><span>YouTube</span></p>
-        <p class="wk-num"><b>19K</b><span>Instagram</span></p>
-        <p class="wk-num"><b>22K</b><span>X</span></p>
-        <p class="wk-num"><b>587</b><span>Substack</span></p>
+      <div id="wk-logos">
+{logos}
       </div>
+      <p id="wk-total">50,000+</p>
+      <p id="wk-total-sub">followers on five channels</p>
+      <p id="wk-handle">@hispano_studies</p>
     </div>
 
     <div id="fz" class="clip" data-start="0" data-duration="{END}" data-layout-ignore>
@@ -333,20 +340,19 @@ page = f'''<template>
       tl.fromTo("#rd-ring", {{ rotationY: -110, rotationX: 8 }}, {{ rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }}, {R0} + 2.35);
       tl.fromTo("#rd-ring", {{ rotationY: -372, rotationX: 10 }}, {{ rotationY: -360, rotationX: 10, duration: {round(C0 - R0 - 3.3, 3)}, ease: "none", immediateRender: false }}, {R0} + 3.3);
 
-      // THE CANON: the camera starts close on La raza cósmica and pulls out to the whole field,
-      // the cards appearing and the edges drawing outwards from it, dots running along them
+      // THE CANON: close on La raza cósmica, along the row to Ariel and Nuestra América, then the
+      // camera pulls back to all fifty; the cards drop in from the focus outwards, each on its own tilt
       arrive("#wk-canon .wk-word", {C0}, 510, 383); fig("#wk-canon", {C0} + 0.8 * B);
-      // the camera follows a real chain of readers: Ariel → Rodó → Vasconcelos → La raza cósmica → Haya
-      move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), {C0}, 0.85, "power2.inOut", true);
-      move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), {C0} + 0.9, 0.95, "power2.inOut");
-      move("#cn-world", cam(2014, 1380, 2.0), cam(2030, 1520, 2.3), {C0} + 1.9, 0.65, "power2.inOut");
-      move("#cn-world", cam(2030, 1520, 2.3), cam(1830, 1300, 0.85), {C0} + 2.6, 1.5, "expo.inOut");
-      move("#cn-world", cam(1830, 1300, 0.85), cam(1830, 1300, 0.78), {C0} + 4.1, {round(A0 - C0 - 4.1, 3)}, "none");
-      const nd = {json.dumps(node_delay)};
-      document.querySelectorAll("#cn-world .cn-n").forEach((el, i) => tl.fromTo(el, {{ opacity: 0, scale: 0.85 }}, {{ opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }}, {C0} + nd[i]));
-      const ed = {json.dumps(edge_delay)};
-      document.querySelectorAll("#cn-edges .cn-e").forEach((el, i) => tl.fromTo(el, {{ strokeDashoffset: 1 }}, {{ strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }}, {C0} + ed[i]));
-      tl.fromTo("#cn-edges .cn-s", {{ strokeDashoffset: 0, opacity: 0 }}, {{ strokeDashoffset: -0.6, opacity: 1, duration: {round(A0 - C0 - 0.3, 3)}, ease: "none" }}, {C0} + 0.3);
+      const P = {json.dumps({k: [round(v[0]), round(v[1])] for k, v in card_pos.items()})};
+      move("#cn-world", cam(P.T030[0], P.T030[1], 2.0), cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), {C0}, 0.9, "power2.inOut", true);
+      move("#cn-world", cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), cam(P.T018[0], P.T018[1], 1.7), {C0} + 0.95, 0.9, "power2.inOut");
+      move("#cn-world", cam(P.T018[0], P.T018[1], 1.7), cam(P.T013[0], P.T013[1], 1.9), {C0} + 1.9, 0.7, "power2.inOut");
+      move("#cn-world", cam(P.T013[0], P.T013[1], 1.9), cam({CANON_W / 2}, {CANON_H / 2}, 0.56), {C0} + 2.6, 1.5, "expo.inOut");
+      move("#cn-world", cam({CANON_W / 2}, {CANON_H / 2}, 0.56), cam({CANON_W / 2}, {CANON_H / 2}, 0.53), {C0} + 4.1, {round(A0 - C0 - 4.1, 3)}, "none");
+      document.querySelectorAll("#cn-world .cc").forEach((el) => {{
+        const [x, y] = P[el.id.slice(3)], d = Math.hypot(x - P.T030[0], y - P.T030[1]);
+        tl.fromTo(el, {{ opacity: 0, y: -90, scale: 1.08 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }}, {C0} + Math.min(1.3, d / 1700 * 1.1));
+      }});
       const toChip = (id, slab, chip, t) => {{
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", {{ opacity: 1, filter: "blur(0px)" }}, {{ opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }}, t);
         tl.fromTo(slab, {{ opacity: 0.94 }}, {{ opacity: 0, duration: 0.25, immediateRender: false }}, t);
@@ -377,9 +383,13 @@ page = f'''<template>
       arrive("#wk-books .wk-word", {K0}, 530, 285); fig("#wk-books", {K0} + 0.6 * B);
       tl.fromTo(".wk-spine", {{ yPercent: 105 }}, {{ yPercent: 0, duration: 0.45, stagger: 0.4, ease: "expo.out" }}, {K0});
 
-      // FOLLOW: a figure on each hit of the breakdown
-      arrive("#wk-join", {F0}, 438, 365);
-      {json.dumps(NUMS)}.forEach((t, i) => tl.fromTo(".wk-num:nth-child(" + (i + 1) + ")", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }}, t));
+      // FOLLOW: on the four hits of the breakdown: the logos, the total, what it counts, the handle
+      arrive("#wk-join", {F0}, 0, 300);
+      const H = {json.dumps(NUMS)};
+      tl.fromTo(".wk-logo", {{ opacity: 0, scale: 1.5, filter: "blur(8px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, stagger: 0.07, ease: "expo.out" }}, H[0] - 0.05);
+      tl.fromTo("#wk-total", {{ opacity: 0, scale: 1.4, filter: "blur(14px)" }}, {{ opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }}, H[1] - 0.04);
+      tl.fromTo("#wk-total-sub", {{ opacity: 0, y: 20 }}, {{ opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }}, H[2]);
+      tl.fromTo("#wk-handle", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.25 }}, H[3]);
 
       // THE FRIEZE between shots: the shot is pushed out to the left, the top of the portico
       // slides in from the right and glides to the next metope (lit in burgundy), and the camera

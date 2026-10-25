@@ -21,4 +21,7 @@ film/reel/.hyperframes/
 film/reel/.media/
 film/reel/node_modules/
 film/reel/assets/clips/
+# the period images as downloaded (sources and licences in assets/art/SOURCES.md); the film uses
+# the duotone prints in film/reel/assets/img/graded/, made by film/tools/grade-period.py
+film/reel/assets/img/period/
 __pycache__/

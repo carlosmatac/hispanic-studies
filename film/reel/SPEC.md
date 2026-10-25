@@ -10,7 +10,8 @@ TIME:    71.4 s x 30 = 2142 frames, the length of the music. Every scene starts 
          is ~0.80 s, its eighths 0.40 s.
 LOOK:    the medium is the page itself, printed: paper #F9F3DD (exactly the site's ground, so
          the film melts into it), burgundy #470B15 as the one ink, ink #28231E for small type.
-         Every picture (paintings, Beltrán's footage) goes through the duotone LUT
+         The grounds follow the site's: paper, burgundy #470B15, leather #8B5E4B, burgundy-dark
+         #2F070D. Every picture (paintings, architecture, maps, Beltrán's footage) goes through the duotone LUT
          (assets/luts/ihs-duotone.cube, film/tools/make-duotone-lut.py): burgundy shadows,
          paper whites, 12% grain. His own thumbnails stay in colour: they are the product.
          Display: Ibarra Real Nova 600 (the site's face), 150–220 px for hero words, -2.5%
@@ -23,10 +24,14 @@ MOTION:  arrivals expo.out 0.4–0.5 s; titles blur in per word (8 px → 0, 0.1
          beat; wipes power3.in in, power3.out out; stepped reveals use steps(n).
          Hits are tl.set or steps, never eased.
 SHOTS:   see the bar map in film/MUSIC.md; one layout change per bar.
-BANNED:  dark void; glow, particles, gradients; mono caps labels and pill chips; every
+CINEMA:  (2026-10-25) every picture moves; whips with motion blur between cuts; a flight through
+         a word into its painting; a camera climbing a façade; soft vignettes and scrims behind
+         type over pictures. Never a picture on one side and a title on the other, held still.
+BANNED:  glow, particles; mono caps labels and pill chips; every
          element fading and sliding up; titles drifting after they land; three cards in a
          row; the logo docked in a corner; any number or quote not from the source
-         (site/lib/content.ts, site/data/, Beltrán's own words).
+         (site/lib/content.ts, site/data/, Beltrán's own words); a single channel's follower
+         count (it goes stale: use the total, "50,000+"); Beltrán's first long video (3LYcIzK8mxo).
 QA:      frame 0 is not empty; every read line holds 0.5 s + 0.3 s a word; text >= 28 px;
          paper in the encoded file within 2 levels of #F9F3DD.
 ```

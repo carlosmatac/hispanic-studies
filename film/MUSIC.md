@@ -18,11 +18,11 @@ librosa: onsets, low-band hits, harmonic/percussive energy, chords).
 | --- | --- | --- | --- |
 | 0.02 | 3.82 | the guitar begins | "One civilization," letter by letter |
 | 4.33 | 8.13 | second guitar phrase | the map pulls back to four continents |
-| 7.92 | 11.72 | third phrase | Beltrán: "To know who we are…" |
-| 11.52 | 15.32 | fourth phrase | the mosaic of him, faster and faster |
-| 15.44 | 19.24 | a low hit; the bass leaves, soft section | montage: "Mexico was not destroyed in 1521…", "Cowboys are Hispanic." |
-| 22.24 | 26.04 | a hit, then the music almost stops | "Hispanic," stamped; then "War, law, love, and faith" in the near-silence |
-| 28.63 | 32.43 | the beat comes back, a long rise on A | the three pillars, one painting each |
+| 7.92 | 11.72 | third phrase | "To know who we are…" over Ortelius' America (1572) |
+| 11.52 | 15.32 | fourth phrase | the viceregal world, cut faster and faster |
+| 15.44 | 19.24 | a low hit; the bass leaves, soft section | "Every single one of them is viceregal. Spain built them."; "Not one altarpiece came down." |
+| 22.24 | 26.04 | a hit, then the music almost stops | "War, law, love, and faith." stamped; then, in the near-silence, "You were taught to resent the civilization that built everything you love." |
+| 28.63 | 32.43 | the beat comes back, a long rise on A | the three pillars: a flight through "Mestizaje", a climb up the Sagrario, the Florentine Codex |
 | 35.44 | 39.24 | the rise peaks | the portico; the camera dives into "Watch" |
 | 38.16 | 41.96 | **the drop** (D) | Watch |
 | 41.21 / 43.59 | 45.01 / 47.39 | hits (43.59 is the biggest) | Read; its ring of essays folds on 43.59 |
@@ -30,7 +30,7 @@ librosa: onsets, low-band hits, harmonic/percussive energy, chords).
 | 51.73 | 55.53 | hit | the Atlas |
 | 57.34 | 61.14 | **the climax** (back on D) | De Indiis Editions |
 | 60.67 | 64.47 | hit | "Join the argument." |
-| 62.27 · 63.74 · 64.54 · 65.33 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | 13.5K · 19K · 22K · 587 |
+| 62.27 · 63.74 · 64.54 · 65.33 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | the five logos · 50,000+ · followers on five channels · @hispano_studies |
 | 66.14 | 69.94 | **the last hit**, two more and the final chord (71.56) | the eagle, the name, hispanostudies.com |
 | 71.40 | 75.20 | silence | end (the page loops it) |
 

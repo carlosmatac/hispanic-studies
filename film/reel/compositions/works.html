@@ -31,32 +31,31 @@
     .rd-by { margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }
     #wk-read .wk-word, #wk-read .wk-fig { z-index: 2; }
 
-    /* the canon: the real graph, as on the site */
-    #cn-world { position: absolute; left: 0; top: 0; width: 3300px; height: 3200px; transform-origin: 0 0; }
-    #cn-edges { position: absolute; left: 0; top: 0; width: 3300px; height: 3200px; overflow: visible; }
-    .cn-e { fill: none; stroke: #470b15; stroke-width: 2.4; stroke-dasharray: 1 1; }
-    .cn-e--probable { stroke-width: 2; }
-    .cn-e--opposition { stroke: #28231e; stroke-width: 2.2; }
-    .cn-e--wrote { stroke: #b5aa96; stroke-width: 1.6; }
-    .cn-s { fill: none; stroke: #470b15; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 0.001 0.045; }
-    .cn-n { position: absolute; }
-    .cg-node { position: relative; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; width: 100%; height: 100%; overflow: hidden; padding: 7px 10px 7px 11px; font-family: Inter, sans-serif; font-size: 11.5px; line-height: 1.2; color: #28231e; background: #f9f3dd; }
-    .cg-node__yr { flex: none; font-family: "IBM Plex Mono", monospace; font-size: 10px; color: #470b15; letter-spacing: 0.02em; }
-    .cg-node__t { flex: none; font-family: "Ibarra Real Nova", serif; font-weight: 600; font-size: 13px; line-height: 1.12; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .cg-node__a { flex: none; font-size: 10.5px; color: #6a625a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cg-node--text { border: 1px solid #28231e; }
-    .cg-node--text .cg-node__t { font-style: italic; }
-    .cg-node--author { justify-content: center; padding: 8px 15px; border-radius: 999px; background: #470b15; color: #f9f3dd; border: 1px solid #470b15; }
-    .cg-node--author .cg-node__a { color: #d9cdb6; }
-    .cg-node--author.is-counter { background: #f9f3dd; color: #28231e; border: 1.5px dashed #470b15; }
-    .cg-node--author.is-counter .cg-node__a { color: #6a625a; }
-    .cg-node--corpus { justify-content: center; border: 1px dotted #28231e; border-radius: 8px; background: #ede3c8; }
-    .cg-node--corpus .cg-node__t { font-weight: 400; font-style: italic; }
-    .cg-node--periodical { border: 1px solid #28231e; transform: skewX(-10deg); justify-content: center; }
-    .cg-node--periodical .cg-node__in { transform: skewX(10deg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-    .cg-node--institution { justify-content: center; padding-inline: 20px; background: #28231e; clip-path: polygon(11px 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 11px 100%, 0 50%); }
-    .cg-node--institution::before { content: ""; position: absolute; inset: 1px; z-index: 0; background: #f9f3dd; clip-path: polygon(10.5px 0, calc(100% - 10.5px) 0, 100% 50%, calc(100% - 10.5px) 100%, 10.5px 100%, 0 50%); }
-    .cg-node--institution .cg-node__in { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    /* the canon: the fifty works as the site's cards, on burgundy */
+    #wk-canon { background: #470b15; background-image: radial-gradient(70% 80% at 55% 45%, rgba(139, 94, 75, 0.55), transparent 75%); }
+    #cn-world { position: absolute; left: 0; top: 0; width: 2996px; height: 2063px; transform-origin: 0 0; }
+    .cc-slot { position: absolute; width: 236px; height: 315px; }
+    .cc { --bg: #f9f3dd; --fg: #28231e; --ac: #470b15; --ln: rgba(40, 35, 30, 0.3);
+      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px; background: var(--bg); color: var(--fg);
+      box-shadow: 0 3px 6px rgba(20, 6, 8, 0.25), 0 30px 50px -22px rgba(20, 6, 8, 0.75); }
+    .cc::before { content: ""; position: absolute; inset: 8px; border: 1.5px solid var(--ln); }
+    .cc--burgundy { --bg: #5a1420; --fg: #f9f3dd; --ac: #dcc8ad; --ln: rgba(249, 243, 221, 0.3); }
+    .cc--leather { --bg: #8b5e4b; --fg: #f9f3dd; --ac: #f9f3dd; --ln: rgba(249, 243, 221, 0.36); }
+    .cc--ink { --bg: #28231e; --fg: #f9f3dd; --ac: #c9a993; --ln: rgba(249, 243, 221, 0.24); }
+    .cc--vellum { --bg: #ede3c8; }
+    .cc--counter::before { border-style: dashed; }
+    .cc-top { display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: var(--ac); }
+    .cc-top b { font-weight: 500; font-size: 18px; }
+    .cc-t { font-style: italic; font-weight: 600; font-size: 29px; line-height: 1.06; }
+    .cc-t.is-long { font-size: 23px; line-height: 1.1; }
+    .cc-foot { margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }
+    .cc-foot i { display: block; width: 34px; height: 1.5px; background: var(--ac); margin-bottom: 8px; }
+    .cc-foot b { font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }
+    .cc-foot span { font-family: "IBM Plex Mono", monospace; font-size: 13px; opacity: 0.75; }
+    #wk-canon .wk-slab { background: #470b15; }
+    #wk-canon .wk-word { color: #f9f3dd; }
+    #wk-canon .wk-fig { color: #ede3c8; }
+    #wk-canon .wk-chip { background: #f9f3dd; }
 
     /* the Atlas: milestones pinned on the Iberophone map */
     #at-world { position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }
@@ -70,12 +69,16 @@
 
     /* books */
     #wk-shelf { position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }
-    .wk-spine { width: 128px; height: 820px; background: #470b15; position: relative; }
+    .wk-spine { width: 128px; height: 820px; background: #470b15; position: relative; box-shadow: 0 30px 50px -20px rgba(20, 6, 8, 0.7); }
+    .wk-spine:nth-child(3n) { background: #28231e; }
     .wk-spine:nth-child(2) { height: 760px; } .wk-spine:nth-child(4) { height: 790px; } .wk-spine:nth-child(5) { height: 740px; }
-    .wk-spine--paper { background: #ede3c8; outline: 3px solid #470b15; outline-offset: -3px; }
+    .wk-spine--paper { background: #f9f3dd !important; outline: 3px solid #470b15; outline-offset: -3px; }
     .wk-spine span { position: absolute; left: 0; right: 0; bottom: 40px; display: grid; place-items: center; writing-mode: vertical-rl; rotate: 180deg; font-weight: 600; font-size: 40px; white-space: nowrap; color: #f9f3dd; }
     .wk-spine--paper span { color: #470b15; }
-    #wk-books .wk-word { font-size: 150px; }
+    #wk-books .wk-word { font-size: 150px; color: #f9f3dd; }
+    #wk-books { background: #8b5e4b; background-image: radial-gradient(80% 90% at 30% 40%, rgba(249, 243, 221, 0.12), transparent 70%); }
+    #wk-books .wk-fig { color: #f9f3dd; }
+    #wk-books::before { content: ""; position: absolute; inset: 22px; border: 2px solid rgba(249, 243, 221, 0.3); outline: 1.5px solid rgba(249, 243, 221, 0.16); outline-offset: 7px; }
 
     /* the frieze: the top of the portico, held by the three pillars */
     #fz { position: absolute; inset: 0; z-index: 5; overflow: hidden; }
@@ -88,13 +91,15 @@
     .fz-met { position: absolute; top: 131px; height: 157px; display: grid; place-items: center; font-weight: 600; font-size: 40px; color: #28231e; }
     #fz-fill { position: absolute; left: 1916px; width: 218px; top: 131px; height: 157px; background: #470b15; opacity: 0; }
 
-    /* follow */
-    #wk-follow { background: #470b15; }
-    #wk-nums { position: absolute; left: 150px; width: 1620px; top: 360px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
-    .wk-num { color: #f9f3dd; }
-    .wk-num b { display: block; font-weight: 600; font-size: 150px; line-height: 1; letter-spacing: -0.03em; }
-    .wk-num span { display: block; margin-top: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 38px; }
-    #wk-join { position: absolute; left: 150px; top: 120px; font-weight: 500; font-style: italic; font-size: 92px; color: #f9f3dd; }
+    /* follow: the channels' logos and one total that stays true as they grow */
+    #wk-follow { background: #2f070d; background-image: radial-gradient(70% 80% at 50% 60%, rgba(71, 11, 21, 0.95), transparent 75%); }
+    #wk-join { position: absolute; left: 0; right: 0; top: 110px; text-align: center; font-weight: 500; font-style: italic; font-size: 92px; color: #f9f3dd; }
+    #wk-logos { position: absolute; left: 0; right: 0; top: 300px; display: flex; justify-content: center; gap: 64px; }
+    .wk-logo { width: 128px; height: 128px; display: grid; place-items: center; border-radius: 50%; border: 2px solid rgba(249, 243, 221, 0.55); outline: 1px solid rgba(249, 243, 221, 0.25); outline-offset: 8px; }
+    .wk-logo svg { width: 62px; height: 62px; fill: #f9f3dd; }
+    #wk-total { position: absolute; left: 0; right: 0; top: 520px; text-align: center; font-weight: 600; font-size: 250px; line-height: 1; letter-spacing: -0.03em; color: #f9f3dd; }
+    #wk-total-sub { position: absolute; left: 0; right: 0; top: 790px; text-align: center; font-family: Inter, sans-serif; font-weight: 500; font-size: 40px; color: #ede3c8; }
+    #wk-handle { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 34px; letter-spacing: 0.06em; color: #c9a993; }
   </style>
 
   <div id="root" data-composition-id="works" data-width="1920" data-height="1080">
@@ -108,7 +113,7 @@
         <img class="wk-thumb" src="assets/img/yt-Xinb9TN9aOM.jpg" alt="" />
       </div>
       <p class="wk-word"><span>Watch</span></p>
-      <p class="wk-fig">13.5K subscribers on YouTube</p>
+      <p class="wk-fig">Videos and Shorts on YouTube</p>
     </div>
 
     <div id="wk-read" class="wk-shot clip" data-start="3.042" data-duration="5.023">
@@ -146,182 +151,60 @@
 
     <div id="wk-canon" class="wk-shot clip" data-start="8.065" data-duration="5.496">
       <div id="cn-world">
-        <svg id="cn-edges" viewBox="0 0 3300 3200">
-            <path class="cn-e cn-e--documented" d="M211.49999212449598,234.99998818674396 C299.92368679114884,234.99998818674396 -15.923698604404848,320.99998818674396 72.49999606224799,320.99998818674396" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M1673.4999173072076,960 C1747.3663208343119,960 1502.6335925351436,776.999988186744 1576.4999960622479,776.999988186744" pathLength="1" />
-            <path class="cn-e cn-e--probable" d="M1673.4999173072076,960 C1768.6642255852012,960 1417.3356877842543,862.999988186744 1512.4999960622479,862.999988186744" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2099.5001890120966,2231.0000866305445 C2107.000043315272,2231.0000866305445 2107.000043315272,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2067.499992124496,2970.9998897429437 C2090.9999448714716,2970.9998897429437 2090.9999448714716,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M1635.499992124496,2488.9998897429437 C1733.5752172249333,2488.9998897429437 1366.4247709618105,2231.0000866305445 1464.4999960622479,2231.0000866305445" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M1603.499992124496,2231.0000866305445 C1613.999994093372,2231.0000866305445 1613.999994093372,2231.0000866305445 1624.4999960622479,2231.0000866305445" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M1959.499992124496,2316.9998897429437 C2063.9999448714716,2316.9998897429437 2063.9999448714716,862.999988186744 2168.4998976184474,862.999988186744" pathLength="1" />
-            <path class="cn-e cn-e--probable" d="M1715.499992124496,776.999988186744 C1829.9999448714718,776.999988186744 1829.9999448714718,1378.9998897429437 1944.4998976184477,1378.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M835.5000413463962,2231.0000866305445 C938.0610112483688,2231.0000866305445 545.9390261602754,2118.9998897429437 648.499996062248,2118.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M1453.5000118132562,2316.9998897429437 C1545.049183770157,2316.9998897429437 1212.950824105347,2231.0000866305445 1304.4999960622479,2231.0000866305445" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M1827.499992124496,2118.9998897429437 C1901.3663866556878,2118.9998897429437 1656.6336999748564,776.999988186744 1730.5000945060483,776.999988186744" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M1587.499992124496,234.99998818674396 C1758.0000433152723,234.99998818674396 1758.0000433152723,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2099.5001890120966,1551.0000866305443 C2177.0808978957666,1551.0000866305443 1914.9191887347777,234.99998818674396 1992.4998976184477,234.99998818674396" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2099.5001890120966,1551.0000866305443 C2197.575442343226,1551.0000866305443 1830.4248411749188,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2153.500015751008,1648 C2312.4221525665853,1648 1545.5779576904713,874 1704.5000945060483,874" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2157.5001102570563,1809.0000866305443 C2249.049282213957,1809.0000866305443 1916.9509225491474,1722.9998897429437 2008.5000945060483,1722.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--probable" d="M2051.499992124496,862.999988186744 C2134.6789813046835,862.999988186744 1845.321105325861,948.999988186744 1928.5000945060483,948.999988186744" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2227.499992124496,2970.9998897429437 C2478.0000433152723,2970.9998897429437 2478.0000433152723,122.99998818674395 2728.5000945060483,122.99998818674395" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2323.499992124496,2772.9998897429437 C2613.876901982187,2772.9998897429437 534.1230862045572,788 824.499996062248,788" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2323.499992124496,2772.9998897429437 C2374.0000433152723,2772.9998897429437 2374.0000433152723,234.99998818674396 2424.5000945060483,234.99998818674396" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2323.499992124496,2772.9998897429437 C2362.4712034986023,2772.9998897429437 2257.5286862443413,2686.9998897429437 2296.4998976184474,2686.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2323.499992124496,2772.9998897429437 C2557.9999448714716,2772.9998897429437 2557.9999448714716,320.99998818674396 2792.4998976184474,320.99998818674396" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M1705.500015751008,1045.9999015561996 C1809.6933509864864,1045.9999015561996 1408.3066608267695,960 1512.4999960622479,960" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M1619.499992124496,36.99998818674395 C2029.9999448714716,36.99998818674395 2029.9999448714716,2231.0000866305445 2440.4998976184474,2231.0000866305445" pathLength="1" />
-            <path class="cn-e cn-e--opposition" d="M2259.4117864793348,2687.9998818674394 C2405.9559404926913,2687.9998818674394 2405.9559404926913,2772.9998897429437 2552.5000945060483,2772.9998897429437" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2787.499992124496,36.99998818674395 C2870.6790478775238,36.99998818674395 2581.32084186542,246 2664.4998976184474,246" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2404.499984248992,235.9999803112399 C2476.4719679684117,235.9999803112399 2240.4397082538667,408.0000787550403 2312.4116919732865,408.0000787550403" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M2500.500181136593,580.0000787550404 C2589.2414053391476,580.0000787550404 2271.7588703034935,492.99988974294354 2360.5000945060483,492.99988974294354" pathLength="1" />
-            <path class="cn-e cn-e--documented" d="M3220.499984248992,37.99998031123992 C3373.8378262777637,37.99998031123992 2649.1622524772765,48 2802.5000945060483,48" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M835.5000413463962,2231.0000866305445 C923.923736013049,2231.0000866305445 608.0763506174953,2328 696.5000452841482,2328" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M1587.499992124496,234.99998818674396 C1675.9236867911488,234.99998818674396 1360.076301395595,332 1448.4999960622479,332" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M1603.499992124496,2231.0000866305445 C1690.6421161432588,2231.0000866305445 1381.357872043485,2328 1468.4999960622479,2328" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M1635.499992124496,2488.9998897429437 C1723.9236867911488,2488.9998897429437 1408.076301395595,2586 1496.4999960622479,2586" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M1715.499992124496,776.999988186744 C1813.5752172249333,776.999988186744 1446.4247709618105,1045.9999015561996 1544.4999960622479,1045.9999015561996" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M1763.499992124496,2231.0000866305445 C1845.3153316306145,2231.0000866305445 1562.6846565561293,2328 1644.4999960622479,2328" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M1869.499992124496,776.999988186744 C1965.8392065755058,776.999988186744 1608.1608800550384,874 1704.5000945060483,874" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2051.499992124496,862.999988186744 C2139.923718103247,862.999988186744 1824.0761716396967,1045.9999015561996 1912.4998976184477,1045.9999015561996" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2067.499992124496,2970.9998897429437 C2155.92365547904,2970.9998897429437 1840.0764311515045,3068 1928.5000945060483,3068" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2067.499992124496,1120.9998897429437 C2155.92365547904,1120.9998897429437 1840.0764311515045,1218 1928.5000945060483,1218" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2083.499992124496,1378.9998897429437 C2171.923718103247,1378.9998897429437 1856.0761716396967,1476 1944.4998976184477,1476" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2147.499992124496,1722.9998897429437 C2235.92365547904,1722.9998897429437 1920.0764311515045,1906 2008.5000945060483,1906" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2253.499992124496,2231.0000866305445 C2349.839264054303,2231.0000866305445 1992.1606256886407,2500 2088.4998976184474,2500" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2099.5001890120966,1551.0000866305443 C2110.000043315272,1551.0000866305443 2110.000043315272,788 2120.4998976184474,788" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2323.499992124496,2772.9998897429437 C2411.92365547904,2772.9998897429437 2096.0764311515045,2870 2184.5000945060483,2870" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2563.499992124496,234.99998818674396 C2651.92365547904,234.99998818674396 2336.0764311515045,676 2424.5000945060483,676" pathLength="1" />
-            <path class="cn-e cn-e--wrote" d="M2435.499992124496,2686.9998897429437 C2443.0000433152723,2686.9998897429437 2443.0000433152723,2697.999803112399 2450.5000945060483,2697.999803112399" pathLength="1" />
-            <path class="cn-s" d="M211.49999212449598,234.99998818674396 C299.92368679114884,234.99998818674396 -15.923698604404848,320.99998818674396 72.49999606224799,320.99998818674396" pathLength="1" />
-            <path class="cn-s" d="M1673.4999173072076,960 C1747.3663208343119,960 1502.6335925351436,776.999988186744 1576.4999960622479,776.999988186744" pathLength="1" />
-            <path class="cn-s" d="M1673.4999173072076,960 C1768.6642255852012,960 1417.3356877842543,862.999988186744 1512.4999960622479,862.999988186744" pathLength="1" />
-            <path class="cn-s" d="M2099.5001890120966,2231.0000866305445 C2107.000043315272,2231.0000866305445 2107.000043315272,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
-            <path class="cn-s" d="M2067.499992124496,2970.9998897429437 C2090.9999448714716,2970.9998897429437 2090.9999448714716,2231.0000866305445 2114.4998976184474,2231.0000866305445" pathLength="1" />
-            <path class="cn-s" d="M1635.499992124496,2488.9998897429437 C1733.5752172249333,2488.9998897429437 1366.4247709618105,2231.0000866305445 1464.4999960622479,2231.0000866305445" pathLength="1" />
-            <path class="cn-s" d="M1603.499992124496,2231.0000866305445 C1613.999994093372,2231.0000866305445 1613.999994093372,2231.0000866305445 1624.4999960622479,2231.0000866305445" pathLength="1" />
-            <path class="cn-s" d="M1959.499992124496,2316.9998897429437 C2063.9999448714716,2316.9998897429437 2063.9999448714716,862.999988186744 2168.4998976184474,862.999988186744" pathLength="1" />
-            <path class="cn-s" d="M1715.499992124496,776.999988186744 C1829.9999448714718,776.999988186744 1829.9999448714718,1378.9998897429437 1944.4998976184477,1378.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M835.5000413463962,2231.0000866305445 C938.0610112483688,2231.0000866305445 545.9390261602754,2118.9998897429437 648.499996062248,2118.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M1453.5000118132562,2316.9998897429437 C1545.049183770157,2316.9998897429437 1212.950824105347,2231.0000866305445 1304.4999960622479,2231.0000866305445" pathLength="1" />
-            <path class="cn-s" d="M1827.499992124496,2118.9998897429437 C1901.3663866556878,2118.9998897429437 1656.6336999748564,776.999988186744 1730.5000945060483,776.999988186744" pathLength="1" />
-            <path class="cn-s" d="M1587.499992124496,234.99998818674396 C1758.0000433152723,234.99998818674396 1758.0000433152723,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M2099.5001890120966,1551.0000866305443 C2177.0808978957666,1551.0000866305443 1914.9191887347777,234.99998818674396 1992.4998976184477,234.99998818674396" pathLength="1" />
-            <path class="cn-s" d="M2099.5001890120966,1551.0000866305443 C2197.575442343226,1551.0000866305443 1830.4248411749188,1120.9998897429437 1928.5000945060483,1120.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M2153.500015751008,1648 C2312.4221525665853,1648 1545.5779576904713,874 1704.5000945060483,874" pathLength="1" />
-            <path class="cn-s" d="M2157.5001102570563,1809.0000866305443 C2249.049282213957,1809.0000866305443 1916.9509225491474,1722.9998897429437 2008.5000945060483,1722.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M2051.499992124496,862.999988186744 C2134.6789813046835,862.999988186744 1845.321105325861,948.999988186744 1928.5000945060483,948.999988186744" pathLength="1" />
-            <path class="cn-s" d="M2227.499992124496,2970.9998897429437 C2478.0000433152723,2970.9998897429437 2478.0000433152723,122.99998818674395 2728.5000945060483,122.99998818674395" pathLength="1" />
-            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2613.876901982187,2772.9998897429437 534.1230862045572,788 824.499996062248,788" pathLength="1" />
-            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2374.0000433152723,2772.9998897429437 2374.0000433152723,234.99998818674396 2424.5000945060483,234.99998818674396" pathLength="1" />
-            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2362.4712034986023,2772.9998897429437 2257.5286862443413,2686.9998897429437 2296.4998976184474,2686.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M2323.499992124496,2772.9998897429437 C2557.9999448714716,2772.9998897429437 2557.9999448714716,320.99998818674396 2792.4998976184474,320.99998818674396" pathLength="1" />
-            <path class="cn-s" d="M1705.500015751008,1045.9999015561996 C1809.6933509864864,1045.9999015561996 1408.3066608267695,960 1512.4999960622479,960" pathLength="1" />
-            <path class="cn-s" d="M1619.499992124496,36.99998818674395 C2029.9999448714716,36.99998818674395 2029.9999448714716,2231.0000866305445 2440.4998976184474,2231.0000866305445" pathLength="1" />
-            <path class="cn-s" d="M2259.4117864793348,2687.9998818674394 C2405.9559404926913,2687.9998818674394 2405.9559404926913,2772.9998897429437 2552.5000945060483,2772.9998897429437" pathLength="1" />
-            <path class="cn-s" d="M2787.499992124496,36.99998818674395 C2870.6790478775238,36.99998818674395 2581.32084186542,246 2664.4998976184474,246" pathLength="1" />
-            <path class="cn-s" d="M2404.499984248992,235.9999803112399 C2476.4719679684117,235.9999803112399 2240.4397082538667,408.0000787550403 2312.4116919732865,408.0000787550403" pathLength="1" />
-            <path class="cn-s" d="M2500.500181136593,580.0000787550404 C2589.2414053391476,580.0000787550404 2271.7588703034935,492.99988974294354 2360.5000945060483,492.99988974294354" pathLength="1" />
-            <path class="cn-s" d="M3220.499984248992,37.99998031123992 C3373.8378262777637,37.99998031123992 2649.1622524772765,48 2802.5000945060483,48" pathLength="1" />
-        </svg>
-          <div class="cn-n" style="left: 72px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Francisco de Vitoria</span><span class="cg-node__a">c.1483–1546</span></div></div>
-          <div class="cn-n" style="left: 72px; top: 294px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Twentieth-century international-law/Catholic revivals</span></div></div>
-          <div class="cn-n" style="left: 232px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1818</span><span class="cg-node__t">Carta de Jamaica</span><span class="cg-node__a">Simón Bolívar</span></div></div>
-          <div class="cn-n" style="left: 296px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1822</span><span class="cg-node__t">Soñaba el abad de San Pedro, y yo también sé soñar</span><span class="cg-node__a">José Cecilio del Valle</span></div></div>
-          <div class="cn-n" style="left: 648px; top: 2092px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">José Santander</span><span class="cg-node__a">1817–1888</span></div></div>
-          <div class="cn-n" style="left: 696px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Andrés Bello</span><span class="cg-node__a">1781–1865</span></div></div>
-          <div class="cn-n" style="left: 696px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1847</span><span class="cg-node__t">Gramática de la lengua castellana destinada al uso de los americanos: prologue and related cultural writings</span><span class="cg-node__a">Andrés Bello</span></div></div>
-          <div class="cn-n" style="left: 824px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1855</span><span class="cg-node__t">El Estado federal de Panamá</span><span class="cg-node__a">Justo Arosemena Quesada</span></div></div>
-          <div class="cn-n" style="left: 840px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1856</span><span class="cg-node__t">Iniciativa de la América: idea de un Congreso Federal de las Repúblicas</span><span class="cg-node__a">Francisco Bilbao Barquín</span></div></div>
-          <div class="cn-n" style="left: 1000px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1865</span><span class="cg-node__t">Unión latino-americana, pensamiento de Bolívar para formar una liga americana</span><span class="cg-node__a">Torres Caicedo</span></div></div>
-          <div class="cn-n" style="left: 1000px; top: 2204px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1866</span><span class="cg-node__t">Os brahamanes</span><span class="cg-node__a">Francisco Luís Gomes</span></div></div>
-          <div class="cn-n" style="left: 1032px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1868</span><span class="cg-node__t">Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días</span><span class="cg-node__a">Juan Martínez</span></div></div>
-          <div class="cn-n" style="left: 1064px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1870</span><span class="cg-node__t">Antillean federation essays and speeches: new selection</span><span class="cg-node__a">Eugenio M. de Hostos</span></div></div>
-          <div class="cn-n" style="left: 1208px; top: 2944px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1879</span><span class="cg-node__t">História da civilização ibérica</span><span class="cg-node__a">Joaquim Martins</span></div></div>
-          <div class="cn-n" style="left: 1272px; top: 2092px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1883</span><span class="cg-node__t">O abolicionismo</span><span class="cg-node__a">Joaquim Nabuco</span></div></div>
-          <div class="cn-n" style="left: 1304px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Joseph-Anténor Firmin</span><span class="cg-node__a">1850–1911</span></div></div>
-          <div class="cn-n" style="left: 1304px; top: 2290px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Gobineau/racist anthropology</span></div></div>
-          <div class="cn-n" style="left: 1368px; top: 2376px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1889</span><span class="cg-node__t">Filipinas dentro de cien años</span><span class="cg-node__a">José Rizal</span></div></div>
-          <div class="cn-n" style="left: 1400px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1891</span><span class="cg-node__t">Nuestra América</span><span class="cg-node__a">José Martí</span></div></div>
-          <div class="cn-n" style="left: 1448px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Manuel González Prada</span><span class="cg-node__a">1844–1918</span></div></div>
-          <div class="cn-n" style="left: 1448px; top: 294px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1894</span><span class="cg-node__t">Pájinas libres</span><span class="cg-node__a">Manuel González Prada</span></div></div>
-          <div class="cn-n" style="left: 1464px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Miguel y Jugo</span><span class="cg-node__a">1864–1936</span></div></div>
-          <div class="cn-n" style="left: 1468px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1895</span><span class="cg-node__t">En torno al casticismo</span><span class="cg-node__a">Miguel y Jugo</span></div></div>
-          <div class="cn-n" style="left: 1480px; top: 10px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Andrés de Castro</span><span class="cg-node__a">1863–1897</span></div></div>
-          <div class="cn-n" style="left: 1496px; top: 2462px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Ángel Ganivet García</span><span class="cg-node__a">1865–1898</span></div></div>
-          <div class="cn-n" style="left: 1496px; top: 2548px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1897</span><span class="cg-node__t">Idearium español</span><span class="cg-node__a">Ángel Ganivet García</span></div></div>
-          <div class="cn-n" style="left: 1512px; top: 836px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Later Ariel–Caliban repertoire</span></div></div>
-          <div class="cn-n" style="left: 1512px; top: 922px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1898</span><span class="cg-node__t">El triunfo de Calibán and hemispheric writings</span><span class="cg-node__a">Rubén Darío</span></div></div>
-          <div class="cn-n" style="left: 1576px; top: 750px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">José Enrique Rodó</span><span class="cg-node__a">1871–1917</span></div></div>
-          <div class="cn-n" style="left: 1544px; top: 1008px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1900</span><span class="cg-node__t">Ariel</span><span class="cg-node__a">José Enrique Rodó</span></div></div>
-          <div class="cn-n" style="left: 1624px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Riva-Agüero</span><span class="cg-node__a">1885–1944</span></div></div>
-          <div class="cn-n" style="left: 1644px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1905</span><span class="cg-node__t">Carácter de la literatura del Perú independiente</span><span class="cg-node__a">Riva-Agüero</span></div></div>
-          <div class="cn-n" style="left: 1624px; top: 1094px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1905</span><span class="cg-node__t">A América Latina: males de origem</span><span class="cg-node__a">Manoel do Bomfim</span></div></div>
-          <div class="cn-n" style="left: 1688px; top: 2092px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Alcides Arguedas Díaz</span><span class="cg-node__a">1879–1946</span></div></div>
-          <div class="cn-n" style="left: 1730px; top: 750px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Franz Tamayo Solares</span><span class="cg-node__a">1879–1956</span></div></div>
-          <div class="cn-n" style="left: 1704px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1910</span><span class="cg-node__t">Creación de la pedagogía nacional</span><span class="cg-node__a">Franz Tamayo Solares</span></div></div>
-          <div class="cn-n" style="left: 1752px; top: 922px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1913</span><span class="cg-node__t">La creación de un continente</span><span class="cg-node__a">Francisco Rey</span></div></div>
-          <div class="cn-n" style="left: 1778px; top: 2204px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1914</span><span class="cg-node__t">La leyenda negra y la verdad histórica</span><span class="cg-node__a">Julián y Loyot</span></div></div>
-          <div class="cn-n" style="left: 1820px; top: 2290px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Alfonso Reyes Ochoa</span><span class="cg-node__a">1889–1959</span></div></div>
-          <div class="cn-n" style="left: 1816px; top: 2376px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1917</span><span class="cg-node__t">España y el programa americanista</span><span class="cg-node__a">Rafael y Crevea</span></div></div>
-          <div class="cn-n" style="left: 1884px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1920</span><span class="cg-node__t">La caída del águila</span><span class="cg-node__a">Carlos Gagini Chavarría</span></div></div>
-          <div class="cn-n" style="left: 1912px; top: 836px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Manuel Ugarte</span><span class="cg-node__a">1875–1951</span></div></div>
-          <div class="cn-n" style="left: 1928px; top: 922px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Ramos</span></div></div>
-          <div class="cn-n" style="left: 1912px; top: 1008px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1923</span><span class="cg-node__t">El destino de un continente</span><span class="cg-node__a">Manuel Ugarte</span></div></div>
-          <div class="cn-n" style="left: 1928px; top: 1094px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">J. C. Mariátegui</span><span class="cg-node__a">1894–1930</span></div></div>
-          <div class="cn-n" style="left: 1928px; top: 2944px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">António Sardinha</span><span class="cg-node__a">1887–1925</span></div></div>
-          <div class="cn-n" style="left: 1928px; top: 3030px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1924</span><span class="cg-node__t">A aliança peninsular: antecedentes e possibilidades</span><span class="cg-node__a">António Sardinha</span></div></div>
-          <div class="cn-n" style="left: 1928px; top: 1180px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1924</span><span class="cg-node__t">La unidad de la América Indo-Española and related essays</span><span class="cg-node__a">J. C. Mariátegui</span></div></div>
-          <div class="cn-n" style="left: 1928px; top: 1266px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1924</span><span class="cg-node__t">Eurindia: ensayo de estética fundado en la experiencia histórica de las culturas americanas</span><span class="cg-node__a">Ricardo Rojas</span></div></div>
-          <div class="cn-n" style="left: 1944px; top: 1352px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">José Vasconcelos Calderón</span><span class="cg-node__a">1882–1959</span></div></div>
-          <div class="cn-n" style="left: 1944px; top: 1438px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1925</span><span class="cg-node__t">La raza cósmica: misión de la raza iberoamericana. Notas de viajes a la América del Sur</span><span class="cg-node__a">José Vasconcelos Calderón</span></div></div>
-          <div class="cn-n" style="left: 1960px; top: 1524px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Víctor Raúl Haya</span><span class="cg-node__a">1895–1979</span></div></div>
-          <div class="cn-n" style="left: 1960px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Zacarías de Vizcarra</span><span class="cg-node__a">1879–1963</span></div></div>
-          <div class="cn-n" style="left: 1992px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Julio McPartland</span><span class="cg-node__a">1903–1929</span></div></div>
-          <div class="cn-n" style="left: 1992px; top: 1610px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1928</span><span class="cg-node__t">Seis ensayos en busca de nuestra expresión</span><span class="cg-node__a">Pedro Henríquez Ureña</span></div></div>
-          <div class="cn-n" style="left: 2008px; top: 1696px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Augusto César Sandino</span><span class="cg-node__a">1895–1934</span></div></div>
-          <div class="cn-n" style="left: 2008px; top: 1782px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Bolívar</span></div></div>
-          <div class="cn-n" style="left: 2008px; top: 1868px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1929</span><span class="cg-node__t">Plan de realización del supremo sueño de Bolívar</span><span class="cg-node__a">Augusto César Sandino</span></div></div>
-          <div class="cn-n" style="left: 2008px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1929</span><span class="cg-node__t">El mínimum vital</span><span class="cg-node__a">Vicente Mónico</span></div></div>
-          <div class="cn-n" style="left: 2088px; top: 2944px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Fernando Pessoa</span><span class="cg-node__a">1888–1935</span></div></div>
-          <div class="cn-n" style="left: 2114px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Ramiro y Whitney</span><span class="cg-node__a">1874–1936</span></div></div>
-          <div class="cn-n" style="left: 2088px; top: 2376px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1934</span><span class="cg-node__t">Insularismo: ensayos de interpretación puertorriqueña</span><span class="cg-node__a">Antonio Pizarro</span></div></div>
-          <div class="cn-n" style="left: 2088px; top: 2462px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1934</span><span class="cg-node__t">Defensa de la Hispanidad</span><span class="cg-node__a">Ramiro y Whitney</span></div></div>
-          <div class="cn-n" style="left: 2120px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1936</span><span class="cg-node__t">El antiimperialismo y el APRA</span><span class="cg-node__a">Víctor Raúl Haya</span></div></div>
-          <div class="cn-n" style="left: 2120px; top: 2660px; width: 140px; height: 56px"><div class="cg-node cg-node--periodical"><span class="cg-node__in"><span class="cg-node__t">Claridade</span><span class="cg-node__a">Mindelo, 1936–1960, irregular</span></span></div></div>
-          <div class="cn-n" style="left: 2168px; top: 836px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Camila Henríquez Ureña</span><span class="cg-node__a">1894–1973</span></div></div>
-          <div class="cn-n" style="left: 2184px; top: 2290px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1939</span><span class="cg-node__t">Pensamiento y poesía en la vida española</span><span class="cg-node__a">María Zambrano Alarcón</span></div></div>
-          <div class="cn-n" style="left: 2184px; top: 2746px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Gilberto Freyre</span><span class="cg-node__a">1900–1987</span></div></div>
-          <div class="cn-n" style="left: 2184px; top: 922px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1940</span><span class="cg-node__t">Contrapunteo cubano del tabaco y el azúcar</span><span class="cg-node__a">Fernando Ortiz Fernández</span></div></div>
-          <div class="cn-n" style="left: 2184px; top: 2832px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1940</span><span class="cg-node__t">O mundo que o português criou</span><span class="cg-node__a">Gilberto Freyre</span></div></div>
-          <div class="cn-n" style="left: 2264px; top: 208px; width: 140px; height: 56px"><div class="cg-node cg-node--institution"><span class="cg-node__in"><span class="cg-node__t">Instituto de Cultura Hispánica</span><span class="cg-node__a">Madrid, established 1945; subsequent reorganizations</span></span></div></div>
-          <div class="cn-n" style="left: 2296px; top: 2660px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Baltasar da Silva</span><span class="cg-node__a">1907–1989</span></div></div>
-          <div class="cn-n" style="left: 2296px; top: 294px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1947</span><span class="cg-node__t">Hispanoamérica del dolor</span><span class="cg-node__a">Jaime Eyzaguirre Gutiérrez</span></div></div>
-          <div class="cn-n" style="left: 2312px; top: 380px; width: 140px; height: 56px"><div class="cg-node cg-node--periodical"><span class="cg-node__in"><span class="cg-node__t">Cuadernos Hispanoamericanos</span><span class="cg-node__a">Madrid, from 1948</span></span></div></div>
-          <div class="cn-n" style="left: 2360px; top: 466px; width: 150px; height: 54px"><div class="cg-node cg-node--corpus"><span class="cg-node__t">Joint 1999 Orthography and later works</span></div></div>
-          <div class="cn-n" style="left: 2360px; top: 552px; width: 140px; height: 56px"><div class="cg-node cg-node--institution"><span class="cg-node__in"><span class="cg-node__t">ASALE / RAE collaboration</span><span class="cg-node__a">ASALE founded in Mexico 1951; modern joint policy</span></span></div></div>
-          <div class="cn-n" style="left: 2392px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1953</span><span class="cg-node__t">América como conciencia</span><span class="cg-node__a">Leopoldo Zea Aguilar</span></div></div>
-          <div class="cn-n" style="left: 2424px; top: 208px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Mário Pinto de Andrade</span><span class="cg-node__a">1928–1990</span></div></div>
-          <div class="cn-n" style="left: 2424px; top: 638px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1955</span><span class="cg-node__t">Qu'est-ce que le luso-tropicalisme?</span><span class="cg-node__a">Mário Pinto de Andrade</span></div></div>
-          <div class="cn-n" style="left: 2440px; top: 2204px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Sánchez-Albornoz</span><span class="cg-node__a">1893–1984</span></div></div>
-          <div class="cn-n" style="left: 2450px; top: 2660px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1956</span><span class="cg-node__t">Cabo Verde visto por Gilberto Freyre: apontamentos lidos ao microfone de Rádio Barlavento</span><span class="cg-node__a">Baltasar da Silva</span></div></div>
-          <div class="cn-n" style="left: 2488px; top: 2944px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1959</span><span class="cg-node__t">Um Fernando Pessoa</span><span class="cg-node__a">Agostinho da Silva</span></div></div>
-          <div class="cn-n" style="left: 2552px; top: 2746px; width: 140px; height: 54px"><div class="cg-node cg-node--author"><span class="cg-node__t">Onésimo Silveira</span><span class="cg-node__a">1935–2021</span></div></div>
-          <div class="cn-n" style="left: 2616px; top: 750px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1967</span><span class="cg-node__t">El Uruguay como problema: en la cuenca del Plata entre Argentina y Brasil</span><span class="cg-node__a">Alberto Methol Ferré</span></div></div>
-          <div class="cn-n" style="left: 2632px; top: 836px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1968</span><span class="cg-node__t">Historia de la nación latinoamericana</span><span class="cg-node__a">Jorge A. Ramos</span></div></div>
-          <div class="cn-n" style="left: 2648px; top: 10px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Eduardo Chivambo Mondlane</span><span class="cg-node__a">1920–1969</span></div></div>
-          <div class="cn-n" style="left: 2664px; top: 208px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1970</span><span class="cg-node__t">National Liberation and Culture / Libertação nacional e cultura</span><span class="cg-node__a">Amílcar Cabral</span></div></div>
-          <div class="cn-n" style="left: 2728px; top: 96px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Agostinho Neto</span><span class="cg-node__a">1922–1979</span></div></div>
-          <div class="cn-n" style="left: 2802px; top: 10px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1977</span><span class="cg-node__t">Historia y tragedia de Guinea Ecuatorial</span><span class="cg-node__a">Donato Ndongo</span></div></div>
-          <div class="cn-n" style="left: 2792px; top: 294px; width: 140px; height: 54px"><div class="cg-node cg-node--author is-counter"><span class="cg-node__t">Abdias do Nascimento</span><span class="cg-node__a">1914–2011</span></div></div>
-          <div class="cn-n" style="left: 2952px; top: 2204px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1988</span><span class="cg-node__t">Culture and History: Occasional Notes on the Process of Philippine Becoming</span><span class="cg-node__a">Nick Joaquín</span></div></div>
-          <div class="cn-n" style="left: 3080px; top: 10px; width: 140px; height: 56px"><div class="cg-node cg-node--institution"><span class="cg-node__in"><span class="cg-node__t">CPLP</span><span class="cg-node__a">1996 onward; Timor-Leste 2002; Equatorial Guinea 2014</span></span></div></div>
-          <div class="cn-n" style="left: 3128px; top: 208px; width: 162px; height: 76px"><div class="cg-node cg-node--text"><span class="cg-node__yr">1999</span><span class="cg-node__t">A nau de Ícaro, seguido de Imagem e miragem da lusofonia</span><span class="cg-node__a">Eduardo de Faria</span></div></div>
+          <div class="cc-slot" style="left: 120px; top: 140px"><div id="cc-T001" class="cc cc--leather" style="rotate: -1.2deg"><p class="cc-top"><b>1818</b><span>VE</span></p><p class="cc-t">Carta de Jamaica</p><p class="cc-foot"><i></i><b>Simón Bolívar</b><span>1783–1830</span></p></div></div>
+          <div class="cc-slot" style="left: 400px; top: 140px"><div id="cc-T002" class="cc cc--burgundy" style="rotate: -0.8deg"><p class="cc-top"><b>1822</b><span>HN</span></p><p class="cc-t is-long">Soñaba el abad de San Pedro, y yo también sé soñar</p><p class="cc-foot"><i></i><b>José Cecilio del Valle</b><span>1780–1834</span></p></div></div>
+          <div class="cc-slot" style="left: 680px; top: 140px"><div id="cc-T003" class="cc cc--ink" style="rotate: -0.4deg"><p class="cc-top"><b>1847</b><span>VE</span></p><p class="cc-t is-long">Gramática de la lengua castellana destinada al uso de los americanos</p><p class="cc-foot"><i></i><b>Andrés Bello</b><span>1781–1865</span></p></div></div>
+          <div class="cc-slot" style="left: 960px; top: 140px"><div id="cc-T004" class="cc cc--vellum" style="rotate: 0.0deg"><p class="cc-top"><b>1855</b><span>PA</span></p><p class="cc-t">El Estado federal de Panamá</p><p class="cc-foot"><i></i><b>Justo Arosemena</b><span>1817–1896</span></p></div></div>
+          <div class="cc-slot" style="left: 1240px; top: 140px"><div id="cc-T005" class="cc cc--paper" style="rotate: 0.4deg"><p class="cc-top"><b>1856</b><span>CL</span></p><p class="cc-t">Iniciativa de la América</p><p class="cc-foot"><i></i><b>Francisco Bilbao</b><span>1823–1865</span></p></div></div>
+          <div class="cc-slot" style="left: 1520px; top: 140px"><div id="cc-T006" class="cc cc--leather" style="rotate: 0.8deg"><p class="cc-top"><b>1865</b><span>CO</span></p><p class="cc-t is-long">Unión latino-americana, pensamiento de Bolívar para formar una liga americana</p><p class="cc-foot"><i></i><b>José María Torres Caicedo</b><span>1830–1889</span></p></div></div>
+          <div class="cc-slot" style="left: 1800px; top: 140px"><div id="cc-T007" class="cc cc--burgundy" style="rotate: 1.2deg"><p class="cc-top"><b>1866</b><span>GOA</span></p><p class="cc-t">Os brahamanes</p><p class="cc-foot"><i></i><b>Francisco Luís Gomes</b><span>1829–1869</span></p></div></div>
+          <div class="cc-slot" style="left: 2080px; top: 140px"><div id="cc-T008" class="cc cc--ink" style="rotate: 1.6deg"><p class="cc-top"><b>1868</b><span>EC</span></p><p class="cc-t is-long">Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días</p><p class="cc-foot"><i></i><b>Juan León Mera</b><span>1832–1894</span></p></div></div>
+          <div class="cc-slot" style="left: 2360px; top: 140px"><div id="cc-T009" class="cc cc--vellum" style="rotate: -1.3deg"><p class="cc-top"><b>1870</b><span>PR</span></p><p class="cc-t">Antillean federation essays and speeches</p><p class="cc-foot"><i></i><b>Eugenio María de Hostos</b><span>1839–1903</span></p></div></div>
+          <div class="cc-slot" style="left: 2640px; top: 140px"><div id="cc-T010" class="cc cc--paper" style="rotate: -0.9deg"><p class="cc-top"><b>1879</b><span>PT</span></p><p class="cc-t">História da civilização ibérica</p><p class="cc-foot"><i></i><b>Oliveira Martins</b><span>1845–1894</span></p></div></div>
+          <div class="cc-slot" style="left: 120px; top: 507px"><div id="cc-T011" class="cc cc--leather" style="rotate: -0.5deg"><p class="cc-top"><b>1883</b><span>BR</span></p><p class="cc-t">O abolicionismo</p><p class="cc-foot"><i></i><b>Joaquim Nabuco</b><span>1849–1910</span></p></div></div>
+          <div class="cc-slot" style="left: 400px; top: 507px"><div id="cc-T012" class="cc cc--burgundy" style="rotate: -0.1deg"><p class="cc-top"><b>1889</b><span>PH</span></p><p class="cc-t">Filipinas dentro de cien años</p><p class="cc-foot"><i></i><b>José Rizal</b><span>1861–1896</span></p></div></div>
+          <div class="cc-slot" style="left: 680px; top: 507px"><div id="cc-T013" class="cc cc--ink" style="rotate: 0.3deg"><p class="cc-top"><b>1891</b><span>CU</span></p><p class="cc-t">Nuestra América</p><p class="cc-foot"><i></i><b>José Martí</b><span>1853–1895</span></p></div></div>
+          <div class="cc-slot" style="left: 960px; top: 507px"><div id="cc-T014" class="cc cc--vellum cc--counter" style="rotate: 0.7deg"><p class="cc-top"><b>1894</b><span>PE</span></p><p class="cc-t">Pájinas libres</p><p class="cc-foot"><i></i><b>Manuel González Prada</b><span>1844–1918</span></p></div></div>
+          <div class="cc-slot" style="left: 1240px; top: 507px"><div id="cc-T015" class="cc cc--paper" style="rotate: 1.1deg"><p class="cc-top"><b>1895</b><span>ES</span></p><p class="cc-t">En torno al casticismo</p><p class="cc-foot"><i></i><b>Miguel de Unamuno</b><span>1864–1936</span></p></div></div>
+          <div class="cc-slot" style="left: 1520px; top: 507px"><div id="cc-T016" class="cc cc--leather" style="rotate: 1.5deg"><p class="cc-top"><b>1897</b><span>ES</span></p><p class="cc-t">Idearium español</p><p class="cc-foot"><i></i><b>Ángel Ganivet</b><span>1865–1898</span></p></div></div>
+          <div class="cc-slot" style="left: 1800px; top: 507px"><div id="cc-T017" class="cc cc--burgundy" style="rotate: -1.4deg"><p class="cc-top"><b>1898</b><span>NI</span></p><p class="cc-t">El triunfo de Calibán and hemispheric writings</p><p class="cc-foot"><i></i><b>Rubén Darío</b><span>1867–1916</span></p></div></div>
+          <div class="cc-slot" style="left: 2080px; top: 507px"><div id="cc-T018" class="cc cc--ink" style="rotate: -1.0deg"><p class="cc-top"><b>1900</b><span>UY</span></p><p class="cc-t">Ariel</p><p class="cc-foot"><i></i><b>José Enrique Rodó</b><span>1871–1917</span></p></div></div>
+          <div class="cc-slot" style="left: 2360px; top: 507px"><div id="cc-T019" class="cc cc--vellum" style="rotate: -0.6deg"><p class="cc-top"><b>1905</b><span>PE</span></p><p class="cc-t is-long">Carácter de la literatura del Perú independiente</p><p class="cc-foot"><i></i><b>José de la Riva-Agüero</b><span>1885–1944</span></p></div></div>
+          <div class="cc-slot" style="left: 2640px; top: 507px"><div id="cc-T020" class="cc cc--paper" style="rotate: -0.2deg"><p class="cc-top"><b>1905</b><span>BR</span></p><p class="cc-t">A América Latina</p><p class="cc-foot"><i></i><b>Manoel do Bomfim</b><span>1868–1932</span></p></div></div>
+          <div class="cc-slot" style="left: 120px; top: 874px"><div id="cc-T021" class="cc cc--leather" style="rotate: 0.2deg"><p class="cc-top"><b>1910</b><span>BO</span></p><p class="cc-t">Creación de la pedagogía nacional</p><p class="cc-foot"><i></i><b>Franz Tamayo</b><span>1879–1956</span></p></div></div>
+          <div class="cc-slot" style="left: 400px; top: 874px"><div id="cc-T022" class="cc cc--burgundy" style="rotate: 0.6deg"><p class="cc-top"><b>1913</b><span>PE</span></p><p class="cc-t">La creación de un continente</p><p class="cc-foot"><i></i><b>Francisco García Calderón</b><span>1883–1953</span></p></div></div>
+          <div class="cc-slot" style="left: 680px; top: 874px"><div id="cc-T023" class="cc cc--ink" style="rotate: 1.0deg"><p class="cc-top"><b>1914</b><span>ES</span></p><p class="cc-t">La leyenda negra y la verdad histórica</p><p class="cc-foot"><i></i><b>Julián Juderías</b><span>1877–1918</span></p></div></div>
+          <div class="cc-slot" style="left: 960px; top: 874px"><div id="cc-T024" class="cc cc--vellum" style="rotate: 1.4deg"><p class="cc-top"><b>1917</b><span>ES</span></p><p class="cc-t">España y el programa americanista</p><p class="cc-foot"><i></i><b>Rafael Altamira</b><span>1866–1951</span></p></div></div>
+          <div class="cc-slot" style="left: 1240px; top: 874px"><div id="cc-T025" class="cc cc--paper" style="rotate: -1.5deg"><p class="cc-top"><b>1920</b><span>CR</span></p><p class="cc-t">La caída del águila</p><p class="cc-foot"><i></i><b>Carlos Gagini</b><span>1865–1925</span></p></div></div>
+          <div class="cc-slot" style="left: 1520px; top: 874px"><div id="cc-T026" class="cc cc--leather" style="rotate: -1.1deg"><p class="cc-top"><b>1923</b><span>AR</span></p><p class="cc-t">El destino de un continente</p><p class="cc-foot"><i></i><b>Manuel Ugarte</b><span>1875–1951</span></p></div></div>
+          <div class="cc-slot" style="left: 1800px; top: 874px"><div id="cc-T027" class="cc cc--burgundy" style="rotate: -0.7deg"><p class="cc-top"><b>1924</b><span>PT</span></p><p class="cc-t">A aliança peninsular</p><p class="cc-foot"><i></i><b>António Sardinha</b><span>1887–1925</span></p></div></div>
+          <div class="cc-slot" style="left: 2080px; top: 874px"><div id="cc-T028" class="cc cc--ink" style="rotate: -0.3deg"><p class="cc-top"><b>1924</b><span>PE</span></p><p class="cc-t is-long">La unidad de la América Indo-Española and related essays</p><p class="cc-foot"><i></i><b>José Carlos Mariátegui</b><span>1894–1930</span></p></div></div>
+          <div class="cc-slot" style="left: 2360px; top: 874px"><div id="cc-T029" class="cc cc--vellum" style="rotate: 0.1deg"><p class="cc-top"><b>1924</b><span>AR</span></p><p class="cc-t">Eurindia</p><p class="cc-foot"><i></i><b>Ricardo Rojas</b><span>1882–1957</span></p></div></div>
+          <div class="cc-slot" style="left: 2640px; top: 874px"><div id="cc-T030" class="cc cc--paper" style="rotate: 0.5deg"><p class="cc-top"><b>1925</b><span>MX</span></p><p class="cc-t">La raza cósmica</p><p class="cc-foot"><i></i><b>José Vasconcelos</b><span>1882–1959</span></p></div></div>
+          <div class="cc-slot" style="left: 120px; top: 1241px"><div id="cc-T031" class="cc cc--leather" style="rotate: 0.9deg"><p class="cc-top"><b>1928</b><span>DO</span></p><p class="cc-t">Seis ensayos en busca de nuestra expresión</p><p class="cc-foot"><i></i><b>Pedro Henríquez Ureña</b><span>1884–1946</span></p></div></div>
+          <div class="cc-slot" style="left: 400px; top: 1241px"><div id="cc-T032" class="cc cc--burgundy" style="rotate: 1.3deg"><p class="cc-top"><b>1929</b><span>NI</span></p><p class="cc-t is-long">Plan de realización del supremo sueño de Bolívar</p><p class="cc-foot"><i></i><b>Augusto César Sandino</b><span>1895–1934</span></p></div></div>
+          <div class="cc-slot" style="left: 680px; top: 1241px"><div id="cc-T033" class="cc cc--ink" style="rotate: -1.6deg"><p class="cc-top"><b>1929</b><span>SV</span></p><p class="cc-t">El mínimum vital</p><p class="cc-foot"><i></i><b>Alberto Masferrer</b><span>1868–1932</span></p></div></div>
+          <div class="cc-slot" style="left: 960px; top: 1241px"><div id="cc-T034" class="cc cc--vellum" style="rotate: -1.2deg"><p class="cc-top"><b>1934</b><span>PR</span></p><p class="cc-t">Insularismo</p><p class="cc-foot"><i></i><b>Antonio S. Pedreira</b><span>1899–1939</span></p></div></div>
+          <div class="cc-slot" style="left: 1240px; top: 1241px"><div id="cc-T035" class="cc cc--paper" style="rotate: -0.8deg"><p class="cc-top"><b>1934</b><span>ES</span></p><p class="cc-t">Defensa de la Hispanidad</p><p class="cc-foot"><i></i><b>Ramiro de Maeztu</b><span>1874–1936</span></p></div></div>
+          <div class="cc-slot" style="left: 1520px; top: 1241px"><div id="cc-T036" class="cc cc--leather" style="rotate: -0.4deg"><p class="cc-top"><b>1936</b><span>PE</span></p><p class="cc-t">El antiimperialismo y el APRA</p><p class="cc-foot"><i></i><b>Víctor Raúl Haya de la Torre</b><span>1895–1979</span></p></div></div>
+          <div class="cc-slot" style="left: 1800px; top: 1241px"><div id="cc-T037" class="cc cc--burgundy" style="rotate: 0.0deg"><p class="cc-top"><b>1939</b><span>ES</span></p><p class="cc-t">Pensamiento y poesía en la vida española</p><p class="cc-foot"><i></i><b>María Zambrano</b><span>1904–1991</span></p></div></div>
+          <div class="cc-slot" style="left: 2080px; top: 1241px"><div id="cc-T038" class="cc cc--ink" style="rotate: 0.4deg"><p class="cc-top"><b>1940</b><span>CU</span></p><p class="cc-t">Contrapunteo cubano del tabaco y el azúcar</p><p class="cc-foot"><i></i><b>Fernando Ortiz</b><span>1881–1969</span></p></div></div>
+          <div class="cc-slot" style="left: 2360px; top: 1241px"><div id="cc-T039" class="cc cc--vellum" style="rotate: 0.8deg"><p class="cc-top"><b>1940</b><span>BR</span></p><p class="cc-t">O mundo que o português criou</p><p class="cc-foot"><i></i><b>Gilberto Freyre</b><span>1900–1987</span></p></div></div>
+          <div class="cc-slot" style="left: 2640px; top: 1241px"><div id="cc-T040" class="cc cc--paper" style="rotate: 1.2deg"><p class="cc-top"><b>1947</b><span>CL</span></p><p class="cc-t">Hispanoamérica del dolor</p><p class="cc-foot"><i></i><b>Jaime Eyzaguirre</b><span>1908–1968</span></p></div></div>
+          <div class="cc-slot" style="left: 120px; top: 1608px"><div id="cc-T041" class="cc cc--leather" style="rotate: 1.6deg"><p class="cc-top"><b>1953</b><span>MX</span></p><p class="cc-t">América como conciencia</p><p class="cc-foot"><i></i><b>Leopoldo Zea</b><span>1912–2004</span></p></div></div>
+          <div class="cc-slot" style="left: 400px; top: 1608px"><div id="cc-T042" class="cc cc--burgundy cc--counter" style="rotate: -1.3deg"><p class="cc-top"><b>1955</b><span>AO</span></p><p class="cc-t">Qu&#x27;est-ce que le luso-tropicalisme?</p><p class="cc-foot"><i></i><b>Mário Pinto de Andrade</b><span>1928–1990</span></p></div></div>
+          <div class="cc-slot" style="left: 680px; top: 1608px"><div id="cc-T043" class="cc cc--ink" style="rotate: -0.9deg"><p class="cc-top"><b>1956</b><span>CV</span></p><p class="cc-t">Cabo Verde visto por Gilberto Freyre</p><p class="cc-foot"><i></i><b>Baltasar Lopes</b><span>1907–1989</span></p></div></div>
+          <div class="cc-slot" style="left: 960px; top: 1608px"><div id="cc-T044" class="cc cc--vellum" style="rotate: -0.5deg"><p class="cc-top"><b>1959</b><span>PT</span></p><p class="cc-t">Um Fernando Pessoa</p><p class="cc-foot"><i></i><b>Agostinho da Silva</b><span>1906–1994</span></p></div></div>
+          <div class="cc-slot" style="left: 1240px; top: 1608px"><div id="cc-T045" class="cc cc--paper" style="rotate: -0.1deg"><p class="cc-top"><b>1967</b><span>UY</span></p><p class="cc-t">El Uruguay como problema</p><p class="cc-foot"><i></i><b>Alberto Methol Ferré</b><span>1929–2009</span></p></div></div>
+          <div class="cc-slot" style="left: 1520px; top: 1608px"><div id="cc-T046" class="cc cc--leather" style="rotate: 0.3deg"><p class="cc-top"><b>1968</b><span>AR</span></p><p class="cc-t">Historia de la nación latinoamericana</p><p class="cc-foot"><i></i><b>Jorge Abelardo Ramos</b><span>1921–1994</span></p></div></div>
+          <div class="cc-slot" style="left: 1800px; top: 1608px"><div id="cc-T047" class="cc cc--burgundy cc--counter" style="rotate: 0.7deg"><p class="cc-top"><b>1970</b><span>GW</span></p><p class="cc-t is-long">National Liberation and Culture / Libertação nacional e cultura</p><p class="cc-foot"><i></i><b>Amílcar Cabral</b><span>1924–1973</span></p></div></div>
+          <div class="cc-slot" style="left: 2080px; top: 1608px"><div id="cc-T048" class="cc cc--ink cc--counter" style="rotate: 1.1deg"><p class="cc-top"><b>1977</b><span>GQ</span></p><p class="cc-t">Historia y tragedia de Guinea Ecuatorial</p><p class="cc-foot"><i></i><b>Donato Ndongo</b><span>1950–living</span></p></div></div>
+          <div class="cc-slot" style="left: 2360px; top: 1608px"><div id="cc-T049" class="cc cc--vellum" style="rotate: 1.5deg"><p class="cc-top"><b>1988</b><span>PH</span></p><p class="cc-t">Culture and History</p><p class="cc-foot"><i></i><b>Nick Joaquín</b><span>1917–2004</span></p></div></div>
+          <div class="cc-slot" style="left: 2640px; top: 1608px"><div id="cc-T050" class="cc cc--paper cc--counter" style="rotate: -1.4deg"><p class="cc-top"><b>1999</b><span>PT</span></p><p class="cc-t is-long">A nau de Ícaro, seguido de Imagem e miragem da lusofonia</p><p class="cc-foot"><i></i><b>Eduardo Lourenço</b><span>1923–2020</span></p></div></div>
       </div>
       <div class="wk-slab" id="cn-slab"></div>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig" style="top: 250px">Fifty texts, 1818 to 1999, and who read whom</p>
+      <p class="wk-fig" style="top: 250px">Fifty classic texts, 1818 to 1999</p>
       <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
     </div>
 
@@ -380,12 +263,16 @@
 
     <div id="wk-follow" class="wk-shot clip" data-start="22.503" data-duration="5.47">
       <p id="wk-join">Join the argument.</p>
-      <div id="wk-nums">
-        <p class="wk-num"><b>13.5K</b><span>YouTube</span></p>
-        <p class="wk-num"><b>19K</b><span>Instagram</span></p>
-        <p class="wk-num"><b>22K</b><span>X</span></p>
-        <p class="wk-num"><b>587</b><span>Substack</span></p>
+      <div id="wk-logos">
+        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg></div>
+        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077" /></svg></div>
+        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" /></svg></div>
+        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" /></svg></div>
+        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" /></svg></div>
       </div>
+      <p id="wk-total">50,000+</p>
+      <p id="wk-total-sub">followers on five channels</p>
+      <p id="wk-handle">@hispano_studies</p>
     </div>
 
     <div id="fz" class="clip" data-start="0" data-duration="27.973" data-layout-ignore>
@@ -440,20 +327,19 @@
       tl.fromTo("#rd-ring", { rotationY: -110, rotationX: 8 }, { rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }, 3.042 + 2.35);
       tl.fromTo("#rd-ring", { rotationY: -372, rotationX: 10 }, { rotationY: -360, rotationX: 10, duration: 1.723, ease: "none", immediateRender: false }, 3.042 + 3.3);
 
-      // THE CANON: the camera starts close on La raza cósmica and pulls out to the whole field,
-      // the cards appearing and the edges drawing outwards from it, dots running along them
+      // THE CANON: close on La raza cósmica, along the row to Ariel and Nuestra América, then the
+      // camera pulls back to all fifty; the cards drop in from the focus outwards, each on its own tilt
       arrive("#wk-canon .wk-word", 8.065, 510, 383); fig("#wk-canon", 8.065 + 0.8 * B);
-      // the camera follows a real chain of readers: Ariel → Rodó → Vasconcelos → La raza cósmica → Haya
-      move("#cn-world", cam(1625, 1046, 2.3), cam(1646, 790, 2.3), 8.065, 0.85, "power2.inOut", true);
-      move("#cn-world", cam(1646, 790, 2.3), cam(2014, 1380, 2.0), 8.065 + 0.9, 0.95, "power2.inOut");
-      move("#cn-world", cam(2014, 1380, 2.0), cam(2030, 1520, 2.3), 8.065 + 1.9, 0.65, "power2.inOut");
-      move("#cn-world", cam(2030, 1520, 2.3), cam(1830, 1300, 0.85), 8.065 + 2.6, 1.5, "expo.inOut");
-      move("#cn-world", cam(1830, 1300, 0.85), cam(1830, 1300, 0.78), 8.065 + 4.1, 1.396, "none");
-      const nd = [1.5, 1.5, 1.5, 1.472, 1.388, 1.425, 1.486, 1.007, 0.956, 0.855, 1.225, 1.278, 0.755, 1.5, 0.987, 1.07, 1.147, 1.216, 0.561, 1.053, 0.957, 1.016, 1.107, 1.238, 1.261, 1.354, 0.442, 0.356, 0.497, 0.269, 0.987, 1.081, 0.151, 0.87, 0.473, 0.376, 0.292, 0.994, 1.071, 1.168, 0.491, 0.428, 0.363, 0.281, 0.236, 1.5, 1.5, 0.211, 0.216, 0.25, 0.319, 0.379, 1.008, 1.048, 0.483, 0.549, 0.627, 0.717, 1.116, 1.5, 1.053, 1.221, 1.303, 0.612, 1.49, 0.584, 1.174, 1.5, 0.548, 1.5, 1.146, 1.5, 1.084, 1.024, 0.988, 0.92, 0.816, 1.23, 0.909, 1.211, 1.5, 1.5, 1.5, 1.009, 0.987, 1.5, 1.379, 1.5, 1.5, 1.411, 1.5, 1.5, 1.5];
-      document.querySelectorAll("#cn-world .cn-n").forEach((el, i) => tl.fromTo(el, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 8.065 + nd[i]));
-      const ed = [2.3, 0.66, 0.629, 1.471, 1.943, 1.617, 1.431, 0.674, 0.333, 1.974, 1.576, 0.365, 0.865, 0.678, 0.408, 0.273, 0.885, 0.624, 1.087, 0.869, 0.937, 2.187, 1.185, 0.516, 0.443, 2.233, 2.026, 1.544, 1.37, 2.3, 2.045, 1.442, 1.517, 1.845, 0.605, 1.479, 0.666, 0.563, 2.3, 0.385, 0.471, 0.939, 1.667, 0.527, 2.281, 1.507, 2.206];
-      document.querySelectorAll("#cn-edges .cn-e").forEach((el, i) => tl.fromTo(el, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.out" }, 8.065 + ed[i]));
-      tl.fromTo("#cn-edges .cn-s", { strokeDashoffset: 0, opacity: 0 }, { strokeDashoffset: -0.6, opacity: 1, duration: 5.196, ease: "none" }, 8.065 + 0.3);
+      const P = {"T001": [238, 298], "T002": [518, 298], "T003": [798, 298], "T004": [1078, 298], "T005": [1358, 298], "T006": [1638, 298], "T007": [1918, 298], "T008": [2198, 298], "T009": [2478, 298], "T010": [2758, 298], "T011": [238, 664], "T012": [518, 664], "T013": [798, 664], "T014": [1078, 664], "T015": [1358, 664], "T016": [1638, 664], "T017": [1918, 664], "T018": [2198, 664], "T019": [2478, 664], "T020": [2758, 664], "T021": [238, 1032], "T022": [518, 1032], "T023": [798, 1032], "T024": [1078, 1032], "T025": [1358, 1032], "T026": [1638, 1032], "T027": [1918, 1032], "T028": [2198, 1032], "T029": [2478, 1032], "T030": [2758, 1032], "T031": [238, 1398], "T032": [518, 1398], "T033": [798, 1398], "T034": [1078, 1398], "T035": [1358, 1398], "T036": [1638, 1398], "T037": [1918, 1398], "T038": [2198, 1398], "T039": [2478, 1398], "T040": [2758, 1398], "T041": [238, 1766], "T042": [518, 1766], "T043": [798, 1766], "T044": [1078, 1766], "T045": [1358, 1766], "T046": [1638, 1766], "T047": [1918, 1766], "T048": [2198, 1766], "T049": [2478, 1766], "T050": [2758, 1766]};
+      move("#cn-world", cam(P.T030[0], P.T030[1], 2.0), cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), 8.065, 0.9, "power2.inOut", true);
+      move("#cn-world", cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), cam(P.T018[0], P.T018[1], 1.7), 8.065 + 0.95, 0.9, "power2.inOut");
+      move("#cn-world", cam(P.T018[0], P.T018[1], 1.7), cam(P.T013[0], P.T013[1], 1.9), 8.065 + 1.9, 0.7, "power2.inOut");
+      move("#cn-world", cam(P.T013[0], P.T013[1], 1.9), cam(1498.0, 1031.5, 0.56), 8.065 + 2.6, 1.5, "expo.inOut");
+      move("#cn-world", cam(1498.0, 1031.5, 0.56), cam(1498.0, 1031.5, 0.53), 8.065 + 4.1, 1.396, "none");
+      document.querySelectorAll("#cn-world .cc").forEach((el) => {
+        const [x, y] = P[el.id.slice(3)], d = Math.hypot(x - P.T030[0], y - P.T030[1]);
+        tl.fromTo(el, { opacity: 0, y: -90, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 8.065 + Math.min(1.3, d / 1700 * 1.1));
+      });
       const toChip = (id, slab, chip, t) => {
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }, t);
         tl.fromTo(slab, { opacity: 0.94 }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
@@ -484,9 +370,13 @@
       arrive("#wk-books .wk-word", 19.173, 530, 285); fig("#wk-books", 19.173 + 0.6 * B);
       tl.fromTo(".wk-spine", { yPercent: 105 }, { yPercent: 0, duration: 0.45, stagger: 0.4, ease: "expo.out" }, 19.173);
 
-      // FOLLOW: a figure on each hit of the breakdown
-      arrive("#wk-join", 22.503, 438, 365);
-      [24.101, 25.573, 26.38, 27.169].forEach((t, i) => tl.fromTo(".wk-num:nth-child(" + (i + 1) + ")", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, t));
+      // FOLLOW: on the four hits of the breakdown: the logos, the total, what it counts, the handle
+      arrive("#wk-join", 22.503, 0, 300);
+      const H = [24.101, 25.573, 26.38, 27.169];
+      tl.fromTo(".wk-logo", { opacity: 0, scale: 1.5, filter: "blur(8px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.32, stagger: 0.07, ease: "expo.out" }, H[0] - 0.05);
+      tl.fromTo("#wk-total", { opacity: 0, scale: 1.4, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, H[1] - 0.04);
+      tl.fromTo("#wk-total-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, H[2]);
+      tl.fromTo("#wk-handle", { opacity: 0 }, { opacity: 1, duration: 0.25 }, H[3]);
 
       // THE FRIEZE between shots: the shot is pushed out to the left, the top of the portico
       // slides in from the right and glides to the next metope (lit in burgundy), and the camera

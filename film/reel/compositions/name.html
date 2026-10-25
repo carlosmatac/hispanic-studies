@@ -11,6 +11,10 @@
     #op-langs { position: absolute; left: 158px; top: 720px; font-family: Inter, sans-serif; font-weight: 500; font-size: 40px; letter-spacing: 0.02em; color: #470b15; }
 
     .op-w { display: inline-block; white-space: nowrap; }
+    /* behind the claim, Gutiérrez's America (1562), ghosted into the paper and drifting */
+    #op-ghost { position: absolute; inset: 0; overflow: hidden; }
+    #op-ghost img { position: absolute; left: 0; top: 0; width: 2400px; height: auto; opacity: 0.3; transform-origin: 0 0; }
+    #op-ghost::after { content: ""; position: absolute; inset: 0; background: radial-gradient(85% 75% at 30% 45%, rgba(249, 243, 221, 0.92) 25%, rgba(249, 243, 221, 0.35) 75%); }
     .op-ch { display: inline-block; }
 
     /* bars 3–4: the Iberophone world, from Iberia out to the four continents */
@@ -26,6 +30,7 @@
 
   <div id="root" data-composition-id="name" data-width="1920" data-height="1080">
     <div id="op-claim" class="clip" data-start="0" data-duration="4.326">
+      <div id="op-ghost"><img id="op-ghost-img" src="assets/img/graded/map-gutierrez-americas-1562.jpg" alt="" /></div>
       <p id="op-l1" class="op-line"><span class="op-w"><span class="op-ch">O</span><span class="op-ch">n</span><span class="op-ch">e</span></span> <span class="op-w"><span class="op-ch">c</span><span class="op-ch">i</span><span class="op-ch">v</span><span class="op-ch">i</span><span class="op-ch">l</span><span class="op-ch">i</span><span class="op-ch">z</span><span class="op-ch">a</span><span class="op-ch">t</span><span class="op-ch">i</span><span class="op-ch">o</span><span class="op-ch">n</span><span class="op-ch">,</span></span></p>
       <p id="op-l2" class="op-line"><span class="op-w"><span class="op-ch">t</span><span class="op-ch">w</span><span class="op-ch">o</span></span> <span class="op-w"><span class="op-ch">l</span><span class="op-ch">a</span><span class="op-ch">n</span><span class="op-ch">g</span><span class="op-ch">u</span><span class="op-ch">a</span><span class="op-ch">g</span><span class="op-ch">e</span><span class="op-ch">s</span><span class="op-ch">,</span></span></p>
       <p id="op-langs">español · português</p>
@@ -61,6 +66,7 @@
       // a little out of a blur; the line is done by the third beat
       const letters = (sel, t, each) => tl.fromTo(sel + " .op-ch", { opacity: 0, y: 34, filter: "blur(10px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.55, stagger: each, ease: "expo.out" }, t);
+      tl.fromTo("#op-ghost-img", { x: -180, y: -900, scale: 1.0 }, { x: -320, y: -1250, scale: 1.06, duration: 4.326, ease: "none" }, 0);
       letters("#op-l1", 0.02, 0.055);
       // then "two languages," the same way, and the two names under it
       letters("#op-l2", 1.9, 0.06);

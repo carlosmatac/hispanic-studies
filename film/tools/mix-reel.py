@@ -29,9 +29,13 @@ EARSHOT = Path.home() / ".venvs/film/bin/earshot"
 SR = 48000
 OFFSET = 3.80          # the track's first note (3.82 s) lands on frame 0
 
+# the narrator (film/VOICE.md): optional lines from ElevenLabs, placed when their files exist
+NARRATOR = [("vo-claim.mp3", 0.0), ("vo-know.mp3", 7.92), ("vo-name.mp3", 66.20)]
+NARRATOR_DB = -1.0
+
 # his clips were recorded at different levels: lift the quiet ones (video s from, to, dB)
-VOICE_LIFT = [(19.835, 22.243, 10.0),   # "Cowboys are Hispanic."
-              (22.243, 23.835, 3.0)]    # the chant
+VOICE_LIFT = [(15.435, 19.835, 4.5),    # "Every single one of them is viceregal."
+              (19.835, 22.243, 3.0)]    # "Not one altarpiece came down."
 
 # ------------------------------------------------------------------ the cues
 # (video seconds, sound id, weight 0..1, extra render args). Times follow the scenes in
@@ -54,18 +58,23 @@ cue(NAME + 4.326 + 0.55, "whoosh_big/swell", 0.30, "--dur", "1.4", "--apex", "0.
 for i in range(4):
     cue(NAME + 5.876 + 0.4 * i, "pro_tap/soft", 0.22)
 cue(NAME + 7.70, "swipe/paper", 0.40, "--dur", "0.6", "--apex", "0.25", apex=0.25)
-# the build: his window opens in steps, then each face of the mosaic prints in
+# the build: Ortelius' map opens in steps, then the viceregal world whips past, faster and faster
 cue(BUILD + 0.02, "pro_zip/down_warm", 0.18)
-for t in TILES:
-    cue(BUILD + t, "fit/land.light/fingertip_book", 0.32)
-# the montage: the panel drops, the chant is stamped, the last window opens
+for i, t in enumerate(TILES):
+    cue(BUILD + t, "swish/soft", 0.22 + 0.02 * i, "--dur", "0.45", "--apex", "0.08", apex=0.08)
+    cue(BUILD + t + 0.02, "fit/land.light/fingertip_book", 0.22)
+# the montage: a city a beat under his line, "Spain built them.", the retablo, four stamps, the stop
+for t in (0.8, 1.6, 2.4):
+    cue(MONT + t, "swish/soft", 0.22, "--dur", "0.45", "--apex", "0.08", apex=0.08)
+cue(MONT + 3.12, "pro_impact/air", 0.30)
 cue(MONT + 4.40, "swish/soft", 0.30, "--dur", "0.6", "--apex", "0.12", apex=0.12)
 for i in range(4):
     cue(MONT + 6.858 + 0.4 * i, "pro_pop_in/deep", 0.55 if i == 0 else 0.42)
 cue(MONT + 8.45, "swipe/cloth", 0.30, "--apex", "0.18", apex=0.18)
-# the pillars: each plate rises in steps; then the portico, its shafts lit, the name, the dive
-for i in range(3):
-    cue(PIL + 2.27 * i + 0.12, "swipe/paper", 0.28, "--dur", "0.55", "--apex", "0.12", apex=0.12)
+# the pillars: the flight through "Mestizaje", the whip up the Sagrario, the whip onto the Codex
+cue(PIL + 0.96, "whoosh_fast/heavy", 0.40, "--dur", "0.75", "--apex", "0.5", apex=0.5)
+cue(PIL + 2.27, "swipe/velvet", 0.36, "--dur", "0.6", "--apex", "0.1", apex=0.1)
+cue(PIL + 4.54, "swipe/paper", 0.34, "--dur", "0.55", "--apex", "0.1", apex=0.1)
 cue(TEMPLE + 0.9, "whoosh_big/swell", 0.34, "--dur", "1.5", "--apex", "0.9", apex=0.9)
 for k in range(3):
     cue(TEMPLE + k * TQ, "fit/land.light/fingertip_book", 0.35)
@@ -82,6 +91,11 @@ for t in (0, 0.54, 1.26, 1.94, 2.58, 3.3):                       # Atlas pins
     cue(A0 + t, "pro_pop/thup", 0.30)
 for i in range(6):                                               # book spines
     cue(K0 + 0.4 * i + 0.06, "tap/knuckle", 0.28)
+# the close: the five logos, the total landing, its line, the handle (the breakdown's hits)
+for i in range(5):
+    cue(WORKS + 24.101 - 0.05 + 0.07 * i, "pro_pop/thup", 0.24)
+cue(WORKS + 25.573, "pro_impact/air", 0.34)
+cue(WORKS + 26.38, "pro_tap/soft", 0.22)
 # the mark: a shimmer in D under the last hit
 cue(LOCK, "pro_shimmer/m0", 0.22)
 
@@ -130,6 +144,13 @@ def main(video, out):
     for t0, t1, db in VOICE_LIFT:
         lift[int(t0 * SR):int(t1 * SR)] = 10 ** (db / 20)
     voice *= uniform_filter1d(lift, int(0.02 * SR))[:, None]
+    for name, t in NARRATOR:
+        f = MUSIC.parent / name
+        if f.exists():
+            x = load(f)
+            x *= 10 ** (NARRATOR_DB / 20) * 0.12 / max(1e-6, float(np.sqrt(np.mean(x ** 2))))   # about his clips' level
+            place(voice, x, t)
+            print("narrator:", name, "at", t)
 
     # the dip: follow the voice's level (10 ms hold, 60 ms in, 350 ms out) and take the music
     # down by up to 9 dB while he speaks
