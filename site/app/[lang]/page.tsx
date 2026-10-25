@@ -135,19 +135,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* VII · about */}
         <section className="about" id="about" aria-labelledby="about-h">
           <span className="numeral" aria-hidden="true">VII<i /></span>
-          <div className="section-head reveal">
-            <p className="eyebrow">{d.about.eyebrow}</p>
-            <h2 id="about-h">{d.about.h}</h2>
-          </div>
           <div className="about__grid">
-            <div>
+            <figure className="about__plate">
+              <Image src="/art/villalpando-plaza-mayor-1695.jpg" alt="" width={2200} height={1660} sizes="(max-width: 1040px) 92vw, 680px" />
+              <figcaption>{d.about.plate}</figcaption>
+            </figure>
+            <div className="about__text">
+              <p className="eyebrow">{d.about.eyebrow}</p>
+              <h2 id="about-h">{d.about.h}</h2>
               <p className="lede">{d.about.p1}</p>
               <p>{d.about.p2}</p>
             </div>
-            <figure className="about__plate">
-              <Image src="/art/villalpando-plaza-mayor-1695.jpg" alt="" width={2200} height={1660} sizes="(max-width: 1040px) 92vw, 55vw" />
-              <figcaption>{d.about.plate}</figcaption>
-            </figure>
           </div>
           <h3 className="shelf">{d.about.channels}</h3>
           <ChannelGrid lang={lang} />

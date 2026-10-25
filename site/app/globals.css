@@ -34,6 +34,10 @@
   --lift-3: 0 3px 6px color-mix(in srgb, var(--shade) 16%, transparent), 0 38px 70px -26px color-mix(in srgb, var(--shade) 60%, transparent);
 
   --gutter: clamp(16px, 4vw, 64px);
+  /* one content width for the whole site (2026-10-25): grounds run full width, content sits
+     in a centred column with the same margin everywhere */
+  --max: 1240px;
+  --edge: max(var(--gutter), calc((100% - var(--max)) / 2));
   --rule: 1px solid var(--grid);
   --measure: 68ch;
   --bar-h: 69px;
@@ -85,7 +89,7 @@ button { font: inherit; color: inherit; }
 .skip:not(:focus) { width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .lede { font-size: clamp(17px, 1.25vw, 21px); line-height: 1.5; }
 
-section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
+section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
 .section-head { margin-bottom: clamp(26px, 3vw, 44px); }
 .section-head h2 + p { margin-top: 14px; color: var(--ink-muted); }
 
@@ -103,7 +107,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
   color: color-mix(in srgb, currentColor 38%, transparent);
 }
 .numeral i { display: block; width: 1px; height: 46px; background: currentColor; opacity: 0.45; }
-@media (min-width: 1240px) { .numeral { display: flex; left: calc(var(--gutter) - 26px); } }
+@media (min-width: 1240px) { .numeral { display: flex; left: calc(var(--edge) - 30px); } }
 
 /* ==========================================================================
    HEADER
@@ -112,7 +116,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 .bar {
   position: sticky; top: 0; z-index: 40;
   display: flex; align-items: center; gap: clamp(14px, 3vw, 44px);
-  padding: 14px var(--gutter); min-height: var(--bar-h);
+  padding: 14px var(--edge); min-height: var(--bar-h);
   background: color-mix(in srgb, var(--paper) 94%, transparent);
   backdrop-filter: blur(7px);
   border-bottom: var(--rule);
@@ -362,17 +366,16 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
    ========================================================================== */
 
 .pillars {
-  padding-inline: 0; color: var(--paper);
+  color: var(--paper);
   background: var(--burgundy-dark);
   background-image: radial-gradient(70% 60% at 50% 30%, color-mix(in srgb, var(--burgundy) 85%, transparent), transparent 75%);
 }
-.pillars .section-head { padding-inline: var(--gutter); }
 .pillars .eyebrow { color: color-mix(in srgb, var(--paper) 62%, transparent); }
 .pillars .numeral { color: var(--paper); }
 .pillars .section-head h2 { color: var(--paper); }
 .pillars .section-head p:not(.eyebrow) { color: color-mix(in srgb, var(--paper) 72%, transparent); margin-top: 12px; }
 
-.temple { --gap: clamp(14px, 4.5vw, 84px); --pad: clamp(10px, 3vw, 56px); padding-inline: var(--pad); }
+.temple { --gap: clamp(14px, 4vw, 64px); --pad: clamp(8px, 1.6vw, 24px); }
 
 /* the entablature: cornice, frieze (triglyphs and metopes), architrave */
 .temple__ent { position: relative; margin-inline: calc(var(--pad) * -0.4); color: var(--burgundy-dark); }
@@ -534,7 +537,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 }
 .epigraph__stick {
   position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip;
-  padding: clamp(72px, 10vw, 140px) var(--gutter);
+  padding: clamp(72px, 10vw, 140px) var(--edge);
 }
 .epigraph__art {
   position: absolute; right: -16%; top: 56%; translate: 0 -50%; width: min(62vw, 1050px); height: auto;
@@ -649,7 +652,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
    ========================================================================== */
 
 .canon-page { background: var(--paper); }
-.canon-shelf { padding: 0 var(--gutter); }
+.canon-shelf { padding: 0 var(--edge); }
 .canon-index { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(30px, 4vw, 56px); }
 .canon-index a {
   display: inline-flex; align-items: baseline; gap: 10px; padding: 9px 14px 10px; text-decoration: none;
@@ -883,16 +886,21 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .community .btn { padding-block: 8px; padding-left: 10px; }
 .community .btn .seal { width: 34px; height: 34px; }
 .about .shelf { margin-top: clamp(36px, 4vw, 56px); }
-.about__grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(26px, 4vw, 64px); align-items: start; }
-.about__plate { margin: 0; box-shadow: var(--lift-2); background: var(--paper-deep); padding: clamp(8px, 0.8vw, 12px); outline: 1px solid var(--grid); }
+.about__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 88px); align-items: stretch; }
+.about__plate { margin: 0; align-self: start; box-shadow: var(--lift-2); background: var(--paper-deep); padding: clamp(8px, 0.8vw, 12px); outline: 1px solid var(--grid); }
 .about__plate img { display: block; width: 100%; height: auto; }
 .about__plate figcaption { padding: 10px 2px 2px; font-size: 12.5px; line-height: 1.4; color: var(--ink-muted); }
+.about__text { display: flex; flex-direction: column; }
+.about__text h2 { font-size: clamp(34px, 3.6vw, 54px); line-height: 1.04; margin-bottom: clamp(22px, 2.6vw, 40px); }
+.about__text > p:not(.eyebrow) { margin: 0; padding: 18px 0; border-top: var(--rule); max-width: none; }
+.about__text > p:last-child { border-bottom: var(--rule); }
+.about__text .lede { font-size: clamp(17px, 1.2vw, 19px); }
 
 /* ==========================================================================
    FOOTER — from P · Tornaviaje, in the brand's burgundy
    ========================================================================== */
 
-.foot { background: var(--burgundy); color: var(--paper); padding: clamp(56px, 7vw, 104px) var(--gutter) 0; overflow: hidden; }
+.foot { background: var(--burgundy); color: var(--paper); padding: clamp(56px, 7vw, 104px) var(--edge) 0; overflow: hidden; }
 .foot__cols { display: grid; gap: clamp(26px, 3vw, 50px); grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); }
 .foot__motto { font-family: var(--display); font-weight: 600; font-style: italic; font-size: clamp(26px, 2.8vw, 38px); margin-bottom: 14px; line-height: 1.1; }
 .foot__blurb { max-width: 38ch; color: color-mix(in srgb, var(--paper) 78%, transparent); font-size: 14.5px; }
