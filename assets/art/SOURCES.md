@@ -45,6 +45,7 @@ Derived by us for the Unicorn scenes E, F and G; regenerate them with the script
 
 | File | What | Made with | Date |
 | --- | --- | --- | --- |
+| `valley-of-mexico-2026-10-25.jpg` | A panoramic landscape of the Valley of Mexico in the manner of José María Velasco: a city with domes by a lake, two snow-capped volcanoes, an aqueduct, nopales and agaves in the foreground. **Not a painting by Velasco**: the image carried a generated "José María Velasco" signature, painted out in the web copy so it cannot pass for his work. Depicts a place, not a historical event. | Google Gemini, Nano Banana Pro, 2K (2752×1536), by Carlos. **[check]** prompt not recorded | 2026-10-25 |
 | `portico-nano-banana-pro-2026-10-21.jpg` | Engraving-style elevation of a Doric portico (three columns, frieze with six empty metopes, empty architrave). No text in it; every word on it in the pillars section is HTML laid over it. Depicts no particular building. | Google Gemini, Nano Banana Pro, 2K, 4:3, with a composition reference rendered from our own coded portico | 2026-10-21 |
 
 Prompt (verbatim):
@@ -154,12 +155,33 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 
 | File | Made from |
 | --- | --- |
-| `epigraph-agnus-dei.jpg` | `zurbaran-agnus-dei.jpg` above (public domain), shown ghosted behind Lewis Hanke's sentence |
+| `epigraph-valley.jpg` | `assets/art/ai/valley-of-mexico-2026-10-25.jpg` (AI-generated, see below): the false signature painted out, printed a little warmer toward the site's paper, resized to 2400 px. It fills the epigraph section behind Lewis Hanke's sentence, credited on the page as a generated image |
 | `atlas-plate.jpg` | A still of our own Atlas map (`site/components/MapTour.tsx`, Natural Earth geometry, public domain), captured from the page |
 | `pillars/mestizaje.jpg` | Cuzco School, *Matrimonio de Martín de Loyola con Beatriz Ñusta*, 1718 (the `mestizaje.jpg` above), resized |
 | `pillars/catolicismo.jpg` | `arch-tepotzotlan-retablo-mayor.jpg` above (CC0), resized |
 | `pillars/lengua.jpg` | `florentine-codex-folio-80.jpg` above (public domain) |
 | `villalpando-plaza-mayor-1695.jpg` | `paint-villalpando-plaza-mayor-1695.jpg` above (public domain), resized; in the About section |
 
-`portico.jpg` left the site on 2026-10-25 (the pillars are now HTML and CSS); it stays in the film (`film/reel/assets/img/portico.jpg`).
+`portico.jpg` left the site on 2026-10-25 (the pillars are now HTML and CSS); it stays in the film (`film/reel/assets/img/portico.jpg`). `epigraph-agnus-dei.jpg` (Zurbarán's lamb) left the site on 2026-10-26: the valley replaced it.
+
+## The footer's letters (`site/public/art/letters/`)
+
+Each letter of HISPANO STUDIES in the footer is a window onto one picture: a crop of a file listed above (public domain or CC0), at most 600 px, credited in the footer under the word.
+
+| File | Made from |
+| --- | --- |
+| `00-cabrera-maria-luz-padilla.jpg` | `paint-cabrera-maria-luz-padilla.jpg` (PD-Art) |
+| `01-cuzco-archangel-eliel-arquebus.jpg` | `paint-cuzco-archangel-eliel-arquebus.jpg` (PD-Art) |
+| `02-tepotzotlan-crossing-retablos.jpg` | `arch-tepotzotlan-crossing-retablos.jpg` (CC0) |
+| `03-morlete-casta-albino.jpg` | `paint-morlete-casta-albino.jpg` (PD-Art) |
+| `04-nuremberg-tenochtitlan-1524.jpg` | `map-nuremberg-tenochtitlan-1524.jpg` (public domain) |
+| `05-biombo-indian-wedding-palo-volador.jpg` | `paint-biombo-indian-wedding-palo-volador.jpg` (PD-Art) |
+| `06-perez-holguin-pentecost.jpg` | `paint-perez-holguin-pentecost.jpg` (public domain) |
+| `07-villalpando-triumph-of-religion.jpg` | `paint-villalpando-triumph-of-religion.jpg` (public domain) |
+| `08-paoay-church.jpg` | `arch-paoay-church.jpg` (CC0) |
+| `09-capilla-rosario-puebla.jpg` | `arch-capilla-rosario-puebla.jpg` (public domain, PD-self) |
+| `10-plaza-mayor-mexico-nebel-1836.jpg` | `arch-plaza-mayor-mexico-nebel-1836.jpg` (public domain) |
+| `11-tepotzotlan-retablo-mayor.jpg` | `arch-tepotzotlan-retablo-mayor.jpg` (CC0) |
+| `12-villalpando-plaza-mayor-1695.jpg` | `paint-villalpando-plaza-mayor-1695.jpg` (public domain) |
+| `13-blaeu-americae-nova-tabula.jpg` | `map-blaeu-americae-nova-tabula.jpg` (public domain) |
 

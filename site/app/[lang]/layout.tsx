@@ -5,7 +5,7 @@ import { LANGS, isLang, dict } from '@/lib/i18n';
 import '../globals.css';
 
 const display = Ibarra_Real_Nova({
-  subsets: ['latin'], weight: ['400', '600'], style: ['normal', 'italic'], variable: '--font-display', display: 'swap',
+  subsets: ['latin'], weight: ['400', '600', '700'], style: ['normal', 'italic'], variable: '--font-display', display: 'swap',
 });
 const body = Inter({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
 const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });

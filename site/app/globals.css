@@ -530,24 +530,22 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
    sticky: the words are inked in as the section scrolls past.
    ========================================================================== */
 
-.epigraph {
-  padding: 0; background: var(--paper-deep); color: var(--burgundy);
-  background-image: radial-gradient(80% 70% at 75% 45%, color-mix(in srgb, var(--paper) 80%, transparent), transparent 70%);
-  border-block: var(--rule);
-}
+.epigraph { padding: 0; background: var(--paper-deep); color: var(--burgundy); border-block: var(--rule); }
 .epigraph__stick {
   position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip;
-  padding: clamp(72px, 10vw, 140px) var(--edge);
+  padding: clamp(72px, 9vw, 130px) var(--edge);
 }
-.epigraph__art {
-  position: absolute; right: -16%; top: 56%; translate: 0 -50%; width: min(62vw, 1050px); height: auto;
-  mix-blend-mode: multiply; filter: saturate(1.15) contrast(0.85) brightness(1.75); opacity: 0.38;
-  -webkit-mask: radial-gradient(closest-side, #000 40%, transparent); mask: radial-gradient(closest-side, #000 40%, transparent);
-  pointer-events: none;
+/* the valley fills the whole section; a paper veil from the left keeps the words */
+.epigraph__art { object-fit: cover; object-position: 62% 55%; pointer-events: none; }
+.epigraph__veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(98deg, color-mix(in srgb, var(--paper) 90%, transparent) 0%, color-mix(in srgb, var(--paper) 78%, transparent) 34%, color-mix(in srgb, var(--paper) 18%, transparent) 60%, transparent 74%),
+    linear-gradient(0deg, color-mix(in srgb, var(--burgundy-dark) 22%, transparent), transparent 22%);
 }
-.epigraph__fig { position: relative; margin: 0; max-width: 1180px; }
+.epigraph__fig { position: relative; margin: 0; max-width: min(860px, 60%); }
 .epigraph__q {
-  margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(27px, 3.9vw, 62px); line-height: 1.12;
+  margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(26px, 3vw, 50px); line-height: 1.13;
   letter-spacing: -0.005em; text-wrap: pretty;
 }
 .epigraph__mark {
@@ -556,12 +554,17 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
 }
 .epigraph__by {
   display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; margin-top: clamp(26px, 3vw, 44px);
-  padding-top: 16px; border-top: 1px solid var(--grid); max-width: 60ch;
-  font-size: 14px; color: var(--ink-muted);
+  padding-top: 16px; border-top: 1px solid color-mix(in srgb, var(--burgundy) 30%, transparent); max-width: 60ch;
+  font-size: 14px; color: var(--ink);
 }
 .epigraph__name { font-family: var(--display); font-weight: 600; font-size: 22px; color: var(--ink); letter-spacing: 0.02em; }
 .epigraph__by cite { flex-basis: 100%; font-style: italic; font-family: var(--display); font-size: 16px; }
-.epigraph__tr { margin-top: 18px; max-width: 70ch; font-size: 14px; line-height: 1.55; color: var(--ink-muted); }
+.epigraph__tr { margin-top: 18px; max-width: 70ch; font-size: 14px; line-height: 1.55; color: var(--ink); }
+.epigraph__plate {
+  position: absolute; right: var(--edge); bottom: 18px; margin: 0; max-width: 40ch; text-align: right;
+  font-size: 10.5px; letter-spacing: 0.04em; color: color-mix(in srgb, var(--paper) 88%, transparent);
+  text-shadow: 0 1px 6px color-mix(in srgb, var(--burgundy-dark) 70%, transparent);
+}
 @keyframes ink { from { opacity: 0.16; filter: blur(1.5px); } to { opacity: 1; filter: none; } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
@@ -576,7 +579,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
     .epigraph__art { animation: drift linear both; animation-timeline: --epi; animation-range: cover; }
   }
 }
-@keyframes drift { from { transform: scale(1.12) translateY(4%); } to { transform: scale(1) translateY(-4%); } }
+@keyframes drift { from { transform: scale(1.1) translateX(-2%); } to { transform: scale(1.02) translateX(1%); } }
 
 /* ==========================================================================
    DOORS — II · III on the home: the Atlas and the canon as two plates that
@@ -897,13 +900,40 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .about__text .lede { font-size: clamp(17px, 1.2vw, 19px); }
 
 /* ==========================================================================
-   FOOTER — from P · Tornaviaje, in the brand's burgundy
+   FOOTER — the name cut out of the burgundy, a picture in every letter
    ========================================================================== */
 
-.foot { background: var(--burgundy); color: var(--paper); padding: clamp(56px, 7vw, 104px) var(--edge) 0; overflow: hidden; }
-.foot__cols { display: grid; gap: clamp(26px, 3vw, 50px); grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); }
-.foot__motto { font-family: var(--display); font-weight: 600; font-style: italic; font-size: clamp(26px, 2.8vw, 38px); margin-bottom: 14px; line-height: 1.1; }
-.foot__blurb { max-width: 38ch; color: color-mix(in srgb, var(--paper) 78%, transparent); font-size: 14.5px; }
+.foot { background: var(--burgundy); color: var(--paper); padding: 0; overflow: hidden; content-visibility: auto; contain-intrinsic-size: auto 1100px; }
+.foot__plate {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: stretch;
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
+}
+.foot__word {
+  container-type: inline-size; margin: 0; max-width: none; padding: clamp(40px, 5vw, 80px) clamp(16px, 3vw, 56px) clamp(30px, 4vw, 64px);
+  display: grid; gap: 0.5cqi;
+  background: var(--grain), radial-gradient(90% 80% at 40% 40%, color-mix(in srgb, var(--burgundy) 80%, var(--leather)), var(--burgundy) 70%, var(--burgundy-dark));
+}
+.foot__line { display: flex; justify-content: space-between; align-items: baseline; }
+.foot__l {
+  font-family: var(--display); font-weight: 700; font-size: 21.4cqi; line-height: 0.8; letter-spacing: -0.01em;
+  padding-top: 0.04em;
+  /* the letter is a window: the picture shows through it, with a shadow under its top edge as if cut */
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--burgundy-dark) 40%, transparent), transparent 12%), var(--img);
+  background-size: 100% 100%, cover; background-position: 0 0, var(--pos); background-repeat: no-repeat;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--paper) 12%, transparent));
+}
+.foot__strip {
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 22px;
+  width: clamp(64px, 6vw, 96px); padding: clamp(40px, 5vw, 80px) 0 clamp(30px, 4vw, 64px);
+  background: var(--paper) var(--grain); color: var(--burgundy);
+}
+.foot__name { writing-mode: vertical-rl; font-family: var(--display); font-size: 13px; letter-spacing: 0.32em; text-transform: uppercase; }
+.foot__strip i { flex: 1; width: 1px; min-height: 40px; background: color-mix(in srgb, var(--burgundy) 45%, transparent); }
+.foot__motto { font-family: var(--display); font-style: italic; font-size: 15px; line-height: 1.25; text-align: center; padding: 0 6px; width: min-content; }
+.foot__letters { margin: 0 var(--edge); padding: 14px 0 0; max-width: none; font-size: 10.5px; letter-spacing: 0.04em; color: color-mix(in srgb, var(--paper) 50%, transparent); }
+.foot__cols { display: grid; gap: clamp(26px, 3vw, 50px); grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); margin: 0 var(--edge); padding: clamp(48px, 5vw, 80px) 0; }
+.foot__lede { max-width: 30ch; margin: 0; font-family: var(--display); font-size: clamp(20px, 1.7vw, 26px); line-height: 1.3; color: color-mix(in srgb, var(--paper) 90%, transparent); }
 .foot h4 { font-family: var(--body); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: color-mix(in srgb, var(--paper) 62%, transparent); margin-bottom: 14px; }
 .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .foot a, .foot li > span { color: inherit; text-decoration: none; font-size: 14.5px; }
@@ -912,17 +942,20 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .foot__chan .seal { width: 30px; height: 30px; }
 .foot__count { font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 60%, transparent); }
 .foot__pending { color: color-mix(in srgb, var(--paper) 55%, transparent); font-family: var(--mono); font-size: 11px; }
-.foot__marquee { margin-top: clamp(44px, 5vw, 74px); overflow: hidden; border-block: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); padding: 14px 0; }
-.foot__ticker { display: flex; width: max-content; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 70%, transparent); }
-.foot__ticker span { padding: 0 22px; }
-.foot__ticker span::before { content: "✦"; margin-right: 22px; opacity: 0.5; }
-@media (prefers-reduced-motion: no-preference) { .foot__ticker { animation: tick 46s linear infinite; } }
-@keyframes tick { to { transform: translateX(-50%); } }
-/* the oversized wordmark is an SVG, so it scales to the column and can
-   never run off the edge the way a clamped font-size did */
-.foot__word { display: block; width: 100%; margin: clamp(26px, 3vw, 50px) 0 -0.6%; overflow: visible; }
-.foot__word text { font-family: var(--display); font-weight: 600; font-size: 120px; letter-spacing: -0.035em; fill: color-mix(in srgb, var(--paper) 16%, transparent); }
-.foot__base { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; padding: 18px 0 22px; margin: 0; max-width: none; color: color-mix(in srgb, var(--paper) 55%, transparent); border-top: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+.foot__base {
+  display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; justify-content: space-between; padding: 18px 0 22px; margin: 0 var(--edge);
+  font-size: 11.5px; color: color-mix(in srgb, var(--paper) 55%, transparent); border-top: 1px solid color-mix(in srgb, var(--paper) 18%, transparent);
+}
+.foot .foot__made { display: inline-flex; align-items: center; gap: 10px; font-size: 11.5px; color: color-mix(in srgb, var(--paper) 75%, transparent); transition: color 0.2s; }
+.foot .foot__made:hover { color: var(--paper); text-decoration: none; }
+.foot__algoreto { height: 19px; width: auto; display: block; translate: 0 1px; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* as the footer comes up, each picture slides a little inside its letter */
+    .foot__l { animation: window linear both; animation-timeline: view(); animation-range: entry 0% cover 60%; }
+  }
+}
+@keyframes window { from { background-position: 0 0, 50% 90%; } to { background-position: 0 0, var(--pos); } }
 
 /* ==========================================================================
    REVEALS — CSS only, and they fail open: where scroll-driven animation is
@@ -955,6 +988,22 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .plate-wrap::after { inset: 8px; }
   .foot__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .foot__say { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  /* phones: the valley sits under the words, the veil comes down from the top */
+  .epigraph__stick { align-items: start; padding-top: calc(var(--bar-h) + 64px); }
+  .epigraph__art { top: auto !important; height: 46% !important; object-position: 72% 60%; }
+  .epigraph__veil {
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper) 52%, color-mix(in srgb, var(--paper) 55%, transparent) 62%, transparent 76%);
+  }
+  .epigraph__fig { max-width: none; }
+  .epigraph__plate { left: var(--edge); text-align: left; bottom: 12px; }
+  /* the strip lies down under the name */
+  .foot__plate { grid-template-columns: 1fr; }
+  .foot__strip { width: auto; flex-direction: row; padding: 14px var(--edge); }
+  .foot__name { writing-mode: horizontal-tb; font-size: 10.5px; letter-spacing: 0.22em; }
+  .foot__strip i { height: 1px; width: auto; min-height: 0; min-width: 20px; }
+  .foot__motto { width: auto; white-space: nowrap; font-size: 13px; }
 }
 @media (max-width: 760px) {
   /* phones: the name on two lines, as wide as the screen */

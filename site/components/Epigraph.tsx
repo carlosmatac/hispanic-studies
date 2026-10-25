@@ -3,8 +3,9 @@ import { dict, type Lang } from '@/lib/i18n';
 import { HANKE } from '@/lib/content';
 
 /* The epigraph: Lewis Hanke's sentence, set after the film like the epigraph
-   after a book's frontispiece. As the section scrolls past, the words are
-   inked in one by one (CSS scroll-driven animation). It fails open: without
+   after a book's frontispiece, over a wide view of the Valley of Mexico that
+   fills the whole section. As the section scrolls past, the words are inked
+   in one by one (CSS scroll-driven animation). It fails open: without
    support, or with reduced motion, the sentence is simply there. */
 
 export default function Epigraph({ lang }: { lang: Lang }) {
@@ -13,7 +14,8 @@ export default function Epigraph({ lang }: { lang: Lang }) {
   return (
     <section className="epigraph" aria-label={t.label}>
       <div className="epigraph__stick">
-        <Image className="epigraph__art" src="/art/epigraph-agnus-dei.jpg" alt="" width={1600} height={948} sizes="70vw" />
+        <Image className="epigraph__art" src="/art/epigraph-valley.jpg" alt="" fill sizes="100vw" />
+        <span className="epigraph__veil" aria-hidden="true" />
         <figure className="epigraph__fig">
           <blockquote className="epigraph__q" lang="en" style={{ '--n': words.length } as React.CSSProperties}>
             <span className="epigraph__mark" aria-hidden="true">“</span>
@@ -28,6 +30,7 @@ export default function Epigraph({ lang }: { lang: Lang }) {
           </figcaption>
           {t.translation && <p className="epigraph__tr">{t.translation}</p>}
         </figure>
+        <p className="epigraph__plate mono">{t.plate}</p>
       </div>
     </section>
   );

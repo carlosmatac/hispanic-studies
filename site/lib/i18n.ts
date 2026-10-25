@@ -74,6 +74,7 @@ const en = {
     role: 'former President of the American Historical Association',
     work: 'The Spanish Struggle for Justice in the Conquest of America, 1949',
     translation: '',
+    plate: 'The Valley of Mexico, in the manner of José María Velasco · generated image',
   },
   pillars: {
     eyebrow: 'Three pillars',
@@ -186,6 +187,8 @@ const en = {
     canonSrc: 'Canon after Gustavo Bueno (2001)',
     legal: 'Hispano Studies LLC',
     version: 'First version · October 2026 · not final copy',
+    letters: 'In the letters',
+    madeBy: 'Made by',
   },
 };
 
@@ -258,6 +261,7 @@ const es: Dict = {
     role: 'expresidente de la American Historical Association',
     work: 'The Spanish Struggle for Justice in the Conquest of America, 1949',
     translation: 'La conquista española de América fue mucho más que una notable hazaña militar y política: fue también uno de los mayores intentos que ha visto el mundo de hacer prevalecer los preceptos cristianos en las relaciones entre los pueblos. (Traducción nuestra.)',
+    plate: 'El valle de México, a la manera de José María Velasco · imagen generada',
   },
   pillars: {
     eyebrow: 'Tres pilares',
@@ -370,6 +374,8 @@ const es: Dict = {
     canonSrc: 'Canon según Gustavo Bueno (2001)',
     legal: 'Hispano Studies LLC',
     version: 'Primera versión · octubre de 2026 · texto no definitivo',
+    letters: 'En las letras',
+    madeBy: 'Hecho por',
   },
 };
 
