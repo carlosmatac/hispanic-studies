@@ -3,7 +3,7 @@ import { VIDEOS, SHORTS, ESSAYS } from '@/lib/content';
 import Temple from './pillars/Temple';
 
 /* I · The three pillars hold up the Institute: mestizaje, catolicismo and
-   lengua carry its works (pillars/Temple.tsx). */
+   lengua carry its works (pillars/Temple.tsx), across the full width. */
 export default function Pillars({ lang, counts }: { lang: Lang; counts: { milestones: number; authors: number } }) {
   const d = dict(lang);
   return (
@@ -12,6 +12,7 @@ export default function Pillars({ lang, counts }: { lang: Lang; counts: { milest
       <div className="section-head reveal">
         <p className="eyebrow">{d.pillars.eyebrow}</p>
         <h2 id="pillars-h">{d.pillars.h}</h2>
+        <p>{d.pillars.hint}</p>
       </div>
       <Temple
         lang={lang}

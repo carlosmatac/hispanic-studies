@@ -10,7 +10,7 @@ Decided (handoff: `docs/handoff/2026-10-20-real-project.md`):
 - **Direction: O · Atlas** (`proposals/o-atlas/` on the mockup branches): the sober reference-work register Beltrán asked for.
 - **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.**
 - From P · Tornaviaje only the **footer** came over. (The canon as a React Flow graph came too, and was dropped on 2026-10-25 at Beltrán's request; see "The canon".)
-- **Colour, used more boldly** (Beltrán, 2026-10-24: "too monochrome"): the page alternates paper, aged paper, leather and burgundy grounds, with a paper grain over everything and warm shadows (`--lift-1/2/3` in `globals.css`). Still only the brand colours and their tints.
+- **Colour, used more boldly** (Beltrán and Carlos, 2026-10-24/25: "too monochrome"): the page alternates paper, aged paper, leather, burgundy and ink grounds, with a paper grain over everything and warm shadows (`--lift-1/2/3` in `globals.css`). The interface keeps only the brand colours and their tints; the colour comes from the art, shown in its own colours (the pillars, the Villalpando plate in About, the epigraph's lamb).
 
 Still parked (do not build on a guess): CMS/editing, payments and merch (#9), the newsletter provider behind the pamphlet signup, the Discord invite link.
 
@@ -91,9 +91,9 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 
 ## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/Temple.tsx`)
 
-- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. An engraved Doric portico (`site/public/art/portico.jpg`, AI-generated with Nano Banana Pro, no text in it; logged in `assets/art/SOURCES.md`) carries our own HTML on top: the Institute's works in the six metopes, its name on the architrave, the words MESTIZAJE, CATOLICISMO, LENGUA on the shafts. No captions or explanations of the columns: the section is about the three ideas.
-- Geometry is in the image's own pixels (2400 × 1792) at the top of `Temple.tsx`; replacing the image means re-measuring it. Selecting a pillar tints its shaft and the metopes it holds up through an SVG multiplied over the plate, and lists real titles beside it (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link to `/[lang]/canon#<text id>`.
-- Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; a fully code-drawn portico (it worked, but looked drawn rather than engraved).
+- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. Since 2026-10-25 it is built in HTML and CSS across the full width, on burgundy: an entablature with the Institute's name on the architrave and its six works in the frieze (triglyphs between them), three columns, three steps. No plate image: the engraved portico (`portico.jpg`) is now used only in the film.
+- Each shaft is a painting in **full colour** (`site/public/art/pillars/`: the Loyola–Ñusta marriage, the Tepotzotlán altarpiece, the Florentine Codex), shaded round and fluted in CSS so it reads as a column. Pointing at a column lights the works that rest on it; opening it shows a popup (`<dialog>`) with what rests on it (`PILLAR_LINKS` in `site/lib/content.ts`). On phones the three columns stay side by side, their names upright.
+- Rejected, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; the engraved portico with the words laid over it and a list beside it (2026-10-21 to 25: "poco estético").
 
 ## The reel (`film/`, `site/components/Reel.tsx`)
 

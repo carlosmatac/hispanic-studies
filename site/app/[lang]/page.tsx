@@ -47,7 +47,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* the epigraph: Lewis Hanke */}
         <Epigraph lang={lang} />
 
-        {/* I · three pillars, as a portico */}
+        {/* I · three pillars holding up the Institute */}
         <Pillars lang={lang} counts={{ milestones: COUNTS.milestones, authors: COUNTS.authors }} />
 
         {/* II · III · the Atlas and the canon, as two plates that open their pages */}
@@ -139,8 +139,16 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <p className="eyebrow">{d.about.eyebrow}</p>
             <h2 id="about-h">{d.about.h}</h2>
           </div>
-          <p className="lede">{d.about.p1}</p>
-          <p>{d.about.p2}</p>
+          <div className="about__grid">
+            <div>
+              <p className="lede">{d.about.p1}</p>
+              <p>{d.about.p2}</p>
+            </div>
+            <figure className="about__plate">
+              <Image src="/art/villalpando-plaza-mayor-1695.jpg" alt="" width={2200} height={1660} sizes="(max-width: 1040px) 92vw, 55vw" />
+              <figcaption>{d.about.plate}</figcaption>
+            </figure>
+          </div>
           <h3 className="shelf">{d.about.channels}</h3>
           <ChannelGrid lang={lang} />
         </section>

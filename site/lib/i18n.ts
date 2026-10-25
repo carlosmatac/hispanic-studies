@@ -85,7 +85,15 @@ const en = {
     worksSub: {
       milestones: 'milestones', authors: 'authors', books: 'De Indiis Editions', videos: 'videos', essays: 'essays', community: 'Reconquista Syndicate',
     },
-    hint: 'Choose a pillar to see what rests on it.',
+    hint: 'Open a pillar to see what rests on it.',
+    open: 'Open',
+    close: 'Close',
+    pillar: 'Pillar',
+    credits: {
+      mestizaje: 'Cuzco School, the marriage of Martín de Loyola and Beatriz Ñusta, 1718',
+      catolicismo: 'High altarpiece of San Francisco Javier, Tepotzotlán, 18th century',
+      lengua: 'Sahagún and Nahua scholars, the Florentine Codex, 1575–77',
+    },
     rests: 'Rests on',
     series: 'Series',
     items: [
@@ -152,6 +160,7 @@ const en = {
     p1: 'The Institute for Hispano Studies studies and defends Hispanic civilization: its history, its Catholic inheritance, its mestizaje and its two languages. De Indiis Editions translates and republishes the canon of that argument.',
     p2: 'The claim is not that this tradition was defeated. It is that most of it was never translated, and that an argument you cannot read is an argument you cannot answer.',
     channels: 'Where the institute publishes',
+    plate: 'Cristóbal de Villalpando, View of the Plaza Mayor of Mexico City, 1695. Corsham Court',
     followers: 'followers',
     subscribers: 'subscribers',
     newTab: 'opens in a new tab',
@@ -260,7 +269,15 @@ const es: Dict = {
     worksSub: {
       milestones: 'hitos', authors: 'autores', books: 'De Indiis Editions', videos: 'vídeos', essays: 'ensayos', community: 'Reconquista Syndicate',
     },
-    hint: 'Elige un pilar para ver qué se apoya en él.',
+    hint: 'Abre un pilar para ver qué se apoya en él.',
+    open: 'Abrir',
+    close: 'Cerrar',
+    pillar: 'Pilar',
+    credits: {
+      mestizaje: 'Escuela cuzqueña, matrimonio de Martín de Loyola con Beatriz Ñusta, 1718',
+      catolicismo: 'Retablo mayor de San Francisco Javier, Tepotzotlán, siglo XVIII',
+      lengua: 'Sahagún y los sabios nahuas, Códice Florentino, 1575–77',
+    },
     rests: 'Se apoya en',
     series: 'Colecciones',
     items: [
@@ -327,6 +344,7 @@ const es: Dict = {
     p1: 'El Institute for Hispano Studies estudia y defiende la civilización hispánica: su historia, su herencia católica, su mestizaje y sus dos lenguas. De Indiis Editions traduce y reedita el canon de esa discusión.',
     p2: 'La tesis no es que esta tradición fuera derrotada. Es que casi nunca se tradujo, y un argumento que no puedes leer es un argumento que no puedes responder.',
     channels: 'Dónde publica el instituto',
+    plate: 'Cristóbal de Villalpando, Vista de la Plaza Mayor de la Ciudad de México, 1695. Corsham Court',
     followers: 'seguidores',
     subscribers: 'suscriptores',
     newTab: 'se abre en una pestaña nueva',

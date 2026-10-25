@@ -356,89 +356,145 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 
 /* ==========================================================================
    PILLARS — three pillars hold up the Institute (components/pillars/Temple)
-   An engraved Doric portico (an image, no text in it) with everything that
-   means something laid over it: the works in the metopes, the name on the
-   architrave, the three words on the shafts. Beside it, what rests on the
-   chosen pillar, so the two are seen together.
+   The full width is a temple on burgundy: an entablature with the name and
+   the six works, three columns whose shafts are paintings in full colour
+   (shaded round and fluted), three steps. Each column opens a popup.
    ========================================================================== */
 
-.pillars { padding-bottom: clamp(52px, 7vw, 104px); }
-.portico { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: clamp(26px, 3.4vw, 56px); align-items: center; }
+.pillars {
+  padding-inline: 0; color: var(--paper);
+  background: var(--burgundy-dark);
+  background-image: radial-gradient(70% 60% at 50% 30%, color-mix(in srgb, var(--burgundy) 85%, transparent), transparent 75%);
+}
+.pillars .section-head { padding-inline: var(--gutter); }
+.pillars .eyebrow { color: color-mix(in srgb, var(--paper) 62%, transparent); }
+.pillars .numeral { color: var(--paper); }
+.pillars .section-head h2 { color: var(--paper); }
+.pillars .section-head p:not(.eyebrow) { color: color-mix(in srgb, var(--paper) 72%, transparent); margin-top: 12px; }
 
-.portico__plate { position: relative; container-type: inline-size; box-shadow: var(--lift-2); outline: 1px solid var(--grid); outline-offset: -1px; }
-.portico__plate > img { display: block; width: 100%; height: auto; }
-.portico__tint { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: multiply; }
-.portico__tint rect, .portico__tint path { fill: var(--burgundy); opacity: 0; transition: opacity 0.35s; }
-.portico__tint .is-lit { opacity: 0.92; }
+.temple { --gap: clamp(14px, 4.5vw, 84px); --pad: clamp(10px, 3vw, 56px); padding-inline: var(--pad); }
 
-/* the works, in the metopes */
-.portico__frieze { position: absolute; inset: 0; pointer-events: none; }
-.portico__metope {
-  position: absolute; pointer-events: auto; display: grid; place-items: center; text-align: center;
-  font-family: var(--display); font-weight: 600; font-size: 1.6cqw; line-height: 1; color: var(--ink);
-  text-decoration: none; transition: color 0.35s;
+/* the entablature: cornice, frieze (triglyphs and metopes), architrave */
+.temple__ent { position: relative; margin-inline: calc(var(--pad) * -0.4); color: var(--burgundy-dark); }
+.temple__ent::before { /* the cornice */
+  content: ""; display: block; height: clamp(10px, 1.2vw, 18px); background: var(--paper);
+  box-shadow: 0 clamp(4px, 0.5vw, 8px) 0 -2px color-mix(in srgb, var(--paper) 70%, var(--leather)), 0 18px 30px -18px rgb(0 0 0 / 0.7);
+  margin-bottom: clamp(5px, 0.6vw, 10px);
 }
-.portico__metope:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
-.portico__metope.is-lit { color: var(--paper); }
-.portico.has-sel .portico__metope:not(.is-lit) { color: color-mix(in srgb, var(--ink) 45%, var(--paper)); }
-.portico__architrave {
-  position: absolute; margin: 0; max-width: none; display: grid; place-items: center;
-  font-family: var(--display); font-weight: 600; font-size: 1.05cqw; line-height: 1;
-  letter-spacing: 0.55em; text-indent: 0.55em; text-transform: uppercase; color: var(--burgundy);
+.temple__frieze {
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0;
+  background: var(--paper-deep); border-block: 2px solid color-mix(in srgb, var(--paper-deep) 60%, var(--leather));
+}
+.temple__metope {
+  position: relative; display: grid; place-items: center; min-height: clamp(46px, 6.4vw, 104px); padding: 6px 4px;
+  text-decoration: none; text-align: center; color: var(--ink);
+  font-family: var(--display); font-weight: 600; font-size: clamp(12px, 1.55vw, 24px); line-height: 1;
+  transition: background 0.35s, color 0.35s;
+}
+/* a triglyph between metopes: three grooves */
+.temple__metope + .temple__metope::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: clamp(10px, 1.6vw, 26px); translate: -50% 0;
+  background: repeating-linear-gradient(90deg, var(--paper-deep) 0 22%, color-mix(in srgb, var(--leather) 70%, var(--ink)) 22% 33%);
+  border-inline: 1px solid color-mix(in srgb, var(--leather) 60%, transparent);
+}
+.temple__metope span { padding: 0 clamp(6px, 1vw, 16px); }
+.temple__metope:hover span, .temple__metope:focus-visible span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+.temple__metope.is-lit { background: var(--burgundy); color: var(--paper); }
+.temple.has-lit .temple__metope:not(.is-lit) { color: color-mix(in srgb, var(--ink) 40%, var(--paper-deep)); }
+.temple__arch {
+  margin: 0; max-width: none; padding: clamp(8px, 1vw, 16px) 0; text-align: center; background: var(--paper);
+  font-family: var(--display); font-weight: 600; font-size: clamp(10px, 1.25vw, 20px); letter-spacing: 0.5em; text-indent: 0.5em; text-transform: uppercase;
+  color: var(--burgundy); box-shadow: 0 22px 30px -22px rgb(0 0 0 / 0.8);
 }
 
-/* the three pillars: the words, on the shafts */
-.portico__col {
-  position: absolute; display: grid; place-items: center; padding: 0; border: 0; background: none;
-  cursor: pointer; color: inherit; font: inherit;
+/* the columns */
+.temple__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); padding-inline: calc(var(--gap) * 0.5); }
+.col { display: flex; flex-direction: column; align-items: stretch; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.col:focus-visible { outline: none; }
+.col:focus-visible .col__shaft { outline: 3px solid var(--paper); outline-offset: 4px; }
+/* capital: abacus, echinus, necking */
+.col__capital { display: grid; justify-items: center; }
+.col__capital i { display: block; height: clamp(5px, 0.7vw, 12px); background: var(--paper); }
+.col__capital i:nth-child(1) { width: 112%; height: clamp(7px, 0.9vw, 15px); box-shadow: 0 10px 18px -12px rgb(0 0 0 / 0.8); }
+.col__capital i:nth-child(2) { width: 104%; border-radius: 0 0 40% 40% / 0 0 100% 100%; background: var(--paper-deep); }
+.col__capital i:nth-child(3) { width: 100%; height: clamp(3px, 0.35vw, 6px); margin-top: clamp(3px, 0.35vw, 6px); background: color-mix(in srgb, var(--paper) 80%, var(--leather)); }
+.col__shaft { position: relative; display: block; height: clamp(380px, 68vh, 760px); overflow: hidden; background: var(--burgundy); }
+.col__shaft img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.6s; filter: saturate(0.9) brightness(0.92); }
+/* round it and flute it: dark at both edges, light down the middle, with grooves */
+.col__round {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 248 230 / 0) 0 calc(100% / 14 - 2px), rgb(30 6 10 / 0.22) calc(100% / 14 - 2px) calc(100% / 14)),
+    linear-gradient(90deg, rgb(30 6 10 / 0.78), rgb(30 6 10 / 0.12) 26%, rgb(255 244 220 / 0.1) 46%, rgb(30 6 10 / 0.1) 66%, rgb(30 6 10 / 0.82)),
+    linear-gradient(0deg, rgb(30 6 10 / 0.88), rgb(30 6 10 / 0) 52%);
+  transition: opacity 0.6s;
 }
-.portico__col:focus-visible { outline: 2px solid var(--burgundy); outline-offset: 2px; }
-.portico__word {
-  /* sits on the light middle third of the shaft, between necking and base */
-  margin-top: 4cqw; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;
-  font-family: var(--display); font-weight: 600; font-size: 3.9cqw; line-height: 1;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--burgundy);
-  text-shadow: 0 0 0.18em var(--paper), 0 0 0.18em var(--paper), 0 0 0.35em var(--paper);
-  transition: color 0.35s, text-shadow 0.35s;
+.col:hover .col__shaft img, .col.is-lit .col__shaft img { transform: scale(1.05); filter: saturate(1.08) brightness(1); }
+.col:hover .col__round, .col.is-lit .col__round { opacity: 0.82; }
+.col__label { position: absolute; left: 0; right: 0; bottom: 0; display: grid; gap: 8px; padding: clamp(16px, 2.2vw, 34px); color: var(--paper); }
+.col__n { font-family: var(--mono); font-size: 12px; letter-spacing: 0.24em; color: color-mix(in srgb, var(--paper) 70%, var(--leather)); }
+.col__name { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3.3vw, 54px); line-height: 1; letter-spacing: 0.01em; text-wrap: balance; }
+.col__sub { font-size: clamp(13px, 1vw, 15px); line-height: 1.45; color: color-mix(in srgb, var(--paper) 82%, transparent); max-width: 34ch;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.col__open {
+  justify-self: start; display: inline-flex; align-items: center; gap: 10px; margin-top: 6px; padding: 8px 14px 9px;
+  border: 1px solid color-mix(in srgb, var(--paper) 60%, transparent); font-size: 14px; font-weight: 500;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
 }
-.portico.has-sel .portico__col:not(.is-sel) .portico__word { color: color-mix(in srgb, var(--burgundy) 45%, var(--paper)); }
-.portico__col.is-sel .portico__word { color: var(--paper); text-shadow: none; }
+.col__open i { font-style: normal; font-size: 18px; line-height: 0.6; }
+.col:hover .col__open, .col.is-lit .col__open { background: var(--paper); color: var(--burgundy-dark); border-color: var(--paper); }
+/* base: torus and plinth */
+.col__base { display: grid; justify-items: center; }
+.col__base i { display: block; background: var(--paper); }
+.col__base i:nth-child(1) { width: 106%; height: clamp(6px, 0.8vw, 13px); border-radius: 999px; background: var(--paper-deep); }
+.col__base i:nth-child(2) { width: 114%; height: clamp(9px, 1.1vw, 18px); }
+/* three steps */
+.temple__steps { display: grid; justify-items: center; margin-inline: calc(var(--pad) * -1); }
+.temple__steps i { display: block; height: clamp(6px, 0.8vw, 13px); background: var(--paper-deep); }
+.temple__steps i:nth-child(1) { width: 97%; }
+.temple__steps i:nth-child(2) { width: 98.5%; background: color-mix(in srgb, var(--paper-deep) 80%, var(--leather)); }
+.temple__steps i:nth-child(3) { width: 100%; background: color-mix(in srgb, var(--paper-deep) 60%, var(--leather)); }
 
-/* beside the plate */
-.portico__panel { align-self: stretch; display: flex; flex-direction: column; justify-content: center; min-height: 100%; }
-.panel__kicker { margin: 0 0 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); }
-.panel__name { font-size: clamp(26px, 2.5vw, 36px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--burgundy); }
-.panel__sub { margin: 10px 0 18px; font-size: 14.5px; line-height: 1.5; color: var(--ink-muted); }
-.panel__list, .panel__pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--grid); border-block: 1px solid var(--grid); }
-.panel__list a, .panel__pillars button {
-  width: 100%; display: grid; gap: 3px; padding: 12px 2px 13px; text-align: left; background: var(--paper);
-  text-decoration: none; color: var(--ink); border: 0; font: inherit; cursor: pointer; transition: background 0.15s;
-}
-.panel__list a:hover, .panel__pillars button:hover { background: color-mix(in srgb, var(--paper-deep) 55%, var(--paper)); }
-.panel__work { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); }
-.panel__title { font-family: var(--display); font-weight: 600; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.2; }
-.panel__meta { font-size: 12.5px; color: var(--ink-muted); }
-.panel__pname { font-family: var(--display); font-weight: 600; font-size: 20px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--burgundy); }
-.panel__psub { font-size: 14px; line-height: 1.45; color: var(--ink-muted); }
-@media (prefers-reduced-motion: no-preference) {
-  .panel__list li, .panel__name, .panel__sub { animation: rest-in 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
-  .panel__list li:nth-child(2) { animation-delay: 0.04s; }
-  .panel__list li:nth-child(3) { animation-delay: 0.08s; }
-  .panel__list li:nth-child(4) { animation-delay: 0.12s; }
-  .panel__list li:nth-child(5) { animation-delay: 0.16s; }
-}
-@keyframes rest-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-/* as the plate scrolls in, the three words are cut into the shafts one by one */
-@keyframes word-in { from { clip-path: inset(0 0 0 100%); opacity: 0.2; } to { clip-path: inset(0); opacity: 1; } }
+/* the columns rise as the section scrolls in (they fail open) */
+@keyframes col-rise { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .portico__plate { view-timeline: --plate block; }
-    .portico__word { animation: word-in linear both; animation-timeline: --plate; animation-range: entry 25% entry 65%; }
-    .portico__col:nth-of-type(2) .portico__word { animation-range: entry 37% entry 77%; }
-    .portico__col:nth-of-type(3) .portico__word { animation-range: entry 49% entry 89%; }
+    .temple__cols { view-timeline: --cols block; }
+    .col__shaft { animation: col-rise linear both; animation-timeline: --cols; animation-range: entry 10% entry 60%; }
+    .col:nth-child(2) .col__shaft { animation-range: entry 18% entry 68%; }
+    .col:nth-child(3) .col__shaft { animation-range: entry 26% entry 76%; }
   }
 }
+
+/* the popup */
+.pop {
+  width: min(1080px, calc(100vw - 32px)); max-height: calc(100svh - 40px); padding: 0; border: 0; overflow: auto;
+  background: var(--paper); color: var(--ink); box-shadow: var(--lift-3);
+}
+.pop::backdrop { background: color-mix(in srgb, var(--burgundy-dark) 78%, transparent); backdrop-filter: blur(4px); }
+@media (prefers-reduced-motion: no-preference) { .pop[open] { animation: record-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1); } }
+.pop__sheet { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); min-height: min(640px, calc(100svh - 40px)); }
+.pop__art { position: relative; margin: 0; background: var(--burgundy-dark); }
+.pop__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pop__art figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 18px 14px; font-size: 12px; line-height: 1.4;
+  color: var(--paper); background: linear-gradient(transparent, rgb(30 6 10 / 0.85));
+}
+.pop__body { position: relative; padding: clamp(26px, 4vw, 52px); }
+.pop__close {
+  position: absolute; right: 18px; top: 16px; width: 40px; height: 40px; cursor: pointer;
+  background: var(--paper); border: 1px solid var(--ink); font-size: 22px; line-height: 1;
+}
+.pop__close:hover { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+.pop__kicker { margin: 0 52px 10px 0; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.16em; color: var(--leather); }
+.pop__name { font-size: clamp(34px, 4vw, 56px); text-transform: uppercase; letter-spacing: 0.06em; color: var(--burgundy); }
+.pop__sub { margin: 14px 0 22px; font-size: 15.5px; line-height: 1.55; color: var(--ink-muted); }
+.pop__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--grid); border-block: 1px solid var(--grid); }
+.pop__list a { display: grid; gap: 3px; padding: 13px 4px 14px; background: var(--paper); text-decoration: none; transition: background 0.15s, padding 0.2s; }
+.pop__list a:hover { background: color-mix(in srgb, var(--paper-deep) 55%, var(--paper)); padding-left: 10px; }
+.pop__work { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--burgundy); }
+.pop__title { font-family: var(--display); font-weight: 600; font-size: clamp(17px, 1.4vw, 20px); line-height: 1.2; }
+.pop__meta { font-size: 12.5px; color: var(--ink-muted); }
 
 /* ==========================================================================
    SECTION GROUNDS — the page alternates paper, aged paper, leather and
@@ -456,7 +512,6 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
   outline: 1px solid color-mix(in srgb, var(--paper) 14%, transparent); outline-offset: 4px;
 }
 .read, .merch { background: var(--paper-deep); }
-.pillars { background: linear-gradient(var(--paper-deep), var(--paper) 72%); }
 .read .essay { background: color-mix(in srgb, var(--paper) 70%, var(--paper-deep)); }
 .read .essay:hover { background: var(--paper); }
 .merch { border-top: var(--rule); }
@@ -473,17 +528,18 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
    ========================================================================== */
 
 .epigraph {
-  padding: 0; background: var(--burgundy-dark); color: var(--paper);
-  background-image: radial-gradient(90% 70% at 70% 45%, color-mix(in srgb, var(--burgundy) 80%, transparent), transparent 70%);
+  padding: 0; background: var(--paper-deep); color: var(--burgundy);
+  background-image: radial-gradient(80% 70% at 75% 45%, color-mix(in srgb, var(--paper) 80%, transparent), transparent 70%);
+  border-block: var(--rule);
 }
 .epigraph__stick {
   position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip;
   padding: clamp(72px, 10vw, 140px) var(--gutter);
 }
 .epigraph__art {
-  position: absolute; right: -12%; top: 50%; translate: 0 -50%; width: min(72vw, 1200px); height: auto;
-  filter: grayscale(1) contrast(1.15) brightness(1.05); mix-blend-mode: screen; opacity: 0.13;
-  -webkit-mask: radial-gradient(closest-side, #000 55%, transparent); mask: radial-gradient(closest-side, #000 55%, transparent);
+  position: absolute; right: -16%; top: 56%; translate: 0 -50%; width: min(62vw, 1050px); height: auto;
+  mix-blend-mode: multiply; filter: saturate(1.15) contrast(0.85) brightness(1.75); opacity: 0.38;
+  -webkit-mask: radial-gradient(closest-side, #000 40%, transparent); mask: radial-gradient(closest-side, #000 40%, transparent);
   pointer-events: none;
 }
 .epigraph__fig { position: relative; margin: 0; max-width: 1180px; }
@@ -497,13 +553,13 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 }
 .epigraph__by {
   display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; margin-top: clamp(26px, 3vw, 44px);
-  padding-top: 16px; border-top: 1px solid color-mix(in srgb, var(--paper) 25%, transparent); max-width: 60ch;
-  font-size: 14px; color: color-mix(in srgb, var(--paper) 72%, transparent);
+  padding-top: 16px; border-top: 1px solid var(--grid); max-width: 60ch;
+  font-size: 14px; color: var(--ink-muted);
 }
-.epigraph__name { font-family: var(--display); font-weight: 600; font-size: 22px; color: var(--paper); letter-spacing: 0.02em; }
+.epigraph__name { font-family: var(--display); font-weight: 600; font-size: 22px; color: var(--ink); letter-spacing: 0.02em; }
 .epigraph__by cite { flex-basis: 100%; font-style: italic; font-family: var(--display); font-size: 16px; }
-.epigraph__tr { margin-top: 18px; max-width: 70ch; font-size: 14px; line-height: 1.55; color: color-mix(in srgb, var(--paper) 62%, transparent); }
-@keyframes ink { from { opacity: 0.14; filter: blur(1.5px); } to { opacity: 1; filter: none; } }
+.epigraph__tr { margin-top: 18px; max-width: 70ch; font-size: 14px; line-height: 1.55; color: var(--ink-muted); }
+@keyframes ink { from { opacity: 0.16; filter: blur(1.5px); } to { opacity: 1; filter: none; } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .epigraph { height: 210svh; view-timeline: --epi block; }
@@ -700,7 +756,15 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 .shelf span { font-family: var(--mono); font-weight: 400; color: var(--ink-muted); letter-spacing: 0.04em; }
 .section-head + .shelf { margin-top: 0; }
 
-.watch { border-bottom: var(--rule); }
+.watch { color: var(--paper); background: var(--ink); background-image: radial-gradient(80% 60% at 70% 0%, color-mix(in srgb, var(--burgundy) 55%, transparent), transparent 70%); }
+.watch .eyebrow, .watch .watch__note, .watch .shelf span { color: color-mix(in srgb, var(--paper) 62%, transparent); }
+.watch .section-head h2 + p { color: color-mix(in srgb, var(--paper) 75%, transparent); }
+.watch .numeral { color: var(--paper); }
+.watch .shelf { border-bottom-color: color-mix(in srgb, var(--paper) 22%, transparent); }
+.watch .vid__thumb, .watch .short__thumb { border-color: color-mix(in srgb, var(--paper) 18%, transparent); box-shadow: 0 18px 40px -20px rgb(0 0 0 / 0.8); }
+.watch .badge { color: var(--ink); }
+.watch .rail__track { scrollbar-color: var(--paper) color-mix(in srgb, var(--paper) 20%, transparent); }
+.watch .rail__nav button { color: var(--ink); }
 .vid__thumb, .short__thumb { box-shadow: var(--lift-1); }
 .vid:hover .vid__thumb, .short:hover .short__thumb { box-shadow: var(--lift-2); }
 .watch__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(16px, 1.8vw, 26px); grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -819,6 +883,10 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .community .btn { padding-block: 8px; padding-left: 10px; }
 .community .btn .seal { width: 34px; height: 34px; }
 .about .shelf { margin-top: clamp(36px, 4vw, 56px); }
+.about__grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(26px, 4vw, 64px); align-items: start; }
+.about__plate { margin: 0; box-shadow: var(--lift-2); background: var(--paper-deep); padding: clamp(8px, 0.8vw, 12px); outline: 1px solid var(--grid); }
+.about__plate img { display: block; width: 100%; height: auto; }
+.about__plate figcaption { padding: 10px 2px 2px; font-size: 12.5px; line-height: 1.4; color: var(--ink-muted); }
 
 /* ==========================================================================
    FOOTER — from P · Tornaviaje, in the brand's burgundy
@@ -866,11 +934,10 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 
 @media (max-width: 1040px) {
   .doors { grid-template-columns: 1fr; }
+  .about__grid { grid-template-columns: 1fr; }
   .door--canon .door__plate { height: auto; min-height: 340px; }
   .chapter { grid-template-columns: 1fr; }
   .chapter__h { position: static; }
-  .portico { grid-template-columns: 1fr; }
-  .portico__panel { min-height: 0; }
   .watch__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .watch__grid .is-lead { grid-row: auto; }
   .chan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -886,7 +953,20 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .title__name { font-size: 23.5vw; }
   .title__line { display: block; width: fit-content; margin-inline: auto; }
   .title__line--small { font-size: 0.26em; }
-  .portico__frieze, .portico__architrave { display: none; }
+  /* phones: three narrow columns side by side, their names upright */
+  .temple { --gap: 10px; --pad: 10px; }
+  .col__shaft { height: 66svh; }
+  .col__label { padding: 12px 8px; justify-items: center; }
+  .col__name { writing-mode: vertical-rl; rotate: 180deg; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .col__sub, .col__n { display: none; }
+  .col__open { padding: 6px; margin: 0; }
+  .col__open { font-size: 0; gap: 0; }
+  .col__open i { font-size: 18px; }
+  .temple__metope { font-size: 10.5px; min-height: 40px; }
+  .temple__metope span { padding: 0 2px; }
+  .temple__arch { letter-spacing: 0.3em; text-indent: 0.3em; }
+  .pop__sheet { grid-template-columns: 1fr; }
+  .pop__art { height: 34svh; }
   .watch__grid { grid-template-columns: 1fr; }
   .watch__grid .is-lead { grid-column: auto; grid-row: auto; }
   .rail__nav { display: none; }

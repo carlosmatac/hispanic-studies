@@ -156,3 +156,10 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | --- | --- |
 | `epigraph-agnus-dei.jpg` | `zurbaran-agnus-dei.jpg` above (public domain), shown ghosted behind Lewis Hanke's sentence |
 | `atlas-plate.jpg` | A still of our own Atlas map (`site/components/MapTour.tsx`, Natural Earth geometry, public domain), captured from the page |
+| `pillars/mestizaje.jpg` | Cuzco School, *Matrimonio de Martín de Loyola con Beatriz Ñusta*, 1718 (the `mestizaje.jpg` above), resized |
+| `pillars/catolicismo.jpg` | `arch-tepotzotlan-retablo-mayor.jpg` above (CC0), resized |
+| `pillars/lengua.jpg` | `florentine-codex-folio-80.jpg` above (public domain) |
+| `villalpando-plaza-mayor-1695.jpg` | `paint-villalpando-plaza-mayor-1695.jpg` above (public domain), resized; in the About section |
+
+`portico.jpg` left the site on 2026-10-25 (the pillars are now HTML and CSS); it stays in the film (`film/reel/assets/img/portico.jpg`).
+
