@@ -21,7 +21,7 @@ export type TourStop = {
   routes?: string[] | null;    // route ids to show; null = all of them
   pad?: number;
   media?: TourMedia;
-  canon?: string;              // a canon record to open, as #canon=<id>
+  canon?: string;              // a canon work to open on the canon page, e.g. 'T030'
 };
 
 const AI = (en: string, es: string): TourMedia => ({ kind: 'pending', what: { en: `AI video: ${en}`, es: `Vídeo IA: ${es}` } });
@@ -62,7 +62,7 @@ export const TOUR: TourStop[] = [
   },
   {
     id: 'vasconcelos', milestone: 46, frame: ['484', '170', '604', '076', '032', '152'], light: ['484', '170', '604', '076', '032', '152', '858'], routes: [], pad: 0.08,
-    canon: 't:T030',
+    canon: 'T030',
   },
   {
     id: 'lusophone', milestone: 57, frame: ['620', '076', '024', '508'], light: ['620', '076', '024', '508', '624', '626', '226'], routes: ['india', 'brasil'], pad: 0.08,

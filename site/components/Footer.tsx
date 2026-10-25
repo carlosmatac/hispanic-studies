@@ -1,6 +1,7 @@
 import { dict, type Lang } from '@/lib/i18n';
 import { CHANNELS, SITE, DISCORD } from '@/lib/content';
 import ChannelIcon from './ChannelIcon';
+import { navHref } from './Header';
 
 /* The footer from P · Tornaviaje: motto and blurb, columns, a channel
    marquee and an oversized wordmark. The wordmark is an SVG so it scales to
@@ -19,7 +20,7 @@ export default function Footer({ lang }: { lang: Lang }) {
           <h4>{d.foot.explore}</h4>
           <ul>
             {(['atlas', 'canon', 'books', 'watch', 'read', 'about'] as const).map((k) => (
-              <li key={k}><a href={`#${k}`}>{d.nav[k]}</a></li>
+              <li key={k}><a href={navHref(lang, k)}>{d.nav[k]}</a></li>
             ))}
           </ul>
         </div>

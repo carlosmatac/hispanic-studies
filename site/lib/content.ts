@@ -89,7 +89,8 @@ export const videoThumb = (id: string) => `https://i.ytimg.com/vi/${id}/maxresde
 export const videoUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 /* What rests on each pillar: real work of the Institute, by section.
-   Canon links open the record in the graph (#canon=<id>, see CanonGraph).
+   Canon links open the work's record on the canon page (/canon#<id>, see CanonShelf);
+   paths that start with / get the language put in front by the Temple.
    Titles stay in their original language; the book series' names are in
    i18n (pillars.items[].n) because they are translated on the page. */
 export type PillarKey = 'mestizaje' | 'catolicismo' | 'lengua';
@@ -102,18 +103,23 @@ const essay = (slug: string) => ESSAYS.find((e) => e.slug === slug)!;
 
 export const PILLAR_LINKS: Record<PillarKey, PillarLink[]> = {
   mestizaje: [
-    { work: 'canon', title: 'La raza cósmica', meta: 'José Vasconcelos, 1925', href: '#canon=t:T030' },
+    { work: 'canon', title: 'La raza cósmica', meta: 'José Vasconcelos, 1925', href: '/canon#T030' },
     { work: 'watch', title: short('lwJfzpmMTD8').title, meta: `${short('lwJfzpmMTD8').views}`, href: shortUrl('lwJfzpmMTD8'), external: true },
     { work: 'read', title: essay('the-catholic-hispanic-position-on').title, meta: essay('the-catholic-hispanic-position-on').author, href: essay('the-catholic-hispanic-position-on').url, external: true },
   ],
   catolicismo: [
-    { work: 'canon', title: 'Defensa de la Hispanidad', meta: 'Ramiro de Maeztu, 1934', href: '#canon=t:T035' },
+    { work: 'canon', title: 'Defensa de la Hispanidad', meta: 'Ramiro de Maeztu, 1934', href: '/canon#T035' },
     { work: 'watch', title: video('NJKfmnwbOXQ').title, meta: `${video('NJKfmnwbOXQ').views}`, href: videoUrl('NJKfmnwbOXQ'), external: true },
     { work: 'watch', title: short('AmmDHiD7MPI').title, meta: `${short('AmmDHiD7MPI').views}`, href: shortUrl('AmmDHiD7MPI'), external: true },
   ],
   lengua: [
-    { work: 'canon', title: 'Gramática de la lengua castellana destinada al uso de los americanos', meta: 'Andrés Bello, 1847', href: '#canon=t:T003' },
+    { work: 'canon', title: 'Gramática de la lengua castellana destinada al uso de los americanos', meta: 'Andrés Bello, 1847', href: '/canon#T003' },
     { work: 'watch', title: short('N9-_qD9BvXY').title, meta: `${short('N9-_qD9BvXY').views}`, href: shortUrl('N9-_qD9BvXY'), external: true },
     { work: 'read', title: essay('spain-and-america').title, meta: `${essay('spain-and-america').author} · tr. ${essay('spain-and-america').translator}`, href: essay('spain-and-america').url, external: true },
   ],
 };
+
+/* Lewis Hanke's sentence, which Beltrán asked to have on the site (2026-10-24).
+   The opening of The Spanish Struggle for Justice in the Conquest of America (1949). */
+export const HANKE =
+  'The Spanish conquest of America was far more than a remarkable military and political exploit; it was also one of the greatest attempts the world has seen to make Christian precepts prevail in the relations between peoples.';

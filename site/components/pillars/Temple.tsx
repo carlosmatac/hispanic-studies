@@ -49,7 +49,8 @@ export default function Temple({ lang, counts }: { lang: Lang; counts: { milesto
   const [sel, setSel] = useState<PillarKey | null>(null);
   const lit = sel ? RESTS[sel] : null;
   const item = sel ? t.items.find((i) => i.key === sel)! : null;
-  const href: Record<Work, string> = { atlas: '#atlas', canon: '#canon', books: '#books', watch: '#watch', read: '#read', community: '#community' };
+  const href: Record<Work, string> = { atlas: `/${lang}/atlas`, canon: `/${lang}/canon`, books: '#books', watch: '#watch', read: '#read', community: '#community' };
+  const local = (h: string) => (h.startsWith('/') ? `/${lang}${h}` : h);
 
   return (
     <div className={`portico${sel ? ' has-sel' : ''}`}>
@@ -115,7 +116,7 @@ export default function Temple({ lang, counts }: { lang: Lang; counts: { milesto
               </li>
               {sel === 'lengua' && (
                 <li>
-                  <a href="#atlas">
+                  <a href={href.atlas}>
                     <span className="panel__work">{t.works.atlas}</span>
                     <span className="panel__title">{d.map.title}</span>
                     <span className="panel__meta">{counts.milestones} {t.worksSub.milestones}</span>
@@ -124,7 +125,7 @@ export default function Temple({ lang, counts }: { lang: Lang; counts: { milesto
               )}
               {PILLAR_LINKS[sel!].map((l) => (
                 <li key={l.href}>
-                  <a href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                  <a href={local(l.href)} {...(l.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                     <span className="panel__work">{t.works[l.work]}{l.external ? ' ↗' : ''}</span>
                     <span className="panel__title">{l.title}</span>
                     {l.meta && <span className="panel__meta">{l.work === 'watch' ? `${l.meta} ${d.watch.views}` : l.meta}</span>}

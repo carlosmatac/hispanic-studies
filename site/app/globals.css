@@ -25,6 +25,14 @@
   --body: var(--font-body), Inter, system-ui, -apple-system, sans-serif;
   --mono: var(--font-mono), "IBM Plex Mono", ui-monospace, monospace;
 
+  /* texture and depth (2026-10-25, "less monochrome": more texture and shadow,
+     same colours). The grain is a tiny SVG noise in the ink's own brown. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .1 0 0 0 0 .07 0 0 0 1.6 -.82'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --shade: color-mix(in srgb, var(--burgundy-dark) 60%, var(--ink));
+  --lift-1: 0 1px 1px color-mix(in srgb, var(--shade) 14%, transparent), 0 6px 14px -6px color-mix(in srgb, var(--shade) 30%, transparent);
+  --lift-2: 0 2px 3px color-mix(in srgb, var(--shade) 14%, transparent), 0 22px 44px -18px color-mix(in srgb, var(--shade) 48%, transparent);
+  --lift-3: 0 3px 6px color-mix(in srgb, var(--shade) 16%, transparent), 0 38px 70px -26px color-mix(in srgb, var(--shade) 60%, transparent);
+
   --gutter: clamp(16px, 4vw, 64px);
   --rule: 1px solid var(--grid);
   --measure: 68ch;
@@ -37,11 +45,17 @@ html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar-h) + 8
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--paper) radial-gradient(120% 90% at 50% 0%, transparent 60%, color-mix(in srgb, var(--paper-deep) 55%, transparent));
   color: var(--ink);
   font: 400 clamp(15px, 0.4vw + 14px, 17px)/1.6 var(--body);
   font-synthesis-weight: none;
   overflow-x: clip;
+}
+
+/* the paper's grain, over everything (it never takes a click) */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 90; pointer-events: none;
+  background: var(--grain); opacity: 0.22;
 }
 
 h1, h2, h3, h4 {
@@ -219,7 +233,6 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
    THE MAP — the Iberophone world and its tour, in the Atlas section
    ========================================================================== */
 
-.atlas__next { margin-top: 22px; }
 .plate-wrap { position: relative; background: var(--paper); border-bottom: var(--rule); overflow: hidden; }
 .plate-wrap::after {
   content: ""; position: absolute; inset: clamp(10px, 1.4vw, 20px);
@@ -270,7 +283,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
   background: color-mix(in srgb, var(--paper) 94%, transparent);
   border: 1px solid var(--ink); outline: 1px solid var(--grid); outline-offset: 3px;
 }
-.cartouche h3 { font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.25; }
+.cartouche h2, .cartouche h3 { font-size: 15px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.25; }
 .cartouche .rule { height: 1px; background: var(--ink); margin: 11px 0; opacity: 0.35; }
 .cartouche dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-family: var(--mono); font-size: 11px; }
 .cartouche dt { color: var(--ink-muted); }
@@ -349,10 +362,10 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
    chosen pillar, so the two are seen together.
    ========================================================================== */
 
-.pillars { padding-bottom: clamp(52px, 7vw, 104px); border-bottom: var(--rule); }
+.pillars { padding-bottom: clamp(52px, 7vw, 104px); }
 .portico { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); gap: clamp(26px, 3.4vw, 56px); align-items: center; }
 
-.portico__plate { position: relative; container-type: inline-size; box-shadow: 0 1px 0 var(--grid-light), 0 18px 40px -28px color-mix(in srgb, var(--ink) 45%, transparent); }
+.portico__plate { position: relative; container-type: inline-size; box-shadow: var(--lift-2); outline: 1px solid var(--grid); outline-offset: -1px; }
 .portico__plate > img { display: block; width: 100%; height: auto; }
 .portico__tint { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: multiply; }
 .portico__tint rect, .portico__tint path { fill: var(--burgundy); opacity: 0; transition: opacity 0.35s; }
@@ -428,18 +441,249 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 }
 
 /* ==========================================================================
-   ATLAS, BOOKS, MERCH — section heads only in this version
+   SECTION GROUNDS — the page alternates paper, aged paper, leather and
+   burgundy, so it reads like a bound book, not one long sheet
    ========================================================================== */
 
-.atlas { background: var(--paper-deep); border-bottom: var(--rule); }
-.books, .merch { border-bottom: var(--rule); }
+.books { background: var(--leather); color: var(--paper); }
+.books .eyebrow { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+.books .numeral { color: var(--paper); }
+.books .pending { border-color: color-mix(in srgb, var(--paper) 50%, transparent); color: color-mix(in srgb, var(--paper) 85%, transparent); }
+.books h2 { font-size: clamp(31px, 4.6vw, 60px); max-width: 16ch; }
+.books::before {
+  content: ""; position: absolute; inset: clamp(10px, 1.4vw, 18px); pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--paper) 14%, transparent); outline-offset: 4px;
+}
+.read, .merch { background: var(--paper-deep); }
+.pillars { background: linear-gradient(var(--paper-deep), var(--paper) 72%); }
+.read .essay { background: color-mix(in srgb, var(--paper) 70%, var(--paper-deep)); }
+.read .essay:hover { background: var(--paper); }
+.merch { border-top: var(--rule); }
+
+/* a page that is not the home starts with its own title */
+.page-head { padding-bottom: clamp(26px, 3vw, 44px); }
+.page-head h1 { font-size: clamp(36px, 5vw, 68px); max-width: 18ch; color: var(--burgundy); }
+.page-head p:not(.eyebrow) { margin-top: 16px; font-size: clamp(16px, 1.15vw, 19px); color: var(--ink-muted); }
+.nav a[aria-current="page"] { border-bottom-color: var(--burgundy); color: var(--burgundy); }
 
 /* ==========================================================================
-   CANON
+   EPIGRAPH — Lewis Hanke's sentence (components/Epigraph.tsx). Tall and
+   sticky: the words are inked in as the section scrolls past.
    ========================================================================== */
 
-.canon { border-bottom: var(--rule); }
-.canon__notes { margin-top: 26px; padding-top: 16px; border-top: var(--rule); font-size: 13.5px; color: var(--ink-muted); }
+.epigraph {
+  padding: 0; background: var(--burgundy-dark); color: var(--paper);
+  background-image: radial-gradient(90% 70% at 70% 45%, color-mix(in srgb, var(--burgundy) 80%, transparent), transparent 70%);
+}
+.epigraph__stick {
+  position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip;
+  padding: clamp(72px, 10vw, 140px) var(--gutter);
+}
+.epigraph__art {
+  position: absolute; right: -12%; top: 50%; translate: 0 -50%; width: min(72vw, 1200px); height: auto;
+  filter: grayscale(1) contrast(1.15) brightness(1.05); mix-blend-mode: screen; opacity: 0.13;
+  -webkit-mask: radial-gradient(closest-side, #000 55%, transparent); mask: radial-gradient(closest-side, #000 55%, transparent);
+  pointer-events: none;
+}
+.epigraph__fig { position: relative; margin: 0; max-width: 1180px; }
+.epigraph__q {
+  margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(27px, 3.9vw, 62px); line-height: 1.12;
+  letter-spacing: -0.005em; text-wrap: pretty;
+}
+.epigraph__mark {
+  position: absolute; left: -0.08em; top: -0.62em; font-size: 3.4em; line-height: 1; color: var(--leather);
+  font-family: var(--display); opacity: 0.85;
+}
+.epigraph__by {
+  display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; margin-top: clamp(26px, 3vw, 44px);
+  padding-top: 16px; border-top: 1px solid color-mix(in srgb, var(--paper) 25%, transparent); max-width: 60ch;
+  font-size: 14px; color: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+.epigraph__name { font-family: var(--display); font-weight: 600; font-size: 22px; color: var(--paper); letter-spacing: 0.02em; }
+.epigraph__by cite { flex-basis: 100%; font-style: italic; font-family: var(--display); font-size: 16px; }
+.epigraph__tr { margin-top: 18px; max-width: 70ch; font-size: 14px; line-height: 1.55; color: color-mix(in srgb, var(--paper) 62%, transparent); }
+@keyframes ink { from { opacity: 0.14; filter: blur(1.5px); } to { opacity: 1; filter: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .epigraph { height: 210svh; view-timeline: --epi block; }
+    .epigraph__stick { position: sticky; top: 0; }
+    .epigraph__w {
+      animation: ink linear both; animation-timeline: --epi;
+      animation-range: contain calc(var(--i) / var(--n) * 78%) contain calc(var(--i) / var(--n) * 78% + 9%);
+    }
+    .epigraph__mark, .epigraph__by, .epigraph__tr { animation: ink linear both; animation-timeline: --epi; animation-range: contain 0% contain 10%; }
+    .epigraph__by, .epigraph__tr { animation-range: contain 80% contain 92%; }
+    .epigraph__art { animation: drift linear both; animation-timeline: --epi; animation-range: cover; }
+  }
+}
+@keyframes drift { from { transform: scale(1.12) translateY(4%); } to { transform: scale(1) translateY(-4%); } }
+
+/* ==========================================================================
+   DOORS — II · III on the home: the Atlas and the canon as two plates that
+   open their pages (components/Doors.tsx)
+   ========================================================================== */
+
+.doors {
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(18px, 2.4vw, 36px);
+  border-bottom: var(--rule);
+}
+.door {
+  position: relative; display: grid; grid-template-rows: auto 1fr; text-decoration: none; color: var(--ink);
+  background: var(--paper); box-shadow: var(--lift-2); outline: 1px solid var(--grid); outline-offset: -1px;
+  transition: box-shadow 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), translate 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.door:hover, .door:focus-visible { box-shadow: var(--lift-3); translate: 0 -4px; }
+.door__plate { position: relative; display: block; overflow: hidden; aspect-ratio: 2400 / 1172; background: var(--paper-deep); border-bottom: 1px solid var(--grid); }
+.door__plate img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.door:hover .door__plate img { transform: scale(1.04); }
+.door__text { display: grid; align-content: start; gap: 10px; padding: clamp(18px, 2.2vw, 30px); }
+.door .eyebrow { margin: 0; }
+.door__n { color: var(--burgundy); margin-right: 6px; }
+.door__h { font-family: var(--display); font-weight: 600; font-size: clamp(34px, 4vw, 58px); line-height: 1; color: var(--burgundy); }
+.door__p { color: var(--ink-muted); max-width: 46ch; }
+.door__go { justify-self: start; margin-top: 6px; font-weight: 500; color: var(--burgundy); border-bottom: 1px solid currentColor; }
+.door__go i { display: inline-block; font-style: normal; transition: translate 0.3s; }
+.door:hover .door__go i { translate: 4px 0; }
+/* the canon's plate: five of its cards, fanned on leather */
+.door--canon .door__plate { aspect-ratio: auto; height: 100%; min-height: 0; }
+.door--canon { grid-template-rows: 1fr auto; }
+.door__fan {
+  display: grid; place-items: center; padding: 28px 0; background: var(--burgundy);
+  background-image: radial-gradient(80% 90% at 50% 40%, color-mix(in srgb, var(--leather) 45%, transparent), transparent 75%);
+  border-bottom-color: var(--burgundy-dark); container-type: inline-size;
+}
+.door__card {
+  grid-area: 1 / 1; width: min(31cqw, 178px);
+  transform: translateX(calc(var(--k) * 16.5cqw)) translateY(calc(var(--k) * var(--k) * 1.6cqw)) rotate(calc(var(--k) * 6deg));
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.door__card .ccard { rotate: 0deg; }
+.door:hover .door__card { transform: translateX(calc(var(--k) * 19cqw)) translateY(calc(var(--k) * var(--k) * 1.2cqw - 6px)) rotate(calc(var(--k) * 7.5deg)); }
+
+/* ==========================================================================
+   THE ATLAS PAGE — the map, then the sixty milestones in seven chapters
+   ========================================================================== */
+
+.atlas--page { padding-top: 0; }
+.atlas--page .plate-wrap { box-shadow: var(--lift-2); }
+.atlas__next { margin-top: 22px; }
+.milestones { background: var(--paper-deep); border-top: var(--rule); }
+.chapter { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr); gap: 10px clamp(20px, 3vw, 48px); padding: 26px 0; border-top: var(--rule); }
+.chapter__h { font-size: clamp(20px, 1.8vw, 26px); color: var(--burgundy); position: sticky; top: calc(var(--bar-h) + 16px); align-self: start; }
+.chapter__h span { display: block; margin-bottom: 6px; font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: 0.2em; color: var(--leather); }
+.chapter__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--grid); border-block: 1px solid var(--grid); }
+.ms { background: var(--paper); }
+.ms summary {
+  display: grid; grid-template-columns: 2.4em 7.5em minmax(0, 1fr) auto; gap: 14px; align-items: baseline;
+  padding: 13px 14px; cursor: pointer; list-style: none; transition: background 0.15s;
+}
+.ms summary::-webkit-details-marker { display: none; }
+.ms summary::after { content: "+"; font-family: var(--mono); color: var(--burgundy); }
+.ms[open] summary::after { content: "−"; }
+.ms summary:hover { background: color-mix(in srgb, var(--paper-deep) 45%, var(--paper)); }
+.ms__n { font-family: var(--mono); font-size: 11px; color: var(--leather); }
+.ms__date { font-family: var(--mono); font-size: 12px; color: var(--ink-muted); }
+.ms__title { font-family: var(--display); font-weight: 600; font-size: clamp(17px, 1.3vw, 20px); line-height: 1.2; }
+.ms__body { margin: 0; padding: 0 14px 18px calc(2.4em + 7.5em + 42px); font-size: 15px; color: var(--ink-muted); max-width: none; }
+
+/* ==========================================================================
+   THE CANON PAGE — five boxes by period, the works as floating cards
+   (components/canon/CanonShelf.tsx, CanonCard.tsx)
+   ========================================================================== */
+
+.canon-page { background: var(--paper); }
+.canon-shelf { padding: 0 var(--gutter); }
+.canon-index { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(30px, 4vw, 56px); }
+.canon-index a {
+  display: inline-flex; align-items: baseline; gap: 10px; padding: 9px 14px 10px; text-decoration: none;
+  border: 1px solid var(--grid); background: var(--paper); box-shadow: var(--lift-1); transition: background 0.15s, color 0.15s;
+}
+.canon-index a:hover { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+.canon-index__n { font-family: var(--mono); font-size: 11px; color: var(--leather); }
+.canon-index a:hover .canon-index__n { color: inherit; }
+.canon-index__name { font-family: var(--display); font-weight: 600; font-size: 16px; }
+
+.canon-box {
+  margin: 0 0 clamp(36px, 5vw, 72px); padding: clamp(22px, 3vw, 44px);
+  background: var(--paper-deep); outline: 1px solid var(--grid); outline-offset: -1px;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 70%, transparent), var(--lift-1);
+  scroll-margin-top: calc(var(--bar-h) + 16px);
+}
+.canon-box:nth-of-type(even) { background: color-mix(in srgb, var(--paper-deep) 55%, var(--paper)); }
+.canon-box__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; padding-bottom: 16px; margin-bottom: clamp(24px, 3vw, 40px); border-bottom: 1px solid var(--grid); }
+.canon-box__n { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3vw, 44px); line-height: 1; color: var(--leather); }
+.canon-box__head h2 { font-size: clamp(24px, 2.6vw, 36px); color: var(--burgundy); }
+.canon-box__meta { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-muted); }
+.canon-box__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(20px, 2.4vw, 34px) clamp(16px, 2vw, 28px); grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); }
+
+/* the card: a small cover, in one of five bindings */
+.ccard {
+  --bg: var(--paper); --fg: var(--ink); --accent: var(--burgundy); --line: color-mix(in srgb, var(--ink) 30%, transparent);
+  position: relative; display: flex; flex-direction: column; gap: 10px; aspect-ratio: 3 / 4; padding: 16px 16px 15px;
+  background: var(--bg); color: var(--fg); text-align: left; overflow: hidden;
+  rotate: var(--tilt, 0deg);
+  box-shadow: var(--lift-2);
+}
+/* a blind-stamped frame inside the cover */
+.ccard::before { content: ""; position: absolute; inset: 7px; border: 1px solid var(--line); pointer-events: none; }
+.ccard--burgundy { --bg: var(--burgundy); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent); }
+.ccard--leather { --bg: var(--leather); --fg: var(--paper); --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent); }
+.ccard--ink { --bg: var(--ink); --fg: var(--paper); --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent); }
+.ccard--vellum { --bg: var(--paper-deep); --fg: var(--ink); --accent: var(--burgundy); }
+.ccard--counter::before { border-style: dashed; }
+.ccard__top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--accent); }
+.ccard__year { font-size: 13px; font-weight: 500; }
+.ccard__title { font-family: var(--display); font-style: italic; font-weight: 600; font-size: clamp(19px, 1.45vw, 23px); line-height: 1.08; text-wrap: balance; }
+.ccard__title.is-long { font-size: clamp(16px, 1.15vw, 18.5px); line-height: 1.12; }
+.ccard__sub { font-family: var(--display); font-size: 13px; line-height: 1.25; opacity: 0.78; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.ccard__foot { margin-top: auto; display: grid; gap: 3px; }
+.ccard__rule { width: 28px; height: 1px; background: var(--accent); margin-bottom: 7px; }
+.ccard__author { font-size: 12px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; line-height: 1.3; }
+.ccard__life { font-family: var(--mono); font-size: 10.5px; opacity: 0.72; }
+.ccard__counter { margin-top: 4px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+
+.ccard-btn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
+.ccard-btn .ccard { transition: rotate 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), translate 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.5s; }
+.ccard-btn:hover .ccard, .ccard-btn:focus-visible .ccard { rotate: 0deg; translate: 0 -10px; box-shadow: var(--lift-3); }
+.ccard-btn:focus-visible { outline: none; }
+.ccard-btn:focus-visible .ccard { outline: 2px solid var(--burgundy); outline-offset: 4px; }
+/* the cards float: each bobs on its own slow breath */
+@keyframes float { from { transform: translateY(-3px); } to { transform: translateY(4px); } }
+@media (prefers-reduced-motion: no-preference) {
+  .float { animation: float 5.5s ease-in-out var(--d, 0s) infinite alternate; }
+}
+
+/* a work's record */
+.record {
+  width: min(680px, calc(100vw - 32px)); max-height: calc(100svh - 48px); padding: 0; border: 0;
+  background: var(--paper); color: var(--ink); box-shadow: var(--lift-3);
+}
+.record::backdrop { background: color-mix(in srgb, var(--burgundy-dark) 72%, transparent); backdrop-filter: blur(3px); }
+@media (prefers-reduced-motion: no-preference) {
+  .record[open] { animation: record-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1); }
+}
+@keyframes record-in { from { opacity: 0; transform: translateY(18px) scale(0.98); } to { opacity: 1; transform: none; } }
+.record__sheet { position: relative; padding: clamp(26px, 4vw, 48px); }
+.record__sheet::before { content: ""; position: absolute; inset: 10px; border: 1px solid var(--grid); pointer-events: none; }
+.record__close {
+  position: absolute; right: 18px; top: 16px; width: 38px; height: 38px; cursor: pointer;
+  background: var(--paper); border: 1px solid var(--ink); font-size: 22px; line-height: 1;
+}
+.record__close:hover { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+.record__kicker { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--burgundy); margin: 0 48px 12px 0; }
+.record__title { font-style: italic; font-size: clamp(28px, 3.6vw, 42px); color: var(--burgundy); margin-right: 40px; }
+.record__sub { margin-top: 10px; font-family: var(--display); font-size: 19px; line-height: 1.3; color: var(--ink-muted); }
+.record__author { margin: 18px 0 0; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.record__author span { margin-left: 8px; font-family: var(--mono); font-weight: 400; letter-spacing: 0; color: var(--ink-muted); }
+.record__counter { display: inline-block; margin-top: 12px; padding: 4px 9px; border: 1px dashed var(--burgundy); font-family: var(--mono); font-size: 11px; color: var(--burgundy); }
+.record__position { margin-top: 18px; font-size: 16px; line-height: 1.6; }
+.record__facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 20px 0 0; padding-top: 16px; border-top: var(--rule); font-size: 14px; }
+.record__facts dt { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); padding-top: 2px; }
+.record__facts dd { margin: 0; }
+.record__note { margin-top: 16px; font-size: 12.5px; color: var(--ink-muted); }
+
+.canon__notes { padding-top: 0; font-size: 13.5px; color: var(--ink-muted); }
 .canon__notes p { max-width: 84ch; }
 
 /* ==========================================================================
@@ -457,6 +701,8 @@ section { padding: clamp(52px, 7vw, 104px) var(--gutter); position: relative; }
 .section-head + .shelf { margin-top: 0; }
 
 .watch { border-bottom: var(--rule); }
+.vid__thumb, .short__thumb { box-shadow: var(--lift-1); }
+.vid:hover .vid__thumb, .short:hover .short__thumb { box-shadow: var(--lift-2); }
 .watch__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(16px, 1.8vw, 26px); grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .watch__grid .is-lead { grid-column: span 2; grid-row: span 2; }
 .watch__grid .is-lead h4 { font-family: var(--display); font-size: clamp(21px, 2vw, 30px); font-weight: 600; line-height: 1.15; }
@@ -619,6 +865,10 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
    ========================================================================== */
 
 @media (max-width: 1040px) {
+  .doors { grid-template-columns: 1fr; }
+  .door--canon .door__plate { height: auto; min-height: 340px; }
+  .chapter { grid-template-columns: 1fr; }
+  .chapter__h { position: static; }
   .portico { grid-template-columns: 1fr; }
   .portico__panel { min-height: 0; }
   .watch__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -643,6 +893,19 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .rail__track { grid-auto-columns: 46%; }
   .chan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .essay { grid-template-columns: 1fr; }
+  .canon-box__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
+  .ccard { padding: 12px 12px 11px; gap: 7px; }
+  .ccard__title { font-size: 17px; }
+  .ccard__title.is-long { font-size: 14.5px; }
+  .ccard__sub { display: none; }
+  .ccard__author { font-size: 10.5px; }
+  .canon-box__meta { margin-left: 0; flex-basis: 100%; }
+  .ms summary { grid-template-columns: 2em minmax(0, 1fr) auto; gap: 4px 10px; }
+  .ms__date { grid-column: 2; grid-row: 1; }
+  .ms__title { grid-column: 2; }
+  .ms summary::after { grid-column: 3; grid-row: 1; }
+  .ms__body { padding-left: calc(2em + 24px); }
+  .epigraph__mark { top: -0.5em; }
   .essay__date { padding-top: 0; }
   .nav, .tools .cart { display: none; }
   .menu { display: block; }
@@ -666,10 +929,3 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   *, *::before, *::after { transition-duration: 0.01ms !important; }
   .vid:hover img, .short:hover img { transform: none; }
 }
-
-.cg-placeholder {
-  height: clamp(600px, calc(78vh + 46px), 866px);
-  border: 1px solid var(--grid);
-  background: repeating-linear-gradient(0deg, var(--paper) 0 86px, color-mix(in srgb, var(--paper-deep) 70%, var(--paper)) 86px 172px);
-}
-@media (max-width: 860px) { .cg-placeholder { height: max(470px, calc(64vh + 46px)); } }
