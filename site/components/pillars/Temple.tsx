@@ -5,13 +5,14 @@ import Image from 'next/image';
 import { dict, type Lang } from '@/lib/i18n';
 import { PILLAR_LINKS, type PillarKey, type Work } from '@/lib/content';
 
-/* The three pillars hold up the Institute (redesigned 2026-10-25).
+/* The three pillars hold up the Institute (redesigned 2026-10-26).
 
-   The whole width of the page is a temple: an entablature with the
-   Institute's name on the architrave and its six works in the frieze, held up
-   by three columns. Each shaft is a painting in full colour, shaded round and
-   fluted so it reads as a column. Pointing at a column lights the works that
-   rest on it; opening it shows a popup with what rests on it.
+   Drawn in the brand's inks on the page's paper, across the full width: a
+   pediment with the eagle, an entablature with the Institute's name on the
+   architrave and its six works in the frieze, three columns whose shafts are
+   paintings in full colour, three steps, and under them the three captions.
+   Pointing at a column or its caption lights the works that rest on it;
+   opening it shows a popup with what rests on it.
 
    Everything is HTML and CSS: no plate to measure, it scales to any width. */
 
@@ -48,6 +49,15 @@ export default function Temple({ lang, counts }: { lang: Lang; counts: { milesto
 
   return (
     <div className={`temple${lit ? ' has-lit' : ''}`}>
+      {/* the pediment, with the eagle in its tympanum */}
+      <div className="temple__ped" aria-hidden="true">
+        <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+          <polygon className="temple__tymp" points="4,98 500,4 996,98" />
+          <polyline className="temple__rake" points="22,94 500,16 978,94" />
+        </svg>
+        <span className="temple__eagle" />
+      </div>
+
       {/* the entablature: the six works in the frieze, the name on the architrave */}
       <div className="temple__ent">
         <nav className="temple__frieze" aria-label={t.architrave}>
@@ -60,16 +70,41 @@ export default function Temple({ lang, counts }: { lang: Lang; counts: { milesto
         <p className="temple__arch">{t.architrave}</p>
       </div>
 
-      {/* the three columns */}
+      {/* the three columns (the captions under the steps are the buttons people tab to) */}
       <div className="temple__cols">
-        {t.items.map((p, i) => {
-          const k = p.key as PillarKey;
+        {KEYS.map((k) => {
           const img = IMG[k];
           return (
             <button
               key={k}
               type="button"
+              tabIndex={-1}
+              aria-hidden="true"
               className={`col${lit === k ? ' is-lit' : ''}`}
+              onMouseEnter={() => setHover(k)}
+              onMouseLeave={() => setHover(null)}
+              onClick={() => show(k)}
+            >
+              <span className="col__capital"><i /><i /><i /></span>
+              <span className="col__shaft">
+                <Image src={img.src} alt="" width={img.w} height={img.h} sizes="(max-width: 760px) 34vw, 30vw" style={{ objectPosition: img.pos }} />
+                <span className="col__round" />
+              </span>
+              <span className="col__base"><i /><i /></span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="temple__steps" aria-hidden="true"><i /><i /><i /></div>
+
+      <div className="temple__caps">
+        {t.items.map((p, i) => {
+          const k = p.key as PillarKey;
+          return (
+            <button
+              key={k}
+              type="button"
+              className={`cap${lit === k ? ' is-lit' : ''}`}
               onMouseEnter={() => setHover(k)}
               onMouseLeave={() => setHover(null)}
               onFocus={() => setHover(k)}
@@ -77,23 +112,14 @@ export default function Temple({ lang, counts }: { lang: Lang; counts: { milesto
               onClick={() => show(k)}
               aria-haspopup="dialog"
             >
-              <span className="col__capital" aria-hidden="true"><i /><i /><i /></span>
-              <span className="col__shaft">
-                <Image src={img.src} alt="" width={img.w} height={img.h} sizes="(max-width: 760px) 34vw, 33vw" style={{ objectPosition: img.pos }} />
-                <span className="col__round" aria-hidden="true" />
-                <span className="col__label">
-                  <span className="col__n">{ROMAN[i]}</span>
-                  <span className="col__name">{p.name}</span>
-                  <span className="col__sub">{p.sub}</span>
-                  <span className="col__open">{t.open} <i aria-hidden="true">+</i></span>
-                </span>
-              </span>
-              <span className="col__base" aria-hidden="true"><i /><i /></span>
+              <span className="cap__n">{ROMAN[i]}</span>
+              <span className="cap__name">{p.name}</span>
+              <span className="cap__sub">{p.sub}</span>
+              <span className="cap__open">{t.open} <i aria-hidden="true">+</i></span>
             </button>
           );
         })}
       </div>
-      <div className="temple__steps" aria-hidden="true"><i /><i /><i /></div>
 
       {/* the popup: what rests on the pillar */}
       <dialog ref={box} className="pop" onClose={() => setOpen(null)} onClick={(e) => { if (e.target === e.currentTarget) leave(); }} aria-labelledby="pop-h">

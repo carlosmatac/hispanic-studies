@@ -4,10 +4,10 @@ import ChannelIcon from './ChannelIcon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
 
-/* The footer: the name in letters cut out of the burgundy, each letter a
-   window onto a different picture of the Hispanic world (all public domain or
-   CC0, in assets/art/SOURCES.md), with the Institute's name and motto on a
-   paper strip beside it. Then the columns, and the credits. */
+/* The footer is one panel on the burgundy: the name in letters cut out of
+   it, each letter a window onto a different picture of the Hispanic world
+   (all public domain or CC0, in assets/art/SOURCES.md), and over the lower
+   half of the letters a frosted glass that carries the links. */
 
 const LETTERS: { ch: string; src: string; pos?: string; by: string }[][] = [
   [
@@ -35,76 +35,73 @@ export default function Footer({ lang }: { lang: Lang }) {
   const d = dict(lang);
   return (
     <footer className="foot">
-      <div className="foot__plate">
-        <p className="foot__word" aria-label="Hispano Studies">
-          {LETTERS.map((line, j) => (
-            <span key={j} className="foot__line" aria-hidden="true">
-              {line.map((l, i) => (
-                <span
-                  key={i}
-                  className="foot__l"
-                  style={{ '--img': `url(/art/letters/${l.src}.jpg)`, '--pos': l.pos ?? '50% 50%' } as React.CSSProperties}
-                >
-                  {l.ch}
-                </span>
+      <p className="foot__word" aria-label="Hispano Studies">
+        {LETTERS.map((line, j) => (
+          <span key={j} className="foot__line" aria-hidden="true">
+            {line.map((l, i) => (
+              <span
+                key={i}
+                className="foot__l"
+                style={{ '--img': `url(/art/letters/${l.src}.jpg)`, '--pos': l.pos ?? '50% 50%' } as React.CSSProperties}
+              >
+                {l.ch}
+              </span>
+            ))}
+          </span>
+        ))}
+      </p>
+
+      <div className="foot__glass">
+        <div className="foot__head">
+          <p className="foot__name">{SITE.name}</p>
+          <p className="foot__motto">{SITE.motto}</p>
+        </div>
+        <div className="foot__cols">
+          <div className="foot__say">
+            <p className="foot__lede">{d.foot.blurb}</p>
+          </div>
+          <div>
+            <h4>{d.foot.explore}</h4>
+            <ul>
+              {(['atlas', 'canon', 'books', 'watch', 'read', 'about'] as const).map((k) => (
+                <li key={k}><a href={navHref(lang, k)}>{d.nav[k]}</a></li>
               ))}
-            </span>
-          ))}
-        </p>
-        <aside className="foot__strip">
-          <span className="foot__name">{SITE.name}</span>
-          <i aria-hidden="true" />
-          <em className="foot__motto">{SITE.motto}.</em>
-        </aside>
-      </div>
-      <p className="foot__letters mono">{d.foot.letters}: {BY.join(' · ')}</p>
-
-      <div className="foot__cols">
-        <div className="foot__say">
-          <p className="foot__lede">{d.foot.blurb}</p>
+            </ul>
+          </div>
+          <div>
+            <h4>{d.foot.channels}</h4>
+            <ul>
+              {CHANNELS.map((c) => (
+                <li key={c.key}>
+                  <a className="foot__chan" href={c.url} target="_blank" rel="noopener noreferrer">
+                    <ChannelIcon name={c.key} />
+                    <span>{c.name}</span>
+                    {c.following && <span className="foot__count">{c.following}</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>{d.foot.community}</h4>
+            <ul>
+              <li className="foot__chan"><ChannelIcon name="discord" /><span>{d.foot.discord} <span className="foot__pending">{d.comm.discordPending}</span></span></li>
+            </ul>
+            <h4 className="foot__h-gap">{d.foot.sources}</h4>
+            <ul>
+              <li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">{d.foot.naturalEarth}</a></li>
+              <li><span>{d.foot.canonSrc}</span></li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <h4>{d.foot.explore}</h4>
-          <ul>
-            {(['atlas', 'canon', 'books', 'watch', 'read', 'about'] as const).map((k) => (
-              <li key={k}><a href={navHref(lang, k)}>{d.nav[k]}</a></li>
-            ))}
-          </ul>
+        <p className="foot__letters mono">{d.foot.letters}: {BY.join(' · ')}</p>
+        <div className="foot__base mono">
+          <span>{d.foot.legal} · {d.foot.version}</span>
+          <a className="foot__made" href="https://algoreto.com" target="_blank" rel="noopener noreferrer">
+            <span>{d.foot.madeBy}</span>
+            <AlgoretoLogo className="foot__algoreto" />
+          </a>
         </div>
-        <div>
-          <h4>{d.foot.channels}</h4>
-          <ul>
-            {CHANNELS.map((c) => (
-              <li key={c.key}>
-                <a className="foot__chan" href={c.url} target="_blank" rel="noopener noreferrer">
-                  <ChannelIcon name={c.key} />
-                  <span>{c.name}</span>
-                  {c.following && <span className="foot__count">{c.following}</span>}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4>{d.foot.community}</h4>
-          <ul>
-            <li className="foot__chan"><ChannelIcon name="discord" /><span>{d.foot.discord} <span className="foot__pending">{d.comm.discordPending}</span></span></li>
-          </ul>
-          <h4 style={{ marginTop: 26 }}>{d.foot.sources}</h4>
-          <ul>
-            <li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">{d.foot.naturalEarth}</a></li>
-            <li><span>{d.foot.canonSrc}</span></li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="foot__base mono">
-        <span>{d.foot.legal} · {SITE.motto}</span>
-        <span>{d.foot.version}</span>
-        <a className="foot__made" href="https://algoreto.com" target="_blank" rel="noopener noreferrer">
-          <span>{d.foot.madeBy}</span>
-          <AlgoretoLogo className="foot__algoreto" />
-        </a>
       </div>
     </footer>
   );
