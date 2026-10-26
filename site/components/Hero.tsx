@@ -6,13 +6,19 @@ import { dict, type Lang } from '@/lib/i18n';
 
    The eagle's wings open step by step (its own stepped silhouette) and the
    lines of the name rise into place. Both are CSS only and fail open: without
-   animation support, or with reduced motion, everything is simply there. */
+   animation support, or with reduced motion, everything is simply there.
+
+   Under the title page lies a frosted glass with slow colour moving behind it,
+   like a gradient mesh: soft clouds of the brand's paper, aged paper, leather
+   and a breath of burgundy drifting past, never anything you can make out.
+   Cream stays on top. With reduced motion the clouds hold still. */
 
 export default function Hero({ lang }: { lang: Lang }) {
   const d = dict(lang);
   const band = [...d.pillars.items.map((p) => p.name), d.hero.motto, 'De Indiis Editions'];
   return (
     <section className="title" aria-labelledby="hero-h">
+      <div className="title__mesh" aria-hidden="true"><i /><i /><i /><i /><i /><i /></div>
       <div className="title__page">
         <span className="title__eagle" aria-hidden="true" />
         <h1 id="hero-h" className="title__name">
