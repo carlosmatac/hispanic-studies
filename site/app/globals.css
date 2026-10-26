@@ -803,28 +803,30 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .about__text .lede { font-size: clamp(17px, 1.2vw, 19px); }
 
 /* ==========================================================================
-   FOOTER — one panel: the name with a painting in every letter, and under
-   it a frosted glass whose ground is the same picture, mirrored and blurred
+   FOOTER — a frosted glass that ends the page, and under it the name with a
+   painting in every letter. Scrolling on lifts the glass like a blind; let
+   go and it drops again (components/FooterBlind.tsx).
    ========================================================================== */
 
 .foot {
   --wine: #42090f; /* the ground of the name picture, so the two never meet as two reds */
-  --o: 3.2vw;      /* how far the glass rides up over the picture */
-  position: relative; background: var(--wine); color: var(--paper); overflow: hidden;
-  content-visibility: auto; contain-intrinsic-size: auto 1200px;
+  position: relative; background: var(--wine); color: var(--paper);
+  clip-path: inset(0); /* the name is fixed to the window, and shows only inside the footer */
 }
+.foot__name { position: fixed; left: 0; right: 0; bottom: 0; pointer-events: none; }
 .foot__name img { display: block; width: 100%; height: auto; }
-.foot__glass { position: relative; margin-top: calc(var(--o) * -1); overflow: hidden; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); }
-.foot__mirror {
-  position: absolute; left: -60px; right: -60px; top: calc(var(--o) * -1); aspect-ratio: 1826 / 809; pointer-events: none;
-  background: url("/art/footer-name.jpg") 0 0 / 100% 100% no-repeat; transform: scaleY(-1);
-  filter: blur(28px) saturate(1.25) brightness(0.8);
-  -webkit-mask: linear-gradient(0deg, #000 40%, transparent); mask: linear-gradient(0deg, #000 40%, transparent);
+.foot__glass {
+  position: relative; z-index: 1;
+  -webkit-backdrop-filter: blur(24px) saturate(1.25); backdrop-filter: blur(24px) saturate(1.25);
+  border-top: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
+  box-shadow: 0 24px 40px -18px rgb(0 0 0 / 0.55);
 }
 .foot__glass::before { /* the glass itself: a thin wash, brighter at the top edge */
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 7%, transparent), transparent 30%), color-mix(in srgb, var(--wine) 38%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 7%, transparent), transparent 30%), color-mix(in srgb, var(--wine) 40%, transparent);
 }
+.foot__under { aspect-ratio: 1826 / 809; }
 .foot__inner { position: relative; padding: clamp(26px, 3.4vw, 56px) var(--edge) 0; }
 .foot__head {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px;

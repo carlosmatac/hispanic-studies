@@ -4,12 +4,13 @@ import { CHANNELS, SITE } from '@/lib/content';
 import ChannelIcon from './ChannelIcon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
+import FooterBlind from './FooterBlind';
 
-/* The footer is one panel. On top, the name in letters cut out of the
-   burgundy, each letter a window onto a painting (an image Carlos made; see
-   assets/art/SOURCES.md). Under it, a frosted glass whose ground is the same
-   picture mirrored and blurred, so the name runs on into it; the glass
-   carries the links. */
+/* The footer is one panel and a blind. The page ends with a frosted glass
+   that carries the links; under it lies the name, each letter a window onto
+   a painting (an image Carlos made; see assets/art/SOURCES.md), seen blurred
+   through the glass. Scrolling on lifts the glass and shows the name; letting
+   go drops it again (FooterBlind). */
 export default function Footer({ lang }: { lang: Lang }) {
   const d = dict(lang);
   return (
@@ -18,7 +19,6 @@ export default function Footer({ lang }: { lang: Lang }) {
         <Image src="/art/footer-name.jpg" alt="Hispano Studies" width={1826} height={809} sizes="100vw" />
       </div>
       <div className="foot__glass">
-        <span className="foot__mirror" aria-hidden="true" />
         <div className="foot__inner">
           <div className="foot__head">
             <p className="foot__inst">{SITE.name}</p>
@@ -69,6 +69,8 @@ export default function Footer({ lang }: { lang: Lang }) {
           </div>
         </div>
       </div>
+      <div className="foot__under" aria-hidden="true" />
+      <FooterBlind />
     </footer>
   );
 }
