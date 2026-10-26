@@ -827,33 +827,39 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 7%, transparent), transparent 30%), color-mix(in srgb, var(--wine) 40%, transparent);
 }
 .foot__under { aspect-ratio: 1826 / 809; }
-.foot__inner { position: relative; padding: clamp(26px, 3.4vw, 56px) var(--edge) 0; }
-.foot__head {
-  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px;
-  padding-bottom: clamp(16px, 2vw, 24px); border-bottom: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
+/* the glass is laid out as a grid of cells parted by hairlines: the eagle, three
+   columns of links, and a last column with the motto above and the sources below */
+.foot__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr); border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+.foot__grid > * { padding: clamp(28px, 2.6vw, 40px) clamp(18px, 2vw, 30px); }
+.foot__grid > * + * { border-left: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+.foot__mark { display: grid; place-items: center; padding-left: var(--edge); }
+.foot__eagle {
+  display: block; width: clamp(90px, 9vw, 140px); aspect-ratio: 800 / 567; background: var(--paper);
+  -webkit-mask: url("/brand/ihs-logo-mask.png") center / contain no-repeat; mask: url("/brand/ihs-logo-mask.png") center / contain no-repeat;
+  transition: opacity 0.2s;
 }
-.foot__inst { margin: 0; font-family: var(--display); font-size: clamp(12px, 0.95vw, 14px); letter-spacing: 0.34em; text-transform: uppercase; }
-.foot__motto { margin: 0; font-family: var(--display); font-style: italic; font-size: clamp(18px, 1.6vw, 24px); }
-.foot__cols { display: grid; gap: clamp(26px, 3vw, 50px); grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.8fr) minmax(0, 1.2fr) minmax(0, 1fr); padding: clamp(26px, 3vw, 44px) 0; }
-.foot__lede { max-width: 30ch; margin: 0; font-family: var(--display); font-size: clamp(19px, 1.5vw, 24px); line-height: 1.3; color: color-mix(in srgb, var(--paper) 92%, transparent); }
-.foot h4 { font-family: var(--body); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: color-mix(in srgb, var(--paper) 66%, transparent); margin-bottom: 14px; }
-.foot__h-gap { margin-top: 24px; }
-.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
-.foot .foot__two { grid-template-columns: repeat(2, max-content); gap: 9px 26px; }
-.foot a, .foot li > span { color: inherit; text-decoration: none; font-size: 14.5px; }
-.foot a:hover { text-decoration: underline; }
-.foot__chan { display: inline-flex; align-items: center; gap: 9px; }
-.foot__chan .seal { width: 28px; height: 28px; }
-.foot .seal { color: var(--paper); }
-.foot__count { font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 62%, transparent); }
-.foot__pending { color: color-mix(in srgb, var(--paper) 58%, transparent); font-family: var(--mono); font-size: 11px; }
+.foot__mark:hover .foot__eagle { opacity: 0.85; }
+.foot h4 { margin: 0 0 18px; font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.22em; color: color-mix(in srgb, var(--paper) 62%, transparent); }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.foot a, .foot li > span { color: color-mix(in srgb, var(--paper) 92%, transparent); text-decoration: none; font-size: 14.5px; line-height: 1.35; }
+.foot a:hover { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+.foot__count { margin-left: 8px; font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 55%, transparent); }
+.foot__pending { display: block; margin-top: 2px; font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 55%, transparent); }
+.foot__side { display: grid; grid-template-rows: auto 1fr; padding: 0 !important; }
+.foot__side > * { padding: clamp(28px, 2.6vw, 40px) var(--edge) clamp(22px, 2.2vw, 32px) clamp(18px, 2vw, 30px); }
+.foot__say { border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+.foot__say i { display: block; width: 7px; height: 7px; margin-bottom: 18px; background: var(--leather); }
+.foot__motto { margin: 0 0 8px; font-family: var(--display); font-style: italic; font-size: clamp(19px, 1.5vw, 23px); line-height: 1.2; }
+.foot__blurb { margin: 0; max-width: 34ch; font-size: 13.5px; line-height: 1.5; color: color-mix(in srgb, var(--paper) 68%, transparent); }
 .foot__base {
-  display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; justify-content: space-between; padding: 16px 0 20px; margin: 0;
-  font-size: 11.5px; color: color-mix(in srgb, var(--paper) 62%, transparent); border-top: 1px solid color-mix(in srgb, var(--paper) 22%, transparent);
+  display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between;
+  padding: 16px var(--edge) 18px; font-size: 12.5px; color: color-mix(in srgb, var(--paper) 72%, transparent);
 }
-.foot .foot__made { display: inline-flex; align-items: center; gap: 10px; font-size: 11.5px; color: color-mix(in srgb, var(--paper) 80%, transparent); transition: color 0.2s; }
-.foot .foot__made:hover { color: var(--paper); text-decoration: none; }
-.foot__algoreto { height: 19px; width: auto; display: block; translate: 0 1px; }
+.foot__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.foot__chip { display: inline-flex; align-items: center; gap: 9px; padding: 6px 12px; border: 1px solid color-mix(in srgb, var(--paper) 28%, transparent); font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 72%, transparent); }
+.foot .foot__made { font-size: 11px; color: color-mix(in srgb, var(--paper) 85%, transparent); transition: background 0.2s, color 0.2s; }
+.foot .foot__made:hover { background: color-mix(in srgb, var(--paper) 10%, transparent); color: var(--paper); text-decoration: none; }
+.foot__algoreto { height: 16px; width: auto; display: block; translate: 0 1px; }
 
 /* ==========================================================================
    REVEALS — CSS only, and they fail open: where scroll-driven animation is
@@ -884,8 +890,10 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .tour__card { min-height: 0; }
   .cartouche { position: static; max-width: none; margin: clamp(16px, 3vw, 44px); }
   .plate-wrap::after { inset: 8px; }
-  .foot__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .foot__lede { grid-column: 1 / -1; }
+  .foot__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .foot__grid > * { border-top: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+  .foot__grid > :nth-child(4) { border-left: 0; padding-left: var(--edge); }
+  .foot__side { grid-column: span 2; }
 }
 @media (max-width: 760px) {
   /* phones: the valley sits under the words, the veil comes down from the top */
@@ -952,7 +960,12 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .tour__text { -webkit-line-clamp: 3; }
 }
 @media (max-width: 420px) {
-  .foot__cols { grid-template-columns: 1fr; }
+  .foot__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot__grid > * { border-left: 0 !important; padding-left: var(--edge); }
+  .foot__grid > :nth-child(3) { border-left: 1px solid color-mix(in srgb, var(--paper) 18%, transparent) !important; padding-left: clamp(18px, 2vw, 30px); }
+  .foot__mark { grid-column: 1 / -1; justify-items: start; border-left: 0 !important; }
+  .foot__side { grid-column: 1 / -1; border-left: 0 !important; }
+  .foot__side > * { padding-left: var(--edge); }
 }
 
 @media (prefers-reduced-motion: reduce) {

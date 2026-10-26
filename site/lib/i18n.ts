@@ -190,7 +190,7 @@ const en = {
     canonSrc: 'Canon after Gustavo Bueno (2001)',
     legal: 'Hispano Studies LLC',
     version: 'First version · October 2026 · not final copy',
-    letters: 'In the letters',
+    pamphlet: 'The free pamphlet',
     madeBy: 'Made by',
   },
 };
@@ -380,7 +380,7 @@ const es: Dict = {
     canonSrc: 'Canon según Gustavo Bueno (2001)',
     legal: 'Hispano Studies LLC',
     version: 'Primera versión · octubre de 2026 · texto no definitivo',
-    letters: 'En las letras',
+    pamphlet: 'El folleto gratuito',
     madeBy: 'Hecho por',
   },
 };

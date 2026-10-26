@@ -9,7 +9,11 @@ import { useEffect } from 'react';
    or move of the finger lifts it less than it would scroll the page, the
    higher it is the less, and the motion is damped. Let go and it falls back
    by its own weight (a quick smooth scroll to the bottom of the glass). While
-   a finger is down it never falls. */
+   a finger is down it never falls.
+
+   Only a real push holds it up. A touchpad keeps sending small, fading wheel
+   events for a second or two after the fingers leave it (inertia); those
+   neither hold the blind up nor stop it falling, or it would hang up there. */
 
 const WAIT = 240; // ms of stillness before the blind falls
 const DAMP = 0.14; // how much of the way to the target the blind moves each frame
@@ -29,17 +33,29 @@ export default function FooterBlind() {
     let timer: number | undefined;
     let frame = 0;
     let target = -1; // where the lifted blind is heading, -1 when not lifting
+    let pushed = 0; // when the blind was last really pushed up
+    let lastD = 0; // the previous wheel step, to tell a push from inertia
+    let falling = false;
+    let calm = false; // it has fallen, and only a new push may lift it again
 
     const halt = () => { if (frame) cancelAnimationFrame(frame); frame = 0; target = -1; };
     const fall = () => {
+      timer = undefined;
       if (touching) return;
+      const quiet = performance.now() - pushed;
+      if (quiet < WAIT) { timer = window.setTimeout(fall, WAIT - quiet); return; }
       halt();
       const to = limit();
-      if (to > 0 && window.scrollY > to + 1) window.scrollTo({ top: to, behavior: still() ? 'auto' : 'smooth' });
+      if (to > 0 && window.scrollY > to + 1) {
+        falling = true;
+        calm = true;
+        window.scrollTo({ top: to, behavior: still() ? 'auto' : 'smooth' });
+      }
     };
+    // one timer at a time: later events never put the fall off; fall() itself
+    // waits until WAIT ms after the last real push
     const later = () => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(fall, WAIT);
+      if (timer === undefined) timer = window.setTimeout(fall, WAIT);
     };
     const run = () => {
       const y = window.scrollY;
@@ -50,7 +66,7 @@ export default function FooterBlind() {
       else { frame = 0; target = -1; later(); }
     };
     // push the blind up by `d` px of scrolling; returns false when the page should scroll as usual
-    const lift = (d: number) => {
+    const lift = (d: number, push = true) => {
       const l = limit();
       const from = target >= 0 ? target : window.scrollY;
       if (l <= 0 || d <= 0 || from + d <= l) return false;
@@ -62,7 +78,9 @@ export default function FooterBlind() {
         y += s * give(Math.min(1, (y - l) / room));
         rest -= s;
       }
+      const was = target >= 0 ? target : window.scrollY;
       target = Math.min(max(), y);
+      if (push && target > was + 0.5) pushed = performance.now(); // inertia may still lift it, but never holds it up
       if (still()) { window.scrollTo({ top: target, behavior: 'instant' }); target = -1; }
       else if (!frame) frame = requestAnimationFrame(run);
       return true;
@@ -71,11 +89,18 @@ export default function FooterBlind() {
     const onWheel = (e: WheelEvent) => {
       if (e.ctrlKey) return;
       const d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * window.innerHeight : e.deltaY;
-      if (d > 0 && lift(d)) e.preventDefault();
+      // inertia: the same direction, no bigger than the step before, and small
+      const fading = d > 0 && lastD > 0 && d <= lastD && d < 40;
+      lastD = d;
+      if (falling && d > 0 && (fading || d < 40)) { e.preventDefault(); return; } // let it fall
+      if (calm && d > 0 && fading) { e.preventDefault(); return; } // the tail of a flick after it fell
+      falling = false;
+      calm = false;
+      if (d > 0 && lift(d, !fading)) e.preventDefault();
       else if (d < 0) halt();
       later();
     };
-    const onTouchStart = (e: TouchEvent) => { touching = true; lastY = e.touches[0].clientY; window.clearTimeout(timer); };
+    const onTouchStart = (e: TouchEvent) => { touching = true; falling = false; lastY = e.touches[0].clientY; };
     const onTouchMove = (e: TouchEvent) => {
       const y = e.touches[0].clientY;
       const d = lastY - y; // finger up = page down = lifting
@@ -83,7 +108,10 @@ export default function FooterBlind() {
       if (d > 0 && lift(d)) e.preventDefault();
     };
     const onTouchEnd = () => { touching = false; later(); };
-    const onScroll = () => { if (!frame) later(); };
+    const onScroll = () => {
+      if (falling && window.scrollY <= limit() + 1) falling = false;
+      if (!frame && !falling) later();
+    };
 
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('touchstart', onTouchStart, { passive: true });
