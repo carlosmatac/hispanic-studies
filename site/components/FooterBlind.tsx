@@ -3,75 +3,103 @@
 import { useEffect } from 'react';
 
 /* The footer's blind. The page ends at the bottom of the glass; scrolling on
-   lifts the glass like a blind and shows the name lying under it. When the
-   scroll is let go, the blind drops back slowly (the page eases back to the
-   bottom of the glass). Touching the wheel or the screen again stops it where
-   it is; while a finger is down it never drops. */
+   lifts the glass like a blind and shows the name lying under it.
 
-const WAIT = 420; // ms of stillness before the blind drops
-const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2); // ease-in-out cubic
+   Lifting it is heavy: past the bottom of the glass, each turn of the wheel
+   or move of the finger lifts it less than it would scroll the page, the
+   higher it is the less, and the motion is damped. Let go and it falls back
+   by its own weight (a quick smooth scroll to the bottom of the glass). While
+   a finger is down it never falls. */
+
+const WAIT = 240; // ms of stillness before the blind falls
+const DAMP = 0.14; // how much of the way to the target the blind moves each frame
+const give = (p: number) => 0.12 + 0.6 * Math.pow(1 - p, 1.2); // share of the scroll that lifts it, at height p (0..1)
 
 export default function FooterBlind() {
   useEffect(() => {
     const foot = document.querySelector<HTMLElement>('.foot');
     const glass = foot?.querySelector<HTMLElement>('.foot__glass');
     if (!foot || !glass) return;
+    const still = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const limit = () => foot.getBoundingClientRect().top + window.scrollY + glass.offsetHeight - window.innerHeight;
+    const max = () => document.documentElement.scrollHeight - window.innerHeight;
+
     let touching = false;
+    let lastY = 0;
     let timer: number | undefined;
     let frame = 0;
-    let dropping = false;
-    const limit = () => foot.getBoundingClientRect().top + window.scrollY + glass.offsetHeight - window.innerHeight;
+    let target = -1; // where the lifted blind is heading, -1 when not lifting
 
-    const stop = () => {
-      if (frame) cancelAnimationFrame(frame);
-      frame = 0;
-      dropping = false;
-    };
-    const drop = () => {
+    const halt = () => { if (frame) cancelAnimationFrame(frame); frame = 0; target = -1; };
+    const fall = () => {
       if (touching) return;
+      halt();
       const to = limit();
-      const from = window.scrollY;
-      if (to <= 0 || from <= to + 1) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        window.scrollTo({ top: to, behavior: 'instant' });
-        return;
+      if (to > 0 && window.scrollY > to + 1) window.scrollTo({ top: to, behavior: still() ? 'auto' : 'smooth' });
+    };
+    const later = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(fall, WAIT);
+    };
+    const run = () => {
+      const y = window.scrollY;
+      const next = y + (target - y) * DAMP;
+      window.scrollTo({ top: Math.abs(target - next) < 0.5 ? target : next, behavior: 'instant' });
+      // stop when it arrives, or when the page will not go further (its very end)
+      if (Math.abs(target - window.scrollY) >= 0.5 && Math.abs(window.scrollY - y) >= 0.2) frame = requestAnimationFrame(run);
+      else { frame = 0; target = -1; later(); }
+    };
+    // push the blind up by `d` px of scrolling; returns false when the page should scroll as usual
+    const lift = (d: number) => {
+      const l = limit();
+      const from = target >= 0 ? target : window.scrollY;
+      if (l <= 0 || d <= 0 || from + d <= l) return false;
+      const room = Math.max(1, max() - l);
+      let y = Math.max(from, l);
+      let rest = d - Math.max(0, l - from); // the part below the bottom of the glass scrolls normally
+      while (rest > 0) { // spend it in small steps, so the resistance grows as it rises
+        const s = Math.min(rest, 8);
+        y += s * give(Math.min(1, (y - l) / room));
+        rest -= s;
       }
-      // the further it was lifted, the longer it takes to fall: 0.8 to 1.4 s
-      const dur = Math.min(1400, 800 + (from - to) * 0.9);
-      const t0 = performance.now();
-      dropping = true;
-      const step = (now: number) => {
-        const t = Math.min(1, (now - t0) / dur);
-        window.scrollTo({ top: from + (to - from) * ease(t), behavior: 'instant' });
-        if (t < 1 && dropping) frame = requestAnimationFrame(step);
-        else stop();
-      };
-      frame = requestAnimationFrame(step);
+      target = Math.min(max(), y);
+      if (still()) { window.scrollTo({ top: target, behavior: 'instant' }); target = -1; }
+      else if (!frame) frame = requestAnimationFrame(run);
+      return true;
     };
-    const onScroll = () => {
-      if (dropping) return;
-      window.clearTimeout(timer);
-      timer = window.setTimeout(drop, WAIT);
-    };
-    const interrupt = () => { stop(); onScroll(); };
-    const down = () => { touching = true; stop(); window.clearTimeout(timer); };
-    const up = () => { touching = false; onScroll(); };
 
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) return;
+      const d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * window.innerHeight : e.deltaY;
+      if (d > 0 && lift(d)) e.preventDefault();
+      else if (d < 0) halt();
+      later();
+    };
+    const onTouchStart = (e: TouchEvent) => { touching = true; lastY = e.touches[0].clientY; window.clearTimeout(timer); };
+    const onTouchMove = (e: TouchEvent) => {
+      const y = e.touches[0].clientY;
+      const d = lastY - y; // finger up = page down = lifting
+      lastY = y;
+      if (d > 0 && lift(d)) e.preventDefault();
+    };
+    const onTouchEnd = () => { touching = false; later(); };
+    const onScroll = () => { if (!frame) later(); };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('wheel', interrupt, { passive: true });
-    window.addEventListener('keydown', interrupt);
-    window.addEventListener('touchstart', down, { passive: true });
-    window.addEventListener('touchend', up, { passive: true });
-    window.addEventListener('touchcancel', up, { passive: true });
     return () => {
-      stop();
+      if (frame) cancelAnimationFrame(frame);
       window.clearTimeout(timer);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('touchcancel', onTouchEnd);
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('wheel', interrupt);
-      window.removeEventListener('keydown', interrupt);
-      window.removeEventListener('touchstart', down);
-      window.removeEventListener('touchend', up);
-      window.removeEventListener('touchcancel', up);
     };
   }, []);
   return null;
