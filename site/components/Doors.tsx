@@ -20,7 +20,7 @@ export default async function Doors({ lang }: { lang: Lang }) {
     <section className="doors" aria-label={`${d.nav.atlas} · ${d.nav.canon}`}>
       <a className="door door--atlas" href={`/${lang}/atlas`}>
         <span className="door__plate">
-          <Image src="/art/atlas-plate.jpg" alt="" width={2400} height={1172} sizes="(max-width: 900px) 100vw, 58vw" />
+          <Image src="/art/atlas-plate.jpg" alt="" width={2400} height={1174} sizes="(max-width: 900px) 100vw, 58vw" />
         </span>
         <span className="door__text">
           <span className="eyebrow"><span className="door__n">II</span> {d.atlas.eyebrow}</span>

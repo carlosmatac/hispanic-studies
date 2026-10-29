@@ -33,6 +33,20 @@ Overpass API (cached in `tools/.cache/`, not committed), clips them to the plate
 Natural Earth coast and writes `site/public/data/atlas-eras.topo.json`. Needs network
 and `npx` (it runs `mapshaper@0.6.113`); everything else is stdlib.
 
+## The Atlas's finer coast (`site/public/data/land-50m.json`)
+
+Natural Earth 1:50m land from `world-atlas@2.0.2`, thinned for the page (issue #71):
+
+```bash
+curl -sL -o land-50m.json https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/land-50m.json
+npx --yes mapshaper@0.6.113 land-50m.json -simplify 25% keep-shapes -filter-islands min-area=40km2 -o format=topojson quantization=1e5 site/public/data/land-50m.json
+```
+
+Simplification can leave a ring with no area, which d3 would read as the whole
+sphere; `lib/atlas-engine.ts` (`rewind`) drops such rings when it loads the file.
+The voyages (`site/data/atlas-voyages.json`) are edited by hand; their sources
+are in `docs/research/atlas-voyages.md`.
+
 ## The archive (in the database since issue #69)
 
 The archive lives in a Postgres database and is edited at `/admin` (`docs/cms.md`).

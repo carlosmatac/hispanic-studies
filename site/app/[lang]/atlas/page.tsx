@@ -3,13 +3,15 @@ import { notFound } from 'next/navigation';
 import { dict, isLang } from '@/lib/i18n';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import MapTour from '@/components/MapTour';
-import { COUNTS, erasFor, tourCards } from '@/lib/atlas';
+import AtlasStage from '@/components/atlas/AtlasStage';
+import Chronicle from '@/components/atlas/Chronicle';
+import { chronicleFor } from '@/lib/atlas-chronicle';
 import milestones from '@/data/milestones.json';
 
 /* The Atlas, on its own page since 2026-10-25 (Beltrán found the home too busy
-   with the map live on it): the map and its tour, then Beltrán's sixty
-   milestones in their seven chapters. */
+   with the map live on it). Rebuilt for issue #71: a dark chart discovered as
+   the ships sail (components/atlas/AtlasStage.tsx), the same chronicle as text
+   under it, then Beltrán's sixty milestones in their seven chapters. */
 
 type Milestone = { n: number; chapter: number; date: { en: string; es: string }; title: { en: string; es: string }; body: { en: string; es: string } };
 const MS = milestones.milestones as Milestone[];
@@ -27,7 +29,7 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const d = dict(lang);
-  const { eras, families } = erasFor(lang);
+  const chronicle = chronicleFor(lang);
   return (
     <>
       <Header lang={lang} current="atlas" />
@@ -39,23 +41,8 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
           <p className="pending atlas__wip">{d.atlas.rebuilding}</p>
         </section>
 
-        <section className="atlas atlas--page" id="atlas" aria-label={d.map.title}>
-          <div className="plate-wrap">
-            <MapTour lang={lang} cards={tourCards(lang)} eras={eras} families={families} />
-            <div className="cartouche">
-              <h2>{d.map.title}</h2>
-              <div className="rule" />
-              <dl>
-                <dt>{d.map.states}</dt><dd>{COUNTS.states}</dd>
-                <dt>{d.map.presence}</dt><dd>{COUNTS.presence}</dd>
-                <dt>{d.map.authors}</dt><dd>{COUNTS.authors}</dd>
-                <dt>{d.map.milestones}</dt><dd>{COUNTS.milestones}</dd>
-                <dt>{d.map.rupture}</dt><dd>1898</dd>
-              </dl>
-              <p className="src">{d.map.src}</p>
-            </div>
-          </div>
-        </section>
+        <AtlasStage lang={lang} chronicle={chronicle} />
+        <Chronicle lang={lang} data={chronicle} />
 
         <section className="milestones" id="milestones" aria-labelledby="ms-h">
           <div className="section-head">
@@ -81,7 +68,6 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
               </ol>
             </div>
           ))}
-          <p className="pending atlas__next">{d.atlas.pending}</p>
         </section>
       </main>
       <Footer lang={lang} />
