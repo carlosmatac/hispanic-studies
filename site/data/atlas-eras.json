@@ -1,40 +1,10 @@
 {
- "about": "The Atlas map's historical borders, 1492-1898 (issue #71). Twenty keyframes, each a dated act with a source; the map shows the latest keyframe at or before a milestone's year. Geometry: the OpenHistoricalMap relations listed per keyframe (CC0), clipped to the Natural Earth coast and built into public/data/atlas-eras.topo.json by tools/build-atlas-eras.py; drawn lines and claims are in tools/atlas-eras-drawn.json. Level: viceroyalties and captaincies-general, the Americas and the Philippines. Other crowns and states are drawn in a neutral grey for context only.",
+ "about": "The Atlas map's historical borders, 1492-1898 (issue #71). Twenty keyframes, each a dated act with a source; the map shows the latest keyframe at or before a milestone's year. Geometry: the OpenHistoricalMap relations listed per keyframe (CC0), clipped to the Natural Earth coast and built into public/data/atlas-eras.topo.json by tools/build-atlas-eras.py; drawn lines and claims are in tools/atlas-eras-drawn.json. Level: viceroyalties and captaincies-general, the Americas and the Philippines. Other crowns and states are drawn in a neutral grey for context only. The Mexica Triple Alliance is marked by its capital, not drawn: OHM's polygon for it holds only the basin of Mexico and Soconusco. Left out of the feasibility study's 23 rows: Zaragoza 1529 (a Pacific line off this plate), the Iberian Union 1580-1640 (no border change), Utrecht 1715 (Colonia del Sacramento, below the scale of the plate) and Santo Domingo 1861-65; added: Guadalupe Hidalgo 1848, so the milestones of 1848-97 do not show Mexico's 1826 borders. Kinds: es (Spanish Crown), pt (Portuguese Crown), other, native (Indigenous states), indep and pt-indep (successor states), claim (hatched).",
  "extracted": "2026-10-29",
  "source": {
   "name": "OpenHistoricalMap contributors",
   "licence": "CC0 1.0",
   "url": "https://www.openhistoricalmap.org/copyright"
- },
- "kinds": {
-  "es": {
-   "en": "Spanish Crown",
-   "es": "Corona española"
-  },
-  "pt": {
-   "en": "Portuguese Crown",
-   "es": "Corona portuguesa"
-  },
-  "other": {
-   "en": "Other crowns and states",
-   "es": "Otras coronas y estados"
-  },
-  "native": {
-   "en": "Indigenous states",
-   "es": "Estados indígenas"
-  },
-  "indep": {
-   "en": "Successor states",
-   "es": "Estados sucesores"
-  },
-  "claim": {
-   "en": "Claimed or disputed",
-   "es": "Reclamado o en disputa"
-  },
-  "line": {
-   "en": "Treaty line",
-   "es": "Línea de tratado"
-  }
  },
  "families": {
   "indies": {
@@ -165,8 +135,8 @@
     "es": "Santo Domingo"
    },
    "at": [
-    -70.2,
-    18.9
+    -69.6,
+    17.7
    ]
   },
   "yucatan": {
@@ -371,7 +341,7 @@
   },
   "saint-domingue": {
    "kind": "other",
-   "tone": 1,
+   "tone": 0,
    "name": {
     "en": "Saint-Domingue (France)",
     "es": "Saint-Domingue (Francia)"
@@ -381,8 +351,8 @@
     "es": "Saint-Domingue"
    },
    "at": [
-    -72.6,
-    19.3
+    -73.6,
+    20.4
    ]
   },
   "haiti": {

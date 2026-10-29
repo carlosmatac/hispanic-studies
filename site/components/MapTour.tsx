@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { dict, type Lang } from '@/lib/i18n';
 import type { TourCard } from '@/lib/map-tour';
+import type { Era, EraFamily } from '@/lib/atlas';
+import EraPanel from '@/components/EraPanel';
 
 interface Inset { l: number; r: number; t: number; b: number }
 interface Place { name: Record<string, string>; tier: 'emersa' | 'submersa'; authors: number }
@@ -11,6 +13,7 @@ interface MapApi {
   highlight(isos: string[]): void;
   showRoutes(ids: Set<string> | null): void;
   flyTo(isos: string[], o?: { pad?: number; ms?: number; onDone?: () => void; inset?: Inset }): void;
+  setEra(era: Era | null): void;
 }
 
 /* The Atlas map runs a tour on its own: the camera flies from stop to stop
@@ -57,7 +60,9 @@ const RM = '(prefers-reduced-motion: reduce)';
 const subscribeRM = (cb: () => void) => { const m = window.matchMedia(RM); m.addEventListener('change', cb); return () => m.removeEventListener('change', cb); };
 const getRM = () => window.matchMedia(RM).matches;
 
-export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[] }) {
+export default function MapTour({ lang, cards, eras, families }: {
+  lang: Lang; cards: TourCard[]; eras: Era[]; families: Record<string, EraFamily>;
+}) {
   const d = dict(lang).map;
   const t = d.tour;
   const host = useRef<HTMLDivElement>(null);
@@ -74,6 +79,8 @@ export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[]
   const playing = choice ?? !reduced;
   const [holds, setHolds] = useState<Set<Hold>>(new Set());
   const releaseTimer = useRef<number>(0);
+  // the borders the reader chose on the scrubber; undefined = follow the tour
+  const [eraPick, setEraPick] = useState<number | null | undefined>(undefined);
 
   const hold = useCallback((h: Hold, on: boolean) => {
     setHolds((prev) => {
@@ -95,10 +102,11 @@ export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[]
     (async () => {
       try {
         const { drawMap, loadMapData } = await import('@/lib/atlas-map');
-        const data = await loadMapData('/data');
+        const data = await loadMapData('/data', { eras: true });
         if (cancelled || !host.current) return;
         api.current = drawMap(host.current, data, {
           animate: true,
+          eraFamilies: families,
           onPick: (p: Place | null) => {
             setPick(p);
             if (p) { window.clearTimeout(releaseTimer.current); hold('pick', true); }
@@ -112,7 +120,7 @@ export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[]
       }
     })();
     return () => { cancelled = true; api.current?.destroy(); api.current = null; };
-  }, [hold, releaseSoon]);
+  }, [hold, releaseSoon, families]);
 
   // off screen, or in a background tab: wait
   useEffect(() => {
@@ -140,11 +148,27 @@ export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[]
   const paused = !playing || holds.size > 0;
   useEffect(() => {
     if (!ready || !arrived || paused) return;
-    const id = window.setTimeout(() => setIdx((i) => (i + 1) % cards.length), DWELL);
+    const id = window.setTimeout(() => { setEraPick(undefined); setIdx((i) => (i + 1) % cards.length); }, DWELL);
     return () => window.clearTimeout(id);
   }, [ready, arrived, paused, idx, cards.length]);
 
+  // the borders on show: the reader's pick, or the current stop's keyframe
+  const c = cards[idx];
+  const eraShown = eraPick !== undefined ? eraPick : (c?.era ?? null);
+  const era = eras.find((e) => e.year === eraShown) ?? null;
+  useEffect(() => {
+    if (ready) api.current?.setEra(era);
+  }, [ready, era]);
+
+  const pickEra = (year: number | null) => {
+    setEraPick(year);
+    setChoice(false);   // the reader took the wheel: the tour waits for play
+    const e = eras.find((x) => x.year === year);
+    api.current?.flyTo(e ? e.frame : [], { pad: 0.12, ms: FLIGHT, inset: covered(host.current) });
+  };
+
   const goTo = (i: number) => {
+    setEraPick(undefined);
     setIdx((i + cards.length) % cards.length);
     // stepping by hand holds the tour for a moment, then it continues
     hold('focus', true);
@@ -160,10 +184,10 @@ export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[]
     onBlur: (e: React.FocusEvent) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) releaseSoon(RELEASE, 'focus'); },
   };
 
-  const c = cards[idx];
   return (
     <div ref={wrap} className={`map-tour${paused ? ' is-paused' : ''}`}>
       <div ref={host} className={`tour-map${failed ? ' is-failed' : ''}`} {...handlers}>{failed ? d.failed : null}</div>
+      <EraPanel lang={lang} eras={eras} shown={eraShown} live={paused} onPick={pickEra} />
 
       <aside className="tour" aria-label={t.label} aria-roledescription="carousel" {...handlers}>
         <div className="tour__card" aria-live={paused ? 'polite' : 'off'}>
@@ -198,7 +222,7 @@ export default function MapTour({ lang, cards }: { lang: Lang; cards: TourCard[]
 
         <div className="tour__controls">
           <button type="button" className="tour__btn" onClick={() => goTo(idx - 1)} aria-label={t.prev}>‹</button>
-          <button type="button" className="tour__btn tour__btn--play" onClick={() => setChoice(!playing)} aria-label={playing ? t.pause : t.play} aria-pressed={!playing}>
+          <button type="button" className="tour__btn tour__btn--play" onClick={() => { if (!playing) setEraPick(undefined); setChoice(!playing); }} aria-label={playing ? t.pause : t.play} aria-pressed={!playing}>
             {playing ? <span className="tour__pause" aria-hidden="true" /> : <span className="tour__play" aria-hidden="true" />}
           </button>
           <button type="button" className="tour__btn" onClick={() => goTo(idx + 1)} aria-label={t.next}>›</button>

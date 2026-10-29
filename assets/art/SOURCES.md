@@ -171,3 +171,14 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | `footer-name.jpg` | `assets/art/ai/footer-hispano-studies-2026-10-26.png` (AI-generated, see above), the cream strip on its right cut off (1826 × 809). The footer's glass shows the same picture mirrored and blurred |
 
 The letters cut from period pictures (`site/public/art/letters/`) were on the site only on 2026-10-26: Carlos preferred his own picture and its typeface.
+
+## Map data (`site/public/data/`)
+
+Not images, but shipped and drawn on the page, so logged here too.
+
+| File | Made from | Licence |
+| --- | --- | --- |
+| `world-110m.json` | Natural Earth 1:110m countries, via `world-atlas` 2.0.2 (`tools/build-map-data.py`) | Public domain |
+| `atlas-eras.topo.json` | The historical borders, 1492–1898 (issue #71): OpenHistoricalMap relations, the ids pinned per keyframe in `site/data/atlas-eras.json`, fetched on **2026-10-29** from the OHM Overpass API (`https://overpass-api.openhistoricalmap.org/api/interpreter`) with `[out:json]; rel(id:<ids>); out geom;`, stitched into polygons, clipped to the Natural Earth coast above and simplified (about 6 km) by `tools/build-atlas-eras.py` (mapshaper 0.6.113). Plus two lines drawn by us from the treaty texts (`tools/atlas-eras-drawn.json`: the Tordesillas meridian, the northwest-coast claim) | OpenHistoricalMap: [CC0 1.0](https://www.openhistoricalmap.org/copyright) (attribution requested, given on the page: cartouche and the borders panel). Natural Earth: public domain |
+
+Used only as references while checking, never shipped: HGIS de las Indias (W. Stangl, University of Graz; CC BY-NC-SA 4.0) and Wikimedia Commons maps of the viceroyalties. historical-basemaps (aourednik, GPL-3.0) is not used.

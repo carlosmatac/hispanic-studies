@@ -20,6 +20,19 @@ python3 tools/build-map-data.py /tmp/countries-110m.json /tmp/Priority50.csv
 `Priority50.csv` is the `Priority50` sheet of `panhispanic_paniberian_acquisitions.xlsm`
 exported to CSV. `build-map-data.py` runs without it and simply skips `books.json`.
 
+## The Atlas's historical borders (`build-atlas-eras.py`)
+
+```bash
+python3 tools/build-atlas-eras.py                   # fetch the pinned OHM relations, build the TopoJSON
+python3 tools/build-atlas-eras.py --list 1790-10-29 # curation aid: OHM units valid on a day
+```
+
+Reads the keyframes in `site/data/atlas-eras.json` (each with its OpenHistoricalMap
+relation ids) and `tools/atlas-eras-drawn.json`, fetches the relations from the OHM
+Overpass API (cached in `tools/.cache/`, not committed), clips them to the plate's
+Natural Earth coast and writes `site/public/data/atlas-eras.topo.json`. Needs network
+and `npx` (it runs `mapshaper@0.6.113`); everything else is stdlib.
+
 ## What is deliberately dropped
 
 `build-map-data.py` keeps only safe fields from the acquisitions workbook. It
@@ -37,5 +50,7 @@ and Pillow for packing the frames.
 
 - **Natural Earth** (via `world-atlas` 2.0.2): public domain, no attribution
   required. Credited on the page anyway.
+- **OpenHistoricalMap** (the historical borders): CC0 1.0; attribution is
+  requested and given on the Atlas page.
 - Everything else comes from `docs/provided-documentation/`, which is Beltrán's
   own material.

@@ -4,7 +4,7 @@ import { dict, isLang } from '@/lib/i18n';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MapTour from '@/components/MapTour';
-import { COUNTS, tourCards } from '@/lib/atlas';
+import { COUNTS, erasFor, tourCards } from '@/lib/atlas';
 import milestones from '@/data/milestones.json';
 
 /* The Atlas, on its own page since 2026-10-25 (Beltrán found the home too busy
@@ -27,6 +27,7 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const d = dict(lang);
+  const { eras, families } = erasFor(lang);
   return (
     <>
       <Header lang={lang} current="atlas" />
@@ -39,7 +40,7 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
 
         <section className="atlas atlas--page" id="atlas" aria-label={d.map.title}>
           <div className="plate-wrap">
-            <MapTour lang={lang} cards={tourCards(lang)} />
+            <MapTour lang={lang} cards={tourCards(lang)} eras={eras} families={families} />
             <div className="cartouche">
               <h2>{d.map.title}</h2>
               <div className="rule" />
