@@ -832,6 +832,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     if (cur) {
       // landfalls: the newest first, so its name always shows
       const reached = cur.cv.stops.filter((stp) => stp.d <= cur.d + 1e-9);
+      const named = new Set<string>();   // a port sailed from and back to is named once
       for (let k = reached.length - 1; k >= 0; k--) {
         const stp = reached[k];
         const p = pt(stp.wp.at);
@@ -843,6 +844,8 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         }
         dot(p[0], p[1], k === reached.length - 1 ? 3.2 : 2.4, css(C.paper, 0.95), css(C.burgundyDark));
         const label = (stp.wp.name as string).toUpperCase();
+        if (named.has(label)) continue;
+        named.add(label);
         ctx.font = `500 10.5px ${fontMono}`; ctx.textAlign = 'left';
         const w = ctx.measureText(label).width;
         const spots: [number, number][] = [[8, 4], [-8 - w, 4], [-w / 2, -9], [-w / 2, 16]];
@@ -1013,7 +1016,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       iberia = { type: 'Feature', properties: {}, geometry: merge(wt, cobj.geometries.filter((g) => ['724', '620'].includes(String(g.id))) as never) as MultiPolygon };
       // the globe re-projects every frame: it gets the same world with a
       // third of the points (arcs are shared, so the shapes still meet)
-      const wc = decimate(wt, 3);
+      const wc = decimate(wt, 2);
       const cc = wc.objects.countries as GeometryCollection;
       landCoarse = rewind(feature(wc, wc.objects.land) as unknown as FeatureCollection) as unknown as Feature;
       oldCoarse = { type: 'Feature', properties: {}, geometry: merge(wc, cc.geometries.filter((g) => oldGeoms.some((o) => o.id === g.id)) as never) as MultiPolygon };

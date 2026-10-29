@@ -477,7 +477,7 @@ main .eyebrow { color: var(--leather); }
   transition: box-shadow 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), translate 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .door:hover, .door:focus-visible { box-shadow: var(--lift-3); translate: 0 -4px; }
-.door__plate { position: relative; display: block; overflow: hidden; aspect-ratio: 2400 / 1172; background: var(--paper-deep); border-bottom: 1px solid var(--grid); }
+.door__plate { position: relative; display: block; overflow: hidden; aspect-ratio: 2400 / 1174; background: var(--paper-deep); border-bottom: 1px solid var(--grid); }
 .door__plate img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1); }
 .door:hover .door__plate img { transform: scale(1.04); }
 .door__text { display: grid; align-content: start; gap: 10px; padding: clamp(18px, 2.2vw, 30px); }

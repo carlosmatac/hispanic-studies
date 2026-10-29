@@ -64,6 +64,8 @@ Prompt (verbatim):
 
 AI video clips for the tour's places (not historical scenes) are logged here when they arrive, with the model and the prompt.
 
+Since the Atlas rebuild (issue #71) the tour is gone; the two images illustrate the cards of Columbus's first voyage and of Legazpi and Urdaneta. The voyages' routes are data, not images: their sources are in `docs/research/atlas-voyages.md`.
+
 ## Paintings once used in the pillars (`assets/art/pillars/`)
 
 Kept here, not on the page since 2026-10-21 (the pillars are now typographic); candidates for the book series in Books. All pre-1900 and public domain on Commons; our only change is the 3:4 crop.
@@ -157,7 +159,7 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | File | Made from |
 | --- | --- |
 | `epigraph-valley.jpg` | `assets/art/ai/valley-of-mexico-2026-10-25.jpg` (AI-generated, see below): the false signature painted out, printed a little warmer toward the site's paper, resized to 2400 px. It fills the epigraph section behind Lewis Hanke's sentence, credited on the page as a generated image |
-| `atlas-plate.jpg` | A still of our own Atlas map (`site/components/MapTour.tsx`, Natural Earth geometry, public domain), captured from the page |
+| `atlas-plate.jpg` | A still of our own Atlas (the 1542 keyframe, `site/lib/atlas-engine.ts`; Natural Earth, public domain, and OpenHistoricalMap, CC0), captured from the page on 2026-10-29 |
 | `pillars/fresco.jpg` | The pillars' band, built by `tools/build-fresco.py` from three public-domain paintings laid side by side with soft seams and one warm grade: Miguel Cabrera, *1. De español e india, mestiza*, 1763, oil on canvas, Museo de Historia Mexicana, Monterrey (per [Wikidata Q111605580](https://www.wikidata.org/wiki/Q111605580)), [Commons](https://commons.wikimedia.org/wiki/File:De_espa%C3%B1ol_e_india,_mestiza.jpg) (PD-Art, PD-old-100; 777 × 995 px, the largest copy on Commons), since 2026-10-29 in place of Morlete's casta painting; Miguel Cabrera, *Retablo de la Virgen de Guadalupe con san Juan Bautista, fray Juan de Zumárraga y Juan Diego*, 18th century, [Commons](https://commons.wikimedia.org/wiki/File:Miguel_Cabrera_-_Altarpiece_of_the_Virgin_of_Guadalupe_with_Saint_John_the_Baptist,_Fray_Juan_de_Zum%C3%A1rraga_and_Juan_Diego_-_Google_Art_Project.jpg) (Google Art Project, public domain); and the Florentine Codex folio 80, [Commons](https://commons.wikimedia.org/wiki/File:The_Florentine_Codex_(folio_80).jpg) (public domain, the full 1132 px file). Credited on the page under the band |
 | `pillars/mestizaje-detail.jpg`, `pillars/catolicismo-detail.jpg`, `pillars/lengua-detail.jpg` | Crops of the same three paintings, same grade, shown in the panel each pillar opens (Cabrera's *mestiza* whole, at its 777 px) |
 
@@ -181,6 +183,7 @@ Not images, but shipped and drawn on the page, so logged here too.
 | File | Made from | Licence |
 | --- | --- | --- |
 | `world-110m.json` | Natural Earth 1:110m countries, via `world-atlas` 2.0.2 (`tools/build-map-data.py`) | Public domain |
+| `land-50m.json` | Natural Earth 1:50m land, via `world-atlas` 2.0.2 (`land-50m.json`), simplified to 25% of its points and islands under 40 km² dropped with mapshaper 0.6.113 (command in `tools/README.md`). The Atlas draws it close in, the 1:110m coast further out (issue #71) | Public domain |
 | `atlas-eras.topo.json` | The historical borders, 1492–1898 (issue #71): OpenHistoricalMap relations, the ids pinned per keyframe in `site/data/atlas-eras.json`, fetched on **2026-10-29** from the OHM Overpass API (`https://overpass-api.openhistoricalmap.org/api/interpreter`) with `[out:json]; rel(id:<ids>); out geom;`, stitched into polygons, clipped to the Natural Earth coast above and simplified (about 6 km) by `tools/build-atlas-eras.py` (mapshaper 0.6.113). Plus two lines drawn by us from the treaty texts (`tools/atlas-eras-drawn.json`: the Tordesillas meridian, the northwest-coast claim) | OpenHistoricalMap: [CC0 1.0](https://www.openhistoricalmap.org/copyright) (attribution requested, given on the page: cartouche and the borders panel). Natural Earth: public domain |
 
 Used only as references while checking, never shipped: HGIS de las Indias (W. Stangl, University of Graz; CC BY-NC-SA 4.0) and Wikimedia Commons maps of the viceroyalties. historical-basemaps (aourednik, GPL-3.0) is not used.
