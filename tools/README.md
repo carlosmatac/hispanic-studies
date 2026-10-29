@@ -33,6 +33,29 @@ Overpass API (cached in `tools/.cache/`, not committed), clips them to the plate
 Natural Earth coast and writes `site/public/data/atlas-eras.topo.json`. Needs network
 and `npx` (it runs `mapshaper@0.6.113`); everything else is stdlib.
 
+## The archive (`site/content/archive/`)
+
+The archive's files are the source of truth (edited by hand or in the CMS,
+`docs/cms.md`). Two scripts feed them:
+
+```bash
+# once, on 2026-10-29: the compiler's fifty works (+ the prelude) as content files;
+# it never overwrites an existing file unless asked (--force T012, or --force all)
+python3 tools/migrate-canon-to-archive.py
+
+# the rights research (docs/research/archive-rights/) into the records: verdicts,
+# links, corrections, the prelude (Node, uses site/node_modules/js-yaml)
+node tools/apply-archive-research.mjs
+
+# a public-domain text into a work's file (body + source fields); every command
+# used so far is in docs/archive-sources.md
+python3 tools/ingest-text.py T013 --wikisource "Nuestra América" --edition "…"
+python3 tools/ingest-text.py T018 --gutenberg 22899 --number-class top --number-class top1 --start "## I"
+python3 tools/ingest-text.py T007 --tei https://raw.githubusercontent.com/…/POR0084_FraLGom_Bramanes.xml --demote
+```
+
+Log every hosted text in `docs/archive-sources.md`.
+
 ## What is deliberately dropped
 
 `build-map-data.py` keeps only safe fields from the acquisitions workbook. It

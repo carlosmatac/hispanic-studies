@@ -14,7 +14,25 @@ function same(a: string, b: string) {
   return diff === 0;
 }
 
+/* The CMS (/keystatic and its API, issue #69). Locally (`next dev`) it edits
+   the files on disk. On a deployment it is open only when the GitHub login is
+   configured (docs/cms.md); otherwise it does not exist. It has its own login
+   (GitHub), so the preview password does not stand in front of it, and it is
+   never indexed. */
+const CMS = /^\/(api\/)?keystatic(\/|$)/;
+const cmsEnabled = () =>
+  process.env.NODE_ENV === 'development' ||
+  (process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE === 'github' &&
+    !!process.env.KEYSTATIC_GITHUB_CLIENT_ID && !!process.env.KEYSTATIC_GITHUB_CLIENT_SECRET && !!process.env.KEYSTATIC_SECRET);
+
 export function proxy(request: NextRequest) {
+  if (CMS.test(request.nextUrl.pathname)) {
+    if (!cmsEnabled()) return new NextResponse('Not found.', { status: 404 });
+    const res = NextResponse.next();
+    res.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return res;
+  }
+
   const password = process.env.SITE_PASSWORD;
   if (!password) return NextResponse.next();
 

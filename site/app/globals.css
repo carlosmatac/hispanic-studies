@@ -15,6 +15,13 @@
   --ink: #28231e;
   --map-submersa: var(--leather);   /* the hatch for presence without official status */
 
+  /* the archive's regions (issue #68, Beltrán 2026-10-29: "colour by region").
+     Four regions wear the brand's own grounds; the Caribbean and the Lusophone
+     world needed two more, kept as dark and muted as the burgundy and the ink:
+     a sea green-blue and an olive, each mixed with the ink. */
+  --region-sea: color-mix(in srgb, #2c6670 62%, var(--ink));
+  --region-olive: color-mix(in srgb, #5f6b2c 66%, var(--ink));
+
   /* derived tints, for hairlines and secondary text */
   --ink-muted: color-mix(in srgb, var(--ink) 70%, var(--paper));
   --grid: color-mix(in srgb, var(--ink) 24%, var(--paper));
@@ -737,8 +744,8 @@ main .eyebrow { color: var(--leather); }
 .ms__body { margin: 0; padding: 0 14px 18px calc(2.4em + 7.5em + 42px); font-size: 15px; color: var(--ink-muted); max-width: none; }
 
 /* ==========================================================================
-   THE CANON PAGE — five boxes by period, the works as floating cards
-   (components/canon/CanonShelf.tsx, CanonCard.tsx)
+   THE ARCHIVE PAGE — six boxes by period, the works as floating cards
+   coloured by region (components/canon/CanonShelf.tsx, CanonCard.tsx)
    ========================================================================== */
 
 .canon-page { background: var(--paper); }
@@ -766,7 +773,16 @@ main .eyebrow { color: var(--leather); }
 .canon-box__meta { margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--ink-muted); }
 .canon-box__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(20px, 2.4vw, 34px) clamp(16px, 2vw, 28px); grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); }
 
-/* the card: a small cover, in one of five bindings */
+/* the legend of the regions */
+.canon-legend { margin: 0 0 clamp(30px, 4vw, 52px); padding: 0; }
+.canon-legend figcaption { margin-bottom: 12px; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+.canon-legend ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px 22px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); }
+.canon-legend li { display: grid; grid-template-columns: 26px 1fr; column-gap: 10px; align-items: center; }
+.canon-legend__swatch { grid-row: span 2; width: 26px; height: 34px; background: var(--bg); box-shadow: var(--lift-1); outline: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); outline-offset: -1px; }
+.canon-legend__name { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.1; }
+.canon-legend__note { font-size: 12.5px; color: var(--ink-muted); line-height: 1.3; }
+
+/* the card: a small cover, bound in the colour of its region */
 .ccard {
   --bg: var(--paper); --fg: var(--ink); --accent: var(--burgundy); --line: color-mix(in srgb, var(--ink) 30%, transparent);
   position: relative; display: flex; flex-direction: column; gap: 10px; aspect-ratio: 3 / 4; padding: 16px 16px 15px;
@@ -779,7 +795,9 @@ main .eyebrow { color: var(--leather); }
 .ccard--burgundy { --bg: var(--burgundy); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent); }
 .ccard--leather { --bg: var(--leather); --fg: var(--paper); --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent); }
 .ccard--ink { --bg: var(--ink); --fg: var(--paper); --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent); }
-.ccard--vellum { --bg: var(--paper-deep); --fg: var(--ink); --accent: var(--burgundy); }
+.ccard--sea { --bg: var(--region-sea); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 80%, var(--region-sea)); --line: color-mix(in srgb, var(--paper) 26%, transparent); }
+.ccard--olive { --bg: var(--region-olive); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 80%, var(--leather)); --line: color-mix(in srgb, var(--paper) 26%, transparent); }
+.ccard--paper { --bg: var(--paper); --fg: var(--ink); --accent: var(--burgundy); }
 .ccard--counter::before { border-style: dashed; }
 .ccard__top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--accent); }
 .ccard__year { font-size: 13px; font-weight: 500; }
@@ -791,6 +809,15 @@ main .eyebrow { color: var(--leather); }
 .ccard__author { font-size: 12px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; line-height: 1.3; }
 .ccard__life { font-family: var(--mono); font-size: 10.5px; opacity: 0.72; }
 .ccard__counter { margin-top: 4px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+/* the works whose full text is here carry a bookmark ribbon */
+.ccard__text {
+  position: absolute; right: 16px; bottom: 0; padding: 7px 4px 13px; writing-mode: vertical-rl; rotate: 180deg;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--accent); color: var(--bg);
+  /* rotated half a turn so it reads upwards, like a spine: the notch drawn at its top ends up at the foot */
+  clip-path: polygon(0 0, 50% 7px, 100% 0, 100% 100%, 0 100%);
+}
+.ccard:has(.ccard__text) .ccard__foot { padding-right: 24px; }
 
 .ccard-btn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
 .ccard-btn .ccard { transition: rotate 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), translate 0.5s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.5s; }
@@ -830,10 +857,149 @@ main .eyebrow { color: var(--leather); }
 .record__facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 20px 0 0; padding-top: 16px; border-top: var(--rule); font-size: 14px; }
 .record__facts dt { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); padding-top: 2px; }
 .record__facts dd { margin: 0; }
+@media (max-width: 560px) {
+  .record__facts { grid-template-columns: 1fr; gap: 2px; }
+  .record__facts dd { margin-bottom: 10px; }
+}
 .record__note { margin-top: 16px; font-size: 12.5px; color: var(--ink-muted); }
+.record__swatch { display: inline-block; width: 10px; height: 13px; margin-right: 8px; vertical-align: -1px; background: var(--bg); outline: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); outline-offset: -1px; }
+.record__note-text { margin-top: 16px; font-family: var(--display); font-size: 17px; line-height: 1.45; }
+.record__go { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; margin: 22px 0 0; padding-top: 18px; border-top: var(--rule); }
+.record__read, .record__page { font-weight: 600; color: var(--burgundy); text-decoration: none; border-bottom: 1px solid currentColor; }
+.record__read { padding: 10px 16px; border: 1px solid var(--burgundy); background: var(--burgundy); color: var(--paper); box-shadow: var(--lift-1); }
+.record__read:hover { background: var(--burgundy-dark); }
+.record__go i { font-style: normal; }
+.record__status { font-size: 13px; color: var(--ink-muted); }
 
 .canon__notes { padding-top: 0; font-size: 13.5px; color: var(--ink-muted); }
 .canon__notes p { max-width: 84ch; }
+
+/* ==========================================================================
+   THE READER — a work's own page, /archive/<id> (app/[lang]/archive/[id]):
+   long reading on the paper, in the Ibarra (a Spanish printer's face), one
+   column of about 65 characters, the chapters beside it on wide screens.
+   ========================================================================== */
+
+.reader { --read-size: clamp(18px, 0.3vw + 16.8px, 21px); --col: calc(var(--read-size) * 30); padding: clamp(28px, 5vw, 72px) var(--edge) clamp(40px, 6vw, 90px); }
+.reader__article { max-width: 1080px; margin: 0 auto; }
+/* one column of about 65 characters of the Ibarra (30em of the reading size) */
+.reader__head, .reader__toc, .reader__status, .reader__source, .reader__record, .reader__pager { max-width: var(--col); margin-inline: auto; }
+.reader__head { font-size: var(--read-size); text-align: center; padding-bottom: clamp(26px, 4vw, 44px); border-bottom: var(--rule); }
+.reader__head > * { margin-inline: auto; }
+.reader__crumb { font-family: var(--body); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--leather); margin-bottom: clamp(18px, 2.4vw, 28px); }
+.reader__crumb a { text-decoration: none; }
+.reader__crumb a:hover { text-decoration: underline; }
+.reader__title { font-style: italic; font-size: clamp(36px, 6vw, 72px); line-height: 1.02; color: var(--burgundy); max-width: 16ch; }
+.reader__sub { margin-top: 14px; font-family: var(--display); font-size: clamp(18px, 1.8vw, 24px); line-height: 1.3; color: var(--ink-muted); max-width: 40ch; }
+.reader__author { margin: clamp(18px, 2.4vw, 26px) auto 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.reader__author span { margin-left: 8px; font-family: var(--mono); font-weight: 400; letter-spacing: 0; color: var(--ink-muted); }
+.reader__facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px; margin: 22px auto 0; font-size: 14px; }
+.reader__facts div { display: grid; gap: 2px; }
+.reader__facts dt { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); }
+.reader__facts dd { margin: 0; }
+.reader__swatch { display: inline-block; width: 9px; height: 12px; margin-right: 7px; vertical-align: -1px; background: var(--bg); outline: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); outline-offset: -1px; }
+.reader__note { margin: 22px auto 0; font-family: var(--display); font-size: 0.86em; line-height: 1.5; color: var(--ink); max-width: 52ch; }
+.reader__meta { margin: 16px auto 0; font-family: var(--mono); font-size: 11.5px; color: var(--ink-muted); }
+
+/* the contents, on phones and tablets: folded above the text */
+.reader__toc { margin-top: 22px; border: var(--rule); background: color-mix(in srgb, var(--paper-deep) 45%, var(--paper)); }
+.reader__toc summary { cursor: pointer; padding: 12px 16px; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; }
+.reader__toc summary span { font-family: var(--mono); letter-spacing: 0; color: var(--ink-muted); }
+.reader__toc ol { margin: 0; padding: 0 16px 14px 40px; columns: 2 12ch; font-family: var(--display); font-size: 17px; line-height: 1.7; }
+.reader__toc a { text-decoration: none; }
+.reader__toc a:hover { text-decoration: underline; color: var(--burgundy); }
+
+/* the text */
+.reader__body { position: relative; margin-top: clamp(30px, 4.5vw, 56px); }
+.reader__text {
+  max-width: var(--col); margin: 0 auto;
+  font: 400 var(--read-size)/1.62 var(--display); color: var(--ink);
+  hyphens: auto; -webkit-hyphens: auto; hanging-punctuation: first; text-wrap: pretty; overflow-wrap: break-word;
+  font-variant-numeric: oldstyle-nums;
+}
+.reader__text p { margin: 0; max-width: none; text-indent: 1.4em; }
+.reader__text > p:first-child, .reader__text > h2 + p, .reader__text > h3 + p, .reader__text > .ad-slot + p,
+.reader__text > blockquote + p, .reader__text > hr + p { text-indent: 0; }
+.reader__text h2 {
+  margin: 2.6em 0 1.2em; font-size: 1.05em; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  text-align: center; color: var(--burgundy); scroll-margin-top: calc(var(--bar-h) + 24px);
+}
+.reader__text h2::before { content: "❦"; display: block; margin-bottom: 0.5em; font-size: 0.9em; letter-spacing: 0; color: var(--leather); }
+.reader__text > h2:first-child { margin-top: 0; }
+.reader__text h3 { margin: 2em 0 0.8em; font-size: 1em; font-style: italic; text-align: center; }
+.reader__text blockquote { margin: 1em 0 1em 1.4em; font-size: 0.92em; }
+.reader__text em { font-style: italic; }
+.reader__text strong { font-weight: 600; }
+.reader__text hr { border: 0; margin: 1.6em 0; text-align: center; }
+.reader__text hr::after { content: "⁂"; color: var(--leather); }
+
+/* the contents beside the text, on wide screens */
+.reader__aside { display: none; }
+@media (min-width: 1180px) {
+  .reader__toc { display: none; }
+  .reader__aside {
+    display: block; position: absolute; top: 0; bottom: 0; left: 0; width: 180px;
+  }
+  .reader__aside > * { position: sticky; }
+  .reader__aside-h { top: calc(var(--bar-h) + 28px); margin: 0 0 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+  .reader__aside ol { top: calc(var(--bar-h) + 56px); list-style: none; margin: 0; padding: 0; border-left: var(--rule); }
+  .reader__aside a { display: block; padding: 5px 0 5px 14px; margin-left: -1px; border-left: 2px solid transparent; font-family: var(--display); font-size: 16px; line-height: 1.3; text-decoration: none; color: var(--ink-muted); transition: color 0.2s, border-color 0.2s; }
+  .reader__aside a:hover { color: var(--ink); }
+  .reader__aside a[aria-current] { color: var(--burgundy); border-left-color: var(--burgundy); }
+}
+
+/* where the text came from */
+.reader__source { margin-top: clamp(40px, 6vw, 72px); text-align: center; font-size: 14px; color: var(--ink-muted); }
+.reader__fleuron { margin: 0 auto 18px; font-size: 22px; color: var(--leather); }
+.reader__source h2, .reader__record h2 { font-size: 12px; font-family: var(--body); font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 14px; }
+.reader__source dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; margin: 0 auto 12px; text-align: left; max-width: 58ch; }
+.reader__source dt { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; padding-top: 3px; }
+.reader__source dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+.reader__source > p:last-child { margin: 0 auto; max-width: 58ch; font-size: 12.5px; }
+
+/* the record, below the text or in its place */
+.reader__status {
+  margin-top: clamp(30px, 4.5vw, 56px); padding: clamp(20px, 3vw, 32px); text-align: center;
+  background: color-mix(in srgb, var(--paper-deep) 55%, var(--paper)); outline: 1px solid var(--grid); outline-offset: -8px; box-shadow: var(--lift-1);
+  font-family: var(--display); font-size: clamp(18px, 1.5vw, 21px); line-height: 1.45;
+}
+.reader__status p { margin-inline: auto; }
+.reader__status .reader__status-lead { margin-top: 18px; font-family: var(--body); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+.reader__links { list-style: none; margin: 14px auto 0; padding: 0; display: grid; gap: 10px; text-align: left; font-family: var(--body); font-size: 14.5px; line-height: 1.45; max-width: 58ch; }
+.reader__links a { color: var(--burgundy); text-underline-offset: 3px; }
+.reader__record { margin-top: clamp(36px, 5vw, 60px); padding-top: 22px; border-top: var(--rule); font-size: 15.5px; }
+.reader__record h3 { margin: 22px 0 0; font-size: 17px; }
+.reader__record .record__facts { font-size: 14px; }
+
+/* earlier, back, later */
+.reader__pager { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; gap: 16px; margin-top: clamp(40px, 6vw, 72px); padding-top: 22px; border-top: var(--rule); }
+.reader__back { align-self: center; padding: 9px 14px; border: 1px solid var(--ink); font-size: 13px; text-decoration: none; text-align: center; background: var(--paper); }
+.reader__back:hover { background: var(--burgundy); border-color: var(--burgundy); color: var(--paper); }
+.reader__nb { display: grid; gap: 3px; text-decoration: none; }
+.reader__nb--next { text-align: right; }
+.reader__nb-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--leather); }
+.reader__nb-title { font-family: var(--display); font-style: italic; font-weight: 600; font-size: 18px; line-height: 1.15; color: var(--burgundy); }
+.reader__nb-meta { font-size: 12.5px; color: var(--ink-muted); }
+.reader__nb:hover .reader__nb-title { text-decoration: underline; }
+@media (max-width: 560px) {
+  .reader__pager { grid-template-columns: 1fr 1fr; }
+  .reader__back { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+}
+
+/* how far into the text: a hairline under the bar, drawn by the scroll itself
+   (no script; where the browser cannot, there is simply no line) */
+.reader-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  .reader-progress { display: block; position: sticky; top: var(--bar-h); z-index: 41; height: 0; }
+  .reader-progress span {
+    position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--burgundy); transform-origin: 0 50%;
+    animation: reader-progress linear both; animation-timeline: scroll(root);
+  }
+}
+@keyframes reader-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* where an ad may go later (#70): nothing shows until then */
+.ad-slot[hidden] { display: none; }
 
 /* ==========================================================================
    WATCH, READ
