@@ -27,7 +27,8 @@
       tl.fromTo("#lock-eagle", { scale: 1.18 }, { scale: 1, duration: 0.6, ease: "expo.out" }, 0);
       // the name wipes in from the eagle outwards, a beat later
       tl.fromTo("#lock-small", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.out" }, 0.267);
-      tl.fromTo("#lock-big", { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.7, ease: "expo.out" }, 0.534);
+      // (its box is one line high: the wipe reaches above and below it, or the p loses its descender)
+      tl.fromTo("#lock-big", { clipPath: "inset(-20% 50% -30% 50%)" }, { clipPath: "inset(-20% 0% -30% 0%)", duration: 0.7, ease: "expo.out" }, 0.534);
       tl.fromTo("#lock-url", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 1.625);
       window.__timelines["lockup"] = tl;
     })();

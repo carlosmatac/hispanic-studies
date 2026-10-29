@@ -2,18 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { dict, type Lang } from '@/lib/i18n';
-import { PERIODS, REGIONS, readHref, region, splitTitle, type CanonWork } from '@/lib/canon';
+import { readHref, splitTitle, type CanonRegion, type CanonSection, type CanonWork } from '@/lib/canon';
+import { swatchStyle } from '@/lib/palette';
 import CanonCard from './CanonCard';
 
-/* The archive page: six boxes by period, each with its works as floating
+/* The archive page: one box per section (period), each with its works as floating
    cards coloured by region. A card opens the work's record in a dialog; the
    address follows it (/archive#T030), so a link from the pillars or the map
    opens the same record. From the record, the work's own page: the full text
    when it is in the public domain. */
 
-const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX'];
+const roman = (i: number) => ROMAN[i] ?? String(i + 1);
 
-export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWork[] }) {
+export default function CanonShelf({ lang, works, sections, regions }: { lang: Lang; works: CanonWork[]; sections: CanonSection[]; regions: CanonRegion[] }) {
   const t = dict(lang).canon;
   const r = dict(lang).reader;
   const box = useRef<HTMLDialogElement>(null);
@@ -45,7 +47,9 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
     history.replaceState(null, '', location.pathname);
   };
 
-  const periods = PERIODS.map((p) => ({ ...p, works: works.filter((w) => w.period === p.id) })).filter((p) => p.works.length);
+  const periods = sections.map((p) => ({ ...p, works: works.filter((w) => w.period === p.id) })).filter((p) => p.works.length);
+  const regionOf = (id: string) => regions.find((g) => g.id === id);
+  const openRegion = open ? regionOf(open.region) : undefined;
   const [title, sub] = open ? splitTitle(open.title) : ['', undefined];
 
   return (
@@ -53,7 +57,7 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
       <nav className="canon-index" aria-label={t.periods}>
         {periods.map((p, i) => (
           <a key={p.id} href={`#${p.id}`}>
-            <span className="canon-index__n">{ROMAN[i]}</span>
+            <span className="canon-index__n">{roman(i)}</span>
             <span className="canon-index__name">{p.name[lang]}</span>
           </a>
         ))}
@@ -62,9 +66,9 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
       <figure className="canon-legend">
         <figcaption>{t.legend}</figcaption>
         <ul>
-          {REGIONS.map((g) => (
+          {regions.map((g) => (
             <li key={g.id}>
-              <span className={`canon-legend__swatch ccard--${g.binding}`} aria-hidden="true" />
+              <span className="canon-legend__swatch" style={swatchStyle(g.swatch)} aria-hidden="true" />
               <span className="canon-legend__name">{g.name[lang]}</span>
               <span className="canon-legend__note">{g.note[lang]}</span>
             </li>
@@ -77,7 +81,7 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
         return (
           <section key={p.id} id={p.id} className="canon-box" aria-labelledby={`${p.id}-h`}>
             <header className="canon-box__head">
-              <span className="canon-box__n" aria-hidden="true">{ROMAN[i]}</span>
+              <span className="canon-box__n" aria-hidden="true">{roman(i)}</span>
               <h2 id={`${p.id}-h`}>{p.name[lang]}</h2>
               <span className="canon-box__meta">{years} · {t.count(p.works.length)}</span>
             </header>
@@ -85,7 +89,7 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
               {p.works.map((w, k) => (
                 <li key={w.id} className="float" style={{ '--d': `${(k % 5) * -1.3}s` } as React.CSSProperties}>
                   <button id={`w-${w.id}`} type="button" className="ccard-btn" onClick={() => show(w)} aria-haspopup="dialog">
-                    <CanonCard work={w} counterLabel={t.counterShort} textLabel={t.fullText} />
+                    <CanonCard work={w} counterLabel={t.counterShort} textLabel={t.fullText} draftLabel={r.draft} />
                   </button>
                 </li>
               ))}
@@ -99,8 +103,8 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
           <div className="record__sheet">
             <button type="button" className="record__close" onClick={() => box.current?.close()} aria-label={t.close}>×</button>
             <p className="record__kicker">
-              <span className={`record__swatch ccard--${region(open.region).binding}`} aria-hidden="true" />
-              {open.year} · {region(open.region).name[lang]} · {open.place}
+              <span className="record__swatch" style={swatchStyle(open.swatch)} aria-hidden="true" />
+              {open.year} · {openRegion?.name[lang]} · {open.place}
             </p>
             <h2 id="record-h" className="record__title">{title}</h2>
             {sub && <p className="record__sub">{sub}</p>}

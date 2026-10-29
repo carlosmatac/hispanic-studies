@@ -1,6 +1,6 @@
 # Archive: where every hosted text comes from
 
-The archive (`site/content/archive/`, issue #68) hosts the full text of a work
+The archive (in the database since #69, edited at `/admin`; issue #68) hosts the full text of a work
 only when the work is in the **public domain in the US (where the site is
 served), in Spain and in its own country**, and the copy is the **original
 text** (not a modern translation, not an annotated, abridged or modernised
@@ -25,8 +25,9 @@ texts-b: T026–T050 and the prelude), applied to the records by
 2. Find the copy: Wikisource, Project Gutenberg or a scholarly corpus (ELTeC)
    first; a scan of an early edition only once someone has transcribed and
    proofread it (no raw OCR on the site: such works carry `needsTranscription`).
-3. Ingest it with `tools/ingest-text.py` (the commands used so far are below),
-   or paste it into the CMS (`/keystatic`) with the same source fields filled in.
+3. Ingest it with `tools/ingest-text.py` and `npm run text:import -- <id>` (the
+   commands used so far are below), or paste it into the back office (`/admin`)
+   with the same source fields filled in.
 4. Log it below.
 
 ## Hosted texts (9)

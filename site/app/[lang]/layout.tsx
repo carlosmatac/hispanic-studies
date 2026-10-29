@@ -1,16 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
-import { Ibarra_Real_Nova, Inter, IBM_Plex_Mono } from 'next/font/google';
 import { LANGS, isLang, dict } from '@/lib/i18n';
+import { fontVars } from '@/lib/fonts';
 import '../globals.css';
 
-const display = Ibarra_Real_Nova({
-  subsets: ['latin'], weight: ['400', '600'], style: ['normal', 'italic'], variable: '--font-display', display: 'swap',
-});
-const body = Inter({ subsets: ['latin'], variable: '--font-body', display: 'swap' });
-const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-mono', display: 'swap' });
-
-export const dynamicParams = false;
+// any other language is refused by notFound() below; dynamicParams stays on so that a work
+// added in the back office (#69) is rendered on its first visit under /[lang]/archive/<id>
 export function generateStaticParams() {
   return LANGS.map((lang) => ({ lang }));
 }
@@ -35,7 +30,7 @@ export default async function RootLayout({
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   return (
-    <html lang={lang} className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang={lang} className={fontVars}>
       <body>{children}</body>
     </html>
   );
