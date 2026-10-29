@@ -831,6 +831,10 @@ main .eyebrow { color: var(--leather); }
 .reader__text strong { font-weight: 600; }
 .reader__text hr { border: 0; margin: 1.6em 0; text-align: center; }
 .reader__text hr::after { content: "⁂"; color: var(--leather); }
+/* lists, links (texts written in the back office, #69) */
+.reader__text ul, .reader__text ol { margin: 0.8em 0; padding-left: 1.4em; }
+.reader__text li > p { text-indent: 0; }
+.reader__text a { color: var(--burgundy); text-underline-offset: 3px; }
 
 /* the contents beside the text, on wide screens */
 .reader__aside { display: none; }

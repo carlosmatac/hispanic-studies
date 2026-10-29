@@ -4,7 +4,8 @@ import { LANGS, isLang, dict } from '@/lib/i18n';
 import { fontVars } from '@/lib/fonts';
 import '../globals.css';
 
-export const dynamicParams = false;
+// any other language is refused by notFound() below; dynamicParams stays on so that a work
+// added in the back office (#69) is rendered on its first visit under /[lang]/archive/<id>
 export function generateStaticParams() {
   return LANGS.map((lang) => ({ lang }));
 }

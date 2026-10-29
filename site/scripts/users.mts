@@ -14,15 +14,15 @@ import { openDb, where } from './env.mts';
 
 const [cmd, name] = process.argv.slice(2);
 
+// piped input (scripts): every line read once, then handed out one per question
+let lines: Promise<string[]> | null = null;
+const piped = () => (lines ??= new Promise((ok) => {
+  const all: string[] = [];
+  readline.createInterface({ input: process.stdin }).on('line', (l) => all.push(l)).on('close', () => ok(all));
+}));
+
 function ask(question: string, hidden = false): Promise<string> {
-  if (!process.stdin.isTTY) {
-    // piped: read one line
-    return new Promise((ok) => {
-      const rl = readline.createInterface({ input: process.stdin });
-      rl.once('line', (l) => { rl.close(); ok(l); });
-      rl.once('close', () => ok(''));
-    });
-  }
+  if (!process.stdin.isTTY) return piped().then((lines) => lines.shift() ?? '');
   return new Promise((ok) => {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout, terminal: true });
     if (hidden) {
