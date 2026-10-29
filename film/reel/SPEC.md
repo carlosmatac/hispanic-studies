@@ -3,10 +3,12 @@
 ```text
 GOAL:    a stranger who lands on the site knows within a minute what IHS is (a Hispanic-world
          institute: Beltrán's channel, essays, a canon, an atlas, books) and wants to scroll on.
-OUTPUT:  HyperFrames, 1920 x 1080, 30 fps, 71.4 s. Plays muted in a loop on the page (it must
+OUTPUT:  HyperFrames, 1920 x 1080, 30 fps, 75.35 s. Plays muted in a loop on the page (it must
          read without sound); "Sound on" turns the sound on in place.
-TIME:    71.4 s x 30 = 2142 frames, the length of the music. Every scene starts on a hit
-         measured in the track (film/MUSIC.md, video time = track time - 3.80 s); the pulse
+TIME:    75.35 s x 30 = 2261 frames, the length of the music (one phrase of its soft section
+         plays twice, film/MUSIC.md). Every scene starts on a hit
+         measured in the track (film/MUSIC.md, video time = track time - 3.80 s, + 3.95 s after
+         20.81 s); the pulse
          is ~0.80 s, its eighths 0.40 s.
 LOOK:    the medium is the page itself, printed: paper #F9F3DD (exactly the site's ground, so
          the film melts into it), burgundy #470B15 as the one ink, ink #28231E for small type.

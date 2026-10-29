@@ -6,8 +6,8 @@ set -euo pipefail
 cd "$(dirname "$0")/../reel/assets/clips"
 YTDLP="${YTDLP:-$HOME/.venvs/film/bin/yt-dlp}"
 NODE="$(command -v node)"
-# name  id  start  end
-while read -r name id a b; do
+# name  id  start  end  [crop w:h:x:y, for the Shorts shown in a window]
+while read -r name id a b crop; do
   [ -z "${name:-}" ] && continue
   [ -f "$name.mp4" ] && continue
   "$YTDLP" --js-runtimes "node:$NODE" --no-progress -q -S "res:1080,vcodec:h264,acodec:m4a" \
@@ -15,7 +15,7 @@ while read -r name id a b; do
     -o "$name.raw.%(ext)s" -- "$id"
   # a keyframe every half second: HyperFrames seeks every frame, and a clip
   # cut with one keyframe freezes in the render
-  ffmpeg -v error -y -i "$name.raw.mp4" -c:v libx264 -preset medium -crf 16 -r 30 -g 15 -keyint_min 15 \
+  ffmpeg -v error -y -i "$name.raw.mp4" ${crop:+-vf "crop=$crop"} -c:v libx264 -preset medium -crf 16 -r 30 -g 15 -keyint_min 15 \
     -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart "$name.mp4"
   rm -f "$name.raw.mp4"
   echo "ok $name"
@@ -33,4 +33,5 @@ g-veranda 5Yug5P6lbCc 154.20 157.60
 g-jesuit  xvZouT3m_q4 52.30 55.30
 g-roots   in8ZZBfXXlo 58.00 61.10
 g-white   2RMoqe-pz8o 58.30 60.40
+pueblos   w0t-IC2yi20 21.93 33.25 700:500:190:740
 LIST
