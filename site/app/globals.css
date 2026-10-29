@@ -403,7 +403,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
    treaty lines dashed. One keyframe cross-fades over the last; nothing morphs. */
 .map .era { opacity: 0; transition: opacity 0.7s ease; }
 .map .era.is-on { opacity: 1; }
-.map .era.is-out { opacity: 0; }
+.map .era.is-out { opacity: 0; transition: opacity 0.4s ease 0.5s; }   /* the old one goes once the new one is in */
 .map .era-u { stroke: var(--paper); stroke-width: calc(0.6px * var(--u, 1)); stroke-linejoin: round; }
 .map .era-u.k-es.t-0 { fill: color-mix(in srgb, var(--burgundy) 94%, var(--paper)); }
 .map .era-u.k-es.t-1 { fill: color-mix(in srgb, var(--burgundy) 74%, var(--paper)); }

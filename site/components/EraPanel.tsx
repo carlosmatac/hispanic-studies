@@ -68,7 +68,7 @@ export default function EraPanel({ lang, eras, shown, live, onPick }: {
         <ol>
           {eras.map((e) => (
             <li key={e.year}>
-              <button type="button" onClick={() => onPick(e.year)} aria-pressed={e.year === shown}>
+              <button type="button" onClick={() => { onPick(e.year); document.getElementById('atlas')?.scrollIntoView({ block: 'start' }); }} aria-pressed={e.year === shown}>
                 <span className="eras__all-year">{e.label}</span>
                 <span className="eras__all-go">{e.year === shown ? t.shown : t.show}</span>
               </button>

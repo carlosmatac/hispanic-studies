@@ -390,7 +390,7 @@ export function drawMap(host, data, opts = {}) {
     for (const g of old) {
       g.classList.remove('is-on');
       g.classList.add('is-out');
-      setTimeout(() => g.remove(), 900);
+      setTimeout(() => g.remove(), 1000);
     }
   }
 
