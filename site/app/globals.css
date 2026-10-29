@@ -874,9 +874,9 @@ main .eyebrow { color: var(--leather); }
    (no script; where the browser cannot, there is simply no line) */
 .reader-progress { display: none; }
 @supports (animation-timeline: scroll()) {
-  .reader-progress { display: block; position: sticky; top: var(--bar-h); z-index: 39; height: 0; }
+  .reader-progress { display: block; position: sticky; top: var(--bar-h); z-index: 41; height: 0; }
   .reader-progress span {
-    position: absolute; left: 0; right: 0; top: -2px; height: 2px; background: var(--burgundy); transform-origin: 0 50%;
+    position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--burgundy); transform-origin: 0 50%;
     animation: reader-progress linear both; animation-timeline: scroll(root);
   }
 }

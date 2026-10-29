@@ -6,9 +6,9 @@ import CanonCard from './canon/CanonCard';
 /* II and III on the home: the Atlas and the archive as two plates that open
    their own pages. The map is a still of the Atlas map (public/art/atlas-plate.jpg,
    captured from the page itself); the archive is five of its own cards, fanned,
-   one of each region but North America (lib/canon.ts REGIONS). */
+   one of each region (lib/canon.ts REGIONS) but Spain, whose burgundy is the plate's own ground. */
 
-const FAN = ['T012', 'T013', 'T001', 'T024', 'T039'];
+const FAN = ['T012', 'T013', 'T001', 'T030', 'T039'];
 
 export default async function Doors({ lang }: { lang: Lang }) {
   const d = dict(lang);
