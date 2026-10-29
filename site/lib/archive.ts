@@ -36,6 +36,9 @@ function toWork(id: string, e: Raw, hasText: boolean): CanonWork {
     summary: { en: e.summaryEn, es: e.summaryEs },
     source: { edition: e.sourceEdition, url: e.sourceUrl ?? '', revision: e.sourceRevision, licence: e.sourceLicence },
     links: e.links.filter((l) => l.url).map((l) => ({ label: l.label || l.url!, url: l.url! })),
+    pdSpainYear: e.pdSpainYear ?? null,
+    pdUsYear: e.pdUsYear ?? null,
+    needsTranscription: e.needsTranscription,
     // a text is only ever shown for a public-domain work
     hasText: hasText && e.rights === 'public-domain',
   };

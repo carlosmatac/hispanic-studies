@@ -45,12 +45,16 @@ export const LANGUAGES = [
   { id: 'la', name: { en: 'Latin', es: 'latín' } },
   { id: 'fr', name: { en: 'French', es: 'francés' } },
   { id: 'en', name: { en: 'English', es: 'inglés' } },
+  { id: 'it', name: { en: 'Italian', es: 'italiano' } },
 ] as const;
 export const languageName = (id: string, lang: Lang) => LANGUAGES.find((l) => l.id === id)?.name[lang] ?? id;
 
-/* Whether we may host the text. "unverified" until someone has checked the
-   author's death date against the laws that matter (Spain, the Americas, the US). */
-export const RIGHTS = ['public-domain', 'in-copyright', 'unverified'] as const;
+/* Whether we may host the text (rights research of 2026-10-29,
+   docs/research/archive-rights/). The site is served from the US and read
+   mostly in Spain and the Americas, so a text is hosted only when it is in the
+   public domain in the US, in Spain and in its country of origin. The two
+   partial verdicts get the record and links, and say when the text comes free. */
+export const RIGHTS = ['public-domain', 'pd-us-only', 'pd-outside-us', 'in-copyright', 'unverified'] as const;
 export type Rights = (typeof RIGHTS)[number];
 
 export type ArchiveLink = { label: string; url: string };
@@ -79,6 +83,11 @@ export type CanonWork = {
   summary: { en: string; es: string };
   source: { edition: string; url: string; revision: string; licence: string };
   links: ArchiveLink[];
+  /** the year it enters the public domain in Spain / in the US (1 January), when we know it */
+  pdSpainYear: number | null;
+  pdUsYear: number | null;
+  /** public domain, but only scans exist: the text needs a careful transcription */
+  needsTranscription: boolean;
   /** true when the full text is in the archive (the file has a body) */
   hasText: boolean;
 };

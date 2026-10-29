@@ -118,7 +118,7 @@ export default function CanonShelf({ lang, works }: { lang: Lang; works: CanonWo
               {open.hasText
                 ? <a className="record__read" href={readHref(lang, open.id)}>{t.read} <i aria-hidden="true">→</i></a>
                 : <a className="record__page" href={readHref(lang, open.id)}>{t.openPage} <i aria-hidden="true">→</i></a>}
-              {!open.hasText && <span className="record__status">{open.rights === 'in-copyright' ? r.rightsName['in-copyright'] : open.rights === 'public-domain' ? r.pendingPd : r.pending}</span>}
+              {!open.hasText && <span className="record__status">{open.rights === 'public-domain' ? r.pendingPd : open.rights === 'unverified' ? r.pending : r.rightsName[open.rights]}</span>}
             </p>
             {lang === 'es' && open.position && <p className="record__note">{t.dataNote}</p>}
           </div>

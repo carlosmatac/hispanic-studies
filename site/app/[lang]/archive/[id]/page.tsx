@@ -130,12 +130,20 @@ export default async function ReaderPage({ params }: Params) {
 
 function Status({ work, lang }: { work: CanonWork; lang: Lang }) {
   const r = dict(lang).reader;
-  const lead = work.rights === 'in-copyright'
-    ? (work.links.length ? r.notHosted : r.notHostedNone)
-    : work.rights === 'public-domain' ? r.pendingPd : r.pending;
+  const lines: string[] = [];
+  const pd = work.rights === 'public-domain';
+  if (work.rights === 'in-copyright') lines.push(r.notHosted);
+  else if (work.rights === 'pd-us-only') lines.push(r.pdUsOnly);
+  else if (work.rights === 'pd-outside-us') lines.push(r.pdOutsideUs);
+  else if (pd) lines.push(work.needsTranscription ? r.needsTranscription : r.pendingPd);
+  else lines.push(r.pending);
+  if (!pd && work.pdSpainYear) lines.push(r.freeInSpain(work.pdSpainYear));
+  if (!pd && work.pdUsYear) lines.push(r.freeInUs(work.pdUsYear));
+  const lead = work.links.length ? (pd ? r.scans : r.readAt) : work.rights === 'unverified' ? '' : r.noCopy;
   return (
     <div className={`reader__status reader__status--${work.rights}`}>
-      <p>{lead}{work.rights === 'in-copyright' && work.links.length ? ':' : ''}</p>
+      <p>{lines.join(' ')}</p>
+      {lead && <p className="reader__status-lead">{lead}</p>}
       {work.links.length > 0 && (
         <ul className="reader__links">
           {work.links.map((l) => <li key={l.url}><a href={l.url} rel="noopener" target="_blank">{l.label}</a></li>)}

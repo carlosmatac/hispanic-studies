@@ -1,0 +1,1037 @@
+[
+ {
+  "id": "T001",
+  "title": "Carta de Jamaica",
+  "author": "Simón Bolívar",
+  "year_in_file": 1818,
+  "first_publication_year": 1818,
+  "year_note": "Written Kingston, 6 Sep 1815. First printed in English (Jamaica Quarterly Journal and Literary Gazette, 1818); first Spanish printing 1833 (Yanes & Mendoza, Colección de documentos..., Caracas, t. XXII). 1818 is correct as first publication; consider showing 'written 1815'.",
+  "original_language": "es",
+  "author_life": "1783–1830",
+  "author_death_year": 1830,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Venezuela",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Wikisource",
+   "url": "https://es.wikisource.org/wiki/Carta_de_Jamaica",
+   "format": "clean text",
+   "complete": true,
+   "proofread": "not index-backed; page holds two transcriptions: 'Copia 1/2' (modernised, unsourced) and 'Copia 2/2: auténtica' (Lecuna's copy of the 1833 Yanes–Mendoza text). Use Copia 2/2."
+  },
+  "other_sources": [],
+  "author_country": "Venezuela",
+  "written_where": "Kingston, Jamaica",
+  "about": "Spanish America as a whole",
+  "region": "South America",
+  "region_reason": "Venezuelan author; the letter surveys the whole continent from New Spain to Chile (written in exile in Jamaica, but not about the Caribbean).",
+  "length": "c. 8,000 words",
+  "notes": "Spanish manuscript original lost; the 1833 Spanish text is the standard one. A Spanish draft found in Ecuador (2014) exists but is not on Wikisource.",
+  "sources": [
+   "https://es.wikisource.org/wiki/Carta_de_Jamaica"
+  ]
+ },
+ {
+  "id": "T002",
+  "title": "Soñaba el abad de San Pedro, y yo también sé soñar",
+  "author": "José Cecilio del Valle",
+  "year_in_file": 1822,
+  "first_publication_year": 1822,
+  "year_note": "Published in Valle's paper El Amigo de la Patria (Guatemala), 1 March 1822 (es.wikipedia). Confirmed in the 1930 Obras edition.",
+  "original_language": "es",
+  "author_life": "1777–1834 (file says 1780–1834: birth year wrong)",
+  "author_death_year": 1834,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Guatemala (then Central America); author Honduran",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "National/university repository (scan with OCR)",
+   "url": "https://tzibalnaah.unah.edu.hn/handle/123456789/109",
+   "format": "PDF scan with OCR (ABBYY), 412 pp.; the essay is at PDF p. 235, book pp. ~205–209",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Obras de José Cecilio del Valle, t. II: 'El Amigo de la Patria', comp. José del Valle y Jorge del Valle Matheu, Guatemala: Tip. Sánchez & de Guise, 1930"
+  },
+  "other_sources": [],
+  "author_country": "Honduras (Captaincy General of Guatemala)",
+  "written_where": "Guatemala City",
+  "about": "Spanish America; proposes a general American congress in Costa Rica or León",
+  "region": "North America",
+  "region_reason": "Central America sits in North America in a six-region scheme; author Honduran, written in Guatemala.",
+  "length": "c. 1,300 words (verified from the OCR)",
+  "notes": "Repository licence line says CC BY-NC-ND 4.0 for the digitisation; the 1822 text itself is PD and the 1930 edition is PD in the US (published 1930, PD since 1 Jan 2026). Transcribe the text ourselves from the scan. Not on Wikisource, Gutenberg or BVMC.",
+  "sources": [
+   "https://tzibalnaah.unah.edu.hn/handle/123456789/109",
+   "https://es.wikipedia.org/wiki/Jos%C3%A9_Cecilio_del_Valle"
+  ]
+ },
+ {
+  "id": "T003",
+  "title": "Gramática de la lengua castellana destinada al uso de los americanos: prologue and related cultural writings",
+  "author": "Andrés Bello",
+  "year_in_file": 1847,
+  "first_publication_year": 1847,
+  "year_note": "Santiago de Chile, 1847. Correct.",
+  "original_language": "es",
+  "author_life": "1781–1865",
+  "author_death_year": 1865,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Chile (author Venezuelan)",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Wikisource",
+   "url": "https://es.wikisource.org/wiki/Gram%C3%A1tica_de_la_lengua_castellana_destinada_al_uso_de_los_americanos/Pr%C3%B3logo",
+   "format": "clean text",
+   "complete": true,
+   "proofread": "not index-backed (no scan behind it); whole Gramática on Wikisource (51 subpages)"
+  },
+  "other_sources": [
+   {
+    "kind": "Wikisource (related writings)",
+    "url": "https://es.wikisource.org/wiki/Discurso_en_la_inauguraci%C3%B3n_de_la_Universidad_de_Chile",
+    "note": "1843 discourse; also 'Las repúblicas hispanoamericanas: Autonomía cultural' and 'Modo de estudiar la historia' are on Bello's author page"
+   }
+  ],
+  "author_country": "Venezuela (lived in London, then Chile)",
+  "written_where": "Santiago de Chile",
+  "about": "Spanish-speaking America; the unity of the language",
+  "region": "South America",
+  "region_reason": "Venezuelan author writing in Chile for all Spanish America.",
+  "length": "Prologue c. 3,000 words; 'related writings' undefined (compiler's choice)",
+  "notes": "The canon entry is a bundle; we need to decide which 'related cultural writings' to include. All are PD.",
+  "sources": [
+   "https://es.wikisource.org/wiki/Autor:Andr%C3%A9s_Bello"
+  ]
+ },
+ {
+  "id": "T004",
+  "title": "El Estado federal de Panamá",
+  "author": "Justo Arosemena",
+  "year_in_file": 1855,
+  "first_publication_year": 1855,
+  "year_note": "Dated 1 Feb 1855, printed in Bogotá 1855. Correct.",
+  "original_language": "es",
+  "author_life": "1817–1896",
+  "author_death_year": 1896,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "New Granada (Colombia); author Panamanian",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "BVMC (PDF digitised by Biblioteca Virtual del Banco de la República, Colombia)",
+   "url": "https://www.cervantesvirtual.com/obra/el-estado-federal-de-panama-1371138/",
+   "format": "PDF scan",
+   "complete": "unverified",
+   "proofread": "n/a",
+   "edition": "unverified (BVMC page blocked by Cloudflare; edition not confirmed)"
+  },
+  "other_sources": [
+   {
+    "kind": "Google Books (Universidad de Panamá ed. 1960, snippet only)",
+    "url": "https://books.google.com/books/about/El_Estado_Federal_de_Panam%C3%A1.html?id=I-11AAAAMAAJ"
+   },
+   {
+    "kind": "HathiTrust (1965 ed., search only)",
+    "url": "https://catalog.hathitrust.org/Record/007309479"
+   }
+  ],
+  "author_country": "Panama (then part of New Granada)",
+  "written_where": "Bogotá / Panama",
+  "about": "The Isthmus of Panama and its place in New Granada",
+  "region": "North America",
+  "region_reason": "The Isthmus is Central America; alternative: South America, since Panama belonged to New Granada in 1855.",
+  "length": "c. 90 pp. (1960 ed. 94 pp.)",
+  "notes": "Not on Wikisource, Gutenberg or Internet Archive. No 1855 scan confirmed. Linkgua sells a modern edition.",
+  "sources": [
+   "https://www.cervantesvirtual.com/obra/el-estado-federal-de-panama-1371138/",
+   "https://catalog.hathitrust.org/Record/007309479"
+  ]
+ },
+ {
+  "id": "T005",
+  "title": "Iniciativa de la América: idea de un Congreso Federal de las Repúblicas",
+  "author": "Francisco Bilbao",
+  "year_in_file": 1856,
+  "first_publication_year": 1856,
+  "year_note": "Read in Paris 22 June 1856, printed in Paris days later. Correct.",
+  "original_language": "es",
+  "author_life": "1823–1865",
+  "author_death_year": 1865,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "France (first printed in Paris); author Chilean",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive (Google scan of a PD edition)",
+   "url": "https://archive.org/details/obrascompletasd00bilbgoog",
+   "format": "scan + OCR",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Obras completas de Francisco Bilbao, ed. Manuel Bilbao, vol. 1, Buenos Aires 1866, p. 285 ('Iniciativa de la América. Idea de un Congreso Federal de las Repúblicas'), verified in the OCR"
+  },
+  "other_sources": [
+   {
+    "kind": "Internet Archive",
+    "url": "https://archive.org/details/obrascompletas01bilb",
+    "note": "Obras completas, ed. P. P. Figueroa, Santiago 1897, vol. 1"
+   }
+  ],
+  "author_country": "Chile",
+  "written_where": "Paris",
+  "about": "Spanish America; a federal congress of the southern republics",
+  "region": "South America",
+  "region_reason": "Chilean author; addressed to the southern republics.",
+  "length": "c. 25 pp. in the 1866 edition (estimate)",
+  "notes": "Famous early use of 'América latina'. Not on Wikisource.",
+  "sources": [
+   "https://archive.org/details/obrascompletasd00bilbgoog"
+  ]
+ },
+ {
+  "id": "T006",
+  "title": "Unión latino-americana, pensamiento de Bolívar para formar una liga americana",
+  "author": "José María Torres Caicedo",
+  "year_in_file": 1865,
+  "first_publication_year": 1865,
+  "year_note": "Paris: Rosa y Bouret, 1865. Correct.",
+  "original_language": "es",
+  "author_life": "1830–1889",
+  "author_death_year": 1889,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "France (published in Paris); author Colombian",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive (Google scan, Harvard copy)",
+   "url": "https://archive.org/details/unionlatinoamer00caicgoog",
+   "format": "scan + OCR",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Paris: Rosa y Bouret, 1865 (404 images)"
+  },
+  "other_sources": [],
+  "author_country": "Colombia",
+  "written_where": "Paris",
+  "about": "Spanish America; Bolívar's league idea",
+  "region": "South America",
+  "region_reason": "Colombian author; Bolivarian project for the southern republics.",
+  "length": "c. 400 pp.",
+  "notes": "Not on Wikisource/Gutenberg. Book-length.",
+  "sources": [
+   "https://archive.org/details/unionlatinoamer00caicgoog"
+  ]
+ },
+ {
+  "id": "T007",
+  "title": "Os brahamanes",
+  "author": "Francisco Luís Gomes",
+  "year_in_file": 1866,
+  "first_publication_year": 1866,
+  "year_note": "Lisbon: Typ. da Gazeta de Portugal, 1866. Correct.",
+  "original_language": "pt",
+  "author_life": "1829–1869",
+  "author_death_year": 1869,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Portugal (published in Lisbon); author Goan",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "ELTeC / TextGrid (TEI, CC BY 4.0)",
+   "url": "https://textgridrep.org/browse/41jj3.0",
+   "format": "clean TEI text in the 1866 spelling",
+   "complete": true,
+   "proofread": "scholarly corpus edition from the 1866 first edition",
+   "edition": "ELTeC-por POR0084; also on GitHub: https://github.com/COST-ELTeC/ELTeC-por/blob/master/level1/POR0084_FraLGom_Bramanes.xml"
+  },
+  "other_sources": [
+   {
+    "kind": "Internet Archive (Google scan, NYPL copy)",
+    "url": "https://archive.org/details/osbrahamanesrom00gomegoog",
+    "note": "1866 first edition, 335 images"
+   }
+  ],
+  "author_country": "Goa (Portuguese India)",
+  "written_where": "Lisbon",
+  "about": "British India (caste and colonialism)",
+  "region": "Ibero-Asia",
+  "region_reason": "Goan author, novel set in India; the only Indian voice in the canon.",
+  "length": "49,006 words (ELTeC header)",
+  "notes": "Not on Wikisource/Gutenberg. ELTeC is the cleanest base text (credit CC BY 4.0).",
+  "sources": [
+   "https://textgridrep.org/browse/41jj3.0",
+   "https://archive.org/details/osbrahamanesrom00gomegoog"
+  ]
+ },
+ {
+  "id": "T008",
+  "title": "Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días",
+  "author": "Juan León Mera",
+  "year_in_file": 1868,
+  "first_publication_year": 1868,
+  "year_note": "Quito: Imprenta de Juan P. Sanz, 1868. Correct (2nd ed. Barcelona 1893).",
+  "original_language": "es",
+  "author_life": "1832–1894",
+  "author_death_year": 1894,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Ecuador",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive (scan of the 1868 first edition)",
+   "url": "https://archive.org/details/OjeadaHistrico-crrticaSobreLaPoeseaEcuatorianaDesdeSuSpocaMcsRemotaHastaNuestrosDras",
+   "format": "PDF scan (file FR1-L-000442-Mera-Ojeada.pdf), OCR text present",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Quito: Juan P. Sanz, 1868, 503 pp."
+  },
+  "other_sources": [
+   {
+    "kind": "HathiTrust (full view)",
+    "url": "https://catalog.hathitrust.org/Record/001048994",
+    "note": "2nd ed., Barcelona: J. Cunill Sala, 1893"
+   }
+  ],
+  "author_country": "Ecuador",
+  "written_where": "Ecuador",
+  "about": "Ecuador",
+  "region": "South America",
+  "region_reason": "Ecuadorian author on Ecuadorian poetry.",
+  "length": "503 pp.",
+  "notes": "Not on Wikisource/Gutenberg. Long book; consider an excerpt reader.",
+  "sources": [
+   "https://archive.org/details/OjeadaHistrico-crrticaSobreLaPoeseaEcuatorianaDesdeSuSpocaMcsRemotaHastaNuestrosDras",
+   "https://catalog.hathitrust.org/Record/001048994"
+  ]
+ },
+ {
+  "id": "T009",
+  "title": "Antillean federation essays and speeches: new selection",
+  "author": "Eugenio María de Hostos",
+  "year_in_file": 1870,
+  "first_publication_year": "c. 1870 (a selection; texts range c. 1868–1890s)",
+  "year_note": "A compiler-made selection, not a single work. Some key texts (e.g. 'En el Istmo', Panama 1870) stayed unpublished until the 1939 Obras completas.",
+  "original_language": "es",
+  "author_life": "1839–1903",
+  "author_death_year": 1903,
+  "pd_us": "yes for texts published in his lifetime; texts first published in 1939 need a check",
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Puerto Rico (US jurisdiction today)",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "unverified",
+   "url": null,
+   "format": null,
+   "complete": false,
+   "proofread": null,
+   "edition": "Obras completas, ed. conmemorativa, La Habana: Cultural S.A., 1939 (20 vols; vol. 'España y América' gathers the Antillean material). IA copies of the 1939 volumes are lending-only."
+  },
+  "other_sources": [
+   {
+    "kind": "HathiTrust (full view, related)",
+    "url": "https://catalog.hathitrust.org/Record/009444727",
+    "note": "La peregrinación de Bayoán, 1873"
+   },
+   {
+    "kind": "Gutenberg",
+    "url": "https://www.gutenberg.org/ebooks/73064",
+    "note": "Moral social, not the Antillean texts"
+   }
+  ],
+  "author_country": "Puerto Rico",
+  "written_where": "Madrid, New York, Lima, Santiago, Santo Domingo",
+  "about": "The Antilles (Cuba, Puerto Rico, Santo Domingo)",
+  "region": "Caribbean",
+  "region_reason": "Puerto Rican author; the subject is the Antillean confederation.",
+  "length": "depends on the selection",
+  "notes": "Needs an editorial decision (which texts). No Wikisource/Gutenberg/BVMC text of the confederation writings found.",
+  "sources": [
+   "https://dialnet.unirioja.es/descarga/articulo/7444216.pdf"
+  ]
+ },
+ {
+  "id": "T010",
+  "title": "História da civilização ibérica",
+  "author": "Oliveira Martins",
+  "year_in_file": 1879,
+  "first_publication_year": 1879,
+  "year_note": "Lisbon: Bertrand, 1879 (2nd ed. 1880). Correct.",
+  "original_language": "pt",
+  "author_life": "1845–1894",
+  "author_death_year": 1894,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Portugal",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive",
+   "url": "https://archive.org/details/histriadacivil00mart",
+   "format": "scan + OCR",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Lisboa: Bertrand, 1880 (2nd ed.), 356 images"
+  },
+  "other_sources": [
+   {
+    "kind": "HathiTrust (full view)",
+    "url": "https://catalog.hathitrust.org/Record/100010077",
+    "note": "Bertrand 1880"
+   }
+  ],
+  "author_country": "Portugal",
+  "written_where": "Portugal",
+  "about": "The Iberian Peninsula (Spain and Portugal)",
+  "region": "Lusophone world",
+  "region_reason": "Portuguese author in Portuguese; alternative 'Spain' since it covers the whole peninsula.",
+  "length": "c. 330 pp.",
+  "notes": "pt.wikisource lists it on the author page but the page is not created. No 1879 first-edition scan found; 1880 is the earliest online.",
+  "sources": [
+   "https://archive.org/details/histriadacivil00mart",
+   "https://pt.wikisource.org/wiki/Autor:Joaquim_Pedro_de_Oliveira_Martins"
+  ]
+ },
+ {
+  "id": "T011",
+  "title": "O abolicionismo",
+  "author": "Joaquim Nabuco",
+  "year_in_file": 1883,
+  "first_publication_year": 1883,
+  "year_note": "London: Abraham Kingdon, 1883. Correct.",
+  "original_language": "pt",
+  "author_life": "1849–1910",
+  "author_death_year": 1910,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Brazil (printed in London)",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Wikisource (pt)",
+   "url": "https://pt.wikisource.org/wiki/O_Abolicionismo",
+   "format": "clean text transcluded from the 1883 scan",
+   "complete": true,
+   "proofread": "mostly not proofread: 253 pages 'não revisadas', 9 revised, 1 validated"
+  },
+  "other_sources": [
+   {
+    "kind": "Commons scan",
+    "url": "https://pt.wikisource.org/wiki/Galeria:O_abolicionismo_(1883).djvu"
+   }
+  ],
+  "author_country": "Brazil",
+  "written_where": "London",
+  "about": "Brazil (slavery)",
+  "region": "Lusophone world",
+  "region_reason": "Brazilian, in Portuguese.",
+  "length": "c. 65,000 words (preface + 17 chapters, counted)",
+  "notes": "Not on Gutenberg.",
+  "sources": [
+   "https://pt.wikisource.org/wiki/O_Abolicionismo"
+  ]
+ },
+ {
+  "id": "T012",
+  "title": "Filipinas dentro de cien años",
+  "author": "José Rizal",
+  "year_in_file": 1889,
+  "first_publication_year": 1889,
+  "year_note": "Serialised in La Solidaridad (Barcelona/Madrid), Sept 1889–Jan 1890. Correct.",
+  "original_language": "es",
+  "author_life": "1861–1896",
+  "author_death_year": 1896,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Spain (first printed in Barcelona); author Filipino",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Wikisource",
+   "url": "https://es.wikisource.org/wiki/Filipinas_dentro_de_cien_a%C3%B1os;_estudio_pol%C3%ADtico-social",
+   "format": "clean text from a scan (1905 Manila edition)",
+   "complete": true,
+   "proofread": "validated (50 pages 'Validado')"
+  },
+  "other_sources": [
+   {
+    "kind": "Project Gutenberg",
+    "url": "https://www.gutenberg.org/ebooks/14839",
+    "note": "Spanish, 1905 ed."
+   }
+  ],
+  "author_country": "Philippines",
+  "written_where": "Europe (Barcelona/Madrid/London)",
+  "about": "The Philippines",
+  "region": "Ibero-Asia",
+  "region_reason": "Filipino author on the Philippines.",
+  "length": "c. 11,000 words (4 parts, counted)",
+  "notes": "Best-quality source in this half: validated Wikisource.",
+  "sources": [
+   "https://es.wikisource.org/wiki/Filipinas_dentro_de_cien_a%C3%B1os;_estudio_pol%C3%ADtico-social",
+   "https://www.gutenberg.org/ebooks/14839"
+  ]
+ },
+ {
+  "id": "T013",
+  "title": "Nuestra América",
+  "author": "José Martí",
+  "year_in_file": 1891,
+  "first_publication_year": 1891,
+  "year_note": "La Revista Ilustrada de Nueva York, 1 (or 10) Jan 1891; El Partido Liberal, Mexico, 30 Jan 1891. Correct.",
+  "original_language": "es",
+  "author_life": "1853–1895",
+  "author_death_year": 1895,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "United States (first printed in New York); author Cuban",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Wikisource",
+   "url": "https://es.wikisource.org/wiki/Nuestra_Am%C3%A9rica",
+   "format": "clean text",
+   "complete": true,
+   "proofread": "no source given (flagged 'sin fuente' since 2018); collate against the Obras completas"
+  },
+  "other_sources": [
+   {
+    "kind": "Centro de Estudios Martianos, Obras completas t. 6 (digital ed., hosted by CLACSO)",
+    "url": "https://biblioteca.clacso.edu.ar/Cuba/cem-cu/20150114041836/Vol06.pdf",
+    "note": "Nuestra América at p. 15; use to correct the Wikisource text"
+   }
+  ],
+  "author_country": "Cuba",
+  "written_where": "New York",
+  "about": "Spanish America as a whole",
+  "region": "Caribbean",
+  "region_reason": "Cuban author; alternative: none needed.",
+  "length": "c. 3,300 words",
+  "notes": "Short; ideal first full-text page.",
+  "sources": [
+   "https://es.wikisource.org/wiki/Nuestra_Am%C3%A9rica",
+   "https://biblioteca.clacso.edu.ar/Cuba/cem-cu/20150114041836/Vol06.pdf"
+  ]
+ },
+ {
+  "id": "T014",
+  "title": "Pájinas libres",
+  "author": "Manuel González Prada",
+  "year_in_file": 1894,
+  "first_publication_year": 1894,
+  "year_note": "Paris: Tip. de Paul Dupont, 1894. Correct.",
+  "original_language": "es",
+  "author_life": "1844–1918",
+  "author_death_year": 1918,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "France (printed in Paris); author Peruvian",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive (Google scan, Harvard copy)",
+   "url": "https://archive.org/details/pjinaslibres00pradgoog",
+   "format": "scan + OCR",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Paris: P. Dupont, 1894"
+  },
+  "other_sources": [
+   {
+    "kind": "Wikisource (incomplete)",
+    "url": "https://es.wikisource.org/wiki/P%C3%A1jinas_libres",
+    "note": "13 of 21 pieces transcribed in the author's own spelling; missing Renan, Valera, Castelar, Los fragmentos de Luzbel, Notas acerca del idioma, La Revolución Francesa, La muerte i la vida"
+   }
+  ],
+  "author_country": "Peru",
+  "written_where": "Lima (texts), printed in Paris",
+  "about": "Peru",
+  "region": "South America",
+  "region_reason": "Peruvian author on Peru.",
+  "length": "c. 280 pp.",
+  "notes": "Keep González Prada's reformed spelling ('jente', 'i'); Wikisource also has RAE-spelling copies of some pieces; host the original spelling.",
+  "sources": [
+   "https://archive.org/details/pjinaslibres00pradgoog",
+   "https://es.wikisource.org/wiki/P%C3%A1jinas_libres"
+  ]
+ },
+ {
+  "id": "T015",
+  "title": "En torno al casticismo",
+  "author": "Miguel de Unamuno",
+  "year_in_file": 1895,
+  "first_publication_year": 1895,
+  "year_note": "Five essays in La España Moderna, Feb–June 1895; book form 1902. Correct.",
+  "original_language": "es",
+  "author_life": "1864–1936",
+  "author_death_year": 1936,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Spain",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Wikisource",
+   "url": "https://es.wikisource.org/wiki/En_torno_al_casticismo",
+   "format": "clean text",
+   "complete": true,
+   "proofread": "not index-backed; each essay cites La España Moderna 1895 (Hemeroteca/Prensa Histórica)"
+  },
+  "other_sources": [],
+  "author_country": "Spain",
+  "written_where": "Spain",
+  "about": "Spain (Castile)",
+  "region": "Spain",
+  "region_reason": "Spanish author on Spain.",
+  "length": "c. 40,000 words (5 essays, counted)",
+  "notes": "Unamuno died 31 Dec 1936 → PD in Spain since 1 Jan 2017 (life+80).",
+  "sources": [
+   "https://es.wikisource.org/wiki/En_torno_al_casticismo"
+  ]
+ },
+ {
+  "id": "T016",
+  "title": "Idearium español",
+  "author": "Ángel Ganivet",
+  "year_in_file": 1897,
+  "first_publication_year": 1897,
+  "year_note": "Granada: Vda. e Hijos de P. V. Sabatel, 1897. Correct.",
+  "original_language": "es",
+  "author_life": "1865–1898",
+  "author_death_year": 1898,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Spain",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "BVMC (facsimile of the Universidad de Granada copy)",
+   "url": "https://www.cervantesvirtual.com/obra/idearium-espanol/",
+   "format": "facsimile scan",
+   "complete": true,
+   "proofread": "n/a (BVMC page blocked to scripts; from search snippet)"
+  },
+  "other_sources": [
+   {
+    "kind": "Internet Archive (1897 first ed., public-domain mark)",
+    "url": "https://archive.org/details/AE099",
+    "note": "163 pp."
+   },
+   {
+    "kind": "Internet Archive",
+    "url": "https://archive.org/details/ideariumespaol00gani",
+    "note": "1897"
+   },
+   {
+    "kind": "HathiTrust (full view)",
+    "url": "https://catalog.hathitrust.org/Record/010943355",
+    "note": "1897"
+   }
+  ],
+  "author_country": "Spain",
+  "written_where": "Helsinki / Granada",
+  "about": "Spain",
+  "region": "Spain",
+  "region_reason": "Spanish author on Spain.",
+  "length": "163 pp.",
+  "notes": "Not on Wikisource/Gutenberg as text; scans only.",
+  "sources": [
+   "https://www.cervantesvirtual.com/obra/idearium-espanol/",
+   "https://archive.org/details/AE099"
+  ]
+ },
+ {
+  "id": "T017",
+  "title": "El triunfo de Calibán and hemispheric writings",
+  "author": "Rubén Darío",
+  "year_in_file": 1898,
+  "first_publication_year": 1898,
+  "year_note": "El Tiempo (Buenos Aires), 20 May 1898; reprinted El Cojo Ilustrado (Caracas), 1 Oct 1898. Correct.",
+  "original_language": "es",
+  "author_life": "1867–1916",
+  "author_death_year": 1916,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Argentina (first printed in Buenos Aires); author Nicaraguan",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "unverified",
+   "url": null,
+   "format": null,
+   "complete": false,
+   "proofread": null,
+   "edition": "No online PD transcription found (not on Wikisource, Gutenberg or BVMC). Leads: ASU Library's Rubén Darío collection lists 'El triunfo de Calibán, 1898 May 20' with extracted text (https://prism.lib.asu.edu/items/59177, blocked to scripts); Revista Iberoamericana 184-185 (1998), pp. 451-455 reprints it with notes by C. Jáuregui (the notes are in copyright, the text is not)."
+  },
+  "other_sources": [
+   {
+    "kind": "Gutenberg (other hemispheric writings)",
+    "url": "https://www.gutenberg.org/ebooks/50341",
+    "note": "Cantos de vida y esperanza (1905), includes 'A Roosevelt'"
+   },
+   {
+    "kind": "Wikisource",
+    "url": "https://es.wikisource.org/wiki/A_Roosevelt",
+    "note": "'A Roosevelt'"
+   }
+  ],
+  "author_country": "Nicaragua",
+  "written_where": "Buenos Aires",
+  "about": "Spanish America vs. the United States (1898 war)",
+  "region": "North America",
+  "region_reason": "Nicaraguan (Central American) author; alternative South America (written in Buenos Aires).",
+  "length": "article c. 1,500 words (estimate); 'hemispheric writings' undefined",
+  "notes": "Bundle entry: decide which other writings ('A Roosevelt', 'Salutación del optimista', etc., all PD and on Wikisource).",
+  "sources": [
+   "https://prism.lib.asu.edu/items/59177"
+  ]
+ },
+ {
+  "id": "T018",
+  "title": "Ariel",
+  "author": "José Enrique Rodó",
+  "year_in_file": 1900,
+  "first_publication_year": 1900,
+  "year_note": "Montevideo: Dornaleche y Reyes, 1900. Correct.",
+  "original_language": "es",
+  "author_life": "1871–1917",
+  "author_death_year": 1917,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Uruguay",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Project Gutenberg",
+   "url": "https://www.gutenberg.org/ebooks/22899",
+   "format": "clean text",
+   "complete": true,
+   "proofread": "Gutenberg-proofed"
+  },
+  "other_sources": [
+   {
+    "kind": "Wikisource",
+    "url": "https://es.wikisource.org/wiki/Ariel",
+    "note": "8 chapters, complete, but unsourced; flagged to migrate to Índice:Ariel (1919).djvu (only 1 page proofread)"
+   },
+   {
+    "kind": "BVMC",
+    "url": "https://www.cervantesvirtual.com/obra/ariel--1/",
+    "note": "2nd ed., Montevideo 1900, with Clarín's preface"
+   }
+  ],
+  "author_country": "Uruguay",
+  "written_where": "Montevideo",
+  "about": "Spanish America (youth of 'our America') vs. the United States",
+  "region": "South America",
+  "region_reason": "Uruguayan author.",
+  "length": "c. 25,000 words (counted)",
+  "notes": "",
+  "sources": [
+   "https://www.gutenberg.org/ebooks/22899",
+   "https://es.wikisource.org/wiki/Ariel"
+  ]
+ },
+ {
+  "id": "T019",
+  "title": "Carácter de la literatura del Perú independiente",
+  "author": "José de la Riva-Agüero",
+  "year_in_file": 1905,
+  "first_publication_year": 1905,
+  "year_note": "Lima: E. Rosay, 1905 (bachelor's thesis). Correct.",
+  "original_language": "es",
+  "author_life": "1885–1944",
+  "author_death_year": 1944,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Peru",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Fundación Ignacio Larramendi digital edition (on Internet Archive)",
+   "url": "https://archive.org/details/caracter-de-la-literatura-del-peru-independiente",
+   "format": "digital edition (Madrid: Fundación Ignacio Larramendi, 2020), CC BY-NC-ND 4.0",
+   "complete": "unverified",
+   "proofread": "edited"
+  },
+  "other_sources": [
+   {
+    "kind": "HathiTrust (US access only)",
+    "url": "https://catalog.hathitrust.org/Record/001519439",
+    "note": "1905 first edition"
+   }
+  ],
+  "author_country": "Peru",
+  "written_where": "Lima",
+  "about": "Peru",
+  "region": "South America",
+  "region_reason": "Peruvian author on Peru.",
+  "length": "c. 270 pp.",
+  "notes": "Died 25 Oct 1944 → PD in Spain from 1 Jan 2025 (life+80), Peru since 2015 (life+70). HathiTrust still shows it US-only (their non-US rule lags). Larramendi edition is NC-ND: use it as a reference, transcribe from the 1905 text.",
+  "sources": [
+   "https://archive.org/details/caracter-de-la-literatura-del-peru-independiente",
+   "https://catalog.hathitrust.org/Record/001519439"
+  ]
+ },
+ {
+  "id": "T020",
+  "title": "A América Latina: males de origem",
+  "author": "Manoel do Bomfim",
+  "year_in_file": 1905,
+  "first_publication_year": 1905,
+  "year_note": "Rio: H. Garnier, 1905 (written in Paris 1903; HathiTrust dates its copy 1903). Keep 1905.",
+  "original_language": "pt",
+  "author_life": "1868–1932",
+  "author_death_year": 1932,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Brazil",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "SciELO Books / Centro Edelstein (also on Internet Archive with a public-domain mark)",
+   "url": "https://static.scielo.org/scielobooks/zg8vf/pdf/bomfim-9788599662786.pdf",
+   "format": "clean PDF text (2008 Centro Edelstein edition, 291 pp.)",
+   "complete": true,
+   "proofread": "edited"
+  },
+  "other_sources": [
+   {
+    "kind": "Internet Archive",
+    "url": "https://archive.org/details/9788599662786"
+   },
+   {
+    "kind": "HathiTrust (US access only)",
+    "url": "https://catalog.hathitrust.org/Record/008904781",
+    "note": "H. Garnier first edition"
+   }
+  ],
+  "author_country": "Brazil",
+  "written_where": "Paris / Rio de Janeiro",
+  "about": "Latin America as a whole",
+  "region": "Lusophone world",
+  "region_reason": "Brazilian author in Portuguese; alternative South America, since it is about Latin America.",
+  "length": "c. 290 pp.",
+  "notes": "The SciELO PDF carries a CC non-commercial notice for the edition; the 1905 text itself is PD (died 1932). Take the text, not the edition's apparatus.",
+  "sources": [
+   "https://static.scielo.org/scielobooks/zg8vf/pdf/bomfim-9788599662786.pdf",
+   "https://archive.org/details/9788599662786"
+  ]
+ },
+ {
+  "id": "T021",
+  "title": "Creación de la pedagogía nacional",
+  "author": "Franz Tamayo",
+  "year_in_file": 1910,
+  "first_publication_year": 1910,
+  "year_note": "55 editorials in El Diario (La Paz), July–Sept 1910, collected the same year. Correct.",
+  "original_language": "es",
+  "author_life": "1879–1956",
+  "author_death_year": 1956,
+  "pd_us": true,
+  "pd_spain": "no under the plain life+80 rule (until 31 Dec 2036); probably yes under the EU rule of the shorter term (Bolivian work, Bolivian author)",
+  "pd_origin": true,
+  "origin_country": "Bolivia (life+50: PD since 2007)",
+  "verdict": "pd-us-only",
+  "best_source": {
+   "kind": "HathiTrust (US access only)",
+   "url": "https://catalog.hathitrust.org/Record/100609355",
+   "format": "scan",
+   "complete": true,
+   "proofread": "n/a",
+   "edition": "La Paz, 1910 ('editoriales de El Diario')"
+  },
+  "other_sources": [
+   {
+    "kind": "Biblioteca del Bicentenario de Bolivia (free PDF, 2014 ed.)",
+    "url": "https://www.boliviabpb.org/IMG/pdf/creacio_n_de_la_pedagogi_a_nacional-_franz_tamayo.pdf",
+    "note": "La Paz: Ministerio de Culturas y Turismo, 2014, prologue by J. P. Piñeiro; legitimate official edition"
+   }
+  ],
+  "author_country": "Bolivia",
+  "written_where": "La Paz",
+  "about": "Bolivia",
+  "region": "South America",
+  "region_reason": "Bolivian author on Bolivia.",
+  "length": "c. 240 pp. (2014 ed.)",
+  "notes": "Verdict is conservative: if Carlos accepts the rule of the shorter term (EU Term Directive art. 7), this becomes 'pd'.",
+  "sources": [
+   "https://catalog.hathitrust.org/Record/100609355",
+   "https://www.boliviabpb.org/IMG/pdf/creacio_n_de_la_pedagogi_a_nacional-_franz_tamayo.pdf"
+  ]
+ },
+ {
+  "id": "T022",
+  "title": "La creación de un continente",
+  "author": "Francisco García Calderón",
+  "year_in_file": 1913,
+  "first_publication_year": 1913,
+  "year_note": "Paris: Librería Paul Ollendorff, [1913]. Correct.",
+  "original_language": "es",
+  "author_life": "1883–1953",
+  "author_death_year": 1953,
+  "pd_us": true,
+  "pd_spain": "no: life+80, until 31 Dec 2033 (first published in Paris, so its country of origin is France, an EU state, and the shorter-term rule does not help)",
+  "pd_origin": true,
+  "origin_country": "France (first publication) / Peru (author): PD in both since 2024 (life+70)",
+  "verdict": "pd-us-only",
+  "best_source": {
+   "kind": "unverified",
+   "url": null,
+   "format": null,
+   "complete": false,
+   "proofread": null,
+   "edition": "No online scan of the Spanish 1913 edition found (not on IA, HathiTrust via OBP, Wikisource, BVMC). Print: Obras escogidas, vol. II, Lima: Fondo Editorial del Congreso del Perú, 2001."
+  },
+  "other_sources": [
+   {
+    "kind": "Gutenberg (English, different book)",
+    "url": "https://www.gutenberg.org/ebooks/62541",
+    "note": "'Latin America: Its Rise and Progress' translates Les démocraties latines de l'Amérique (1912), not this book"
+   }
+  ],
+  "author_country": "Peru",
+  "written_where": "Paris",
+  "about": "Latin America as a whole",
+  "region": "South America",
+  "region_reason": "Peruvian author.",
+  "length": "xiv + 264 pp. (bookseller description of the 1913 ed.)",
+  "notes": "Link out only for now.",
+  "sources": [
+   "https://www.boydbooks.com/listing/780886697/la-creacion-de-un-continente-1913-by",
+   "https://www.redalyc.org/pdf/2850/285049822025.pdf"
+  ]
+ },
+ {
+  "id": "T023",
+  "title": "La leyenda negra y la verdad histórica",
+  "author": "Julián Juderías",
+  "year_in_file": 1914,
+  "first_publication_year": 1914,
+  "year_note": "Madrid: Tip. de la Revista de Archivos, 1914. Correct (expanded book ed. 1917).",
+  "original_language": "es",
+  "author_life": "1877–1918",
+  "author_death_year": 1918,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Spain",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive",
+   "url": "https://archive.org/details/laleyendanegrayl00jude",
+   "format": "scan + OCR",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "Madrid: Rev. de Archivos, 1914, 246 images"
+  },
+  "other_sources": [
+   {
+    "kind": "Wikisource (started)",
+    "url": "https://es.wikisource.org/wiki/%C3%8Dndice:La_leyenda_negra_y_la_verdad_hist%C3%B3rica_1914.djvu",
+    "note": "Index exists, only 9 pages corrected; no main-namespace text"
+   },
+   {
+    "kind": "HathiTrust",
+    "url": "https://catalog.hathitrust.org/Record/001858356",
+    "note": "1914"
+   }
+  ],
+  "author_country": "Spain",
+  "written_where": "Madrid",
+  "about": "Spain and its image abroad",
+  "region": "Spain",
+  "region_reason": "Spanish author on Spain.",
+  "length": "c. 230 pp.",
+  "notes": "",
+  "sources": [
+   "https://archive.org/details/laleyendanegrayl00jude"
+  ]
+ },
+ {
+  "id": "T024",
+  "title": "España y el programa americanista",
+  "author": "Rafael Altamira",
+  "year_in_file": 1917,
+  "first_publication_year": 1917,
+  "year_note": "Madrid: Editorial-América, 1917. Correct.",
+  "original_language": "es",
+  "author_life": "1866–1951",
+  "author_death_year": 1951,
+  "pd_us": true,
+  "pd_spain": "no: life+80, until 31 Dec 2031",
+  "pd_origin": false,
+  "origin_country": "Spain",
+  "verdict": "pd-us-only",
+  "best_source": {
+   "kind": "HathiTrust (US access only)",
+   "url": "https://catalog.hathitrust.org/Record/000278318",
+   "format": "scan",
+   "complete": true,
+   "proofread": "n/a",
+   "edition": "Madrid: Editorial-América, 1917"
+  },
+  "other_sources": [],
+  "author_country": "Spain (exiled to Mexico)",
+  "written_where": "Spain",
+  "about": "Spain and Spanish America",
+  "region": "Spain",
+  "region_reason": "Spanish author; Spain's programme towards America.",
+  "length": "unverified",
+  "notes": "In copyright in Spain (the country of origin) until 2032: link out only.",
+  "sources": [
+   "https://catalog.hathitrust.org/Record/000278318"
+  ]
+ },
+ {
+  "id": "T025",
+  "title": "La caída del águila",
+  "author": "Carlos Gagini",
+  "year_in_file": 1920,
+  "first_publication_year": 1920,
+  "year_note": "San José: Trejos Hnos., 1920 (cover dated 1921). Correct.",
+  "original_language": "es",
+  "author_life": "1865–1925",
+  "author_death_year": 1925,
+  "pd_us": true,
+  "pd_spain": true,
+  "pd_origin": true,
+  "origin_country": "Costa Rica",
+  "verdict": "pd",
+  "best_source": {
+   "kind": "Internet Archive",
+   "url": "https://archive.org/details/lacadadelguilano00gagi",
+   "format": "scan + OCR",
+   "complete": true,
+   "proofread": "OCR only",
+   "edition": "San José: Trejos Hnos., 1920, 181 pp."
+  },
+  "other_sources": [
+   {
+    "kind": "HathiTrust (full view)",
+    "url": "https://catalog.hathitrust.org/Record/103245596"
+   }
+  ],
+  "author_country": "Costa Rica",
+  "written_where": "San José",
+  "about": "Costa Rica and Central America vs. the United States (anti-imperialist science fiction)",
+  "region": "North America",
+  "region_reason": "Costa Rican (Central American) author.",
+  "length": "181 pp.",
+  "notes": "A novel; not on Wikisource or Gutenberg.",
+  "sources": [
+   "https://archive.org/details/lacadadelguilano00gagi",
+   "https://catalog.hathitrust.org/Record/103245596"
+  ]
+ }
+]

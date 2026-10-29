@@ -849,6 +849,7 @@ main .eyebrow { color: var(--leather); }
   font-family: var(--display); font-size: clamp(18px, 1.5vw, 21px); line-height: 1.45;
 }
 .reader__status p { margin-inline: auto; }
+.reader__status .reader__status-lead { margin-top: 18px; font-family: var(--body); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
 .reader__links { list-style: none; margin: 14px auto 0; padding: 0; display: grid; gap: 10px; text-align: left; font-family: var(--body); font-size: 14.5px; line-height: 1.45; max-width: 58ch; }
 .reader__links a { color: var(--burgundy); text-underline-offset: 3px; }
 .reader__record { margin-top: clamp(36px, 5vw, 60px); padding-top: 22px; border-top: var(--rule); font-size: 15.5px; }
