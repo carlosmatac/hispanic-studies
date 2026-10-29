@@ -22,11 +22,11 @@
    ========================================================================== */
 
 import {
-  geoEqualEarth, geoOrthographic, geoPath, geoGraticule10, geoInterpolate, geoDistance,
-  geoCircle, geoCentroid, type GeoProjection,
+  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoGraticule10, geoInterpolate, geoDistance,
+  geoCentroid, geoArea, type GeoProjection,
 } from 'd3-geo';
 import { feature, merge, mesh } from 'topojson-client';
-import type { Feature, FeatureCollection, Geometry, MultiPolygon, MultiLineString } from 'geojson';
+import type { Feature, FeatureCollection, Geometry, MultiPolygon, MultiLineString, Position } from 'geojson';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import type { Beat, Chronicle, Era, Layout, LonLat, Voyage, Waypoint } from '@/lib/atlas-chronicle';
 
@@ -70,6 +70,36 @@ function dayOf(iso: string | undefined): number | undefined {
   return Date.UTC(+y, +m - 1, d ? +d : 15) / 864e5;
 }
 const angleDiff = (a: number, b: number) => ((b - a + 540) % 360) - 180;
+
+/** d3 reads a ring's winding on the sphere: a polygon that simplification
+    left wound the wrong way would cover the whole world but itself. */
+function rewind(fc: Feature | FeatureCollection): Feature | FeatureCollection {
+  if (fc.type === 'FeatureCollection') { fc.features.forEach(rewindOne); return fc; }
+  return rewindOne(fc);
+}
+function rewindOne(f: Feature): Feature {
+  const area = (poly: Position[][]) => geoArea({ type: 'Polygon', coordinates: poly });
+  const fix = (poly: Position[][]) => (area(poly) > 2 * Math.PI ? poly.map((r) => [...r].reverse()) : poly);
+  // a ring simplified down to nothing reads as the whole sphere: drop it
+  const keep = (poly: Position[][]) => area(poly) < 4 * Math.PI - 1e-3;
+  const g = f.geometry;
+  if (g?.type === 'Polygon') g.coordinates = fix(g.coordinates);
+  else if (g?.type === 'MultiPolygon') g.coordinates = g.coordinates.filter(keep).map(fix);
+  return f;
+}
+
+/** A TopoJSON topology with every `n`th point of each arc kept (and both ends). */
+function decimate(t: Topology, n: number): Topology {
+  const arcs = t.arcs.map((arc) => {
+    // arcs are delta-encoded: decode, thin, encode again
+    let x = 0, y = 0;
+    const abs = arc.map(([dx, dy]) => { x += dx; y += dy; return [x, y]; });
+    const kept = abs.filter((_, i) => i === 0 || i === abs.length - 1 || i % n === 0);
+    let px = 0, py = 0;
+    return kept.map(([ax, ay]) => { const d = [ax - px, ay - py]; px = ax; py = ay; return d; });
+  });
+  return { ...t, arcs } as Topology;
+}
 
 /* ---------- the compiled story ---------- */
 
@@ -192,6 +222,8 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   const fogC = document.createElement('canvas');
   const fctx = fogC.getContext('2d') as CanvasRenderingContext2D;
   let snap: HTMLCanvasElement | null = null;
+  const vignette = document.createElement('canvas');
+  let vignetteKey = '';
   let snapAt = 0;
 
   let reduced = opts.reduced;
@@ -229,6 +261,8 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   let land50: Feature | null = null;
   let oldWorld: Feature | null = null;
   let iberia: Feature | null = null;
+  let landCoarse: Feature | null = null;
+  let oldCoarse: Feature | null = null;
   let countries = new Map<string, Feature>();
   let borders: MultiLineString | null = null;
   const units = new Map<string, Feature>();
@@ -266,7 +300,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     const a = avail();
     const span = Math.max(minSpan, 1e-3);
     const bw = Math.max(x1 - x0, span), bh = Math.max(y1 - y0, span * 0.6);
-    const k = clamp(Math.min((a.w * (1 - pad * 2)) / bw, (a.h * (1 - pad * 2)) / bh), kFitWorld(), kFitWorld() * 18);
+    const k = clamp(Math.min((a.w * (1 - pad * 2)) / bw, (a.h * (1 - pad * 2)) / bh), kFitWorld(), kFitWorld() * 9);
     return { layout, k, mx: (x0 + x1) / 2, my: (y0 + y1) / 2, lon: 0, lat: 0 };
   }
   function boxPoints(box: [LonLat, LonLat]): LonLat[] {
@@ -279,7 +313,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   function projectionFor(c: Cam): GeoProjection {
     const a = avail();
     if (c.layout === 'globe') {
-      return geoOrthographic().rotate([-c.lon, -c.lat]).scale(c.k).translate([a.cx, a.cy]).clipAngle(90).precision(0.7);
+      return geoOrthographic().rotate([-c.lon, -c.lat]).scale(c.k).translate([a.cx, a.cy]).clipAngle(90).precision(0);
     }
     return geoEqualEarth().rotate([ROT[c.layout], 0]).scale(c.k).translate([a.cx - c.k * c.mx, a.cy - c.k * c.my]).precision(0.7);
   }
@@ -320,7 +354,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       const w = clamp(cv.length * 0.24, 0.05, 0.75);
       const pts: LonLat[] = [ship];
       for (let i = 0; i < cv.pts.length; i++) if (Math.abs(cv.cum[i] - st.vd) <= w) pts.push(cv.pts[i]);
-      const minSpan = cv.v.kind === 'land' ? worldW * 0.035 : worldW * 0.11;
+      const minSpan = cv.v.kind === 'land' ? worldW * 0.035 : b.layout === 'pacific' ? worldW * 0.24 : worldW * 0.13;
       return fitPoints(b.layout as 'atlantic' | 'pacific', pts, minSpan, 0.12);
     }
     const layout = (b.layout === 'globe' ? 'atlantic' : b.layout) as 'atlantic' | 'pacific';
@@ -334,6 +368,9 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   let raf = 0;
   let last = 0;
   let dirty = true;
+  let lastKey = '';
+  let drawCost = 0;
+  let skip = 0;
   let lastEra = -1;
   let eraFadeAt = -1e9;
   let prevEra = -1;
@@ -347,8 +384,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     last = now;
     if (playing && visible) {
       s = Math.min(total, s + dt);
-      dirty = true;
-      if (s >= total) playing = false;
+      if (s >= total) { playing = false; dirty = true; }
     }
     if (loaded && W > 0) {
       const st = stateAt(s);
@@ -379,9 +415,18 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         lastEra = st.era;
       }
       const fading = now - eraFadeAt < 1000 || now - pulseAt < 2800 || (snap !== null && now - snapAt < 900);
-      if (dirty || moving || fading) {
+      // a frame is drawn only when something on it changes: at sea every
+      // frame (the ship rides the swell), on a keyframe only as it arrives
+      const key = `${st.bi}|${st.era}|${st.preEra}|${Math.round(st.fog * 80)}`;
+      const atSea = st.vi >= 0 && playing;
+      // on a slow device, a heavy chart (the globe) is drawn every other frame
+      skip = drawCost > 40 ? (skip + 1) % 3 : drawCost > 22 ? (skip + 1) % 2 : 0;
+      if ((dirty || moving || fading || atSea || key !== lastKey) && (skip === 0 || dirty)) {
+        const t0 = performance.now();
         draw(st, now);
+        drawCost = drawCost * 0.8 + (performance.now() - t0) * 0.2;
         dirty = false;
+        lastKey = key;
       }
       opts.onFrame({ s, beat: st.bi, stop: st.stop, day: st.day, playing, voyageDay: st.vi >= 0 && !st.atStop });
       if (playing || moving || fading) schedule();
@@ -425,7 +470,6 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     return Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) / Math.max(0.2, Math.cos(c[1] * RAD));
   }
 
-  const circle = geoCircle();
   const famOf = (u: { f: string }) => chron.families[u.f];
   function unitFill(f: { kind: string; tone: number }): RGB {
     switch (f.kind) {
@@ -439,21 +483,70 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     }
   }
 
+  /* --- geometry, projected once per flat chart: the camera is then only a
+     transform, so a frame costs filling paths, not projecting them. The globe
+     turns every frame, so there each path is projected live. --- */
+  const S = 1000;
+  type GeoObj = Parameters<ReturnType<typeof geoPath>>[0];
+  const baseProj: Record<'atlantic' | 'pacific', GeoProjection> = {
+    atlantic: geoEqualEarth().rotate([ROT.atlantic, 0]).scale(S).translate([0, 0]).precision(0.4),
+    pacific: geoEqualEarth().rotate([ROT.pacific, 0]).scale(S).translate([0, 0]).precision(0.4),
+  };
+  const caches = new Map<string, Map<string, Path2D>>();
+  function cached(layout: 'atlantic' | 'pacific', key: string, obj: () => GeoObj): Path2D {
+    let m = caches.get(layout);
+    if (!m) { m = new Map(); caches.set(layout, m); }
+    let p = m.get(key);
+    if (!p) {
+      p = new Path2D();
+      // (d3 only calls moveTo, lineTo, closePath and arc, which a Path2D has)
+      geoPath(baseProj[layout], p as unknown as CanvasRenderingContext2D)(obj());
+      m.set(key, p);
+    }
+    return p;
+  }
+  const routeXY = new Map<string, [number, number][]>();
+  function routePts(layout: 'atlantic' | 'pacific', vi: number): [number, number][] {
+    const key = `${layout}:${vi}`;
+    let r = routeXY.get(key);
+    if (!r) { r = voyages[vi].pts.map((q) => baseProj[layout](q) as [number, number]); routeXY.set(key, r); }
+    return r;
+  }
+  const fc = (fs: (Feature | undefined)[]): GeoObj => ({ type: 'FeatureCollection', features: fs.filter((f): f is Feature => !!f) });
+
   function draw(st: State, now: number) {
-    const proj = projectionFor(cam as Cam);
-    const globe = (cam as Cam).layout === 'globe';
-    const path = geoPath(proj, ctx);
+    const c = cam as Cam;
+    const proj = projectionFor(c);
+    const globe = c.layout === 'globe';
+    const flat = !globe;
+    const L = c.layout as 'atlantic' | 'pacific';
+    const a = avail();
+    const sc = c.k / S;
+    const tx = a.cx - c.k * c.mx, ty = a.cy - c.k * c.my;
+    const live = new Map<string, Path2D>();
+    const G = (key: string, obj: () => GeoObj): Path2D => {
+      if (flat) return cached(L, key, obj);
+      let p = live.get(key);
+      if (!p) { p = new Path2D(); geoPath(proj, p as unknown as CanvasRenderingContext2D)(obj()); live.set(key, p); }
+      return p;
+    };
+    // the space paths are drawn in, on a context at a given pixel scale
+    const geoSpace = (g: CanvasRenderingContext2D, k: number) => (flat ? g.setTransform(k * sc, 0, 0, k * sc, k * tx, k * ty) : g.setTransform(k, 0, 0, k, 0, 0));
+    const lw = (px: number) => (flat ? px / sc : px);
+    const dash = (d: number[]) => (flat ? d.map((x) => x / sc) : d);
+
     const ppd = pxPerDeg(proj);
     const era: Era = chron.eras[st.era];
     const today = st.cb.beat.kind === 'today';
     // on the globe, a point on the far side is not drawn
-    const centre: LonLat = [(cam as Cam).lon, (cam as Cam).lat];
+    const centre: LonLat = [c.lon, c.lat];
     const pt = (at: LonLat) => (globe && geoDistance(at, centre) > Math.PI / 2 - 0.03 ? null : proj(at));
     // close in, the 1:50m coast; further out, the 1:110m one
-    const coast = land50 && !globe && (cam as Cam).k > kFitWorld() * 2.2 ? land50 : land;
-    const coastPath = new Path2D();
-    // (d3 only calls moveTo, lineTo, closePath and arc, which a Path2D has)
-    if (coast) geoPath(proj, coastPath as unknown as CanvasRenderingContext2D)(coast);
+    const fine = !!land50 && flat && c.k > kFitWorld() * 2.2;
+    const coast = fine ? G('land50', () => land50 as Feature) : land ? G('land110', () => ((globe ? landCoarse : null) ?? land) as Feature) : null;
+    const sphere = G('sphere', () => ({ type: 'Sphere' }));
+    // the globe turns every frame: a lighter grid there
+    const grat = G('grat', () => (flat ? geoGraticule10() : geoGraticule().step([15, 15]).precision(5)()));
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.globalAlpha = 1;
@@ -462,93 +555,118 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     // the sea (and, on the globe, the dark around it)
     ctx.fillStyle = css(C.fog);
     ctx.fillRect(0, 0, W, H);
-    ctx.beginPath(); path({ type: 'Sphere' }); ctx.fillStyle = css(C.sea); ctx.fill();
+    geoSpace(ctx, dpr);
+    ctx.fillStyle = css(C.sea); ctx.fill(sphere);
 
     // a portolan's rhumb lines, from two wind roses
-    if (!globe) {
+    if (flat) {
       ctx.save();
-      ctx.beginPath(); path({ type: 'Sphere' }); ctx.clip();
+      ctx.clip(sphere);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.lineWidth = 0.6;
+      const strong = new Path2D(), weak = new Path2D();
       for (const at of [[-38, 24], [-150, 8]] as LonLat[]) {
         const p = proj(at);
         if (!p) continue;
         for (let k = 0; k < 32; k++) {
-          const a = (k * Math.PI) / 16;
-          ctx.strokeStyle = css(C.leatherLight, k % 4 === 0 ? 0.16 : 0.07);
-          ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p[0] + Math.cos(a) * 4000, p[1] + Math.sin(a) * 4000); ctx.stroke();
+          const an = (k * Math.PI) / 16;
+          const q = k % 4 === 0 ? strong : weak;
+          q.moveTo(p[0], p[1]); q.lineTo(p[0] + Math.cos(an) * 4000, p[1] + Math.sin(an) * 4000);
         }
       }
+      ctx.strokeStyle = css(C.leatherLight, 0.16); ctx.stroke(strong);
+      ctx.strokeStyle = css(C.leatherLight, 0.07); ctx.stroke(weak);
       ctx.restore();
+      geoSpace(ctx, dpr);
     }
-    ctx.beginPath(); path(geoGraticule10()); ctx.lineWidth = 0.5; ctx.strokeStyle = css(C.paper, 0.07); ctx.stroke();
+    ctx.lineWidth = lw(0.5); ctx.strokeStyle = css(C.paper, 0.07); ctx.stroke(grat);
 
     // land
-    if (coast) { ctx.fillStyle = css(C.land); ctx.fill(coastPath); }
+    if (coast) { ctx.fillStyle = css(C.land); ctx.fill(coast); }
 
-    // jurisdictions: the keyframe in force (cross-fading from the one before)
-    const drawEra = (e: Era, alpha: number, pre: boolean) => {
+    // jurisdictions: the keyframe in force (cross-fading from the one before),
+    // one path per colour and one for all the edges
+    const drawEra = (ei: number, alpha: number, pre: boolean) => {
+      const e = chron.eras[ei];
+      const tag = `era:${ei}:${pre ? 'pre' : 'all'}`;
+      const shown = e.units.filter((u) => famOf(u) && units.get(u.id) && (!pre || famOf(u).kind === 'native'));
+      const byColour = new Map<string, typeof shown>();
+      for (const u of shown) { const k = css(unitFill(famOf(u))); byColour.set(k, [...(byColour.get(k) ?? []), u]); }
       ctx.globalAlpha = alpha;
-      for (const u of e.units) {
-        const f = famOf(u); const g = units.get(u.id);
-        if (!f || !g || (pre && f.kind !== 'native')) continue;
-        ctx.beginPath(); path(g);
-        ctx.fillStyle = css(unitFill(f));
-        ctx.fill();
-        if (f.kind === 'claim') {
-          ctx.save(); ctx.clip();
-          ctx.strokeStyle = css(C.paper, 0.25); ctx.lineWidth = 0.8;
-          for (let x = -H; x < W; x += 7) { ctx.beginPath(); ctx.moveTo(x, H); ctx.lineTo(x + H, 0); ctx.stroke(); }
-          ctx.restore();
-        }
+      for (const [colour, us] of byColour) {
+        ctx.fillStyle = colour;
+        ctx.fill(G(`${tag}:${colour}`, () => fc(us.map((u) => units.get(u.id)))));
       }
-      ctx.lineWidth = 0.7; ctx.strokeStyle = css(C.paper, 0.5);
-      for (const u of e.units) {
-        const f = famOf(u); const g = units.get(u.id);
-        if (!f || !g || (pre && f.kind !== 'native')) continue;
-        ctx.setLineDash(f.kind === 'native' ? [2, 3] : []);
-        ctx.beginPath(); path(g); ctx.stroke();
+      const claims = shown.filter((u) => famOf(u).kind === 'claim');
+      if (claims.length) {
+        const cp = G(`${tag}:claims`, () => fc(claims.map((u) => units.get(u.id))));
+        ctx.save(); ctx.clip(cp);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const h = new Path2D();
+        for (let x = -H; x < W; x += 7) { h.moveTo(x, H); h.lineTo(x + H, 0); }
+        ctx.strokeStyle = css(C.paper, 0.25); ctx.lineWidth = 0.8; ctx.stroke(h);
+        ctx.restore();
+        geoSpace(ctx, dpr);
       }
-      ctx.setLineDash([]);
+      const solid = shown.filter((u) => famOf(u).kind !== 'native');
+      const native = shown.filter((u) => famOf(u).kind === 'native');
+      ctx.lineWidth = lw(0.7); ctx.strokeStyle = css(C.paper, 0.5);
+      if (solid.length) ctx.stroke(G(`${tag}:edge`, () => fc(solid.map((u) => units.get(u.id)))));
+      if (native.length) { ctx.setLineDash(dash([2, 3])); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => units.get(u.id))))); ctx.setLineDash([]); }
       ctx.globalAlpha = 1;
     };
     if (today) {
-      const lit = (ids: string[], c: RGB) => {
-        ctx.fillStyle = css(c);
-        for (const id of ids) { const g = countries.get(id); if (g) { ctx.beginPath(); path(g); ctx.fill(); } }
-      };
-      lit(chron.iberophone.submersa, C.pt[1]);
-      lit(chron.iberophone.emersa, C.es[1]);
-      if (borders) { ctx.beginPath(); path(borders); ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paper, 0.45); ctx.stroke(); }
+      ctx.fillStyle = css(C.pt[1]);
+      ctx.fill(G('today:sub', () => fc(chron.iberophone.submersa.map((id) => countries.get(id)))));
+      ctx.fillStyle = css(C.es[1]);
+      ctx.fill(G('today:em', () => fc(chron.iberophone.emersa.map((id) => countries.get(id)))));
+      if (borders) { ctx.lineWidth = lw(0.6); ctx.strokeStyle = css(C.paper, 0.45); ctx.stroke(G('borders', () => borders as MultiLineString)); }
     } else {
       const ef = reduced ? 1 : smooth((now - eraFadeAt) / 900);
-      if (ef < 1 && prevEra >= 0 && prevEra !== st.era) drawEra(chron.eras[prevEra], 1 - ef, false);
-      drawEra(era, ef, st.preEra);
+      if (ef < 1 && prevEra >= 0 && prevEra !== st.era) drawEra(prevEra, 1 - ef, false);
+      drawEra(st.era, ef, st.preEra);
       // the units that changed: a pulse, or with reduced motion a still outline
       if (!st.preEra && st.cb.beat.kind === 'era') {
-        const pt = (now - pulseAt) / 1000;
-        const a = reduced ? 0.8 : pt < 2.6 ? (1 - pt / 2.6) * (0.55 + 0.45 * Math.sin(pt * 7)) : 0;
-        if (a > 0.01) {
-          ctx.lineWidth = 2.2; ctx.strokeStyle = css(C.paper, a);
-          for (const u of era.units) if (era.pulse.includes(u.f)) { const g = units.get(u.id); if (g) { ctx.beginPath(); path(g); ctx.stroke(); } }
+        const pt2 = (now - pulseAt) / 1000;
+        const al = reduced ? 0.8 : pt2 < 2.6 ? (1 - pt2 / 2.6) * (0.55 + 0.45 * Math.sin(pt2 * 7)) : 0;
+        if (al > 0.01) {
+          ctx.lineWidth = lw(2.2); ctx.strokeStyle = css(C.paper, al);
+          ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => units.get(u.id)))));
         }
       }
     }
     // a coastline, so every shore reads against the dark sea
-    if (coast) { ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paperDeep, 0.35); ctx.stroke(coastPath); }
+    if (coast) { ctx.lineWidth = lw(0.6); ctx.strokeStyle = css(C.paperDeep, 0.35); ctx.stroke(coast); }
 
     // routes: the voyages already sailed, then the one at sea
-    const sailed: { cv: CVoyage; d: number; current: boolean }[] = [];
+    const sailed: { cv: CVoyage; vi: number; d: number; current: boolean }[] = [];
     for (let i = 0; i <= st.bi; i++) {
       const b = beats[i].beat;
       if (b.kind !== 'voyage') continue;
-      const cv = voyages[b.voyage as number];
-      sailed.push({ cv, d: i === st.bi ? st.vd : cv.length, current: i === st.bi });
+      const vi = b.voyage as number;
+      sailed.push({ cv: voyages[vi], vi, d: i === st.bi ? st.vd : voyages[vi].length, current: i === st.bi });
     }
+    const routePath = (r: { cv: CVoyage; vi: number; d: number; current: boolean }): Path2D => {
+      if (!r.current) return G(`route:${r.vi}`, () => ({ type: 'LineString', coordinates: r.cv.pts }));
+      if (!flat) return G(`at-sea:${r.vi}`, () => ({ type: 'LineString', coordinates: sliceTo(r.cv, r.d) }));
+      // the leg at sea: from the cached points, breaking where the chart is cut
+      const xy = routePts(L, r.vi);
+      const p = new Path2D();
+      const jump = S * worldW * 0.5;
+      let px = NaN;
+      const add = (q: [number, number]) => {
+        if (Number.isNaN(px) || Math.abs(q[0] - px) > jump) p.moveTo(q[0], q[1]); else p.lineTo(q[0], q[1]);
+        px = q[0];
+      };
+      for (let i = 0; i < xy.length && r.cv.cum[i] < r.d; i++) add(xy[i]);
+      const end = baseProj[L](pointAt(r.cv, r.d));
+      if (end) add(end as [number, number]);
+      return p;
+    };
     for (const r of sailed) {
       if (r.current) continue;
-      ctx.beginPath(); path({ type: 'LineString', coordinates: r.cv.pts });
-      ctx.lineWidth = 1; ctx.setLineDash(r.cv.v.kind === 'land' ? [1.5, 3] : [4, 4]);
-      ctx.strokeStyle = css(r.cv.v.crown === 'pt' ? C.leatherLight : C.paper, 0.32); ctx.stroke();
+      ctx.lineWidth = lw(1); ctx.setLineDash(dash(r.cv.v.kind === 'land' ? [1.5, 3] : [4, 4]));
+      ctx.strokeStyle = css(r.cv.v.crown === 'pt' ? C.leatherLight : C.paper, 0.32); ctx.stroke(routePath(r));
       ctx.setLineDash([]);
     }
 
@@ -557,58 +675,91 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       const f = 0.25;
       const mw = Math.ceil(W * f), mh = Math.ceil(H * f);
       if (mask.width !== mw || mask.height !== mh) { mask.width = mw; mask.height = mh; }
-      mctx.setTransform(f, 0, 0, f, 0, 0);
-      mctx.clearRect(0, 0, W, H);
-      const mpath = geoPath(proj, mctx);
+      mctx.setTransform(1, 0, 0, 1, 0, 0);
+      mctx.clearRect(0, 0, mw, mh);
+      geoSpace(mctx, f);
       mctx.fillStyle = '#fff'; mctx.strokeStyle = '#fff';
       mctx.lineJoin = 'round'; mctx.lineCap = 'round';
       // the Old World, known by chart or by report: dimly
       if (oldWorld) {
+        const ow = G('old', () => ((globe ? oldCoarse : null) ?? oldWorld) as Feature);
         mctx.globalAlpha = 0.42;
-        mctx.beginPath(); mpath(oldWorld); mctx.fill();
-        mctx.lineWidth = ppd * 2.2; mctx.stroke();
+        mctx.fill(ow);
+        mctx.lineWidth = lw(ppd * 2.2); mctx.stroke(ow);
       }
       mctx.globalAlpha = 1;
-      if (iberia) { mctx.beginPath(); mpath(iberia); mctx.fill(); mctx.lineWidth = ppd * 4; mctx.stroke(); }
+      if (iberia) { const ib = G('iberia', () => iberia as Feature); mctx.fill(ib); mctx.lineWidth = lw(ppd * 4); mctx.stroke(ib); }
       // after the voyages, the dark thins over the centuries as the rest of the
       // world's coasts reach the charts; the borders take over the story
       const year = 1970 + st.day / 365.25;
       const charted = clamp((year - 1570) / 180, 0, 0.82);
-      if (charted > 0) { mctx.globalAlpha = charted; mctx.beginPath(); mpath({ type: 'Sphere' }); mctx.fill(); mctx.globalAlpha = 1; }
+      if (charted > 0) { mctx.globalAlpha = charted; mctx.fill(sphere); mctx.globalAlpha = 1; }
       // jurisdictions known by now
-      if (!st.preEra) for (const id of knownUnits[st.era]) { const g = units.get(id); if (g) { mctx.beginPath(); mpath(g); mctx.fill(); } }
-      // wakes and landfalls
+      if (!st.preEra) mctx.fill(G(`known:${st.era}`, () => fc(knownUnits[st.era].map((id) => units.get(id)))));
+      // wakes
       for (const r of sailed) {
         const kind = r.cv.v.kind;
-        mctx.lineWidth = ppd * (kind === 'land' ? 1.2 : kind === 'river' ? 2.4 : 3.3);
-        mctx.beginPath(); mpath({ type: 'LineString', coordinates: r.current ? sliceTo(r.cv, r.d) : r.cv.pts }); mctx.stroke();
+        mctx.lineWidth = lw(ppd * (kind === 'land' ? 1.2 : kind === 'river' ? 1.7 : 3.3));
+        mctx.stroke(routePath(r));
+      }
+      // landfalls, in screen space
+      mctx.setTransform(f, 0, 0, f, 0, 0);
+      for (const r of sailed) {
+        const kind = r.cv.v.kind;
         for (const stp of r.cv.stops) {
           if (stp.d > r.d + 1e-9) break;
+          const p = pt(stp.wp.at);
+          if (!p) continue;
           const grow = r.current && !reduced ? smooth((st.tau - stp.arrive) / 1.4) : 1;
-          const rad = (stp.wp.reveal ?? 2.4) * Math.max(0.05, grow);
-          mctx.beginPath(); mpath(circle.center(stp.wp.at).radius(rad)()); mctx.fill();
+          const rad = (stp.wp.reveal ?? (kind === 'sea' ? 1.8 : 1.2)) * Math.max(0.05, grow) * ppd;
+          mctx.beginPath(); mctx.arc(p[0], p[1], rad, 0, Math.PI * 2); mctx.fill();
         }
       }
-      // the fog itself
-      if (fogC.width !== Math.ceil(W) || fogC.height !== Math.ceil(H)) { fogC.width = Math.ceil(W); fogC.height = Math.ceil(H); grain = null; }
+      // the fog itself, at half resolution: it is soft anyway
+      const fw = Math.ceil(W / 2), fh = Math.ceil(H / 2);
+      if (fogC.width !== fw || fogC.height !== fh) { fogC.width = fw; fogC.height = fh; grain = null; }
       if (!grain) makeGrain();
+      fctx.setTransform(1, 0, 0, 1, 0, 0);
       fctx.globalCompositeOperation = 'source-over';
       fctx.globalAlpha = 1;
-      fctx.fillStyle = css(C.fog); fctx.fillRect(0, 0, W, H);
-      if (grain) { fctx.fillStyle = grain; fctx.fillRect(0, 0, W, H); }
+      fctx.fillStyle = css(C.fog); fctx.fillRect(0, 0, fw, fh);
+      if (grain) { fctx.fillStyle = grain; fctx.fillRect(0, 0, fw, fh); }
       fctx.globalCompositeOperation = 'destination-out';
       fctx.imageSmoothingEnabled = true;
-      fctx.drawImage(mask, 0, 0, W, H);
+      fctx.drawImage(mask, 0, 0, fw, fh);
       fctx.globalCompositeOperation = 'source-over';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.globalAlpha = st.fog;
       ctx.drawImage(fogC, 0, 0, W, H);
       ctx.globalAlpha = 1;
     }
 
     // the chart's grid runs on into the dark, faintly
-    ctx.beginPath(); path(geoGraticule10()); ctx.lineWidth = 0.5; ctx.strokeStyle = css(C.paper, 0.035); ctx.stroke();
-    if (globe) { ctx.beginPath(); path({ type: 'Sphere' }); ctx.lineWidth = 1; ctx.strokeStyle = css(C.paper, 0.18); ctx.stroke(); }
+    geoSpace(ctx, dpr);
+    ctx.lineWidth = lw(0.5); ctx.strokeStyle = css(C.paper, 0.035); ctx.stroke(grat);
+    if (globe) { ctx.lineWidth = 1; ctx.strokeStyle = css(C.paper, 0.18); ctx.stroke(sphere); }
 
+    // treaty lines, drawn across the unknown as well: they divided what no one had seen
+    if (!today && !st.preEra) {
+      for (const id of era.lines) {
+        const g = lines.get(id);
+        if (!g) continue;
+        ctx.setLineDash(dash([6, 5])); ctx.lineWidth = lw(1.3); ctx.strokeStyle = css(C.paper, 0.75);
+        ctx.stroke(G(`line:${id}`, () => g)); ctx.setLineDash([]);
+      }
+    }
+    // the current route, with a soft glow under it
+    const cur = sailed.find((r) => r.current);
+    if (cur) {
+      const rp = routePath(cur);
+      const lineStyle = cur.cv.v.crown === 'pt' ? C.leatherLight : C.paper;
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.setLineDash(dash(cur.cv.v.kind === 'land' ? [2, 3] : []));
+      ctx.lineWidth = lw(6); ctx.strokeStyle = css(C.leather, 0.35); ctx.stroke(rp);
+      ctx.lineWidth = lw(1.8); ctx.strokeStyle = css(lineStyle, 0.95); ctx.stroke(rp);
+      ctx.setLineDash([]);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     hits = [];
     const placed: [number, number, number, number][] = [];
     const free = (x: number, y: number, w: number, h: number) => {
@@ -617,18 +768,13 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       placed.push([x, y, w, h]); return true;
     };
 
-    // treaty lines, drawn across the unknown as well: they divided what no one had seen
-    if (!today && !st.preEra) {
-      for (const id of era.lines) {
-        const g = lines.get(id);
-        if (!g) continue;
-        ctx.beginPath(); path(g); ctx.setLineDash([6, 5]); ctx.lineWidth = 1.3; ctx.strokeStyle = css(C.paper, 0.75); ctx.stroke(); ctx.setLineDash([]);
-        const p = pt([-48.5, 30]);
-        if (p) {
-          ctx.save(); ctx.translate(p[0] + 7, p[1]); ctx.rotate(-Math.PI / 2);
-          ctx.font = `500 10px ${fontMono}`; ctx.fillStyle = css(C.paper, 0.8); ctx.textAlign = 'center';
-          ctx.fillText('TORDESILLAS · 1494', 0, 0); ctx.restore();
-        }
+    // the treaty line's name
+    if (!today && !st.preEra && era.lines.includes('tordesillas')) {
+      const p = pt([-48.5, 30]);
+      if (p) {
+        ctx.save(); ctx.translate(p[0] + 7, p[1]); ctx.rotate(-Math.PI / 2);
+        ctx.font = `500 10px ${fontMono}`; ctx.fillStyle = css(C.paper, 0.8); ctx.textAlign = 'center';
+        ctx.fillText('TORDESILLAS · 1494', 0, 0); ctx.restore();
       }
     }
 
@@ -673,8 +819,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       }
     }
 
-    // the current route, the places reached and the ship
-    const cur = sailed.find((r) => r.current);
+    // the places reached and the ship
     for (const r of sailed) {
       for (const stp of r.cv.stops) {
         if (stp.d > r.d + 1e-9) break;
@@ -685,14 +830,6 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       }
     }
     if (cur) {
-      const pts = sliceTo(cur.cv, cur.d);
-      const lineStyle = cur.cv.v.crown === 'pt' ? C.leatherLight : C.paper;
-      ctx.save();
-      ctx.shadowColor = css(C.leather, 0.9); ctx.shadowBlur = 8;
-      ctx.beginPath(); path({ type: 'LineString', coordinates: pts });
-      ctx.lineWidth = 1.8; ctx.setLineDash(cur.cv.v.kind === 'land' ? [2, 3] : []);
-      ctx.strokeStyle = css(lineStyle, 0.95); ctx.stroke(); ctx.setLineDash([]);
-      ctx.restore();
       // landfalls: the newest first, so its name always shows
       const reached = cur.cv.stops.filter((stp) => stp.d <= cur.d + 1e-9);
       for (let k = reached.length - 1; k >= 0; k--) {
@@ -759,10 +896,17 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     }
 
     // a vignette, and the old chart fading out after a change of layout
-    const a = avail();
-    const vg = ctx.createRadialGradient(a.cx, a.cy, Math.min(W, H) * 0.35, a.cx, a.cy, Math.max(W, H) * 0.75);
-    vg.addColorStop(0, css(C.fog, 0)); vg.addColorStop(1, css(C.fog, 0.55));
-    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+    const vkey = `${W}x${H}:${a.cx}:${a.cy}`;
+    if (vkey !== vignetteKey) {
+      vignetteKey = vkey;
+      vignette.width = Math.ceil(W / 2); vignette.height = Math.ceil(H / 2);
+      const vc = vignette.getContext('2d') as CanvasRenderingContext2D;
+      vc.scale(0.5, 0.5);
+      const vg = vc.createRadialGradient(a.cx, a.cy, Math.min(W, H) * 0.35, a.cx, a.cy, Math.max(W, H) * 0.75);
+      vg.addColorStop(0, css(C.fog, 0)); vg.addColorStop(1, css(C.fog, 0.55));
+      vc.fillStyle = vg; vc.fillRect(0, 0, W, H);
+    }
+    ctx.drawImage(vignette, 0, 0, W, H);
     if (snap && !reduced) {
       const t = (now - snapAt) / 900;
       if (t < 1) {
@@ -850,12 +994,12 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       // the finer coast comes after, and only matters close in
       fetch('/data/land-50m.json').then((r) => (r.ok ? r.json() : null)).then((t: Topology | null) => {
         if (!t) return;
-        land50 = feature(t, t.objects.land) as unknown as Feature;
+        land50 = rewind(feature(t, t.objects.land) as unknown as FeatureCollection) as unknown as Feature;
         kick();
       }).catch(() => {});
       const wt = world as Topology;
       const cobj = wt.objects.countries as GeometryCollection;
-      land = feature(wt, wt.objects.land) as unknown as Feature;
+      land = rewind(feature(wt, wt.objects.land) as unknown as FeatureCollection) as unknown as Feature;
       const fc = feature(wt, cobj) as unknown as FeatureCollection;
       countries = new Map(fc.features.map((f) => [String(f.id), f]));
       const notOld = new Set(['036', '554', '598', '090', '548', '242', '540', '608', '010', '260', '304']);
@@ -867,6 +1011,12 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       });
       oldWorld = { type: 'Feature', properties: {}, geometry: merge(wt, oldGeoms as never) as MultiPolygon };
       iberia = { type: 'Feature', properties: {}, geometry: merge(wt, cobj.geometries.filter((g) => ['724', '620'].includes(String(g.id))) as never) as MultiPolygon };
+      // the globe re-projects every frame: it gets the same world with a
+      // third of the points (arcs are shared, so the shapes still meet)
+      const wc = decimate(wt, 3);
+      const cc = wc.objects.countries as GeometryCollection;
+      landCoarse = rewind(feature(wc, wc.objects.land) as unknown as FeatureCollection) as unknown as Feature;
+      oldCoarse = { type: 'Feature', properties: {}, geometry: merge(wc, cc.geometries.filter((g) => oldGeoms.some((o) => o.id === g.id)) as never) as MultiPolygon };
       borders = mesh(wt, cobj, (a, b) => a !== b) as MultiLineString;
       if (eraTopo) {
         const et = eraTopo as Topology;
