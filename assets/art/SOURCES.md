@@ -158,8 +158,10 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | --- | --- |
 | `epigraph-valley.jpg` | `assets/art/ai/valley-of-mexico-2026-10-25.jpg` (AI-generated, see below): the false signature painted out, printed a little warmer toward the site's paper, resized to 2400 px. It fills the epigraph section behind Lewis Hanke's sentence, credited on the page as a generated image |
 | `atlas-plate.jpg` | A still of our own Atlas map (`site/components/MapTour.tsx`, Natural Earth geometry, public domain), captured from the page |
-| `pillars/fresco.jpg` | The pillars' band, built by `tools/build-fresco.py` from three public-domain paintings laid side by side with soft seams and one warm grade: `paint-morlete-casta-albino.jpg` above (PD-Art); Miguel Cabrera, *Retablo de la Virgen de Guadalupe con san Juan Bautista, fray Juan de Zumárraga y Juan Diego*, 18th century, [Commons](https://commons.wikimedia.org/wiki/File:Miguel_Cabrera_-_Altarpiece_of_the_Virgin_of_Guadalupe_with_Saint_John_the_Baptist,_Fray_Juan_de_Zum%C3%A1rraga_and_Juan_Diego_-_Google_Art_Project.jpg) (Google Art Project, public domain); and the Florentine Codex folio 80, [Commons](https://commons.wikimedia.org/wiki/File:The_Florentine_Codex_(folio_80).jpg) (public domain, the full 1132 px file). Credited on the page under the band |
-| `pillars/mestizaje-detail.jpg`, `pillars/catolicismo-detail.jpg`, `pillars/lengua-detail.jpg` | Crops of the same three paintings, same grade, shown in the panel each pillar opens |
+| `pillars/fresco.jpg` | The pillars' band, built by `tools/build-fresco.py` from three public-domain paintings laid side by side with soft seams and one warm grade: Miguel Cabrera, *1. De español e india, mestiza*, 1763, oil on canvas, Museo de Historia Mexicana, Monterrey (per [Wikidata Q111605580](https://www.wikidata.org/wiki/Q111605580)), [Commons](https://commons.wikimedia.org/wiki/File:De_espa%C3%B1ol_e_india,_mestiza.jpg) (PD-Art, PD-old-100; 777 × 995 px, the largest copy on Commons), since 2026-10-29 in place of Morlete's casta painting; Miguel Cabrera, *Retablo de la Virgen de Guadalupe con san Juan Bautista, fray Juan de Zumárraga y Juan Diego*, 18th century, [Commons](https://commons.wikimedia.org/wiki/File:Miguel_Cabrera_-_Altarpiece_of_the_Virgin_of_Guadalupe_with_Saint_John_the_Baptist,_Fray_Juan_de_Zum%C3%A1rraga_and_Juan_Diego_-_Google_Art_Project.jpg) (Google Art Project, public domain); and the Florentine Codex folio 80, [Commons](https://commons.wikimedia.org/wiki/File:The_Florentine_Codex_(folio_80).jpg) (public domain, the full 1132 px file). Credited on the page under the band |
+| `pillars/mestizaje-detail.jpg`, `pillars/catolicismo-detail.jpg`, `pillars/lengua-detail.jpg` | Crops of the same three paintings, same grade, shown in the panel each pillar opens (Cabrera's *mestiza* whole, at its 777 px) |
+
+Wanted for the Mestizaje pillar, pending the museum's permission: Manuel de Arellano, *Mujer chichimeca* (1711), Museo de América, Madrid, inv. 2000/05/02 (Beltrán's choice). Its only photograph is the Ministry of Culture's, licensed for non-commercial use, so it is not used until the museum says yes.
 | `villalpando-plaza-mayor-1695.jpg` | `paint-villalpando-plaza-mayor-1695.jpg` above (public domain), resized; in the About section |
 
 `portico.jpg` left the site on 2026-10-25 (the pillars are now HTML and CSS); it stays in the film (`film/reel/assets/img/portico.jpg`). `epigraph-agnus-dei.jpg` (Zurbarán's lamb) left the site on 2026-10-26: the valley replaced it.
@@ -171,3 +173,18 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | `footer-name.jpg` | `assets/art/ai/footer-hispano-studies-2026-10-26.png` (AI-generated, see above), the cream strip on its right cut off (1826 × 809). The footer's glass shows the same picture mirrored and blurred |
 
 The letters cut from period pictures (`site/public/art/letters/`) were on the site only on 2026-10-26: Carlos preferred his own picture and its typeface.
+
+## Essay covers in Read (`site/public/art/essays/`)
+
+Beltrán's Substack post covers, used with the publication (the Institute for Hispano Studies on Substack, hispanicamerican.substack.com). Each is the post's `og:image`, saved on 2026-10-29 from the original upload on `substack-post-media.s3.amazonaws.com`, flattened on white and resized to at most 720 px; the page crops them to 4:5. The file is named after the post's slug. The pictures inside them are the publication's choice; their own sources are not traced here.
+
+| File | Post | Original upload |
+| --- | --- | --- |
+| `the-catholic-hispanic-position-on.jpg` | [The Catholic-Hispanic Position on Racism](https://hispanicamerican.substack.com/p/the-catholic-hispanic-position-on) | `532fc229-b66a-4672-a034-bb39bd28fbef_864x1152.jpeg` |
+| `the-vikings-did-not-discover-america.jpg` | [The Vikings Did Not Discover America](https://hispanicamerican.substack.com/p/the-vikings-did-not-discover-america) | `2c61aeaf-eef5-4530-ba9c-bea0dce772f9_981x939.jpeg` |
+| `oireis-hablar-de-mi-a-tribute-to.jpg` | [Oiréis hablar de mí: A Tribute to José Vasconcelos](https://hispanicamerican.substack.com/p/oireis-hablar-de-mi-a-tribute-to) | `e7c85e37-066c-4360-8284-56417fef5042_943x1374.jpeg` |
+| `transitional-political-society-neither.jpg` | [Transitional Political Society, Neither Feudal nor Capitalist](https://hispanicamerican.substack.com/p/transitional-political-society-neither) | `133a6424-9786-450c-a77a-8f63d598a1d2_700x375.jpeg` |
+| `spain-and-america.jpg` | [Spain and America](https://hispanicamerican.substack.com/p/spain-and-america) | `f003f3c5-4721-473a-aded-cf3d980ab10f_1140x1600.jpeg` |
+| `on-bullfighting.jpg` | [On Bullfighting](https://hispanicamerican.substack.com/p/on-bullfighting) | `4f165f59-4f51-4fdf-be07-6457c14b61fa_505x727.png` |
+| `aryan-indigenismo-and-manifest-destiny.jpg` | [Aryan Indigenismo and Manifest Destiny](https://hispanicamerican.substack.com/p/aryan-indigenismo-and-manifest-destiny) | `00c3ffe3-883b-48a5-b226-45d62c358347_522x720.jpeg` |
+| `the-black-legend-threat-to-hispanic.jpg` | [The Black Legend: Threat to Hispanic Civilization (Part 1)](https://hispanicamerican.substack.com/p/the-black-legend-threat-to-hispanic) | `452db558-4eeb-412c-b31f-0d25f03a51a2_568x640.jpeg` |
