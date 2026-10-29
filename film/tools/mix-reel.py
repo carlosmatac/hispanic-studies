@@ -28,20 +28,25 @@ CACHE = ROOT / "film/reel/renders/sfx"
 EARSHOT = Path.home() / ".venvs/film/bin/earshot"
 SR = 48000
 OFFSET = 3.80          # the track's first note (3.82 s) lands on frame 0
+# Beltrán's whole sentence about the pueblos mágicos (issue #67) needs 3.95 s more than the
+# track gives: the soft section's Gm-Em-Dm phrase (video 16.86-20.81) plays twice. At LOOP_AT
+# the music jumps back LOOP_LEN s (one phrase, 10 eighths, measured on the onsets: 3.948 s),
+# just before an onset; everything after it lands LOOP_LEN later than in the track.
+LOOP_AT, LOOP_LEN = 20.81, 3.95
 
 # the narrator (film/VOICE.md): optional lines from ElevenLabs, placed when their files exist
-NARRATOR = [("vo-claim.mp3", 0.0), ("vo-know.mp3", 7.92), ("vo-name.mp3", 66.20)]
+NARRATOR = [("vo-claim.mp3", 0.0), ("vo-know.mp3", 7.92), ("vo-name.mp3", 70.15)]
 NARRATOR_DB = -1.0
 
 # his clips were recorded at different levels: lift the quiet ones (video s from, to, dB)
-VOICE_LIFT = [(15.435, 19.835, 4.5),    # "Every single one of them is viceregal."
-              (19.835, 22.243, 3.0)]    # "Not one altarpiece came down."
+VOICE_LIFT = [(12.06, 23.785, 4.5),     # "See, we love our pueblos mágicos, … Spain built them."
+              (23.785, 26.193, 3.0)]    # "Not one altarpiece came down."
 
 # ------------------------------------------------------------------ the cues
 # (video seconds, sound id, weight 0..1, extra render args). Times follow the scenes in
-# film/reel/index.html and the hits measured in the track (film/MUSIC.md).
-NAME, BUILD, MONT, PIL, WORKS, LOCK = 0.0, 7.916, 15.435, 28.63, 38.164, 66.137
-R0, C0, A0, K0, F0 = 41.206, 46.229, 51.725, 57.337, 60.667      # works shots, video time
+# film/reel/index.html and the hits measured in the track (film/MUSIC.md), + LOOP_LEN after LOOP_AT.
+NAME, BUILD, MONT, PIL, WORKS, LOCK = 0.0, 7.916, 15.435, 32.58, 42.114, 70.087
+R0, C0, A0, K0, F0 = (t + LOOP_LEN for t in (41.206, 46.229, 51.725, 57.337, 60.667))   # works shots
 TEMPLE, TQ = PIL + 6.81, (9.534 - 6.81) / 4
 TILES = [3.604, 4.204, 4.754, 5.254, 5.704, 6.104, 6.454, 6.754]
 CUES = []
@@ -61,16 +66,17 @@ cue(NAME + 7.70, "swipe/paper", 0.40, "--dur", "0.6", "--apex", "0.25", apex=0.2
 # the build: Ortelius' map opens in steps, then the viceregal world whips past, faster and faster
 cue(BUILD + 0.02, "pro_zip/down_warm", 0.18)
 for i, t in enumerate(TILES):
-    cue(BUILD + t, "swish/soft", 0.22 + 0.02 * i, "--dur", "0.45", "--apex", "0.08", apex=0.08)
-    cue(BUILD + t + 0.02, "fit/land.light/fingertip_book", 0.22)
-# the montage: a city a beat under his line, "Spain built them.", the retablo, four stamps, the stop
-for t in (0.8, 1.6, 2.4):
-    cue(MONT + t, "swish/soft", 0.22, "--dur", "0.45", "--apex", "0.08", apex=0.08)
-cue(MONT + 3.12, "pro_impact/air", 0.30)
-cue(MONT + 4.40, "swish/soft", 0.30, "--dur", "0.6", "--apex", "0.12", apex=0.12)
+    q = 1.0 if i == 0 else 0.7            # his voice begins on the second: the whips step back
+    cue(BUILD + t, "swish/soft", (0.22 + 0.02 * i) * q, "--dur", "0.45", "--apex", "0.08", apex=0.08)
+    cue(BUILD + t + 0.02, "fit/land.light/fingertip_book", 0.22 * q)
+# the montage: the cities under his sentence, "Spain built them.", the retablo, four stamps, the stop
+for t in (1.6, 3.2, 4.0, 4.8, 5.6):
+    cue(MONT + t, "swish/soft", 0.20, "--dur", "0.45", "--apex", "0.08", apex=0.08)
+cue(MONT + 6.695, "pro_impact/air", 0.30)
+cue(MONT + 8.35, "swish/soft", 0.30, "--dur", "0.6", "--apex", "0.12", apex=0.12)
 for i in range(4):
-    cue(MONT + 6.858 + 0.4 * i, "pro_pop_in/deep", 0.55 if i == 0 else 0.42)
-cue(MONT + 8.45, "swipe/cloth", 0.30, "--apex", "0.18", apex=0.18)
+    cue(MONT + 10.808 + 0.4 * i, "pro_pop_in/deep", 0.55 if i == 0 else 0.42)
+cue(MONT + 12.40, "swipe/cloth", 0.30, "--apex", "0.18", apex=0.18)
 # the pillars: the flight through "Mestizaje", the whip up the Sagrario, the whip onto the Codex
 cue(PIL + 0.96, "whoosh_fast/heavy", 0.40, "--dur", "0.75", "--apex", "0.5", apex=0.5)
 cue(PIL + 2.27, "swipe/velvet", 0.36, "--dur", "0.6", "--apex", "0.1", apex=0.1)
@@ -131,12 +137,20 @@ def place(bus, x, t):
         bus[i:i + n] += x[:n]
 
 
+def lengthen(music):
+    """Play [LOOP_AT - LOOP_LEN, LOOP_AT] twice, with a 15 ms equal-power crossfade at the seam."""
+    a, k, f = int(round(LOOP_AT * SR)), int(round(LOOP_LEN * SR)), int(0.015 * SR)
+    t = np.linspace(0, np.pi / 2, f, dtype=np.float32)[:, None]
+    seam = music[a:a + f] * np.cos(t) + music[a - k:a - k + f] * np.sin(t)
+    return np.concatenate([music[:a], seam, music[a - k + f:]])
+
+
 def main(video, out):
     CACHE.mkdir(parents=True, exist_ok=True)
     dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", video]))
     n = int(round(dur * SR))
 
-    music = load(MUSIC)[int(round(OFFSET * SR)):]
+    music = lengthen(load(MUSIC)[int(round(OFFSET * SR)):])
     music = np.pad(music, ((0, max(0, n - len(music))), (0, 0)))[:n]
     voice = load(video)
     voice = np.pad(voice, ((0, max(0, n - len(voice))), (0, 0)))[:n]

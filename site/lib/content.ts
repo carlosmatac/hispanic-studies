@@ -79,7 +79,9 @@ export const ESSAYS = [
   { title: 'Aryan Indigenismo and Manifest Destiny', author: 'Beltrán Arellanes', date: '2025-04-06', slug: 'aryan-indigenismo-and-manifest-destiny' },
   { title: 'The Black Legend: Threat to Hispanic Civilization (Part 1)', author: 'Alicia Melchor Herrera', date: '2025-04-12', slug: 'the-black-legend-threat-to-hispanic' },
 ]
-  .map((e) => ({ ...e, url: SUB + e.slug }))
+  // cover: the post's own cover image (its og:image), saved from Substack on 2026-10-29
+  // into public/art/essays/<slug>.jpg so the page does not hotlink Substack's CDN
+  .map((e) => ({ ...e, url: SUB + e.slug, cover: `/art/essays/${e.slug}.jpg` }))
   .sort((a, b) => b.date.localeCompare(a.date));
 
 /** YouTube's own thumbnails: the portrait frame for Shorts, the 16:9 one for videos. */

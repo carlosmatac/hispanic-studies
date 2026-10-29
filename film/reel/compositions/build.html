@@ -16,8 +16,14 @@
     .bd-cut { position: absolute; inset: 0; overflow: hidden; background: #2f070d; }
     .bd-cut img { position: absolute; left: 50%; top: 50%; width: 2200px; height: 1238px; object-fit: cover; translate: -50% -50%; }
     .bd-cut img.tall { left: -40px; top: 0; translate: none; width: 2000px; height: auto; }
-    .bd-tag { position: absolute; left: 70px; bottom: 58px; padding: 10px 18px 12px; background: #f9f3dd; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #470b15; white-space: nowrap; }
+    .bd-tag { position: absolute; left: 70px; bottom: 58px; padding: 10px 18px 12px; background: #f9f3dd; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #470b15; white-space: nowrap; z-index: 3; }
     .bd-vig { position: absolute; inset: 0; background: radial-gradient(120% 95% at 50% 45%, transparent 55%, rgba(47, 7, 13, 0.55)); pointer-events: none; }
+    /* over them his voice begins (it runs on into the montage): "See, we love our pueblos mágicos, those charming" */
+    #bd-say { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    #bd-say i { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(47, 7, 13, 0.6) 0%, rgba(47, 7, 13, 0.82) 16%, rgba(47, 7, 13, 0.5) 40%, rgba(47, 7, 13, 0) 62%); }
+    #bd-say-type { position: absolute; left: 120px; top: 700px; width: 1700px; font-weight: 600; font-size: 104px; line-height: 0.98; letter-spacing: -0.02em; color: #f9f3dd; }
+    #bd-say-type span { display: inline-block; }
+    #bd-say-type em { font-style: italic; font-weight: 600; }
   </style>
   <div id="root" data-composition-id="build" data-width="1920" data-height="1080">
     <div id="bd-a" class="clip" data-start="0" data-duration="3.604">
@@ -34,6 +40,13 @@
     <div id="bd-c5" class="bd-cut clip" data-start="6.104" data-duration="0.35"><img src="assets/img/graded/arch-cusco-compania-uhle-1905.jpg" alt="" /><p class="bd-tag">La Compañía, Cusco</p><i class="bd-vig"></i></div>
     <div id="bd-c6" class="bd-cut clip" data-start="6.454" data-duration="0.3"><img src="assets/img/graded/paint-villalpando-plaza-mayor-1695.jpg" alt="" /><p class="bd-tag">Villalpando, Mexico City, 1695</p><i class="bd-vig"></i></div>
     <div id="bd-c7" class="bd-cut clip" data-start="6.754" data-duration="0.765"><img src="assets/img/graded/map-blaeu-americae-nova-tabula.jpg" alt="" /><i class="bd-vig"></i></div>
+
+    <div id="bd-say" class="clip" data-start="4.144" data-duration="3.375">
+      <i></i>
+      <p id="bd-say-type"><span>See,</span> <span>we</span> <span>love</span> <span>our</span> <span><em>pueblos</em></span> <span><em>mágicos,</em></span> <span>those</span> <span>charming</span></p>
+    </div>
+    <!-- his sentence starts here, a J-cut: montage.html picks the same clip up at 3.375 s -->
+    <audio id="bd-voice" class="clip" src="assets/clips/pueblos.mp4" data-start="4.144" data-duration="3.375" data-media-start="0" data-volume="1"></audio>
   </div>
   <script>
     (() => {
@@ -61,6 +74,11 @@
       // the tall tower: the camera tilts up it
       tl.fromTo("#bd-c0 img", { y: -1500 }, { y: -700, duration: 0.6, ease: "power1.inOut" }, 3.604);
       tl.fromTo("#bd-c3 img", { y: -620 }, { y: -760, duration: 0.45, ease: "none" }, 5.254);
+      // his words land as he says them (times measured in pueblos.mp4, + 4.144)
+      [4.204, 4.424, 4.644, 4.984, 5.324, 5.924, 6.484, 6.824].forEach((t, i) => {
+        tl.fromTo(`#bd-say-type span:nth-child(${i + 1})`, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out" }, t - 0.03);
+      });
+      tl.fromTo("#bd-say i", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 4.144);
       // the last map pulls back fast into the montage
       tl.fromTo("#bd-c7 img", { scale: 1.6 }, { scale: 1.0, duration: 0.765, ease: "expo.out", immediateRender: false }, 6.754);
       window.__timelines["build"] = tl;

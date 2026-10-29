@@ -50,6 +50,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* I · three pillars holding up the Institute */}
         <Pillars lang={lang} counts={{ milestones: COUNTS.milestones, authors: COUNTS.authors }} />
 
+        {/* where to find us: every channel, a light band right under the pillars */}
+        <section className="channels" id="channels" aria-labelledby="channels-h">
+          <div className="channels__head">
+            <p className="eyebrow">{d.channels.eyebrow}</p>
+            <h2 id="channels-h">{d.channels.h}</h2>
+          </div>
+          <ChannelGrid lang={lang} />
+        </section>
+
         {/* II · III · the Atlas and the canon, as two plates that open their pages */}
         <Doors lang={lang} />
 
@@ -122,11 +131,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="read__list">
             {ESSAYS.map((e) => (
               <a key={e.slug} className="essay" href={e.url} target="_blank" rel="noopener noreferrer">
-                <span className="essay__date">{fmtDate(e.date, lang)}</span>
-                <span>
+                <span className="essay__cover">
+                  <Image src={e.cover} alt="" fill sizes="(max-width: 760px) 92px, 132px" />
+                </span>
+                <div className="essay__text">
+                  <span className="essay__date">{fmtDate(e.date, lang)}</span>
                   <h3>{e.title}</h3>
                   <p className="essay__by">{e.author}{e.translator ? ` · ${d.read.trans} ${e.translator}` : ''}</p>
-                </span>
+                </div>
               </a>
             ))}
           </div>
@@ -143,12 +155,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="about__text">
               <p className="eyebrow">{d.about.eyebrow}</p>
               <h2 id="about-h">{d.about.h}</h2>
+              {/* the short mission summary from Beltrán's own manifesto goes here,
+                  with a link to the full text on /[lang]/mission (issue #66; text pending) */}
               <p className="lede">{d.about.p1}</p>
               <p>{d.about.p2}</p>
             </div>
           </div>
-          <h3 className="shelf">{d.about.channels}</h3>
-          <ChannelGrid lang={lang} />
         </section>
 
         {/* community */}

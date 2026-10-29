@@ -128,6 +128,9 @@ These are verbatim from the transcripts, with in/out in seconds. ★ marks lines
 - "The civilization that produced you is the synthesis, both halves." SPIvTx33sOk 130.62–134.95
 - ★ "To know who we are, we must know where we come from." 3LYcIzK8mxo 859.56–862.99
 
+**Viceregal towns** (in the reel since issue #67, as `pueblos.mp4`; times in the 1080p source)
+- "See, we love our pueblos mágicos, those charming colonial towns we put on postcards and Instagram. Every single one of them is viceregal. Spain built them." w0t-IC2yi20 21.93–33.25 (he pauses after "charming", at 25.26–25.58). Cut it whole: "Every single one of them" alone does not say what "them" is.
+
 **300 years cut out of history**
 - ★ "to delete 300 years of your heritage." X2pDJsl6Xp0 14.60–17.99
 - ★ "They are the foundation of it." X2pDJsl6Xp0 158.78–160.45 (it follows "300 years of universities, hospitals, legal codes, …" at 152.12)

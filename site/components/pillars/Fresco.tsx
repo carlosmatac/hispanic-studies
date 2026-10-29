@@ -13,7 +13,7 @@ import { PILLAR_LINKS, type PillarKey } from '@/lib/content';
 const KEYS: PillarKey[] = ['mestizaje', 'catolicismo', 'lengua'];
 const ROMAN = ['I', 'II', 'III'];
 const DETAIL: Record<PillarKey, { w: number; h: number }> = {
-  mestizaje: { w: 1272, h: 1400 },
+  mestizaje: { w: 777, h: 995 },
   catolicismo: { w: 1400, h: 1400 },
   lengua: { w: 1132, h: 1065 },
 };

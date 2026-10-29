@@ -12,27 +12,36 @@ librosa: onsets, low-band hits, harmonic/percussive energy, chords).
 
 - Pulse about 75 BPM (a quarter is ~0.80 s, the eighths at ~0.40 s carry the rhythm); the
   guitar intro is played freely.
-- **Video time = track time − 3.80 s.** The film is 71.4 s, the length of the music.
+- **Video time = track time − 3.80 s**, and from 20.81 s on, 3.95 s later again: Beltrán's
+  whole sentence about the pueblos mágicos (issue #67) needed 3.95 s more than the soft
+  section gives, so its Gm–Em–Dm phrase (video 16.86–20.81) plays twice. The seam sits just
+  before an onset, on the phrase's own length measured on the onsets (10 eighths, 3.948 s);
+  `film/tools/mix-reel.py` makes it (`LOOP_AT`, `LOOP_LEN`). The film is 75.35 s, the length
+  of the music so lengthened.
 
 | video s | track s | the music | the picture |
 | --- | --- | --- | --- |
 | 0.02 | 3.82 | the guitar begins | "One civilization," letter by letter |
 | 4.33 | 8.13 | second guitar phrase | the map pulls back to four continents |
 | 7.92 | 11.72 | third phrase | "To know who we are…" over Ortelius' America (1572) |
-| 11.52 | 15.32 | fourth phrase | the viceregal world, cut faster and faster |
-| 15.44 | 19.24 | a low hit; the bass leaves, soft section | "Every single one of them is viceregal. Spain built them."; "Not one altarpiece came down." |
-| 22.24 | 26.04 | a hit, then the music almost stops | "War, law, love, and faith." stamped; then, in the near-silence, "You were taught to resent the civilization that built everything you love." |
-| 28.63 | 32.43 | the beat comes back, a long rise on A | the three pillars: a flight through "Mestizaje", a climb up the Sagrario, the Florentine Codex |
-| 35.44 | 39.24 | the rise peaks | the portico; the camera dives into "Watch" |
-| 38.16 | 41.96 | **the drop** (D) | Watch |
-| 41.21 / 43.59 | 45.01 / 47.39 | hits (43.59 is the biggest) | Read; its ring of essays folds on 43.59 |
-| 46.23 | 50.03 | hit | the canon |
-| 51.73 | 55.53 | hit | the Atlas |
-| 57.34 | 61.14 | **the climax** (back on D) | De Indiis Editions |
-| 60.67 | 64.47 | hit | "Join the argument." |
-| 62.27 · 63.74 · 64.54 · 65.33 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | the five logos · 50,000+ · followers on five channels · @hispano_studies |
-| 66.14 | 69.94 | **the last hit**, two more and the final chord (71.56) | the eagle, the name, hispanostudies.com |
-| 71.40 | 75.20 | silence | end (the page loops it) |
+| 11.52 | 15.32 | fourth phrase | the viceregal world, cut faster and faster; from 12.12 Beltrán's voice over it: "See, we love our pueblos mágicos, those charming…" |
+| 15.44 | 19.24 | a low hit; the bass leaves, soft section | his window opens in his pause: "…colonial towns we put on postcards and Instagram. Every single one of them is viceregal. Spain built them." (to 23.79) |
+| 20.81 | 24.61 → 20.66 | the seam: the phrase from 16.86 plays again | (under "Every single one of them is viceregal.") |
+| 23.79 | 23.64 | soft section | "Not one altarpiece came down." |
+| 26.19 | 26.04 | a hit, then the music almost stops | "War, law, love, and faith." stamped; then, in the near-silence, "You were taught to resent the civilization that built everything you love." |
+| 32.58 | 32.43 | the beat comes back, a long rise on A | the three pillars: a flight through "Mestizaje", a climb up the Sagrario, the Florentine Codex |
+| 39.39 | 39.24 | the rise peaks | the portico; the camera dives into "Watch" |
+| 42.11 | 41.96 | **the drop** (D) | Watch |
+| 45.16 / 47.54 | 45.01 / 47.39 | hits (47.54 is the biggest) | Read; its ring of essays folds on 47.54 |
+| 50.18 | 50.03 | hit | the canon |
+| 55.68 | 55.53 | hit | the Atlas |
+| 61.29 | 61.14 | **the climax** (back on D) | De Indiis Editions |
+| 64.62 | 64.47 | hit | "Join the argument." |
+| 66.22 · 67.69 · 68.49 · 69.28 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | the five logos · 50,000+ · followers on five channels · @hispano_studies |
+| 70.09 | 69.94 | **the last hit**, two more and the final chord | the eagle, the name, hispanostudies.com |
+| 75.35 | 75.20 | silence | end (the page loops it) |
+
+After the seam, video time = track time + 0.15 s (− 3.80 + 3.95).
 
 Every shot change in the works is preceded by the frieze sweep (0.78 s before the hit).
 
