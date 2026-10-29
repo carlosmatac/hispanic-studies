@@ -20,28 +20,27 @@ python3 tools/build-map-data.py /tmp/countries-110m.json /tmp/Priority50.csv
 `Priority50.csv` is the `Priority50` sheet of `panhispanic_paniberian_acquisitions.xlsm`
 exported to CSV. `build-map-data.py` runs without it and simply skips `books.json`.
 
-## The archive (`site/content/archive/`)
+## The archive (in the database since issue #69)
 
-The archive's files are the source of truth (edited by hand or in the CMS,
-`docs/cms.md`). Two scripts feed them:
+The archive lives in a Postgres database and is edited at `/admin` (`docs/cms.md`).
+The Markdown files it came from (`site/content/archive/`) are in git history
+(last at commit `246fe7e`); `npm run db:import` (in `site/`) reads them from there.
 
 ```bash
-# once, on 2026-10-29: the compiler's fifty works (+ the prelude) as content files;
-# it never overwrites an existing file unless asked (--force T012, or --force all)
-python3 tools/migrate-canon-to-archive.py
-
-# the rights research (docs/research/archive-rights/) into the records: verdicts,
-# links, corrections, the prelude (Node, uses site/node_modules/js-yaml)
-node tools/apply-archive-research.mjs
-
-# a public-domain text into a work's file (body + source fields); every command
-# used so far is in docs/archive-sources.md
+# a public-domain text for a work: fetched, cleaned to Markdown, handed over in
+# site/.data/ingest/<id>.json; then put into the database (the version before
+# stays in the work's history). Every command used so far is in docs/archive-sources.md
 python3 tools/ingest-text.py T013 --wikisource "Nuestra América" --edition "…"
 python3 tools/ingest-text.py T018 --gutenberg 22899 --number-class top --number-class top1 --start "## I"
-python3 tools/ingest-text.py T007 --tei https://raw.githubusercontent.com/…/POR0084_FraLGom_Bramanes.xml --demote
+cd site && npm run text:import -- T013
 ```
 
-Log every hosted text in `docs/archive-sources.md`.
+Two scripts of 2026-10-29 wrote the old Markdown files and are kept only as the
+record of how the first 59 works were made: `migrate-canon-to-archive.py` (the
+compiler's fifty works + the prelude, the author names, the per-work region calls)
+and `apply-archive-research.mjs` (the rights research of
+`docs/research/archive-rights/`). They no longer have files to write to; their
+results are in the database.
 
 ## What is deliberately dropped
 

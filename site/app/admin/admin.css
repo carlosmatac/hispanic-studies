@@ -238,7 +238,10 @@ a.adm-row:hover { background: var(--adm-field); }
   .adm-row__meta, .adm-row__flags { grid-column: 3; justify-content: flex-start; }
   .adm-tb { top: 104px; }
   .adm-savebar { margin-inline: calc(-1 * var(--gutter)); }
-  .adm-savebar .adm-btn--primary { flex: 1; }
+  .adm-savebar { gap: 6px 12px; padding-block: 8px; }
+  .adm-savebar .adm-btn--primary { flex: 1 0 100%; min-height: 44px; }
+  .adm-savebar__msg:empty { display: none; }
+  .adm-wide-only { display: none; }
   .adm-swatch-preview { display: none; }
 }
 

@@ -66,9 +66,10 @@ function inline(nodes: PMNode[] = []): string {
     if (n.type !== 'text' || !n.text) continue;
     const m = /^(\s*)([\s\S]*?)(\s*)$/.exec(n.text)!;
     const [, lead, core, trail] = m;
-    if (!core) { pending += n.text; continue; }
     const target = marksOf(n);
     const same = target.length === active.length && target.every((t, i) => t.key === active[i].key);
+    // a bare space between two italic runs stays outside them ("*a* *b*", not "*a b*")
+    if (!core) { if (!same) settle(target); pending += n.text; continue; }
     if (same) { out += pending + lead; pending = ''; }
     else { pending += lead; settle(target); }
     out += escapeInline(core);

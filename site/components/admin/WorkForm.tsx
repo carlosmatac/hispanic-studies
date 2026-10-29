@@ -53,6 +53,12 @@ function Field({ label, help, error, children, wide, id }: { label: string; help
   );
 }
 
+/** "Draft (only you see it)": the part in brackets is dropped on a phone, where the bar is narrow. */
+const Two = ({ text }: { text: string }) => {
+  const m = /^(.*?)\s*(\(.*\))$/.exec(text);
+  return m ? <>{m[1]}<span className="adm-wide-only"> {m[2]}</span></> : <>{text}</>;
+};
+
 export default function WorkForm({ lang, initial, sections, regions, deleteAction }: Props) {
   const t = adminDict(lang);
   const w = t.work;
@@ -330,8 +336,8 @@ export default function WorkForm({ lang, initial, sections, regions, deleteActio
 
       <div className="adm-savebar" role="region" aria-label={t.common.save}>
         <div className="adm-savebar__status" role="radiogroup" aria-label={w.status}>
-          <label><input type="radio" name="status" checked={rec.status === 'draft'} onChange={() => set('status', 'draft')} /> {w.draft}</label>
-          <label><input type="radio" name="status" checked={rec.status === 'published'} onChange={() => set('status', 'published')} /> {w.published}</label>
+          <label><input type="radio" name="status" checked={rec.status === 'draft'} onChange={() => set('status', 'draft')} /> <Two text={w.draft} /></label>
+          <label><input type="radio" name="status" checked={rec.status === 'published'} onChange={() => set('status', 'published')} /> <Two text={w.published} /></label>
         </div>
         <p className="adm-savebar__msg" role="status" aria-live="polite">
           {pending ? t.common.saving : message ? <span className={message.ok ? 'is-ok' : 'is-error'}>{message.text}</span> : dirty ? t.common.unsaved : ''}

@@ -17,7 +17,8 @@
     "user:create": "tsx scripts/users.mts create",
     "user:list": "tsx scripts/users.mts list",
     "user:delete": "tsx scripts/users.mts delete",
-    "palette:check": "tsx scripts/check-palette.mts"
+    "palette:check": "tsx scripts/check-palette.mts",
+    "text:import": "tsx scripts/text-import.mts"
   },
   "engines": {
     "node": ">=20.9"

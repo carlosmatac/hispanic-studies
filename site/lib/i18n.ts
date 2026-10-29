@@ -525,6 +525,7 @@ const adminEn = {
     deletedLead: 'Works deleted recently. Restore one to bring it back as it was.',
     restore: 'Restore',
     deletedOn: (d: string, who: string) => `deleted ${d} by ${who}`,
+    deletedNow: (id: string) => `“${id}” was deleted. To bring it back, use “Restore” under “Deleted works” at the foot of this page.`,
   },
   work: {
     newH: 'A new work', editH: 'Edit the work',
@@ -667,6 +668,7 @@ const adminEs: AdminDict = {
     deletedLead: 'Obras eliminadas hace poco. Restaura una para recuperarla tal como estaba.',
     restore: 'Restaurar',
     deletedOn: (d: string, who: string) => `eliminada el ${d} por ${who}`,
+    deletedNow: (id: string) => `Se ha eliminado «${id}». Para recuperarla, usa «Restaurar» en «Obras eliminadas», al pie de esta página.`,
   },
   work: {
     newH: 'Una obra nueva', editH: 'Editar la obra',

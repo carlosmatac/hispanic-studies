@@ -19,7 +19,7 @@ export default async function WorksPage({ searchParams }: { searchParams: Promis
         </div>
         <Link className="adm-btn adm-btn--primary" href="/admin/works/new">+ {t.works.add}</Link>
       </div>
-      {justDeleted && <p className="adm-msg adm-msg--ok" role="status">{t.works.deletedOn(when(new Date().toISOString()), '')}: {justDeleted}</p>}
+      {justDeleted && <p className="adm-msg adm-msg--ok" role="status">{t.works.deletedNow(justDeleted)}</p>}
       <WorksTable lang={lang} works={works} sections={sections} regions={regions} />
       {deleted.length > 0 && (
         <section className="adm-card adm-deleted" aria-labelledby="deleted-h">
@@ -37,6 +37,7 @@ export default async function WorksPage({ searchParams }: { searchParams: Promis
           </ul>
         </section>
       )}
+      <p className="adm-muted"><a href="/admin/backup" download>{t.nav.backup}</a> · {t.account.backupLead}</p>
     </>
   );
 }
