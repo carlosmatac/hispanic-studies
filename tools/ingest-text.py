@@ -5,11 +5,13 @@
     python3 tools/ingest-text.py <id> --gutenberg <ebook number> [options]
     python3 tools/ingest-text.py <id> --tei <url of a TEI XML file> [options]
 
-Fetches the text from a legitimate source, turns it into clean Markdown and
-writes it as the body of site/content/archive/<id>.md, which must already
-exist (its record). It records where the text came from in the file's
-frontmatter (sourceUrl, sourceRevision, sourceEdition, sourceLicence) and sets
-rights to public-domain; nothing else in the record is touched.
+Fetches the text from a legitimate source and turns it into clean Markdown.
+Since the archive moved into the database (issue #69) it writes a small file,
+site/.data/ingest/<id>.json (the text, its language, and where it came from:
+sourceUrl, sourceRevision, sourceEdition, sourceLicence, rights public-domain),
+which `npm run text:import -- <id>` (in site/) puts into the work, keeping the
+previous version in its history. The work must already exist (add it at /admin).
+Nothing else in the record is touched.
 
 Sources
   --wikisource PAGE   a Wikisource page, through the MediaWiki API (the rendered
@@ -36,7 +38,8 @@ Shaping the text
                                for editions that mark sections by spacing only)
   --br-paragraphs              a line break inside a block starts a new paragraph
                                (pages that use <br> instead of paragraphs)
-  --append                     add to the body instead of replacing it (a second volume)
+  --append                     add to the text instead of replacing it (a second volume)
+  --lang es                    the language of the text (default es)
   --edition TEXT               the printed edition the transcription follows
   --licence TEXT               the licence line (a default per source is used)
   --wiki es.wikisource.org     the wiki (default es.wikisource.org)
@@ -60,7 +63,7 @@ import urllib.request
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ARCHIVE = ROOT / 'site/content/archive'
+OUT = ROOT / 'site/.data/ingest'
 UA = 'IHS-archive-ingest/1.1 (https://github.com/carlosmatac/hispanic-studies)'
 LICENCES = {
     'wikisource': 'Text in the public domain. Transcription from Wikisource, available under CC BY-SA 4.0.',
@@ -395,41 +398,13 @@ def from_tei(args, shape):
     return shape(blocks), skipped, args.tei, ''
 
 
-# ---------------------------------------------------------------- the content file
+# ---------------------------------------------------------------- the hand-over file
 
-def set_key(front, key, value):
-    """Replace (or add) one top-level key of the YAML frontmatter, value as a JSON string."""
-    line = f'{key}: {json.dumps(value, ensure_ascii=False)}'
-    pattern = re.compile(rf'^{re.escape(key)}:.*(?:\n[ \t]+.*)*', re.M)
-    if pattern.search(front):
-        return pattern.sub(lambda _: line, front, count=1)
-    return front.rstrip('\n') + '\n' + line + '\n'
-
-
-def get_key(front, key):
-    m = re.search(rf'^{re.escape(key)}: "(.*)"$', front, re.M)
-    return json.loads(f'"{m.group(1)}"') if m else ''
-
-
-def write_entry(entry_id, body, fields, append=False):
-    path = ARCHIVE / f'{entry_id}.md'
-    if not path.exists():
-        sys.exit(f'{path.relative_to(ROOT)} does not exist: create the record first (in the CMS or by hand)')
-    raw = path.read_text()
-    m = re.match(r'^---\n(.*?\n)---\n?(.*)$', raw, re.S)
-    if not m:
-        sys.exit(f'{path.relative_to(ROOT)}: no frontmatter')
-    front, old = m.group(1), m.group(2)
-    if append and old.strip():
-        body = old.rstrip('\n') + '\n\n' + body
-        for k in ('sourceUrl', 'sourceRevision'):
-            prev = get_key(front, k)
-            if prev and fields.get(k) and fields[k] not in prev:
-                fields[k] = f'{prev}; {fields[k]}'
-    for k, v in fields.items():
-        if v:
-            front = set_key(front, k, v)
-    path.write_text(f'---\n{front}---\n{body}')
+def write_entry(entry_id, lang, body, fields, append=False):
+    """The text and its source, for `npm run text:import -- <id>` (site/scripts/text-import.mts)."""
+    OUT.mkdir(parents=True, exist_ok=True)
+    path = OUT / f'{entry_id}.json'
+    path.write_text(json.dumps({'id': entry_id, 'lang': lang, 'append': append, 'body': body, 'fields': fields}, ensure_ascii=False, indent=1))
     return path
 
 
@@ -454,6 +429,7 @@ def main():
     ap.add_argument('--notes-heading', default='Notas')
     ap.add_argument('--br-paragraphs', action='store_true')
     ap.add_argument('--append', action='store_true')
+    ap.add_argument('--lang', default='es')
     ap.add_argument('--edition', default='')
     ap.add_argument('--licence')
     ap.add_argument('--dry-run', action='store_true')
@@ -475,7 +451,7 @@ def main():
         print(body)
         print(f'[{len(parts)} blocks, {words} words, {revision}]', file=sys.stderr)
         return
-    path = write_entry(args.id, body, {
+    path = write_entry(args.id, args.lang, body, {
         'rights': 'public-domain',
         'sourceEdition': args.edition,
         'sourceUrl': url,
@@ -483,6 +459,7 @@ def main():
         'sourceLicence': args.licence or LICENCES[kind],
     }, append=args.append)
     print(f'wrote {path.relative_to(ROOT)}: {len(parts)} blocks, {words} words, from {url}')
+    print(f'put it into the archive: cd site && npm run text:import -- {args.id}')
     print(f'log it in docs/archive-sources.md: | {args.id} | {url} | {revision} | {args.edition} |')
 
 

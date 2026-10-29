@@ -6,3 +6,8 @@ out/
 next-env.d.ts
 .env*.local
 .env*
+
+# the local database (npm run db:local) and the dev session secret
+.data/
+# backups made with npm run db:export
+backups/

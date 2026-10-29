@@ -2,8 +2,11 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { dict, isLang, type Lang } from '@/lib/i18n';
-import { getText, getWork, getWorks, renderText } from '@/lib/archive';
-import { PERIODS, languageName, readHref, region, splitTitle, workHref, type CanonWork } from '@/lib/canon';
+import { getArchive, getPublishedArchive, getText, pickText } from '@/lib/archive';
+import { languageName, readHref, splitTitle, workHref, type CanonWork } from '@/lib/canon';
+import { renderTree } from '@/lib/text';
+import { swatchStyle } from '@/lib/palette';
+import Citation from '@/components/canon/Citation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ReaderToc from '@/components/canon/ReaderToc';
@@ -12,19 +15,22 @@ import ReaderToc from '@/components/canon/ReaderToc';
    text is in the archive, the reader: long-form reading on the site's paper,
    the text in its original language, its chapters as contents, and where it
    came from. Otherwise the record, with links to legitimate copies only.
-   Statically generated for every work in content/archive/. */
+   Statically generated for every published work in the database; a work
+   added later in the back office is generated on its first visit, and every
+   save regenerates the pages (lib/admin/revalidate.ts). Drafts are shown only
+   to signed-in editors. */
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return (await getWorks()).map((w) => ({ id: w.id }));
+  return (await getPublishedArchive()).works.map((w) => ({ id: w.id }));
 }
 
 type Params = { params: Promise<{ lang: string; id: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, id } = await params;
-  const work = await getWork(id);
+  const work = isLang(lang) ? (await getArchive()).works.find((w) => w.id === id) : undefined;
   if (!isLang(lang) || !work) return {};
   const d = dict(lang);
   const [title] = splitTitle(work.title);
@@ -32,6 +38,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: `${title} · ${work.author} (${work.year}) · ${d.reader.archive} · ${d.meta.title}`,
     description: work.note[lang] || `${work.author}, ${work.title} (${work.year}).`,
     alternates: { languages: { en: `/en/archive/${id}`, es: `/es/archive/${id}` } },
+    ...(work.status === 'draft' ? { robots: { index: false } } : {}),
   };
 }
 
@@ -41,17 +48,21 @@ const AdSlot = ({ name }: { name: string }) => <div className="ad-slot" data-ad-
 export default async function ReaderPage({ params }: Params) {
   const { lang, id } = await params;
   if (!isLang(lang)) notFound();
-  const works = await getWorks();
+  const archive = await getArchive();
+  const works = archive.works;
   const i = works.findIndex((w) => w.id === id);
   if (i < 0) notFound();
   const work = works[i];
-  const text = work.hasText ? await getText(id) : null;
+  const textLang = pickText(work, lang);
+  const text = textLang ? await getText(id, textLang) : null;
   const d = dict(lang);
   const r = d.reader;
   const [title, sub] = splitTitle(work.title);
-  const period = PERIODS.find((p) => p.id === work.period)!;
-  const reg = region(work.region);
-  const minutes = text ? Math.max(1, Math.round(text.words / 230)) : 0;
+  const period = archive.sections.find((p) => p.id === work.period);
+  const reg = archive.regions.find((g) => g.id === work.region);
+  // the same text in the site's other language, when there is one
+  const other = lang === 'en' ? 'es' : 'en';
+  const otherText = text && text.lang !== other && work.texts.some((t) => t.lang === other);
 
   return (
     <>
@@ -63,19 +74,25 @@ export default async function ReaderPage({ params }: Params) {
             <p className="reader__crumb">
               <a href={`/${lang}/archive`}>{r.archive}</a>
               <span aria-hidden="true"> · </span>
-              <a href={`/${lang}/archive#${period.id}`}>{period.name[lang]}</a>
+              {period && <a href={`/${lang}/archive#${period.id}`}>{period.name[lang]}</a>}
             </p>
+            {work.status === 'draft' && <p className="reader__draft">{r.draftNote}</p>}
             <h1 className="reader__title" lang={work.language}>{title}</h1>
             {sub && <p className="reader__sub" lang={work.language}>{sub}</p>}
             <p className="reader__author">{work.author} <span>{work.life}</span></p>
             <dl className="reader__facts">
               <div><dt>{r.year}</dt><dd>{work.year}</dd></div>
-              <div><dt>{r.region}</dt><dd><span className={`reader__swatch ccard--${reg.binding}`} aria-hidden="true" />{reg.name[lang]}</dd></div>
-              {text && <div><dt>{r.language}</dt><dd>{languageName(work.language, lang)}</dd></div>}
+              {reg && <div><dt>{r.region}</dt><dd><span className="reader__swatch" style={swatchStyle(reg.swatch)} aria-hidden="true" />{reg.name[lang]}</dd></div>}
+              {text && <div><dt>{r.language}</dt><dd>{languageName(text.lang, lang)}</dd></div>}
               <div><dt>{r.rights}</dt><dd>{r.rightsName[work.rights]}</dd></div>
             </dl>
             {work.note[lang] && <p className="reader__note">{work.note[lang]}</p>}
-            {text && <p className="reader__meta">{r.minutes(minutes)} · {r.original}</p>}
+            {text && (
+              <p className="reader__meta">
+                {r.minutes(text.minutes)} · {text.lang === work.language ? r.original : r.translation(languageName(work.language, lang))}
+                {otherText && <> · <a href={`/${other}/archive/${id}`} hrefLang={other}>{r.otherLanguage}</a></>}
+              </p>
+            )}
           </header>
 
           {text && text.sections.length > 1 && (
@@ -93,7 +110,7 @@ export default async function ReaderPage({ params }: Params) {
           {text ? (
             <div className="reader__body">
               {text.sections.length > 1 && <ReaderToc sections={text.sections} label={r.contents} />}
-              <div lang={work.language}>{renderText(text.tree, React)}</div>
+              <div lang={text.lang}>{renderTree(text.tree, React)}</div>
             </div>
           ) : (
             <Status work={work} lang={lang} />
@@ -112,6 +129,15 @@ export default async function ReaderPage({ params }: Params) {
           )}
 
           <Record work={work} lang={lang} />
+
+          {work.references.length > 0 && (
+            <section className="reader__refs" aria-labelledby="refs-h">
+              <h2 id="refs-h">{r.references}</h2>
+              <ol>
+                {work.references.map((ref, k) => <li key={k}><Citation reference={ref} lang={lang} /></li>)}
+              </ol>
+            </section>
+          )}
 
           {/* AD SLOT (#70): after the text */}
           <AdSlot name="reader-end" />
