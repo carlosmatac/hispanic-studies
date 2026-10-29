@@ -149,6 +149,7 @@ function defs(parent, uid) {
  * @param {Function}[opts.onPick]  called with a country record, or null
  * @param {string}  [opts.projection] 'equalEarth' (default) or 'orthographic'
  * @param {number}  [opts.spin]    degrees per second for an orthographic globe
+ * @param {object}  [opts.eraFamilies] the historical units' families (lib/atlas.ts erasFor)
  */
 export function drawMap(host, data, opts = {}) {
   const { world, iberophone, routes = [] } = data;
@@ -192,6 +193,8 @@ export function drawMap(host, data, opts = {}) {
   // land that is not ours: present, recessive
   const rest = el('g', { class: 'rest' }, plate);
   const ours = el('g', { class: 'ib' }, plate);
+  // the historical borders, 1492-1898, over today's states (see setEra)
+  const eraLayer = el('g', { class: 'eras' }, plate);
 
   const features = new Map();
   for (const f of land.features) {
@@ -261,7 +264,8 @@ export function drawMap(host, data, opts = {}) {
   }
 
   // labels
-  const labels = el('g', { class: 'labels', 'aria-hidden': 'true' }, plate);
+  const labels = el('g', { class: 'labels labels--now', 'aria-hidden': 'true' }, plate);
+  const eraLabelLayer = el('g', { class: 'labels labels--era', 'aria-hidden': 'true' }, plate);
   if (o.labels) {
     for (const [iso, rec] of byIso) {
       if (!LABELLED.has(iso)) continue;
@@ -290,6 +294,105 @@ export function drawMap(host, data, opts = {}) {
   }
 
   if (o.rose) compassRose(plate, WIDTH - 108, height - 74, 21);
+
+  // --- historical borders --------------------------------------------------
+  /* One keyframe at a time (site/data/atlas-eras.json). Its units are
+     OpenHistoricalMap polygons already clipped to this plate's coast, so the
+     plate keeps one coastline. Nothing is interpolated: a new keyframe
+     cross-fades over the old one, and the units that changed pulse once.
+     With reduced motion the swap is a cut and the changed units only keep a
+     darker outline. */
+  const eraUnits = new Map();
+  const eraLines = new Map();
+  if (data.eras) {
+    for (const f of feature(data.eras, data.eras.objects.units).features) eraUnits.set(f.id, f);
+    for (const f of feature(data.eras, data.eras.objects.lines).features) eraLines.set(f.id, f);
+  }
+  const dCache = new Map();
+  const dOf = (id, f) => {
+    if (!dCache.has(id)) dCache.set(id, path(f) || '');
+    return dCache.get(id);
+  };
+  let eraNow = null;
+  let eraShown = [];   // [shapes, labels] of the keyframe on show
+
+  function drawEra(era) {
+    const fams = o.eraFamilies || {};
+    const shapes = el('g', { class: 'era', 'data-year': era.year });
+    const words = el('g', { class: 'era' });
+    const pulse = new Set(era.pulse);
+    const named = new Map();     // family -> feature, for the labels
+    for (const u of era.units) {
+      const id = u.ohm ? `r${u.ohm}` : u.drawn;
+      const f = eraUnits.get(id);
+      const fam = fams[u.f];
+      if (!f || !fam) continue;
+      const d = dOf(id, f);
+      if (!d) continue;
+      const p = el('path', {
+        d, class: `era-u k-${fam.kind} t-${fam.tone}${pulse.has(u.f) ? ' is-changed' : ''}`,
+        'data-f': u.f,
+      }, shapes);
+      if (fam.kind === 'claim') p.style.fill = `url(#hatch-${uid})`;
+      el('title', {}, p).textContent = (era.names?.[u.f]?.name) || fam.name;
+      if (!named.has(u.f)) named.set(u.f, f);
+    }
+    for (const id of era.lines || []) {
+      const f = eraLines.get(id);
+      if (f) el('path', { d: dOf(`line:${id}`, f), class: `era-line${pulse.has(id) ? ' is-changed' : ''}` }, shapes);
+    }
+    if (o.labels) {
+      for (const k of era.labels) {
+        const f = named.get(k);
+        const fam = fams[k];
+        if (!f || !fam) continue;
+        const xy = fam.at ? projection(fam.at) : path.centroid(f);
+        if (!xy || !xy.every(Number.isFinite)) continue;
+        el('text', {
+          class: `label label--era k-${fam.kind}`, x: xy[0], y: xy[1], 'text-anchor': 'middle',
+        }, words).textContent = (era.names?.[k]?.short) || fam.short || fam.name;
+      }
+      for (const m of era.marks || []) {
+        const xy = projection(m.at);
+        if (!xy) continue;
+        el('circle', { class: `era-mark k-${m.kind}`, cx: xy[0], cy: xy[1], r: 2 }, shapes);
+        el('text', {
+          class: `label label--era label--mark k-${m.kind}`, x: xy[0], y: xy[1] - 5, 'text-anchor': 'middle',
+        }, words).textContent = m.name;
+      }
+    }
+    return [shapes, words];
+  }
+
+  function setEra(next) {
+    // fail open: without the borders data the plate stays on today's states
+    const era = eraUnits.size ? next : null;
+    const key = era ? era.year : null;
+    if (key === eraNow) return;
+    eraNow = key;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    svg.classList.toggle('is-era', !!era);
+    const old = eraShown;
+    eraShown = era ? drawEra(era) : [];
+    if (eraShown.length) {
+      eraLayer.appendChild(eraShown[0]);
+      eraLabelLayer.appendChild(eraShown[1]);
+    }
+    if (reduce) {
+      for (const g of eraShown) g.classList.add('is-on');
+      for (const g of old) g.remove();
+      return;
+    }
+    // the new keyframe fades in over the old one, which then goes
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      for (const g of eraShown) g.classList.add('is-on');
+    }));
+    for (const g of old) {
+      g.classList.remove('is-on');
+      g.classList.add('is-out');
+      setTimeout(() => g.remove(), 1000);
+    }
+  }
 
   // --- interaction --------------------------------------------------------
   let active = null;
@@ -533,6 +636,8 @@ export function drawMap(host, data, opts = {}) {
     },
     frameTo,
     flyTo,
+    /** Show one keyframe of the historical borders, or today's states (null). */
+    setEra,
     reset: (ms = 450) => animateTo(full, ms),
     /** Unmount: stop listening and clear the host. */
     destroy() {
@@ -543,11 +648,13 @@ export function drawMap(host, data, opts = {}) {
   };
 }
 
-export async function loadMapData(base = '/data') {
-  const [world, iberophone, routes] = await Promise.all([
+export async function loadMapData(base = '/data', { eras = false } = {}) {
+  const [world, iberophone, routes, eraTopo] = await Promise.all([
     fetch(`${base}/world-110m.json`).then((r) => r.json()),
     fetch(`${base}/iberophone.json`).then((r) => r.json()),
     fetch(`${base}/routes.json`).then((r) => r.json()),
+    // the historical borders are an extra: if they fail, the map still draws
+    eras ? fetch(`${base}/atlas-eras.topo.json`).then((r) => (r.ok ? r.json() : null)).catch(() => null) : null,
   ]);
-  return { world, iberophone, routes: routes.routes };
+  return { world, iberophone, routes: routes.routes, eras: eraTopo };
 }

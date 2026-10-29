@@ -1,6 +1,7 @@
 <template>
   <style>
     @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova.ttf"); font-weight: 400 700; }
+    @font-face { font-family: "Ibarra Real Nova"; src: url("assets/fonts/ibarra-real-nova-italic.ttf"); font-weight: 400 700; font-style: italic; }
     #root { position: absolute; inset: 0; background: #f9f3dd; overflow: hidden; font-family: "Ibarra Real Nova", serif; }
 
     /* one pillar each, and each enters differently: Mestizaje is a word the camera flies
@@ -14,8 +15,11 @@
     .pil-title span { display: inline-block; }
     .pil-cap { position: absolute; left: 126px; top: 930px; font-family: Inter, sans-serif; font-weight: 500; font-size: 26px; color: #ede3c8; white-space: nowrap; }
     /* the word as a window onto the painting */
-    #pil-a-word { position: absolute; left: 0; right: 0; top: 330px; text-align: center; font-weight: 600; font-size: 360px; line-height: 1; letter-spacing: -0.03em; color: transparent;
-      background: url("assets/img/graded/pillar-mestizaje.jpg") 50% 40% / 1920px auto; -webkit-background-clip: text; background-clip: text; transform-origin: 13.2% 62%; }
+    /* line-height 1 leaves the descenders (the j) below the box, and background-clip: text and
+       the clip-path reveal both stop at the box: a bottom padding gives them room, while the
+       background and the camera's target stay on the 360 px line (content-box origin, 223.2 px = 62%) */
+    #pil-a-word { position: absolute; left: 0; right: 0; top: 330px; padding-bottom: 0.15em; text-align: center; font-weight: 600; font-size: 360px; line-height: 1; letter-spacing: -0.03em; color: transparent;
+      background: url("assets/img/graded/pillar-mestizaje.jpg") 50% 40% / 1920px auto; background-origin: content-box; -webkit-background-clip: text; background-clip: text; transform-origin: 13.2% 223.2px; }
     #pil-a-full { opacity: 0; }
     #pil-a-full img { object-position: 50% 30%; }
     #pil-b-full img { width: 1920px; height: 2483px; left: 0; top: 0; translate: none; }
@@ -112,7 +116,8 @@
       const c0 = 2 * P;
       tl.fromTo("#pil-c-full img", { x: 120, y: -640, filter: "blur(20px)" }, { x: -40, y: -640, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, c0);
       tl.fromTo("#pil-c-full img", { x: -40, y: -640 }, { x: -170, y: -780, duration: P - 0.2, ease: "none", immediateRender: false }, c0 + 0.2);
-      tl.fromTo("#pil-c-word", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: "power2.inOut" }, c0 + B - 0.1);
+      // the wipe's box reaches past the line box: the italic g hangs below it and the L leans out on the left
+      tl.fromTo("#pil-c-word", { clipPath: "inset(-15% 105% -25% -5%)" }, { clipPath: "inset(-15% -5% -25% -5%)", duration: 0.6, ease: "power2.inOut" }, c0 + B - 0.1);
       tl.fromTo("#pil-c-langs", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2 }, c0 + 1.3);
       tl.fromTo("#pil-c .pil-cap", { opacity: 0 }, { opacity: 1, duration: 0.25 }, c0 + 2 * B);
 
