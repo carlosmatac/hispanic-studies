@@ -7,7 +7,8 @@ is in the public domain, its full text as the body. The files are edited by
 hand or in the CMS (/keystatic, issue #69), so **this script is a one-off**:
 it wrote the first version of the fifty files from the compiler's data and
 refuses to overwrite a file that exists (pass --force to rebuild one on
-purpose, e.g. `--force T012`). Full texts are added by tools/ingest-wikisource.py.
+purpose, e.g. `--force T012`). Full texts are added by tools/ingest-text.py; the rights
+research is applied by tools/apply-archive-research.mjs.
 It writes the YAML as JSON-style values; the committed files were then put in
 the CMS's own YAML style (what Keystatic writes when it saves), so a first
 save from /keystatic changes only what was edited.

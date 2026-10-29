@@ -809,7 +809,7 @@ main .eyebrow { color: var(--leather); }
 .reader__text {
   max-width: var(--col); margin: 0 auto;
   font: 400 var(--read-size)/1.62 var(--display); color: var(--ink);
-  hyphens: auto; -webkit-hyphens: auto; hanging-punctuation: first; text-wrap: pretty;
+  hyphens: auto; -webkit-hyphens: auto; hanging-punctuation: first; text-wrap: pretty; overflow-wrap: break-word;
   font-variant-numeric: oldstyle-nums;
 }
 .reader__text p { margin: 0; max-width: none; text-indent: 1.4em; }

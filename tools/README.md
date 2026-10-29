@@ -30,9 +30,15 @@ The archive's files are the source of truth (edited by hand or in the CMS,
 # it never overwrites an existing file unless asked (--force T012, or --force all)
 python3 tools/migrate-canon-to-archive.py
 
-# a public-domain text from Wikisource into a work's file (body + source fields)
-python3 tools/ingest-wikisource.py T013 "Nuestra América" --edition "…"
-python3 tools/ingest-wikisource.py T018 "Ariel" --subpages --edition "…"
+# the rights research (docs/research/archive-rights/) into the records: verdicts,
+# links, corrections, the prelude (Node, uses site/node_modules/js-yaml)
+node tools/apply-archive-research.mjs
+
+# a public-domain text into a work's file (body + source fields); every command
+# used so far is in docs/archive-sources.md
+python3 tools/ingest-text.py T013 --wikisource "Nuestra América" --edition "…"
+python3 tools/ingest-text.py T018 --gutenberg 22899 --number-class top --number-class top1 --start "## I"
+python3 tools/ingest-text.py T007 --tei https://raw.githubusercontent.com/…/POR0084_FraLGom_Bramanes.xml --demote
 ```
 
 Log every hosted text in `docs/archive-sources.md`.

@@ -25,8 +25,12 @@ password (`SITE_PASSWORD`) does not stand in front of it: it has its own login.
    - *Public domain*: paste the full text in the big field, in its original
      language. Use **Heading 2** for chapters: they become the contents. Fill in
      the *Source* fields (the edition you copied it from, its address).
-   - *In copyright*: leave the text empty and add **links to legitimate copies**
-     (publisher, library, Internet Archive lending). Never a pirated PDF.
+   - *In copyright*, or *public domain in the US only* / *in Spain only*: leave
+     the text empty and add **links to legitimate copies** (publisher, library,
+     Internet Archive lending). Never a pirated PDF. For the partial verdicts,
+     fill in the year it comes free, if known.
+   - *Public domain* but only scans exist: tick **Needs a transcription** and
+     link the scans; the text goes in once it has been transcribed and proofread.
    - *Not yet checked*: leave the text empty until the rights are clear.
    The **Address (id)** is made from the title; leave it once the work is published,
    because links point at it.
@@ -85,7 +89,8 @@ What we need from Beltrán: **a GitHub account** (his username).
 - Admin routes: `site/app/keystatic/`, `site/app/api/keystatic/`
 - Who may reach it: `site/proxy.ts`
 - How the site reads the files: `site/lib/archive.ts`
-- Importing a text from Wikisource: `tools/ingest-wikisource.py`
+- Importing a text (Wikisource, Project Gutenberg, TEI): `tools/ingest-text.py`
+- The rights research and its verdicts: `docs/research/archive-rights/`, applied by `tools/apply-archive-research.mjs`
 
 Known quirk: the *Year* field shows a thousands separator ("1,891") while you
 type; it is saved as the number 1891.

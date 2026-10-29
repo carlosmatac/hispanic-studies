@@ -464,6 +464,10 @@ def main():
     parts, skipped, url, revision = {'wikisource': from_wikisource, 'gutenberg': from_gutenberg, 'tei': from_tei}[kind](args, shape)
     parts = cut(parts, args.start, args.stop)
     body = '\n\n'.join(parts) + '\n'
+    # stray image addresses pasted into a wiki text by an editing accident ("oficialhttp://…png mente")
+    body = re.sub(r'https?://\S+?\.(?:png|jpe?g|gif|svg)', '', body)
+    for word in sorted(set(w for w in re.findall(r'\S{40,}', body))):
+        print(f'check this long word: {word[:80]}', file=sys.stderr)
     if skipped:
         print('dropped as editorial: ' + ', '.join(sorted(skipped)[:30]), file=sys.stderr)
     words = len(re.findall(r'\w+', body))
