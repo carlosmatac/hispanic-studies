@@ -27,11 +27,14 @@ Round 3 came from Beltrán's three voice notes after he saw the preview (he love
 - **#74** home fixes (#66): title glyphs no longer clipped; channels band right under the pillars; one serif for all video titles; Substack cover per essay; Mestizaje now Cabrera's *De español e india, mestiza*.
 - **#75** reel (#67): Beltrán's whole pueblos mágicos sentence plays; the film is 75.35 s (a music phrase loops once; seam at about 20.8 s — **a human should listen to it**). The clip `pueblos.mp4` is git-ignored (see §4).
 
-### Open PRs (finish, review, merge)
-- **#76 Archive of Hispanic thought** (#68 + #69), draft. The canon became an archive: one Markdown file per work in `site/content/archive/`, `/[lang]/archive` shelf and `/[lang]/archive/<id>` reader (full text only for works in the public domain in the US, Spain and the country of origin; records with legitimate links for the rest), a Prelude period (Vitoria, Las Casas, Sepúlveda, Acosta, Inca Garcilaso, Guaman Poma, Solórzano, Clavijero, Viscardo), cards coloured by region with a legend, `/canon` redirects to `/archive`, Keystatic CMS at `/keystatic` (local mode works; GitHub mode waits for Beltrán's account, see `docs/cms.md`). Ingest tool: `tools/ingest-text.py` (Wikisource, Gutenberg, TEI); the research is applied by `tools/apply-archive-research.mjs`. The rights research behind it is in `docs/research/archive-rights/` (texts-a = T001–T025, texts-b = T026–T050 + prelude).
-- **#77 Atlas historical borders** (#71), draft. Viceroyalties and captaincies 1492–1898 from OpenHistoricalMap (CC0), keyframes with treaties and sources, cross-fades. Feasibility study and scripts: `docs/research/atlas-borders/`. The fog-of-war "map that is discovered" is for later, after Beltrán sees the borders.
-
-(Update this section if the agents finished after this file was written: check `gh pr list`.)
+### Open PRs (finished by their agents; review, then merge on Carlos's ok)
+- **#76 Archive of Hispanic thought** (#68 + #69), still a draft only because the CMS's GitHub mode waits for Beltrán's account; the archive itself is complete and verified (240 page loads, EN/ES, 390/1440). The canon became an archive: one Markdown file per work in `site/content/archive/`, `/[lang]/archive` shelf and `/[lang]/archive/<id>` reader, `/canon` redirects. **59 works**: 50 from the compiler + 9 in a new Prelude (Vitoria, Las Casas, Sepúlveda, Acosta, Inca Garcilaso, Guaman Poma, Solórzano, Clavijero, Viscardo).
+  - **9 full texts hosted**: Acosta, Bolívar (*Carta de Jamaica*, 1833 text), Bello (prologue only), *Os brahamanes* (ELTeC, CC BY), Rizal, Martí (to collate with the *Obras completas* vol. 6), Unamuno, Mariátegui, Rodó (*Ariel*, Gutenberg 1920).
+  - **25 public domain but scans only** (`needsTranscription`), **25 records with legitimate links only** (in copyright, or free only in the US or only outside it; each record says when it becomes free in Spain, e.g. Henríquez Ureña 1 Jan 2027).
+  - Cards coloured by region with a legend; Keystatic CMS at `/keystatic` (local mode works, see `docs/cms.md`); tools `tools/ingest-text.py` (Wikisource, Gutenberg, TEI) and `tools/apply-archive-research.mjs`; every hosted text logged in `docs/archive-sources.md`; research in `docs/research/archive-rights/`.
+  - Known quirks: the CMS Year field shows "1,891" while typing (saves 1891); Acosta's page is heavy (2.1 MB, 0.7 MB compressed), one page per book later.
+- **#77 Atlas historical borders** (refs #71), ready. 20 keyframes 1492–1898 (Santa Fe, Tordesillas … Guadalupe Hidalgo 1848, Paris 1898) from OpenHistoricalMap (CC0), pinned ids in `site/data/atlas-eras.json`, built by `tools/build-atlas-eras.py`; cross-fades and pulses, a year slider with act + source under the map (the accessible version), reduced motion = instant swaps. HGIS not used. The fog-of-war reveal is for later (#71 stays open). Known: on desktop the Philippines sit under the tour card at the right edge.
+- Both PRs touch shared pieces (`area:shared`) and both already merged main (#74, #75). Merge one, then `git merge origin/main` into the other (expect conflicts only in `AGENTS.md`, `i18n.ts`, `globals.css`, `assets/art/SOURCES.md`).
 
 ### Open issues of this round
 - #68 archive, #69 CMS, #71 Atlas (in the PRs above).
@@ -51,8 +54,8 @@ Preview for Beltrán: https://hispanostudies-preview.vercel.app (password gate, 
 4. **AdSense publisher id** (`ca-pub-…`) for #70.
 
 **To confirm (Beltrán)**
-5. Regions: Ndongo (Equatorial Guinea) is under Spain — or a seventh region "Hispanic Africa"? Las Casas under the Caribbean? Goa under Ibero-Asia? Central America (Arosemena, Sandino, Masferrer) under North America?
-6. Atlas: the keyframe list (in #77 and the feasibility study); Ryswick 1697 (the Hispaniola border was only fixed in 1776–77); the exact date Chile left Peru (1798?); level of detail (viceroyalties/captaincies only, or audiencias); hatching for claimed lands (Alaska, Patagonia); where his decade maps come from.
+5. Regions: Ndongo (Equatorial Guinea) is under Spain — or a seventh region "Hispanic Africa"? Las Casas under Spain (moved from the Caribbean on the research's advice)? Goa under Ibero-Asia? Central America (Arosemena, Sandino, Masferrer) under North America?
+6. Atlas (also in the PR #77 body): the 20 keyframes (dropped from the study: Zaragoza 1529, the Iberian Union, Utrecht 1715, Santo Domingo 1861–65); Ryswick 1697 (the Hispaniola border was only fixed in 1776–77); the exact date Chile left Peru (1798?); level of detail (viceroyalties/captaincies only, or audiencias); hatching for claimed lands (Alaska, Patagonia); where his decade maps come from.
 7. The Substack cover of "Aryan Indigenismo and Manifest Destiny" is a 1938 Nazi youth magazine (*Der Pimpf*), now visible on the home's Read section. Beltrán's own choice; confirm it is fine there.
 
 **Rights calls (Carlos)**
@@ -65,7 +68,7 @@ Preview for Beltrán: https://hispanostudies-preview.vercel.app (password gate, 
 12. The prompts of the two AI images (the valley behind the epigraph, the footer's HISPANO STUDIES picture) were not recorded: `assets/art/SOURCES.md` has **[check]** on them. Ask Carlos for tool and prompt.
 
 **Later work**
-13. Archive texts still to transcribe (public domain, scans only): flagged `needs-transcription` in the content files (Las Casas 1552 among them).
+13. Archive: 25 public-domain texts still to transcribe (flagged `needsTranscription`, Las Casas 1552 among them); Bello's and Darío's "related writings" and Hostos's selection need an editorial choice; Martí to collate.
 14. Fog-of-war Atlas (after Beltrán reviews the borders).
 15. #72 Patreon PDFs (remind), #73 typeface (when it arrives).
 16. When #76 and #77 are merged: deploy the preview for Beltrán (on Carlos's word).
