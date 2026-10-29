@@ -228,10 +228,19 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
   margin-bottom: clamp(18px, 3.4vh, 40px);
 }
 .title__name { margin: 0; font-weight: 600; color: var(--burgundy); line-height: 0.86; letter-spacing: -0.025em; font-size: clamp(54px, 12.2vw, 236px); max-width: none; }
-.title__line { display: inline-block; overflow: clip; padding: 0.04em 0.03em 0.1em; margin: -0.04em 0 -0.1em; vertical-align: bottom; }
+/* each line is a window the words rise through (overflow: clip). The window
+   reaches well past the line box on every side (the italic f leans out at the
+   top right, the p of Hispano hangs below), and negative margins of the same
+   size give the space back (less 0.03em a side, the air between the words),
+   so the clip never cuts a glyph and the lines sit where they always did. */
+.title__line {
+  --pt: 0.26em; --px: 0.16em; --pb: 0.36em;
+  display: inline-block; overflow: clip; vertical-align: bottom;
+  padding: var(--pt) var(--px) var(--pb); margin: calc(-1 * var(--pt)) calc(0.03em - var(--px)) calc(-1 * var(--pb));
+}
 .title__line > span { display: inline-block; }
 .title__line--small {
-  display: block; width: fit-content; margin-inline: auto; margin-bottom: 0.06em;
+  display: block; width: fit-content; margin-inline: auto; margin-bottom: calc(0.16em - var(--pb));
   font-size: 0.24em; font-weight: 500; font-style: italic; letter-spacing: 0.01em; color: var(--ink);
 }
 .title__say { margin: clamp(18px, 3.4vh, 38px) auto 0; font-family: var(--display); font-size: clamp(18px, 1.75vw, 28px); line-height: 1.3; max-width: 36ch; }
@@ -257,7 +266,8 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
   .title__run { animation: run 38s linear infinite; }
 }
 @keyframes wings { from { clip-path: inset(0 47% 0 47%); } to { clip-path: inset(0 0 0 0); } }
-@keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
+/* from below the window's bottom edge, which sits var(--pb) under the line */
+@keyframes line-up { from { transform: translateY(calc(100% + 0.7em)); } to { transform: none; } }
 @keyframes run { to { transform: translateX(-100%); } }
 
 /* ==========================================================================
@@ -738,7 +748,7 @@ main .eyebrow { color: var(--leather); }
 .vid:hover .vid__thumb, .short:hover .short__thumb { box-shadow: var(--lift-2); }
 .watch__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(16px, 1.8vw, 26px); grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .watch__grid .is-lead { grid-column: span 2; grid-row: span 2; }
-.watch__grid .is-lead h4 { font-family: var(--display); font-size: clamp(21px, 2vw, 30px); font-weight: 600; line-height: 1.15; }
+.watch__grid .is-lead h4 { font-size: clamp(21px, 2vw, 30px); line-height: 1.15; }
 .vid, .short { text-decoration: none; display: flex; flex-direction: column; gap: 10px; }
 .vid__thumb, .short__thumb { position: relative; overflow: hidden; background: var(--paper-deep); border: 1px solid var(--grid); }
 .vid__thumb { aspect-ratio: 16 / 9; }
@@ -753,8 +763,10 @@ main .eyebrow { color: var(--leather); }
 .vid__play::after { content: ""; position: absolute; left: 17px; top: 14px; border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent var(--paper); }
 .vid:hover .vid__play { background: var(--burgundy-dark); }
 .vid__views { position: absolute; right: 7px; bottom: 7px; padding: 2px 6px; background: color-mix(in srgb, var(--ink) 86%, transparent); color: var(--paper); font-family: var(--mono); font-size: 10px; }
-.vid h4, .short h4 { font-family: var(--body); font-size: 15px; font-weight: 500; line-height: 1.35; }
-.short h4 { font-size: 14px; }
+/* every video title in the display serif, as every other title on the page
+   (round 3: the lead was serif and the rest sans, and it showed) */
+.vid h4, .short h4 { font-family: var(--display); font-size: 18px; font-weight: 600; line-height: 1.2; text-wrap: pretty; }
+.short h4 { font-size: 16.5px; }
 .vid:hover h4, .short:hover h4 { text-decoration: underline; }
 .watch__note { margin: 14px 0 0; color: var(--ink-muted); }
 
@@ -776,12 +788,23 @@ main .eyebrow { color: var(--leather); }
 
 .read { border-bottom: var(--rule); }
 
-.read__list { display: grid; gap: 1px; background: var(--grid); border-block: var(--rule); }
-.essay { background: var(--paper); padding: clamp(18px, 2vw, 26px); display: grid; gap: 6px 26px; grid-template-columns: 112px minmax(0, 1fr); text-decoration: none; transition: background 0.15s; }
+/* each essay with its Substack cover, two to a row on wide screens */
+.read__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--grid); border-block: var(--rule); }
+.essay {
+  background: var(--paper); padding: clamp(16px, 1.8vw, 26px); display: grid; gap: 0 clamp(16px, 1.8vw, 26px);
+  grid-template-columns: clamp(92px, 8.6vw, 132px) minmax(0, 1fr); align-items: start; text-decoration: none; transition: background 0.15s;
+}
+.essay:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .essay:hover { background: var(--paper-deep); }
-.essay__date { font-family: var(--mono); font-size: 11.5px; color: var(--ink-muted); padding-top: 4px; }
+.essay__cover { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--paper-deep); border: 1px solid var(--grid); box-shadow: var(--lift-1); }
+.essay__cover img { object-fit: cover; transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.essay:hover .essay__cover { box-shadow: var(--lift-2); }
+.essay:hover .essay__cover img { transform: scale(1.045); }
+.essay__text { display: grid; gap: 8px; align-content: start; }
+.essay__date { font-family: var(--mono); font-size: 11.5px; color: var(--ink-muted); }
 .essay h3 { font-size: clamp(19px, 1.6vw, 24px); }
-.essay__by { font-size: 14px; color: var(--ink-muted); margin: 4px 0 0; }
+.essay:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.essay__by { font-size: 14px; color: var(--ink-muted); margin: 0; }
 
 /* ==========================================================================
    CHANNEL SEALS — the platforms in the institute's own hand (ChannelIcon.tsx)
@@ -822,6 +845,12 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .chan__count { margin-top: 6px; font-family: var(--mono); font-size: 13px; color: var(--burgundy); }
 .chan__count small { font-size: 10px; color: var(--ink-muted); }
 
+/* where to find us: a light band under the pillars, on the same paper */
+.channels { padding-block: clamp(36px, 4.4vw, 64px); }
+.channels__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 22px; margin-bottom: clamp(18px, 2vw, 28px); }
+.channels__head .eyebrow { margin: 0; }
+.channels__head h2 { font-size: clamp(26px, 2.6vw, 38px); }
+
 /* ==========================================================================
    ABOUT, COMMUNITY
    ========================================================================== */
@@ -844,7 +873,6 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .community .pending .seal { width: 30px; height: 30px; opacity: 0.75; }
 .community .btn { padding-block: 8px; padding-left: 10px; }
 .community .btn .seal { width: 34px; height: 34px; }
-.about .shelf { margin-top: clamp(36px, 4vw, 56px); }
 .about__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 88px); align-items: stretch; }
 .about__plate { margin: 0; align-self: start; box-shadow: var(--lift-2); background: var(--paper-deep); padding: clamp(8px, 0.8vw, 12px); outline: 1px solid var(--grid); }
 .about__plate img { display: block; width: 100%; height: auto; }
@@ -939,6 +967,7 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .watch__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .watch__grid .is-lead { grid-row: auto; }
   .chan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .read__list { grid-template-columns: minmax(0, 1fr); }
   .tour { position: static; width: auto; margin: 0 clamp(16px, 3vw, 44px) clamp(16px, 3vw, 44px); }
   .tour__card { min-height: 0; }
   .cartouche { position: static; max-width: none; margin: clamp(16px, 3vw, 44px); }
@@ -960,8 +989,11 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 }
 @media (max-width: 760px) {
   /* phones: the name on two lines, as wide as the screen */
-  .title__name { font-size: 23.5vw; }
-  .title__line { display: block; width: fit-content; margin-inline: auto; }
+  /* a centred column: unlike auto margins, flex centring keeps each line's
+     window symmetric even when the word is as wide as the screen */
+  .title__name { font-size: 23.5vw; display: flex; flex-direction: column; align-items: center; }
+  .title__line { display: block; width: fit-content; }
+  .title__line--small { margin-inline: calc(0.03em - var(--px)); }
   .title__line--small { font-size: 0.26em; }
   /* phones: the fresco crops to its middle, the tabs become a list */
   .fresco__band { aspect-ratio: 16 / 9; }
@@ -982,8 +1014,15 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .watch__grid .is-lead { grid-column: auto; grid-row: auto; }
   .rail__nav { display: none; }
   .rail__track { grid-auto-columns: 46%; }
-  .chan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .essay { grid-template-columns: 1fr; }
+  /* phones: the channels stay a light band, three to a row */
+  .chan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .chan { padding: 14px 4px 13px; gap: 2px; }
+  .chan .seal { width: 40px; height: 40px; margin-bottom: 6px; }
+  .chan__name { font-size: 16px; }
+  .chan__handle { font-size: 9px; }
+  .chan__count { margin-top: 3px; font-size: 12px; }
+  .chan__count small { font-size: 9px; }
+  .essay { grid-template-columns: 92px minmax(0, 1fr); }
   .canon-box__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
   .ccard { padding: 12px 12px 11px; gap: 7px; }
   .ccard__title { font-size: 17px; }
@@ -997,7 +1036,6 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .ms summary::after { grid-column: 3; grid-row: 1; }
   .ms__body { padding-left: calc(2em + 24px); }
   .epigraph__mark { top: -0.5em; }
-  .essay__date { padding-top: 0; }
   .nav, .tools .cart { display: none; }
   .menu { display: block; }
   .brand__name { font-size: 13px; }
@@ -1023,5 +1061,5 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; }
-  .vid:hover img, .short:hover img { transform: none; }
+  .vid:hover img, .short:hover img, .essay:hover .essay__cover img { transform: none; }
 }

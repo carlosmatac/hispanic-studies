@@ -158,12 +158,15 @@ const en = {
     subscribe: 'Read on Substack',
     subscribers: 'subscribers',
   },
+  channels: {
+    eyebrow: 'Channels',
+    h: 'Where to find us.',
+  },
   about: {
     eyebrow: 'The mission',
     h: 'A tradition that was forgotten, not refuted.',
     p1: 'The Institute for Hispano Studies studies and defends Hispanic civilization: its history, its Catholic inheritance, its mestizaje and its two languages. De Indiis Editions translates and republishes the canon of that argument.',
     p2: 'The claim is not that this tradition was defeated. It is that most of it was never translated, and that an argument you cannot read is an argument you cannot answer.',
-    channels: 'Where the institute publishes',
     plate: 'Cristóbal de Villalpando, View of the Plaza Mayor of Mexico City, 1695. Corsham Court',
     followers: 'followers',
     subscribers: 'subscribers',
@@ -348,12 +351,15 @@ const es: Dict = {
     subscribe: 'Leer en Substack',
     subscribers: 'suscriptores',
   },
+  channels: {
+    eyebrow: 'Canales',
+    h: 'Dónde encontrarnos.',
+  },
   about: {
     eyebrow: 'La misión',
     h: 'Una tradición olvidada, no refutada.',
     p1: 'El Institute for Hispano Studies estudia y defiende la civilización hispánica: su historia, su herencia católica, su mestizaje y sus dos lenguas. De Indiis Editions traduce y reedita el canon de esa discusión.',
     p2: 'La tesis no es que esta tradición fuera derrotada. Es que casi nunca se tradujo, y un argumento que no puedes leer es un argumento que no puedes responder.',
-    channels: 'Dónde publica el instituto',
     plate: 'Cristóbal de Villalpando, Vista de la Plaza Mayor de la Ciudad de México, 1695. Corsham Court',
     followers: 'seguidores',
     subscribers: 'suscriptores',

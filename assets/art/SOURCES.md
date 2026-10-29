@@ -171,3 +171,18 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | `footer-name.jpg` | `assets/art/ai/footer-hispano-studies-2026-10-26.png` (AI-generated, see above), the cream strip on its right cut off (1826 × 809). The footer's glass shows the same picture mirrored and blurred |
 
 The letters cut from period pictures (`site/public/art/letters/`) were on the site only on 2026-10-26: Carlos preferred his own picture and its typeface.
+
+## Essay covers in Read (`site/public/art/essays/`)
+
+Beltrán's Substack post covers, used with the publication (the Institute for Hispano Studies on Substack, hispanicamerican.substack.com). Each is the post's `og:image`, saved on 2026-10-29 from the original upload on `substack-post-media.s3.amazonaws.com`, flattened on white and resized to at most 720 px; the page crops them to 4:5. The file is named after the post's slug. The pictures inside them are the publication's choice; their own sources are not traced here.
+
+| File | Post | Original upload |
+| --- | --- | --- |
+| `the-catholic-hispanic-position-on.jpg` | [The Catholic-Hispanic Position on Racism](https://hispanicamerican.substack.com/p/the-catholic-hispanic-position-on) | `532fc229-b66a-4672-a034-bb39bd28fbef_864x1152.jpeg` |
+| `the-vikings-did-not-discover-america.jpg` | [The Vikings Did Not Discover America](https://hispanicamerican.substack.com/p/the-vikings-did-not-discover-america) | `2c61aeaf-eef5-4530-ba9c-bea0dce772f9_981x939.jpeg` |
+| `oireis-hablar-de-mi-a-tribute-to.jpg` | [Oiréis hablar de mí: A Tribute to José Vasconcelos](https://hispanicamerican.substack.com/p/oireis-hablar-de-mi-a-tribute-to) | `e7c85e37-066c-4360-8284-56417fef5042_943x1374.jpeg` |
+| `transitional-political-society-neither.jpg` | [Transitional Political Society, Neither Feudal nor Capitalist](https://hispanicamerican.substack.com/p/transitional-political-society-neither) | `133a6424-9786-450c-a77a-8f63d598a1d2_700x375.jpeg` |
+| `spain-and-america.jpg` | [Spain and America](https://hispanicamerican.substack.com/p/spain-and-america) | `f003f3c5-4721-473a-aded-cf3d980ab10f_1140x1600.jpeg` |
+| `on-bullfighting.jpg` | [On Bullfighting](https://hispanicamerican.substack.com/p/on-bullfighting) | `4f165f59-4f51-4fdf-be07-6457c14b61fa_505x727.png` |
+| `aryan-indigenismo-and-manifest-destiny.jpg` | [Aryan Indigenismo and Manifest Destiny](https://hispanicamerican.substack.com/p/aryan-indigenismo-and-manifest-destiny) | `00c3ffe3-883b-48a5-b226-45d62c358347_522x720.jpeg` |
+| `the-black-legend-threat-to-hispanic.jpg` | [The Black Legend: Threat to Hispanic Civilization (Part 1)](https://hispanicamerican.substack.com/p/the-black-legend-threat-to-hispanic) | `452db558-4eeb-412c-b31f-0d25f03a51a2_568x640.jpeg` |
