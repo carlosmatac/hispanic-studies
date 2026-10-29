@@ -171,6 +171,11 @@ const en = {
     later: 'Later',
     back: 'Back to the archive',
     top: 'Back to the top',
+    translation: (original: string) => `A translation; the original is in ${original}.`,
+    otherLanguage: 'Also in Spanish',
+    references: 'References',
+    draft: 'Draft',
+    draftNote: 'Draft: only signed-in editors see this page.',
   },
   books: {
     eyebrow: 'De Indiis Editions',
@@ -404,6 +409,11 @@ const es: Dict = {
     later: 'Siguiente',
     back: 'Volver al archivo',
     top: 'Volver arriba',
+    translation: (original: string) => `Una traducción; el original está en ${original}.`,
+    otherLanguage: 'También en inglés',
+    references: 'Referencias',
+    draft: 'Borrador',
+    draftNote: 'Borrador: solo lo ven los editores con sesión iniciada.',
   },
   books: {
     eyebrow: 'De Indiis Editions',

@@ -1,43 +1,19 @@
 /* The archive of Hispanic thought (issue #68; it was "the canon" until
-   2026-10-29). Each work is a file in content/archive/<id>.md, edited by hand
-   or in the CMS at /keystatic (keystatic.config.ts); lib/archive.ts reads them
-   on the server. This file holds what both sides share: the periods, the
-   regions, the shape of an entry and a few helpers. It never touches the disk,
-   so client components can import it. */
+   2026-10-29). Since issue #69 the works live in the database (lib/db) and
+   Beltrán edits them at /admin; lib/archive.ts reads them on the server. This
+   file holds what the pages share: the shapes of an entry, the languages, the
+   rights and a few helpers. It never touches the database, so client
+   components can import it. */
 
 import type { Lang } from '@/lib/i18n';
 
-/* The boxes are ours and carry dates only (no new claims). Every work is filed
-   in one by its year; the prelude was added at Beltrán's request on
-   2026-10-29: the Empire's own thought, before the independence. */
-export const PERIODS = [
-  { id: 'prelude', from: 1492, to: 1799, name: { en: 'Prelude: the Empire’s own thought', es: 'Preludio: el pensamiento del Imperio' } },
-  { id: 'independence', from: 1800, to: 1870, name: { en: 'Independence and the first unions', es: 'La independencia y las primeras uniones' } },
-  { id: 'ninety-eight', from: 1871, to: 1900, name: { en: 'From Iberism to 1898', es: 'Del iberismo al 98' } },
-  { id: 'continent', from: 1901, to: 1930, name: { en: 'Ariel and the continent', es: 'Ariel y el continente' } },
-  { id: 'hispanidad', from: 1931, to: 1960, name: { en: 'Hispanidad, Indo-America, the Lusophone world', es: 'Hispanidad, Indoamérica, el mundo lusófono' } },
-  { id: 'after-empire', from: 1961, to: 2000, name: { en: 'After empire', es: 'Después del imperio' } },
-] as const;
-export type PeriodId = (typeof PERIODS)[number]['id'];
-export type CanonPeriod = (typeof PERIODS)[number];
-export const periodFor = (year: number): PeriodId =>
-  (PERIODS.find((p) => year >= p.from && year <= p.to) ?? PERIODS[PERIODS.length - 1]).id;
-
-/* The cards are coloured by region (Beltrán, 2026-10-29), by where the author
-   worked or what the text is about. Each region is one binding: four of the
-   brand's own grounds and two muted hues (globals.css, --region-*). */
-export const REGIONS = [
-  { id: 'spain', binding: 'burgundy', name: { en: 'Spain', es: 'España' }, note: { en: 'and its exiles', es: 'y su exilio' } },
-  { id: 'south-america', binding: 'leather', name: { en: 'South America', es: 'Sudamérica' }, note: { en: 'Spanish-speaking', es: 'hispanohablante' } },
-  { id: 'north-america', binding: 'ink', name: { en: 'North America', es: 'Norteamérica' }, note: { en: 'Mexico and Central America', es: 'México y Centroamérica' } },
-  { id: 'caribbean', binding: 'sea', name: { en: 'Caribbean', es: 'Caribe' }, note: { en: 'Cuba, Puerto Rico, Santo Domingo', es: 'Cuba, Puerto Rico, Santo Domingo' } },
-  { id: 'lusophone', binding: 'olive', name: { en: 'Lusophone world', es: 'Mundo lusófono' }, note: { en: 'Portugal, Brazil, Lusophone Africa', es: 'Portugal, Brasil, África lusófona' } },
-  { id: 'ibero-asia', binding: 'paper', name: { en: 'Ibero-Asia', es: 'Iberoasia' }, note: { en: 'the Philippines, Goa', es: 'Filipinas, Goa' } },
-] as const;
-export type RegionId = (typeof REGIONS)[number]['id'];
-export type Binding = (typeof REGIONS)[number]['binding'];
-export const region = (id: string) => REGIONS.find((r) => r.id === id) ?? REGIONS[0];
-export const binding = (w: { region: string }): Binding => region(w.region).binding;
+/* The boxes (periods) and the regions live in the database since issue #69:
+   Beltrán adds, renames and reorders them in the back office. These are their
+   shapes as the pages use them. A region's colour is a swatch of the fixed
+   palette in lib/palette.ts. */
+export type Localised = { en: string; es: string };
+export type CanonSection = { id: string; position: number; name: Localised; from: number | null; to: number | null };
+export type CanonRegion = { id: string; position: number; name: Localised; note: Localised; swatch: string };
 
 export const LANGUAGES = [
   { id: 'es', name: { en: 'Spanish', es: 'español' } },
@@ -69,8 +45,12 @@ export type CanonWork = {
   fullName: string;
   life: string;
   year: number;
-  period: PeriodId;
-  region: RegionId;
+  /** draft works are seen only by signed-in editors */
+  status: 'draft' | 'published';
+  period: string;
+  region: string;
+  /** the region's colour (lib/palette.ts) */
+  swatch: string;
   place: string;
   code: string;
   language: string;
@@ -88,8 +68,26 @@ export type CanonWork = {
   pdUsYear: number | null;
   /** public domain, but only scans exist: the text needs a careful transcription */
   needsTranscription: boolean;
-  /** true when the full text is in the archive (the file has a body) */
+  /** true when a full text is in the archive and may be shown (public domain) */
   hasText: boolean;
+  /** the languages its text is in, with the reading time of each */
+  texts: { lang: string; minutes: number }[];
+  references: Reference[];
+};
+
+/** A reference of a work, formatted for the reader by lib/cite.ts. */
+export type Reference = {
+  kind: 'book' | 'chapter' | 'article' | 'web';
+  author: string;
+  title: string;
+  container: string;
+  edition: string;
+  publisher: string;
+  place: string;
+  year: string;
+  pages: string;
+  url: string;
+  accessed: string;
 };
 
 /** "Title: subtitle" → the title, and the subtitle on its own line. */

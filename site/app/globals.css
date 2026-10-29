@@ -18,7 +18,9 @@
   /* the archive's regions (issue #68, Beltrán 2026-10-29: "colour by region").
      Four regions wear the brand's own grounds; the Caribbean and the Lusophone
      world needed two more, kept as dark and muted as the burgundy and the ink:
-     a sea green-blue and an olive, each mixed with the ink. */
+     a sea green-blue and an olive, each mixed with the ink. Since #69 a region's
+     colour is one swatch of the fixed palette in lib/palette.ts (these two
+     included), chosen in the back office. */
   --region-sea: color-mix(in srgb, #2c6670 62%, var(--ink));
   --region-olive: color-mix(in srgb, #5f6b2c 66%, var(--ink));
 
@@ -687,12 +689,14 @@ main .eyebrow { color: var(--leather); }
 }
 /* a blind-stamped frame inside the cover */
 .ccard::before { content: ""; position: absolute; inset: 7px; border: 1px solid var(--line); pointer-events: none; }
-.ccard--burgundy { --bg: var(--burgundy); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent); }
-.ccard--leather { --bg: var(--leather); --fg: var(--paper); --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent); }
-.ccard--ink { --bg: var(--ink); --fg: var(--paper); --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent); }
-.ccard--sea { --bg: var(--region-sea); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 80%, var(--region-sea)); --line: color-mix(in srgb, var(--paper) 26%, transparent); }
-.ccard--olive { --bg: var(--region-olive); --fg: var(--paper); --accent: color-mix(in srgb, var(--paper) 80%, var(--leather)); --line: color-mix(in srgb, var(--paper) 26%, transparent); }
-.ccard--paper { --bg: var(--paper); --fg: var(--ink); --accent: var(--burgundy); }
+/* the colours come from the region's swatch (lib/palette.ts), set inline as --bg, --fg, --accent and --line */
+/* a draft (seen only by signed-in editors): hatched, and labelled */
+.ccard--draft { outline: 2px dashed var(--burgundy); outline-offset: 3px; }
+.ccard__draft {
+  position: absolute; top: 0; left: 50%; translate: -50% 0; padding: 3px 8px 4px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--burgundy); color: var(--paper);
+}
 .ccard--counter::before { border-style: dashed; }
 .ccard__top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--accent); }
 .ccard__year { font-size: 13px; font-weight: 500; }
@@ -778,7 +782,7 @@ main .eyebrow { color: var(--leather); }
 .reader { --read-size: clamp(18px, 0.3vw + 16.8px, 21px); --col: calc(var(--read-size) * 30); padding: clamp(28px, 5vw, 72px) var(--edge) clamp(40px, 6vw, 90px); }
 .reader__article { max-width: 1080px; margin: 0 auto; }
 /* one column of about 65 characters of the Ibarra (30em of the reading size) */
-.reader__head, .reader__toc, .reader__status, .reader__source, .reader__record, .reader__pager { max-width: var(--col); margin-inline: auto; }
+.reader__head, .reader__toc, .reader__status, .reader__source, .reader__record, .reader__refs, .reader__pager { max-width: var(--col); margin-inline: auto; }
 .reader__head { font-size: var(--read-size); text-align: center; padding-bottom: clamp(26px, 4vw, 44px); border-bottom: var(--rule); }
 .reader__head > * { margin-inline: auto; }
 .reader__crumb { font-family: var(--body); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--leather); margin-bottom: clamp(18px, 2.4vw, 28px); }
@@ -864,6 +868,12 @@ main .eyebrow { color: var(--leather); }
 .reader__links a { color: var(--burgundy); text-underline-offset: 3px; }
 .reader__record { margin-top: clamp(36px, 5vw, 60px); padding-top: 22px; border-top: var(--rule); font-size: 15.5px; }
 .reader__record h3 { margin: 22px 0 0; font-size: 17px; }
+/* the work's references (lib/cite.ts), formatted from the back office's fields */
+.reader__refs { margin-top: clamp(30px, 4vw, 48px); padding-top: 22px; border-top: var(--rule); }
+.reader__refs h2 { font-size: 12px; font-family: var(--body); font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 14px; }
+.reader__refs ol { margin: 0; padding-left: 1.4em; display: grid; gap: 10px; font-size: 15px; line-height: 1.5; }
+.reader__refs a { color: var(--burgundy); overflow-wrap: anywhere; text-underline-offset: 3px; }
+.reader__draft { display: inline-block; margin: 0 0 14px; padding: 4px 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; background: var(--burgundy); color: var(--paper); }
 .reader__record .record__facts { font-size: 14px; }
 
 /* earlier, back, later */

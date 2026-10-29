@@ -14,34 +14,28 @@ function same(a: string, b: string) {
   return diff === 0;
 }
 
-/* The CMS (/keystatic and its API, issue #69). Locally (`next dev`) it edits
-   the files on disk. On a deployment it is open only when the GitHub login is
-   configured (docs/cms.md); otherwise it does not exist. It has its own login
-   (GitHub), so the preview password does not stand in front of it, and it is
-   never indexed. */
-const CMS = /^\/(api\/)?keystatic(\/|$)/;
-const cmsEnabled = () =>
-  process.env.NODE_ENV === 'development' ||
-  (process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE === 'github' &&
-    !!process.env.KEYSTATIC_GITHUB_CLIENT_ID && !!process.env.KEYSTATIC_GITHUB_CLIENT_SECRET && !!process.env.KEYSTATIC_SECRET);
+/* The back office (/admin, issue #69) has its own sign-in (lib/admin/session.ts)
+   and sits behind the preview password like every other page. It is never
+   indexed. */
+const ADMIN = /^\/admin(\/|$)/;
 
 export function proxy(request: NextRequest) {
-  if (CMS.test(request.nextUrl.pathname)) {
-    if (!cmsEnabled()) return new NextResponse('Not found.', { status: 404 });
+  const admin = ADMIN.test(request.nextUrl.pathname);
+  const pass = () => {
     const res = NextResponse.next();
-    res.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    if (admin) res.headers.set('X-Robots-Tag', 'noindex, nofollow');
     return res;
-  }
+  };
 
   const password = process.env.SITE_PASSWORD;
-  if (!password) return NextResponse.next();
+  if (!password) return pass();
 
   const header = request.headers.get('authorization') ?? '';
   if (header.startsWith('Basic ')) {
     try {
       const decoded = atob(header.slice(6));
       const given = decoded.slice(decoded.indexOf(':') + 1);
-      if (same(given, password)) return NextResponse.next();
+      if (same(given, password)) return pass();
     } catch { /* a malformed header is simply refused */ }
   }
   return new NextResponse('Password required.', {
