@@ -3,7 +3,8 @@
     ~/.venvs/film/bin/python -I tools/build-fresco.py SRC_DIR
 
 SRC_DIR holds the three originals (listed with their sources in assets/art/SOURCES.md):
-  morlete-casta-albino.jpg    Mestizaje   (Morlete, casta painting, LACMA)
+  cabrera-de-espanol-e-india-mestiza.jpg
+                              Mestizaje   (Miguel Cabrera, De español e india, mestiza, 1763)
   cabrera-guadalupe.jpg       Catolicismo (Miguel Cabrera, altarpiece of the Virgin of Guadalupe)
   florentine-codex-80.jpg     Lengua      (Florentine Codex, folio 80, Spanish and Nahuatl)
 
@@ -24,12 +25,14 @@ W, H = 3200, 1000
 
 # (file, crop box as fractions, x where it starts on the band, seam widths left/right)
 LAYERS = {
-    "mestizaje": ("morlete-casta-albino.jpg", (0.0, 0.08, 1.0, 0.66), 0, (0, 380)),
+    # the Spanish father on the left edge, the mother and their daughter in the left third;
+    # the source is small (777 px wide on Commons), so the band is soft there, not blocky
+    "mestizaje": ("cabrera-de-espanol-e-india-mestiza.jpg", (0.0, 0.115, 1.0, 0.79), 0, (0, 340)),
     "lengua": ("florentine-codex-80.jpg", (0.0, 0.50, 1.0, 0.985), 2330, (400, 0)),
-    "catolicismo": ("cabrera-guadalupe.jpg", (0.02, 0.035, 0.98, 0.47), 1040, (360, 400)),
+    "catolicismo": ("cabrera-guadalupe.jpg", (0.02, 0.035, 0.98, 0.47), 900, (420, 400)),
 }
 DETAIL = {  # crops for the open panel (portrait 4:5)
-    "mestizaje": (0.0, 0.05, 0.86, 0.80),
+    "mestizaje": (0.0, 0.0, 1.0, 1.0),  # the whole painting, with its title
     "catolicismo": (0.12, 0.0, 0.88, 0.58),
     "lengua": (0.0, 0.40, 1.0, 1.0),
 }
