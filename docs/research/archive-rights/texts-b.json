@@ -1,0 +1,1445 @@
+{
+ "agent": "texts-b",
+ "date": "2026-10-29",
+ "scope": "Canon works 26th-50th of site/data/canon-works.json (T026-T050) and the proposed prelude period (P01-P09).",
+ "legend": {
+  "verdict": {
+   "pd": "Public domain in the US, in Spain and in the author's country: safe to host the original-language text.",
+   "pd-us-only": "PD in the US (published before 1931) but not yet in Spain (life+80 for authors who died before 7 Dec 1987); often also PD in the author's country.",
+   "pd-outside-us": "PD in Spain/the author's country but in copyright (or unverified) in the US. Added category: treat as not hostable from a US server.",
+   "copyright": "Link to a legitimate copy only."
+  },
+  "region": [
+   "South America",
+   "North America",
+   "Caribbean",
+   "Spain",
+   "Lusophone world",
+   "Ibero-Asia"
+  ],
+  "source.kind": "clean-text (transcribed), scan (page images), edited-edition (modern edition: link, don't copy), lending (Internet Archive controlled lending), publisher, library, free-official-edition, catalogue, translation",
+  "rules_used": "US: works published before 1 Jan 1931 are PD; foreign works published 1931-1977 that were still protected at home on 1 Jan 1996 were restored for 95 years from publication (URAA). Spain: authors who died before 7 Dec 1987: life+80 (so died <=1945 is PD in 2026); otherwise life+70. Terms run to 31 Dec."
+ },
+ "works": [
+  {
+   "id": "T026",
+   "title": "El destino de un continente",
+   "author": "Manuel Ugarte",
+   "first_published": 1923,
+   "canon_year": 1923,
+   "year_ok": true,
+   "first_edition": "Madrid: Editorial Mundo Latino, 1923 (Obras de Manuel Ugarte), 429 pp.",
+   "original_language": "es",
+   "author_death": 1951,
+   "pd": {
+    "us": "pd (published 1923, before 1931)",
+    "spain": "copyright until 31 Dec 2031 (died 1951, before 1987: life+80); pd from 1 Jan 2032",
+    "origin": "Argentina: pd since 1 Jan 2022 (life+70)"
+   },
+   "verdict": "pd-us-only",
+   "sources": [
+    {
+     "name": "HathiTrust, 1923 Mundo Latino edition (page images)",
+     "url": "https://catalog.hathitrust.org/Record/000277589",
+     "kind": "scan",
+     "access": "US only (HathiTrust full view restricted to US)",
+     "complete": true
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [],
+   "region": "South America",
+   "region_reason": "Argentine author; the book is the account of his 1911-1913 tour of the Spanish American republics, written from the Río de la Plata perspective.",
+   "length": "429 pp. (1923 ed.)",
+   "notes": "No clean transcription found (Wikisource lists the title on Autor:Manuel Ugarte without text). English translation The Destiny of a Continent (Knopf, 1925) exists; we host originals only. Text would need OCR from the HathiTrust scan."
+  },
+  {
+   "id": "T027",
+   "title": "A aliança peninsular: antecedentes e possibilidades",
+   "author": "António Sardinha",
+   "first_published": 1924,
+   "canon_year": 1924,
+   "year_ok": true,
+   "first_edition": "Porto: Livraria Civilização, 1924; preface by Gabriel Maura Gamazo; [22], LXV, 446, [6] pp. (BNP record). 2nd ed. Porto, Civilização, 1930. Original title spelling: 'antecedentes & possibilidades'.",
+   "original_language": "pt",
+   "author_death": 1925,
+   "pd": {
+    "us": "pd (published 1924)",
+    "spain": "pd (died 1925)",
+    "origin": "Portugal: pd since 1996 (life+70)"
+   },
+   "verdict": "pd",
+   "sources": [
+    {
+     "name": "HathiTrust, 2nd ed. 1930 (page images)",
+     "url": "https://catalog.hathitrust.org/Record/001859735",
+     "kind": "scan",
+     "access": "US only",
+     "complete": true
+    },
+    {
+     "name": "Internet Archive, user upload of the 1930 edition",
+     "url": "https://archive.org/details/a-alianca-peninsular-antonio-sardinha-1930",
+     "kind": "scan",
+     "access": "worldwide",
+     "note": "uploaded by a private user; edition stated as 1930; check completeness before use"
+    },
+    {
+     "name": "Biblioteca Nacional de Portugal catalogue record, 1924 ed.",
+     "url": "https://urn.bnportugal.gov.pt/bibliografia/unimarc/txt?id=803651",
+     "kind": "catalogue",
+     "access": "worldwide",
+     "note": "whether BNP has digitised it (purl.pt) is unverified"
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [],
+   "region": "Lusophone world",
+   "region_reason": "Portuguese author writing in Portuguese on Portugal's place in an Iberian alliance.",
+   "length": "c. 510 pp. (LXV + 446)",
+   "notes": "Host Sardinha's text only: the 1924 preface by Gabriel Maura Gamazo (d. 1963) is still in copyright in Spain until 2043 (it is PD in the US). Spanish translation La alianza peninsular (Sáez Hermanos, 1930) exists; we host the Portuguese."
+  },
+  {
+   "id": "T028",
+   "title": "La unidad de la América Indo-Española (and related essays)",
+   "author": "José Carlos Mariátegui",
+   "first_published": 1924,
+   "canon_year": 1924,
+   "year_ok": true,
+   "first_edition": "Variedades (Lima), 6 Dec 1924; reprinted in El Universitario (Buenos Aires), Dec 1925; collected posthumously in Temas de nuestra América (Obras completas, Amauta, 1960).",
+   "original_language": "es",
+   "author_death": 1930,
+   "pd": {
+    "us": "pd (published 1924)",
+    "spain": "pd (died 1930)",
+    "origin": "Peru: pd (life+70, since 2001)"
+   },
+   "verdict": "pd",
+   "sources": [
+    {
+     "name": "Wikisource (es): La Unidad de la América Indo-Española",
+     "url": "https://es.wikisource.org/wiki/La_Unidad_de_la_Am%C3%A9rica_Indo-Espa%C3%B1ola",
+     "kind": "clean-text",
+     "access": "worldwide",
+     "complete": true,
+     "proofread": false,
+     "note": "c. 1,300 words; plain transcription, not scan-backed (no ProofreadPage), no source edition named"
+    },
+    {
+     "name": "Marxists Internet Archive, Obras completas: Temas de nuestra América",
+     "url": "https://www.marxists.org/espanol/mariateg/oc/temas_de_nuestra_america/paginas/unidad.htm",
+     "kind": "clean-text",
+     "access": "worldwide",
+     "complete": true,
+     "note": "footnote gives Variedades 6 Dec 1924 and El Universitario 1925; the 'related essays' of Temas de nuestra América are on the same site"
+    }
+   ],
+   "clean_text": "https://es.wikisource.org/wiki/La_Unidad_de_la_Am%C3%A9rica_Indo-Espa%C3%B1ola",
+   "read_or_buy": [],
+   "region": "South America",
+   "region_reason": "Peruvian author, published in Lima; Andean, Indigenous-centred continentalism.",
+   "length": "c. 1,300 words (the essay alone)",
+   "notes": "Ready to host. If 'related essays' is kept, choose them from Temas de nuestra América (all by Mariátegui, all PD)."
+  },
+  {
+   "id": "T029",
+   "title": "Eurindia: ensayo de estética fundado en la experiencia histórica de las culturas americanas",
+   "author": "Ricardo Rojas",
+   "first_published": 1924,
+   "canon_year": 1924,
+   "year_ok": true,
+   "first_edition": "Buenos Aires: Librería 'La Facultad' de J. Roldán, 1924 (Obras de Ricardo Rojas). Gathers articles first printed in La Nación in 1922.",
+   "original_language": "es",
+   "author_death": 1957,
+   "pd": {
+    "us": "pd (published 1924)",
+    "spain": "copyright until 31 Dec 2037 (life+80); pd 2038",
+    "origin": "Argentina: copyright until 31 Dec 2027 (life+70); pd 1 Jan 2028"
+   },
+   "verdict": "pd-us-only",
+   "sources": [
+    {
+     "name": "HathiTrust, 1924 La Facultad edition (page images, full view)",
+     "url": "https://catalog.hathitrust.org/Record/102919873",
+     "kind": "scan",
+     "access": "full view (listed without 'US access only' by The Online Books Page)",
+     "complete": true
+    },
+    {
+     "name": "HathiTrust, 1924 edition, second copy",
+     "url": "https://catalog.hathitrust.org/Record/001673754",
+     "kind": "scan",
+     "access": "US only",
+     "complete": true
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Internet Archive lending: Losada 1951 edition",
+     "url": "https://archive.org/details/eurindia0000rica",
+     "kind": "lending",
+     "access": "controlled digital lending",
+     "complete": true
+    }
+   ],
+   "region": "South America",
+   "region_reason": "Argentine author and publisher; Andean-Rioplatense Eurindian synthesis.",
+   "length": "unverified (book-length essay)",
+   "notes": "Becomes pd in Argentina on 1 Jan 2028, in Spain on 1 Jan 2038. OCR needed."
+  },
+  {
+   "id": "T030",
+   "title": "La raza cósmica: misión de la raza iberoamericana. Notas de viajes a la América del Sur",
+   "author": "José Vasconcelos",
+   "first_published": 1925,
+   "canon_year": 1925,
+   "year_ok": true,
+   "first_edition": "Paris/Madrid/Barcelona: Agencia Mundial de Librería, [1925] (undated imprint; HathiTrust catalogues it as 1920 or [192-]).",
+   "original_language": "es",
+   "author_death": 1959,
+   "pd": {
+    "us": "pd (published 1925)",
+    "spain": "copyright until 31 Dec 2039; pd 2040",
+    "origin": "Mexico: copyright until 31 Dec 2059 (life+100); pd 2060"
+   },
+   "verdict": "pd-us-only",
+   "sources": [
+    {
+     "name": "HathiTrust, Agencia Mundial de Librería edition (page images)",
+     "url": "https://catalog.hathitrust.org/Record/007032796",
+     "kind": "scan",
+     "access": "US only",
+     "complete": true
+    },
+    {
+     "name": "HathiTrust, Princeton copy [192-]",
+     "url": "https://catalog.hathitrust.org/Record/103072739",
+     "kind": "scan",
+     "access": "access level unverified"
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Internet Archive lending: 1976 Espasa-Calpe Mexicana edition",
+     "url": "https://archive.org/details/larazacosmicamis00vasc",
+     "kind": "lending",
+     "access": "controlled digital lending",
+     "complete": true
+    }
+   ],
+   "region": "North America",
+   "region_reason": "Mexican author; Mexico's revolutionary cultural programme (the Americas' northern Hispanic pole).",
+   "length": "unverified (c. 250-300 pp. incl. travel notes)",
+   "notes": "Many free PDFs on archive.org are private uploads of modern editions; do not link those. Hosting is US-only safe; Mexico protects it until 2060."
+  },
+  {
+   "id": "T031",
+   "title": "Seis ensayos en busca de nuestra expresión",
+   "author": "Pedro Henríquez Ureña",
+   "first_published": 1928,
+   "canon_year": 1928,
+   "year_ok": true,
+   "first_edition": "Buenos Aires/Madrid: Babel (Biblioteca Argentina de Buenas Ediciones Literarias), 1928.",
+   "original_language": "es",
+   "author_death": 1946,
+   "pd": {
+    "us": "pd (published 1928)",
+    "spain": "copyright until 31 Dec 2026 (died 11 May 1946, life+80); pd from 1 Jan 2027",
+    "origin": "Dominican Republic and Argentina: pd since 2017 (life+70)"
+   },
+   "verdict": "pd-us-only",
+   "verdict_note": "Becomes plain 'pd' on 1 Jan 2027, two months from now.",
+   "sources": [
+    {
+     "name": "HathiTrust, 1928 Babel edition (page images)",
+     "url": "https://catalog.hathitrust.org/Record/007030310",
+     "kind": "scan",
+     "access": "US only",
+     "complete": true
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [],
+   "region": "Caribbean",
+   "region_reason": "Dominican author (Santo Domingo), though the book was written and published in Argentina.",
+   "length": "unverified (short book, six essays)",
+   "notes": "Recommend scheduling it for 1 Jan 2027. OCR needed."
+  },
+  {
+   "id": "T032",
+   "title": "Plan de realización del supremo sueño de Bolívar",
+   "author": "Augusto César Sandino",
+   "first_published": null,
+   "canon_year": 1929,
+   "year_ok": "partly",
+   "year_correction": "1929 is the date of writing (El Chipotón, Las Segovias, 20 March 1929), not a verified publication. The text circulated as a ten-page signed typescript addressed to the 21 Latin American governments; Jorge Mario García Laguardia later published it as 'un documento inédito'. First printed edition located: Sergio Ramírez (ed.), El pensamiento vivo de Sandino (San José: EDUCA, 1974; Managua: Nueva Nicaragua, 1984, vol. 1, no. 111, pp. 341-355). Keep 1929 as the work's date, but label it 'written'.",
+   "first_edition": "Written 20 March 1929; first print publication unverified (by 1974 at the latest).",
+   "original_language": "es",
+   "author_death": 1934,
+   "pd": {
+    "us": "UNVERIFIED: if it was not published in 1929, US status depends on when it was first published (a first publication in Costa Rica in 1974 could carry a restored US term to 2069; a first publication after 2002 would be pd).",
+    "spain": "pd (died 1934)",
+    "origin": "Nicaragua: pd (life+70, since 2005)"
+   },
+   "verdict": "pd-outside-us",
+   "verdict_note": "Treat as not hostable from a US host until the 1929 circulation is confirmed as publication (e.g. printed in a 1929 newspaper). Very low practical risk, but unverified.",
+   "sources": [
+    {
+     "name": "Geopolítica(s) 12(2) 2021, 329-342 (Universidad Complutense, open-access journal): full text, from Ramírez 1984",
+     "url": "https://revistas.ucm.es/index.php/GEOP/article/view/78605",
+     "kind": "clean-text",
+     "access": "worldwide",
+     "complete": true,
+     "note": "DOI 10.5209/geop.78605; reproduces the Plan complete (c. 5,000 words) with Sandino's 'Carta a los gobernantes de América' (1928); journal licence not checked"
+    }
+   ],
+   "clean_text": "https://revistas.ucm.es/index.php/GEOP/article/view/78605",
+   "read_or_buy": [
+    {
+     "name": "Geopolítica(s) open-access article",
+     "url": "https://revistas.ucm.es/index.php/GEOP/article/view/78605",
+     "kind": "open-access",
+     "access": "worldwide"
+    }
+   ],
+   "region": "North America",
+   "region_reason": "Nicaragua (Central America); the six-region scheme has no Central America, and Central America is geographically North America. Flag for Carlos.",
+   "length": "c. 5,000 words",
+   "notes": ""
+  },
+  {
+   "id": "T033",
+   "title": "El mínimum vital",
+   "author": "Alberto Masferrer",
+   "first_published": 1929,
+   "canon_year": 1929,
+   "year_ok": true,
+   "first_edition": "Developed in editorials of the newspaper Patria (San Salvador, founded 1928); pamphlet 'El minimun [sic] vital: su definición y alcances', [Guatemala]: Talleres de Diario de Centro América, 1929 (HathiTrust).",
+   "original_language": "es",
+   "author_death": 1932,
+   "pd": {
+    "us": "pd (published 1929)",
+    "spain": "pd (died 1932)",
+    "origin": "El Salvador: pd"
+   },
+   "verdict": "pd",
+   "sources": [
+    {
+     "name": "HathiTrust, 1929 printing (page images)",
+     "url": "https://catalog.hathitrust.org/Record/101044251",
+     "kind": "scan",
+     "access": "US only",
+     "complete": true
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [],
+   "region": "North America",
+   "region_reason": "El Salvador (Central America; see note on T032).",
+   "length": "pamphlet (unverified page count)",
+   "notes": "Wikisource (es) lists 'El Minimum Vital (ensayo político-social, 1929)' on Alberto Masferrer's author page with no text. Which edition is canonical (1929 pamphlet vs later Obras) unverified. OCR needed; a free scan outside the US was not found."
+  },
+  {
+   "id": "T034",
+   "title": "Insularismo: ensayos de interpretación puertorriqueña",
+   "author": "Antonio S. Pedreira",
+   "first_published": 1934,
+   "canon_year": 1934,
+   "year_ok": true,
+   "first_edition": "Madrid, 1934 (printer unverified); 2nd ed. San Juan: Biblioteca de Autores Puertorriqueños, 1942.",
+   "original_language": "es",
+   "author_death": 1939,
+   "pd": {
+    "us": "pd, likely: a 1934 work by a US national (Puerto Rican) needed a 1961-62 renewal; HathiTrust has opened the 1942 2nd edition worldwide, consistent with no renewal. Renewal search not directly verified (Stanford renewal database blocked).",
+    "spain": "pd (died 1939)",
+    "origin": "Puerto Rico = US law (see US)"
+   },
+   "verdict": "pd",
+   "sources": [
+    {
+     "name": "HathiTrust, 2nd ed. 1942 (page images, full view)",
+     "url": "https://catalog.hathitrust.org/Record/001447701",
+     "kind": "scan",
+     "access": "full view",
+     "complete": true
+    },
+    {
+     "name": "Internet Archive upload by a UPR address (2016)",
+     "url": "https://archive.org/details/Insularismo",
+     "kind": "scan",
+     "access": "worldwide",
+     "note": "edition not stated; check before use"
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [],
+   "region": "Caribbean",
+   "region_reason": "Puerto Rico.",
+   "length": "unverified (c. 200 pp.)",
+   "notes": "Use the 1942 2nd edition (HathiTrust full view) as base; OCR needed."
+  },
+  {
+   "id": "T035",
+   "title": "Defensa de la Hispanidad",
+   "author": "Ramiro de Maeztu",
+   "first_published": 1934,
+   "canon_year": 1934,
+   "year_ok": true,
+   "first_edition": "Madrid, 1934 (preface dated April 1934; printed by Gráfica Universal per the scan's colophon; publisher name unverified). The prologue first appeared in Acción Española, 15 Dec 1931.",
+   "original_language": "es",
+   "author_death": 1936,
+   "pd": {
+    "us": "copyright until 31 Dec 2029: foreign work of 1934, still protected in Spain on 1 Jan 1996, so restored by the URAA for 95 years from publication",
+    "spain": "pd since 1 Jan 2017 (life+80)",
+    "origin": "Spain: pd"
+   },
+   "verdict": "pd-outside-us",
+   "verdict_note": "PD in Spain and the EU; in copyright in the US until 1 Jan 2030. Hosting from Vercel (US) is the question for Carlos: safest is to link until 2030.",
+   "sources": [
+    {
+     "name": "Internet Archive: scan of the 1934 first edition with BNE stamps (user upload)",
+     "url": "https://archive.org/details/DefensaDeLaHispanidadRamiroDeMaeztuV",
+     "kind": "scan",
+     "access": "worldwide",
+     "complete": true,
+     "note": "private upload of a BNE copy; looks complete"
+    }
+   ],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Biblioteca Nacional de España (catalogue)",
+     "url": "https://www.bne.es",
+     "kind": "library",
+     "access": "worldwide",
+     "note": "a BDH digitisation was not found"
+    }
+   ],
+   "region": "Spain",
+   "region_reason": "Spanish author, published in Madrid.",
+   "length": "unverified (c. 300 pp.)",
+   "notes": ""
+  },
+  {
+   "id": "T036",
+   "title": "El antimperialismo y el Apra",
+   "title_note": "The canon spells it 'antiimperialismo'; the original title is 'El antimperialismo y el Apra'.",
+   "author": "Víctor Raúl Haya de la Torre",
+   "first_published": 1935,
+   "canon_year": 1936,
+   "year_ok": false,
+   "year_correction": "1935, not 1936. Written in Mexico in 1928; first edition December 1935 (prologue dated Incahuasi, 25 Dec 1935), its distribution limited by repression; 2nd edition Santiago de Chile: Ercilla, 1936 (the one most catalogues show). Source: front matter of the Fondo Editorial del Congreso del Perú edition (2010), reproduced at marxists.org; catalogue records label the Ercilla 1936 printing '2a. ed.'",
+   "first_edition": "December 1935 (place/publisher unverified); 2nd ed. Santiago: Ercilla, 1936.",
+   "original_language": "es",
+   "author_death": 1979,
+   "pd": {
+    "us": "copyright until 31 Dec 2030 (1935 foreign work, restored)",
+    "spain": "copyright until 2059",
+    "origin": "Peru: copyright until 31 Dec 2049 (life+70)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Fondo Editorial del Congreso del Perú, 2010 edition (free PDF issued for the 30th anniversary of Haya's death); mirrored by marxists.org",
+     "url": "https://www.marxists.org/espanol/haya/1930s/antimperialismo/el-antimperialismo-y-el-apra.pdf",
+     "kind": "free-official-edition",
+     "access": "worldwide",
+     "complete": true,
+     "note": "the congreso.gob.pe original URL was not found; marxists.org's mirror is a volunteer archive, link with that caveat"
+    }
+   ],
+   "region": "South America",
+   "region_reason": "Peruvian author and movement (APRA).",
+   "length": "276 pp. (2010 Congress edition)",
+   "notes": ""
+  },
+  {
+   "id": "T037",
+   "title": "Pensamiento y poesía en la vida española",
+   "author": "María Zambrano",
+   "first_published": 1939,
+   "canon_year": 1939,
+   "year_ok": true,
+   "first_edition": "México: La Casa de España en México (now El Colegio de México), 1939; three lectures given in June 1939.",
+   "original_language": "es",
+   "author_death": 1991,
+   "pd": {
+    "us": "copyright until 31 Dec 2034 (restored)",
+    "spain": "copyright until 31 Dec 2061 (life+70)",
+    "origin": "Spain: copyright"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Alianza Editorial edition (text of the Obras completas, vol. I, ed. Mercedes Gómez Blesa; prologue F. J. Martín); free first-chapter sample",
+     "url": "https://www.alianzaeditorial.es/primer_capitulo/pensamiento-y-poesia-en-la-vida-espanola.pdf",
+     "kind": "publisher",
+     "access": "worldwide"
+    },
+    {
+     "name": "Obras completas I: Libros (1930-1939), Galaxia Gutenberg / Fundación María Zambrano, 2015",
+     "url": "https://www.galaxiagutenberg.com",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "publisher listing URL not verified"
+    }
+   ],
+   "region": "Spain",
+   "region_reason": "Spanish author on Spanish thought, though written and published in Mexican exile.",
+   "length": "unverified (c. 150-180 pp.)",
+   "notes": ""
+  },
+  {
+   "id": "T038",
+   "title": "Contrapunteo cubano del tabaco y el azúcar",
+   "author": "Fernando Ortiz",
+   "first_published": 1940,
+   "canon_year": 1940,
+   "year_ok": true,
+   "first_edition": "La Habana: Jesús Montero, 1940.",
+   "original_language": "es",
+   "author_death": 1969,
+   "pd": {
+    "us": "copyright until 31 Dec 2035 (1940 foreign work, restored)",
+    "spain": "copyright until 31 Dec 2049 (life+80)",
+    "origin": "Cuba: pd since 1 Jan 2020 (life+50; term not re-verified)"
+   },
+   "verdict": "copyright",
+   "verdict_note": "PD only in Cuba.",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Internet Archive lending: Biblioteca Ayacucho ed. 1978 (vol. 42, prologue Julio Le Riverend)",
+     "url": "https://archive.org/details/contrapunteocuba0000orti",
+     "kind": "lending",
+     "access": "controlled digital lending",
+     "complete": true
+    },
+    {
+     "name": "Biblioteca Ayacucho (Caracas) publishes its collection as free PDFs",
+     "url": "https://www.bibliotecayacucho.gob.ve",
+     "kind": "free-official-edition",
+     "access": "unverified",
+     "note": "site unreachable when checked; confirm vol. 42 is downloadable"
+    },
+    {
+     "name": "Cátedra, Letras Hispánicas 528 (2002), ed. Enrico Mario Santí",
+     "url": "https://www.catedra.com",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "listing URL not verified"
+    }
+   ],
+   "region": "Caribbean",
+   "region_reason": "Cuba.",
+   "length": "unverified (c. 400+ pp. with the 'additional chapters')",
+   "notes": ""
+  },
+  {
+   "id": "T039",
+   "title": "O mundo que o português criou",
+   "author": "Gilberto Freyre",
+   "first_published": 1940,
+   "canon_year": 1940,
+   "year_ok": true,
+   "first_edition": "Rio de Janeiro: José Olympio, 1940 (Documentos Brasileiros 28), 164 pp. A revised, enlarged form of Conferências na Europa (1938); Lisbon edition, Livros do Brasil [1940], preface António Sérgio.",
+   "original_language": "pt",
+   "author_death": 1987,
+   "pd": {
+    "us": "copyright until 31 Dec 2035",
+    "spain": "copyright until 31 Dec 2067 (died July 1987: life+80)",
+    "origin": "Brazil: copyright until 31 Dec 2057 (life+70)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "É Realizações, São Paulo, 2010 edition",
+     "url": "https://www.erealizacoes.com.br",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "cited in scholarship as Freyre [1940] 2010; product URL not verified"
+    }
+   ],
+   "region": "Lusophone world",
+   "region_reason": "Brazilian author on the Portuguese world (Brazil, Portugal, the colonies).",
+   "length": "164 pp. (1940)",
+   "notes": "Note the 1938 origin (Conferências na Europa) in the record."
+  },
+  {
+   "id": "T040",
+   "title": "Hispanoamérica del dolor",
+   "author": "Jaime Eyzaguirre",
+   "first_published": 1947,
+   "canon_year": 1947,
+   "year_ok": true,
+   "first_edition": "1947 (Memoria Chilena chronology); first publisher unverified (often given as Madrid, Cultura Hispánica). Later: Hispanoamérica del dolor y otros estudios, Madrid: Cultura Hispánica, 1979, 436 pp.; Santiago: Editorial Universitaria (17+ editions).",
+   "original_language": "es",
+   "author_death": 1968,
+   "pd": {
+    "us": "copyright until 31 Dec 2042",
+    "spain": "copyright until 31 Dec 2048",
+    "origin": "Chile: copyright until 31 Dec 2038 (life+70)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Editorial Universitaria (Santiago de Chile), in print",
+     "url": "https://www.universitaria.cl",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "product URL not verified"
+    }
+   ],
+   "region": "South America",
+   "region_reason": "Chile.",
+   "length": "short essay book (unverified)",
+   "notes": ""
+  },
+  {
+   "id": "T041",
+   "title": "América como conciencia",
+   "author": "Leopoldo Zea",
+   "first_published": 1953,
+   "canon_year": 1953,
+   "year_ok": true,
+   "first_edition": "México: Cuadernos Americanos, no. 30, 1953; 2nd ed. UNAM, 1972.",
+   "original_language": "es",
+   "author_death": 2004,
+   "pd": {
+    "us": "copyright until 31 Dec 2048",
+    "spain": "copyright until 2074",
+    "origin": "Mexico: copyright until 2104 (life+100)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "UNAM, 1972 2nd edition (libraries; UNAM open-access 'libros' site has other Zea titles but not this one)",
+     "url": "https://librosoa.unam.mx",
+     "kind": "library",
+     "access": "worldwide",
+     "note": "no open copy found"
+    }
+   ],
+   "region": "North America",
+   "region_reason": "Mexico.",
+   "length": "unverified (c. 170 pp.)",
+   "notes": ""
+  },
+  {
+   "id": "T042",
+   "title": "Qu'est-ce que le luso-tropicalisme?",
+   "author": "Mário Pinto de Andrade",
+   "first_published": 1955,
+   "canon_year": 1955,
+   "year_ok": true,
+   "first_edition": "Présence Africaine (Paris), no. 4, Oct-Nov 1955. Often said to be signed with the pseudonym Buanga Fele (unverified).",
+   "original_language": "fr",
+   "author_death": 1990,
+   "pd": {
+    "us": "copyright until 31 Dec 2050",
+    "spain": "copyright until 2060",
+    "origin": "France (place of publication) / Angola: copyright until 31 Dec 2060 (life+70)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Présence Africaine back issues (publisher) or library holdings of the journal",
+     "url": "https://www.presenceafricaine.com",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "no online copy verified (not found on Cairn or JSTOR)"
+    }
+   ],
+   "region": "Lusophone world",
+   "region_reason": "Angolan author answering Freyre's Lusotropicalism, though written in French.",
+   "length": "journal article (unverified pages)",
+   "notes": ""
+  },
+  {
+   "id": "T043",
+   "title": "Cabo Verde visto por Gilberto Freyre: apontamentos lidos ao microfone de Rádio Barlavento",
+   "author": "Baltasar Lopes",
+   "first_published": 1956,
+   "canon_year": 1956,
+   "year_ok": true,
+   "first_edition": "Praia: Imprensa Nacional, 1956, 52 pp. (BNP record; catalogued with the author as Baltasar Lopes and title spelling 'Gilberto Freire').",
+   "original_language": "pt",
+   "author_death": 1989,
+   "pd": {
+    "us": "copyright until 31 Dec 2051",
+    "spain": "copyright until 2059",
+    "origin": "Cape Verde/Portugal: copyright until 31 Dec 2059 (life+70)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Biblioteca Nacional de Portugal catalogue record",
+     "url": "https://urn.bnportugal.gov.pt/bibliografia/unimarc/txt?id=77154",
+     "kind": "library",
+     "access": "worldwide"
+    }
+   ],
+   "region": "Lusophone world",
+   "region_reason": "Cape Verde.",
+   "length": "52 pp.",
+   "notes": "No modern reprint found."
+  },
+  {
+   "id": "T044",
+   "title": "Um Fernando Pessoa",
+   "author": "Agostinho da Silva",
+   "first_published": 1959,
+   "canon_year": 1959,
+   "year_ok": "unverified",
+   "year_correction": "Sources conflict: Lisbon, Guimarães, 1959, 189 pp. (Nantes university catalogue); Porto Alegre, Instituto Estadual do Livro, 1959; some give a 1958 Brazilian first edition. 1959 is the best-supported year; keep it, flag the imprint.",
+   "first_edition": "1959 (imprint unverified: Porto Alegre, IEL, or Lisbon, Guimarães).",
+   "original_language": "pt",
+   "author_death": 1994,
+   "pd": {
+    "us": "copyright",
+    "spain": "copyright until 2064",
+    "origin": "Portugal: copyright until 31 Dec 2064"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Guimarães Editores (Lisbon) reprints (1988 and later); libraries",
+     "url": "https://www.guimaraes-editores.pt",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "current availability not verified"
+    }
+   ],
+   "region": "Lusophone world",
+   "region_reason": "Portuguese author, written in Brazilian exile.",
+   "length": "189 pp. (1959 Guimarães)",
+   "notes": ""
+  },
+  {
+   "id": "T045",
+   "title": "El Uruguay como problema: en la cuenca del Plata entre Argentina y Brasil",
+   "author": "Alberto Methol Ferré",
+   "first_published": 1967,
+   "canon_year": 1967,
+   "year_ok": true,
+   "first_edition": "Montevideo: Diálogo, 1967 (publisher per Spanish Wikipedia; unverified). 3rd ed. as Geopolítica de la Cuenca del Plata: el Uruguay como problema, Buenos Aires: A. Peña Lillo, 1973, 136 pp. (prologue Arturo Jauretche).",
+   "original_language": "es",
+   "author_death": 2009,
+   "pd": {
+    "us": "copyright",
+    "spain": "copyright until 2079",
+    "origin": "Uruguay: copyright"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Colección de Clásicos Uruguayos (Biblioteca Artigas, Ministerio de Educación y Cultura), edition announced 2017 with prologue by Gerardo Caetano",
+     "url": "https://www.elobservador.com.uy/nota/los-libros-que-no-se-pierden-2017104500",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "volume number and free availability unverified"
+    }
+   ],
+   "region": "South America",
+   "region_reason": "Uruguay, Río de la Plata.",
+   "length": "136 pp. (1973 ed.)",
+   "notes": ""
+  },
+  {
+   "id": "T046",
+   "title": "Historia de la nación latinoamericana",
+   "author": "Jorge Abelardo Ramos",
+   "first_published": 1968,
+   "canon_year": 1968,
+   "year_ok": true,
+   "first_edition": "Buenos Aires: A. Peña Lillo, 1968.",
+   "original_language": "es",
+   "author_death": 1994,
+   "pd": {
+    "us": "copyright",
+    "spain": "copyright until 2064",
+    "origin": "Argentina: copyright until 31 Dec 2064 (life+70)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Ediciones Continente / Peña Lillo, Buenos Aires, 2011 (Biblioteca del Pensamiento Nacional, prologue Jorge Coscia; issued with the Secretaría de Cultura de la Nación), 448 pp.",
+     "url": "https://www.edicontinente.com.ar",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "product URL not verified"
+    }
+   ],
+   "region": "South America",
+   "region_reason": "Argentina.",
+   "length": "448 pp. (2011 ed.)",
+   "notes": ""
+  },
+  {
+   "id": "T047",
+   "title": "National Liberation and Culture / Libertação nacional e cultura",
+   "author": "Amílcar Cabral",
+   "first_published": 1970,
+   "canon_year": 1970,
+   "year_ok": true,
+   "first_edition": "Eduardo Mondlane Memorial Lecture, Syracuse University, 20 Feb 1970; printed by Syracuse University's Program of Eastern African Studies, 1970, 'translated from the French by Maureen Webster'. Portuguese text in Obras escolhidas, vol. I: A arma da teoria.",
+   "original_language": "fr (probably; the 1970 English printing says 'translated from the French'); Portuguese version later",
+   "author_death": 1973,
+   "pd": {
+    "us": "copyright (possible exception: if the 1970 Syracuse pamphlet carried no copyright notice it would be PD in the US; unverified)",
+    "spain": "copyright until 2053",
+    "origin": "Guinea-Bissau / Cape Verde: copyright (life+70 assumed, until 2043)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Internet Archive lending: Return to the Source (Monthly Review Press, 1973/1974), includes the lecture in English",
+     "url": "https://archive.org/details/returntosourcese0000cabr",
+     "kind": "lending",
+     "access": "controlled digital lending",
+     "complete": true
+    },
+    {
+     "name": "Unity and Struggle (Cambridge core listing, ch. 15)",
+     "url": "https://www.cambridge.org/core/books/unity-and-struggle/national-liberation-and-culture/57A89005A07414F31EB6C51E69AF3313",
+     "kind": "publisher",
+     "access": "worldwide"
+    }
+   ],
+   "region": "Lusophone world",
+   "region_reason": "Guinea-Bissau and Cape Verde.",
+   "length": "c. 15 leaves (1970 pamphlet)",
+   "notes": "Canon data: the original language is probably French, not Portuguese; keep both titles but record 'fr' as the language of the first printed text (to confirm against the 1970 pamphlet)."
+  },
+  {
+   "id": "T048",
+   "title": "Historia y tragedia de Guinea Ecuatorial",
+   "author": "Donato Ndongo",
+   "first_published": 1977,
+   "canon_year": 1977,
+   "year_ok": true,
+   "first_edition": "Madrid: Cambio 16, 1977.",
+   "original_language": "es",
+   "author_death": null,
+   "pd": {
+    "us": "copyright",
+    "spain": "copyright (living author)",
+    "origin": "copyright"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Libraries (BNE and university libraries); out of print, second-hand market",
+     "url": "https://www.bne.es",
+     "kind": "library",
+     "access": "worldwide"
+    }
+   ],
+   "region": "Spain",
+   "region_reason": "PROVISIONAL: Equatorial Guinea fits none of the six regions. The book was written and published in Madrid in exile. Recommend a seventh region (Hispanic Africa) or an explicit decision by Carlos.",
+   "length": "unverified",
+   "notes": "Living author: could ask him directly for permission or a link."
+  },
+  {
+   "id": "T049",
+   "title": "Culture and History: Occasional Notes on the Process of Philippine Becoming",
+   "author": "Nick Joaquín",
+   "first_published": 1988,
+   "canon_year": 1988,
+   "year_ok": true,
+   "first_edition": "Manila: Solar Publishing, 1988 (some catalogues give 1989 for the printing; Britannica gives 1988). Reissued as Culture and History, Pasig: Anvil, 2004, 424 pp.",
+   "original_language": "en",
+   "author_death": 2004,
+   "pd": {
+    "us": "copyright",
+    "spain": "copyright",
+    "origin": "Philippines: copyright until 31 Dec 2054 (life+50)"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Anvil Publishing 2004 edition (ISBN 978-971-27-3498-4), sold by the Yuchengco Museum shop",
+     "url": "https://yuchengcomuseum.org/product/culture-and-history/",
+     "kind": "bookshop",
+     "access": "worldwide"
+    }
+   ],
+   "region": "Ibero-Asia",
+   "region_reason": "Philippines.",
+   "length": "253 pp. (Solar) / 424 pp. (Anvil)",
+   "notes": ""
+  },
+  {
+   "id": "T050",
+   "title": "A nau de Ícaro, seguido de Imagem e miragem da lusofonia",
+   "author": "Eduardo Lourenço",
+   "first_published": 1999,
+   "canon_year": 1999,
+   "year_ok": true,
+   "first_edition": "Lisboa: Gradiva, 1999 (the lusophony essay first given as a lecture in Porto, 1996). Brazilian ed. São Paulo: Companhia das Letras, 2001, 224 pp.",
+   "original_language": "pt",
+   "author_death": 2020,
+   "pd": {
+    "us": "copyright",
+    "spain": "copyright until 2090",
+    "origin": "Portugal: copyright until 31 Dec 2090"
+   },
+   "verdict": "copyright",
+   "sources": [],
+   "clean_text": null,
+   "read_or_buy": [
+    {
+     "name": "Companhia das Letras (Brazil), 2001",
+     "url": "https://www.companhiadasletras.com.br/livro/9788535901887/a-nau-de-icaro-e-imagem-e-miragem-da-lusofonia",
+     "kind": "publisher",
+     "access": "worldwide"
+    },
+    {
+     "name": "Gradiva (Lisbon), 1999",
+     "url": "https://www.gradiva.pt",
+     "kind": "publisher",
+     "access": "worldwide",
+     "note": "product URL not verified"
+    }
+   ],
+   "region": "Lusophone world",
+   "region_reason": "Portugal (written in France).",
+   "length": "c. 190-224 pp.",
+   "notes": ""
+  }
+ ],
+ "prelude": {
+  "period": {
+   "id": "empire",
+   "from": 1539,
+   "to": 1817,
+   "name": {
+    "en": "The Empire's own thought",
+    "es": "El pensamiento del Imperio"
+   },
+   "note": "Proposed name; ids P01-P09 chronological."
+  },
+  "works": [
+   {
+    "id": "P01",
+    "title": "Relectio de Indis (De Indis recenter inventis relectio prior)",
+    "author": "Francisco de Vitoria",
+    "first_published": 1557,
+    "date_of_work": "lecture delivered at Salamanca, January 1539",
+    "first_edition": "Relectiones theologicae XII, Lyon: Jacques Boyer, 1557; corrected ed. by Alonso Muñoz, Salamanca, 1565.",
+    "original_language": "la",
+    "author_death": 1546,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "spanish_translation": {
+     "status": "No Spanish translation is PD in both the US and Spain in 2026.",
+     "options": [
+      {
+       "name": "Jaime Torrubiano Ripoll (trans.), Relecciones teológicas, vol. 1 (De Indis, De iure belli, De matrimonio), Madrid: Librería Religiosa Hernández, 1917",
+       "url": "https://archive.org/details/releccionesteol01vito",
+       "status": "PD in the US (1917); in Spain the translation is protected until 31 Dec 2043 (translator 1879-1963 per the Universidad de Sevilla catalogue). Also at IA B0811971 (Universidad de Sevilla copy)."
+      },
+      {
+       "name": "Luis G. Alonso Getino (ed./trans.), Relecciones teológicas, Madrid, 1933-1935",
+       "url": null,
+       "status": "translator died 1946 (unverified): PD in Spain from 1 Jan 2027; US copyright to c. 2029-2031. Not checked further."
+      }
+     ]
+    },
+    "sources": [
+     {
+      "name": "The School of Salamanca digital collection (Max Planck / Akademie Mainz), work W0013: Relectiones theologicae XII (Lyon 1557), TEI and plain-text export",
+      "url": "https://id.salamanca.school/works.W0013",
+      "kind": "clean-text",
+      "access": "worldwide",
+      "complete": true,
+      "proofread": true,
+      "note": "Latin; transcription of the 1557 edition (which Muñoz 1565 called corrupt); licence reported as CC BY 4.0 but not checked (site unreachable at check time)"
+     },
+     {
+      "name": "Internet Archive: Relectiones undecim, Salamanca 1565 (Muñoz)",
+      "url": "https://archive.org/details/bub_gb_vhyZBkpPXQcC",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     }
+    ],
+    "region": "Spain",
+    "region_reason": "Salamanca; the Empire's own university judging the conquest.",
+    "length": "c. 25,000 words (Latin; unverified)",
+    "why": "Named by Beltrán. The founding text on the rights of the Indians and the titles of Spanish dominion."
+   },
+   {
+    "id": "P02",
+    "title": "Brevísima relación de la destrucción de las Indias",
+    "author": "Bartolomé de las Casas",
+    "first_published": 1552,
+    "date_of_work": "written 1542, addressed to the future Philip II",
+    "first_edition": "Sevilla: Sebastián Trujillo, 1552.",
+    "original_language": "es",
+    "author_death": 1566,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "sources": [
+     {
+      "name": "Internet Archive: 1552 princeps, John Carter Brown Library copy",
+      "url": "https://archive.org/details/breuissimarelaci00casa",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     },
+     {
+      "name": "Wikisource (es)",
+      "url": "https://es.wikisource.org/wiki/Brev%C3%ADsima_relaci%C3%B3n_de_la_destrucci%C3%B3n_de_las_Indias",
+      "kind": "clean-text",
+      "access": "worldwide",
+      "complete": false,
+      "proofread": false,
+      "note": "marked {{incompleto}}; from a 19th-century edition titled 'Historia de las crueldades...'; not usable as is"
+     },
+     {
+      "name": "Biblioteca Virtual Miguel de Cervantes: ed. José Miguel Martínez Torrejón (HTML/PDF)",
+      "url": "https://www.cervantesvirtual.com/obra/brevisima-relacion-de-la-destruccion-de-las-indias/",
+      "kind": "edited-edition",
+      "access": "worldwide",
+      "complete": true,
+      "note": "modern critical edition, (c) BVMC / Universidad de Alicante: link to it, don't copy it"
+     },
+     {
+      "name": "Project Gutenberg #20321",
+      "url": "https://www.gutenberg.org/ebooks/20321",
+      "kind": "translation",
+      "access": "worldwide",
+      "complete": true,
+      "note": "English translation only"
+     }
+    ],
+    "region": "Spain",
+    "region_reason": "Written by a Spanish friar to the Crown and printed in Seville (its subject is the Caribbean and the mainland).",
+    "length": "c. 30,000 words (unverified)",
+    "why": "Named by Beltrán. The Empire's self-indictment; the root of the black legend."
+   },
+   {
+    "id": "P03",
+    "title": "Democrates secundus (Democrates alter), sive de iustis belli causis apud Indos",
+    "author": "Juan Ginés de Sepúlveda",
+    "first_published": 1892,
+    "date_of_work": "written c. 1544-1545; denied a printing licence; circulated in manuscript",
+    "first_edition": "Ed. Marcelino Menéndez Pelayo, with Spanish translation, Boletín de la Real Academia de la Historia 21 (Oct 1892), pp. 257-369.",
+    "original_language": "la",
+    "author_death": 1573,
+    "pd": {
+     "us": "pd (1892)",
+     "spain": "pd (Menéndez Pelayo d. 1912)",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "spanish_translation": {
+     "status": "Menéndez Pelayo's 1892 Spanish translation is PD everywhere.",
+     "options": [
+      {
+       "name": "Boletín de la RAH, t. 21 (1892) at the Biblioteca Virtual Miguel de Cervantes",
+       "url": "https://www.cervantesvirtual.com/obra-visor/boletin-de-la-real-academia-de-la-historia--63/html/",
+       "status": "pd; scan/facsimile (completeness not checked)"
+      }
+     ]
+    },
+    "sources": [
+     {
+      "name": "Boletín de la Real Academia de la Historia, t. 21 (1892), BVMC",
+      "url": "https://www.cervantesvirtual.com/obra-visor/boletin-de-la-real-academia-de-la-historia--63/html/",
+      "kind": "scan",
+      "access": "worldwide"
+     }
+    ],
+    "region": "Spain",
+    "region_reason": "Córdoba-born royal chronicler; the Valladolid debate (1550-51).",
+    "length": "c. 100 pp. in the 1892 printing (pp. 257-369, Latin and Spanish)",
+    "why": "The other side of the Valladolid debate; without it Las Casas and Vitoria answer no one."
+   },
+   {
+    "id": "P04",
+    "title": "Historia natural y moral de las Indias",
+    "author": "José de Acosta",
+    "first_published": 1590,
+    "first_edition": "Sevilla: Juan de León, 1590.",
+    "original_language": "es",
+    "author_death": 1600,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "sources": [
+     {
+      "name": "Project Gutenberg #70219 (vol. 1 of 2)",
+      "url": "https://www.gutenberg.org/ebooks/70219",
+      "kind": "clean-text",
+      "access": "worldwide",
+      "complete": true,
+      "proofread": true
+     },
+     {
+      "name": "Project Gutenberg #50430 (vol. 2 of 2)",
+      "url": "https://www.gutenberg.org/ebooks/50430",
+      "kind": "clean-text",
+      "access": "worldwide",
+      "complete": true,
+      "proofread": true,
+      "note": "Gutenberg texts are proofread (Distributed Proofreaders); base edition is the 1894 Madrid reprint (to confirm)"
+     },
+     {
+      "name": "Internet Archive: 1590/1591 editions (John Carter Brown)",
+      "url": "https://archive.org/details/historianaturaly00acos_1",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     }
+    ],
+    "clean_text": "https://www.gutenberg.org/ebooks/70219",
+    "region": "South America",
+    "region_reason": "Written by a Spanish Jesuit from fifteen years in Peru (and Mexico).",
+    "length": "c. 200,000 words (two volumes; unverified)",
+    "why": "The Empire's natural and moral account of the Indies and their peoples; the most read work on America in Europe for a century."
+   },
+   {
+    "id": "P05",
+    "title": "Comentarios reales de los Incas (Primera parte)",
+    "author": "Inca Garcilaso de la Vega",
+    "first_published": 1609,
+    "first_edition": "Lisboa: Pedro Crasbeeck, 1609 (Segunda parte / Historia general del Perú, Córdoba, 1617).",
+    "original_language": "es",
+    "author_death": 1616,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "sources": [
+     {
+      "name": "Internet Archive: 1609 princeps (Google Books scan)",
+      "url": "https://archive.org/details/bub_gb_7fB7gRxSefEC",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     },
+     {
+      "name": "Internet Archive: Los comentarios reales, ed. Urteaga, Lima 1918 (Princeton copies, vols. 1-6)",
+      "url": "https://archive.org/details/loscomentariosre01vega",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true,
+      "note": "1918 edition, PD in the US; Urteaga d. after 1952 (unverified), so use only Garcilaso's text, not the editor's notes"
+     },
+     {
+      "name": "Wikisource (es): Comentarios reales (Primera parte)",
+      "url": "https://es.wikisource.org/wiki/Comentarios_reales_(Primera_parte)",
+      "kind": "clean-text",
+      "access": "worldwide",
+      "complete": false,
+      "proofread": false,
+      "note": "anthology only: proem and 30 chapters"
+     }
+    ],
+    "region": "South America",
+    "region_reason": "Cuzco-born mestizo, son of an Inca princess and a conquistador.",
+    "length": "c. 9 books, c. 260 chapters (Primera parte)",
+    "why": "The mestizo voice of the Empire: the Inca world told in Spanish, from Spain, by a subject of both."
+   },
+   {
+    "id": "P06",
+    "title": "El primer nueva corónica y buen gobierno",
+    "author": "Felipe Guaman Poma de Ayala",
+    "first_published": 1936,
+    "date_of_work": "completed c. 1615, addressed to Philip III; manuscript GKS 2232 4°, Royal Danish Library",
+    "first_edition": "Facsimile, Paris: Institut d'Ethnologie, 1936 (ed. Paul Rivet).",
+    "original_language": "es (with Quechua passages)",
+    "author_death": 1616,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "sources": [
+     {
+      "name": "Royal Danish Library, The Guaman Poma Website: full digital facsimile of the autograph",
+      "url": "https://poma.kb.dk",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true,
+      "note": "the facsimile is free to view; the site's annotated transcription (Murra/Adorno) is a copyrighted edition: link, don't copy"
+     },
+     {
+      "name": "Wikisource (es): Nueva corónica y buen gobierno",
+      "url": "https://es.wikisource.org/wiki/Nueva_cor%C3%B3nica_y_buen_gobierno",
+      "kind": "clean-text",
+      "access": "worldwide",
+      "complete": false,
+      "proofread": false,
+      "note": "marked {{incompleto}} and {{sin formato}}; 22 chapters"
+     }
+    ],
+    "region": "South America",
+    "region_reason": "Andean (Huamanga, Peru) noble writing to the king.",
+    "length": "1,189 pages of manuscript with 398 drawings",
+    "why": "An Indigenous subject's programme of 'good government' for the Empire. Unknown until 1908 and unpublished until 1936: say so in its record."
+   },
+   {
+    "id": "P07",
+    "title": "Política indiana",
+    "author": "Juan de Solórzano Pereira",
+    "first_published": 1647,
+    "first_edition": "Madrid: Diego Díaz de la Carrera, 1647 (title pages of some copies dated 1648). Spanish version, enlarged, of De Indiarum iure (Latin, 1629-1639).",
+    "original_language": "es",
+    "author_death": 1655,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "sources": [
+     {
+      "name": "Biblioteca Virtual Miguel de Cervantes: digital reproduction (Universidad de Salamanca copy)",
+      "url": "https://www.cervantesvirtual.com/obra/politica-indiana/",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     },
+     {
+      "name": "Internet Archive: 1648 Madrid, vols. 1-2 (Universidad de Sevilla copies)",
+      "url": "https://archive.org/details/A052260028",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     }
+    ],
+    "region": "Spain",
+    "region_reason": "Printed in Madrid for the Council of the Indies, though written from 18 years as oidor in Lima. (South America would also be defensible.)",
+    "length": "c. 1,000 folio pages (six books; unverified)",
+    "why": "The Empire's legal summa of the Indies: the status of the Indians, the encomienda, the Church, the councils."
+   },
+   {
+    "id": "P08",
+    "title": "Storia antica del Messico (Historia antigua de México)",
+    "author": "Francisco Javier Clavijero",
+    "first_published": 1780,
+    "first_edition": "Cesena: Gregorio Biasini, 1780-1781, 4 vols. (Italian). Spanish: trans. José Joaquín de Mora, London: R. Ackermann, 1826; trans. Francisco Pablo Vázquez, México, 1853. Clavijero's own Spanish autograph was first printed in 1945 (Porrúa).",
+    "original_language": "it (first edition); a Spanish autograph existed",
+    "author_death": 1787,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "spanish_translation": {
+     "status": "Mora's 1826 translation (Mora d. 1864) is PD everywhere.",
+     "options": [
+      {
+       "name": "Historia antigua de Mégico, trans. J. J. de Mora, London: Ackermann, 1826",
+       "url": "https://archive.org/details/historiaantiguad01clav",
+       "status": "pd; scan (also IA historiaantigua00moragoog)"
+      },
+      {
+       "name": "Historia antigua de Méjico, trans. F. P. Vázquez, 1853 (BVMC)",
+       "url": "https://www.cervantesvirtual.com/obra/historia-antigua-de-mexico-sacada-de-los-mejores-historiadores-espanoles-y-de-manuscritos-y-pinturas-antiguas-de-los-indios-dividida-en-diez-libros-adornada-de-cartas-geograficas-847095/",
+       "status": "pd; scan"
+      }
+     ]
+    },
+    "sources": [
+     {
+      "name": "Internet Archive: Storia antica del Messico, Cesena 1780 (Wellcome Collection, 4 vols.)",
+      "url": "https://archive.org/details/b28771965_0001",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     }
+    ],
+    "region": "North America",
+    "region_reason": "Veracruz-born Creole Jesuit, written in Italian exile about Mexico.",
+    "length": "4 vols. (c. 1,400 pp.; unverified)",
+    "why": "The Creole answer to Buffon and De Pauw: the Empire's own American-born subjects defending the New World and its ancient peoples."
+   },
+   {
+    "id": "P09",
+    "title": "Lettre aux Espagnols-Américains (Carta a los españoles americanos)",
+    "author": "Juan Pablo Viscardo y Guzmán",
+    "first_published": 1799,
+    "date_of_work": "written c. 1791-1792",
+    "first_edition": "'Philadelphie' [London], 1799, in French, published by Francisco de Miranda. Spanish trans. by Miranda: Carta derijida a los españoles americanos, London: P. Boyle, 1801.",
+    "original_language": "fr (published); Spanish translation 1801",
+    "author_death": 1798,
+    "pd": {
+     "us": "pd",
+     "spain": "pd",
+     "origin": "pd"
+    },
+    "verdict": "pd",
+    "spanish_translation": {
+     "status": "Miranda's 1801 translation is PD everywhere.",
+     "options": [
+      {
+       "name": "BVMC: 'Carta dirigida a los españoles americanos' en la traducción de Francisco de Miranda (1801), ed. Georges L. Bastin, 2012",
+       "url": "https://www.cervantesvirtual.com/obra/carta-dirigida-a-los-espanoles-americanos-de-juan-pablo-viscardo-y-guzman-en-la-traduccion-de-francisco-de-miranda-1801/",
+       "status": "1801 text PD; Bastin's edition (2012) is a modern edition: use the 1801 text, not his apparatus"
+      }
+     ]
+    },
+    "sources": [
+     {
+      "name": "Internet Archive: Lettre aux Espagnols-Américains, 1799 (John Carter Brown Library)",
+      "url": "https://archive.org/details/lettreauxespagno00vizc",
+      "kind": "scan",
+      "access": "worldwide",
+      "complete": true
+     }
+    ],
+    "region": "South America",
+    "region_reason": "Arequipa-born Creole Jesuit, expelled in 1767.",
+    "length": "c. 40 pp. (unverified)",
+    "why": "The hinge: an exiled Jesuit subject of the Empire calls its American sons to independence; the canon then opens with Bolívar."
+   }
+  ],
+  "considered": [
+   {
+    "work": "Sor Juana Inés de la Cruz, Loa para el auto sacramental de El divino Narciso (1690)",
+    "decision": "optional P10",
+    "reason": "Its allegory (América, Occidente, Religión, Celo) is about the conversion of the Mexica and the continuity between their rites and the Eucharist: it fits. The Respuesta a sor Filotea (1691, printed 1700) is about a woman's right to learning, not the New World: it does not fit the period's theme. PD (d. 1695); Project Gutenberg #74087 has Obras selectas; Wikisource has the Respuesta (not checked for the Loa)."
+   },
+   {
+    "work": "Bernardino de Sahagún, Historia general de las cosas de Nueva España (c. 1577; first printed 1829-1830)",
+    "decision": "left out",
+    "reason": "Fits the theme, but its Florentine Codex is already one of the pillar paintings; bilingual Nahuatl-Spanish and huge. A good later addition."
+   },
+   {
+    "work": "Recopilación de leyes de los reynos de las Indias (1680)",
+    "decision": "left out",
+    "reason": "A law code rather than a work of thought; Solórzano (P07) is its doctrinal companion."
+   }
+  ]
+ },
+ "corrections": [
+  {
+   "id": "T036",
+   "field": "year",
+   "from": 1936,
+   "to": 1935,
+   "source": "Front matter of El antimperialismo y el Apra, Fondo Editorial del Congreso del Perú, 2010 (https://www.marxists.org/espanol/haya/1930s/antimperialismo/index.htm): first edition Dec 1935; Ercilla 1936 is the 2nd ed. (Penn and SIU catalogue records say '2. ed.')."
+  },
+  {
+   "id": "T036",
+   "field": "title",
+   "from": "El antiimperialismo y el APRA",
+   "to": "El antimperialismo y el Apra",
+   "source": "Title as printed in the 1936 Ercilla edition and the 2010 Congress edition."
+  },
+  {
+   "id": "T032",
+   "field": "year (meaning)",
+   "from": "1929 (publication)",
+   "to": "1929 = written 20 March 1929; publication history unverified",
+   "source": "Editorial note in Geopolítica(s) 12(2) 2021 citing Ramírez, El pensamiento vivo (1974; 1984 ed. no. 111); García Laguardia published it as 'documento inédito'."
+  },
+  {
+   "id": "T047",
+   "field": "original language",
+   "from": "en/pt (implied by the bilingual title)",
+   "to": "fr probably (unverified)",
+   "source": "Penn catalogue and marxists.org: the 1970 Syracuse printing is 'translated from the French by Maureen Webster'."
+  },
+  {
+   "id": "T039",
+   "field": "note",
+   "from": "",
+   "to": "1940 edition is a revised form of Conferências na Europa (1938)",
+   "source": "ribac.cimac.pt and bibliographic record of the 1940 José Olympio edition."
+  },
+  {
+   "id": "T044",
+   "field": "year",
+   "from": 1959,
+   "to": "1959 (keep; first imprint conflicting: Porto Alegre IEL 1959 / Lisbon Guimarães 1959 / a claimed 1958 Brazilian ed.)",
+   "source": "Nantes university catalogue PPN072632887; postal.pt; Jornal Opção."
+  },
+  {
+   "id": "T048",
+   "field": "region",
+   "from": "-",
+   "to": "no fitting region (Equatorial Guinea)",
+   "source": "-"
+  }
+ ],
+ "notes": [
+  "Archive.org holds many private uploads of modern, in-copyright editions (e.g. Vasconcelos, Maeztu reprints, Haya). Only institutional scans (John Carter Brown, Robarts/Toronto, Universidad de Sevilla, Wellcome, Princeton) or the Internet Archive's own lending library are cited as legitimate.",
+  "HathiTrust 'US access only' items are PD in the US but HathiTrust blocks them outside the US; Beltrán/Carlos in Europe will not see them without a US connection.",
+  "None of the 25 works T026-T050 has a ready clean transcription except Mariátegui (Wikisource / marxists.org) and Sandino (Geopolítica(s)); the rest need OCR from scans.",
+  "Wikisource (es) was checked by API for every PD title: only Mariátegui is there among T026-T050."
+ ],
+ "sources": [
+  "https://onlinebooks.library.upenn.edu (HathiTrust records for Ugarte, Rojas, Vasconcelos, Henríquez Ureña, Sardinha, Masferrer, Pedreira)",
+  "https://archive.org/advancedsearch.php (item searches and metadata)",
+  "https://es.wikisource.org/w/api.php (title searches and page wikitext)",
+  "https://www.gutenberg.org/ebooks/search/ (Acosta #70219, #50430; Las Casas #20321 English)",
+  "https://www.marxists.org/espanol/haya/1930s/antimperialismo/index.htm",
+  "https://www.marxists.org/espanol/mariateg/oc/temas_de_nuestra_america/paginas/unidad.htm",
+  "https://revistas.ucm.es/index.php/GEOP/article/view/78605 (Sandino, text and editorial note)",
+  "https://urn.bnportugal.gov.pt/bibliografia/unimarc/txt?id=803651 (Sardinha 1924)",
+  "https://urn.bnportugal.gov.pt/bibliografia/unimarc/txt?id=77154 (Baltasar Lopes 1956)",
+  "https://www.memoriachilena.gob.cl/602/w3-article-656.html (Eyzaguirre chronology, 1947)",
+  "https://dianoia.filosoficas.unam.mx (review: Zea, América como conciencia, Cuadernos Americanos no. 30, 1953)",
+  "https://libros.colmex.mx/wp-content/plugins/documentos/boletines/pdf/boled_037.pdf (Zambrano 1939, Casa de España)",
+  "https://www.alianzaeditorial.es/primer_capitulo/pensamiento-y-poesia-en-la-vida-espanola.pdf",
+  "https://find.library.upenn.edu/catalog/997369273503681 (Cabral 1970 Syracuse pamphlet)",
+  "https://britannica.com/topic/Culture-and-History-Occasional-Notes-on-the-Process-of-Philippine-Becoming",
+  "https://www.companhiadasletras.com.br/livro/9788535901887/a-nau-de-icaro-e-imagem-e-miragem-da-lusofonia",
+  "https://www.cervantesvirtual.com/obra/politica-indiana/",
+  "https://www.cervantesvirtual.com/obra/brevisima-relacion-de-la-destruccion-de-las-indias/",
+  "https://www.cervantesvirtual.com/obra-visor/boletin-de-la-real-academia-de-la-historia--63/html/ (Sepúlveda 1892)",
+  "https://cisneros.web.uah.es/carpeta/images/pdfs/246.pdf (Sepúlveda, BRAH 21: 257-369)",
+  "https://poma.kb.dk (Guaman Poma facsimile)",
+  "https://www.cervantesvirtual.com/obra/carta-dirigida-a-los-espanoles-americanos-de-juan-pablo-viscardo-y-guzman-en-la-traduccion-de-francisco-de-miranda-1801/",
+  "https://idus.us.es/handle/11441/115952 (Torrubiano 1917, translator 1879-1963)"
+ ]
+}
