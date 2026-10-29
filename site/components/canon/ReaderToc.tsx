@@ -11,19 +11,20 @@ export default function ReaderToc({ sections, label }: { sections: Section[]; la
 
   useEffect(() => {
     const heads = sections.map((s) => document.getElementById(s.id)).filter((h): h is HTMLElement => !!h);
-    if (!heads.length || !('IntersectionObserver' in window)) return;
+    if (!heads.length) return;
     // the chapter whose heading last crossed the upper third of the screen
-    const onScroll = () => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
       const line = window.innerHeight / 3;
       let id: string | null = null;
       for (const h of heads) if (h.getBoundingClientRect().top < line) id = h.id;
       setCurrent(id);
     };
-    const io = new IntersectionObserver(onScroll, { rootMargin: '0px 0px -66% 0px' });
-    heads.forEach((h) => io.observe(h));
-    onScroll();
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll); };
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', onScroll); };
   }, [sections]);
 
   return (

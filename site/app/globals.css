@@ -742,6 +742,10 @@ main .eyebrow { color: var(--leather); }
 .record__facts { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 20px 0 0; padding-top: 16px; border-top: var(--rule); font-size: 14px; }
 .record__facts dt { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); padding-top: 2px; }
 .record__facts dd { margin: 0; }
+@media (max-width: 560px) {
+  .record__facts { grid-template-columns: 1fr; gap: 2px; }
+  .record__facts dd { margin-bottom: 10px; }
+}
 .record__note { margin-top: 16px; font-size: 12.5px; color: var(--ink-muted); }
 .record__swatch { display: inline-block; width: 10px; height: 13px; margin-right: 8px; vertical-align: -1px; background: var(--bg); outline: 1px solid color-mix(in srgb, var(--ink) 25%, transparent); outline-offset: -1px; }
 .record__note-text { margin-top: 16px; font-family: var(--display); font-size: 17px; line-height: 1.45; }
@@ -761,9 +765,10 @@ main .eyebrow { color: var(--leather); }
    column of about 65 characters, the chapters beside it on wide screens.
    ========================================================================== */
 
-.reader { --read-size: clamp(19px, 0.32vw + 17.6px, 21.5px); padding: clamp(28px, 5vw, 72px) var(--edge) clamp(40px, 6vw, 90px); }
+.reader { --read-size: clamp(18px, 0.3vw + 16.8px, 21px); --col: calc(var(--read-size) * 30); padding: clamp(28px, 5vw, 72px) var(--edge) clamp(40px, 6vw, 90px); }
 .reader__article { max-width: 1080px; margin: 0 auto; }
-.reader__head, .reader__toc, .reader__status, .reader__source, .reader__record, .reader__pager { max-width: 65ch; margin-inline: auto; }
+/* one column of about 65 characters of the Ibarra (30em of the reading size) */
+.reader__head, .reader__toc, .reader__status, .reader__source, .reader__record, .reader__pager { max-width: var(--col); margin-inline: auto; }
 .reader__head { font-size: var(--read-size); text-align: center; padding-bottom: clamp(26px, 4vw, 44px); border-bottom: var(--rule); }
 .reader__head > * { margin-inline: auto; }
 .reader__crumb { font-family: var(--body); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--leather); margin-bottom: clamp(18px, 2.4vw, 28px); }
@@ -771,7 +776,7 @@ main .eyebrow { color: var(--leather); }
 .reader__crumb a:hover { text-decoration: underline; }
 .reader__title { font-style: italic; font-size: clamp(36px, 6vw, 72px); line-height: 1.02; color: var(--burgundy); max-width: 16ch; }
 .reader__sub { margin-top: 14px; font-family: var(--display); font-size: clamp(18px, 1.8vw, 24px); line-height: 1.3; color: var(--ink-muted); max-width: 40ch; }
-.reader__author { margin: clamp(18px, 2.4vw, 26px) 0 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.reader__author { margin: clamp(18px, 2.4vw, 26px) auto 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
 .reader__author span { margin-left: 8px; font-family: var(--mono); font-weight: 400; letter-spacing: 0; color: var(--ink-muted); }
 .reader__facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px; margin: 22px auto 0; font-size: 14px; }
 .reader__facts div { display: grid; gap: 2px; }
@@ -792,7 +797,7 @@ main .eyebrow { color: var(--leather); }
 /* the text */
 .reader__body { position: relative; margin-top: clamp(30px, 4.5vw, 56px); }
 .reader__text {
-  max-width: 65ch; margin: 0 auto;
+  max-width: var(--col); margin: 0 auto;
   font: 400 var(--read-size)/1.62 var(--display); color: var(--ink);
   hyphens: auto; -webkit-hyphens: auto; hanging-punctuation: first; text-wrap: pretty;
   font-variant-numeric: oldstyle-nums;
