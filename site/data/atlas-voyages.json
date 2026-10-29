@@ -1,0 +1,463 @@
+{
+  "about": "The voyages of the Atlas (issue #71): each one a documented route, sailed by a ship on the map while the dark lifts along its wake. Waypoints are approximate positions of documented places, in the order and on the dates the voyages' own accounts give; unnamed points (no `name`) only keep the line at sea. Dates are ISO (a month alone where the day is uncertain). Sources per voyage, and the caveats, are in docs/research/atlas-voyages.md.",
+  "voyages": [
+    {
+      "id": "columbus-1",
+      "crown": "es",
+      "kind": "sea",
+      "layout": "atlantic",
+      "title": { "en": "Columbus’s first voyage", "es": "El primer viaje de Colón" },
+      "who": { "en": "Christopher Columbus, for the Crown of Castile", "es": "Cristóbal Colón, por la Corona de Castilla" },
+      "ships": { "en": "Santa María, Pinta, Niña", "es": "Santa María, Pinta, Niña" },
+      "summary": {
+        "en": "Three ships sail west from the Canaries along the twenty-eighth parallel and, after thirty-three days without sight of land, reach the Bahamas, Cuba and Hispaniola. The return, by the Azores, brings the news to Lisbon and Palos.",
+        "es": "Tres naves navegan hacia el oeste desde Canarias por el paralelo 28 y, tras treinta y tres días sin ver tierra, llegan a las Bahamas, Cuba y La Española. El regreso, por las Azores, lleva la noticia a Lisboa y a Palos."
+      },
+      "milestones": [9],
+      "image": "puebla",
+      "sources": [
+        "Cristóbal Colón, Diario de a bordo del primer viaje (abstract by Bartolomé de las Casas), Biblioteca Nacional de España",
+        "Samuel Eliot Morison, Admiral of the Ocean Sea (Boston, 1942)"
+      ],
+      "note": {
+        "en": "Guanahani is placed on today’s San Salvador Island, the usual identification; others have been proposed.",
+        "es": "Guanahani se sitúa en la actual isla de San Salvador, la identificación habitual; se han propuesto otras."
+      },
+      "route": [
+        { "at": [-6.89, 37.23], "date": "1492-08-03", "name": { "en": "Palos", "es": "Palos" }, "log": { "en": "Sails from Palos de la Frontera with three ships.", "es": "Zarpa de Palos de la Frontera con tres naves." } },
+        { "at": [-8.6, 35.3] },
+        { "at": [-13.2, 30.4] },
+        { "at": [-17.11, 28.09], "date": "1492-09-06", "name": { "en": "La Gomera", "es": "La Gomera" }, "log": { "en": "After repairs in the Canaries, leaves San Sebastián de La Gomera and sails due west.", "es": "Tras reparar en Canarias, sale de San Sebastián de La Gomera rumbo al oeste." } },
+        { "at": [-30, 28.1] },
+        { "at": [-45, 27.9] },
+        { "at": [-60, 26.4] },
+        { "at": [-68.5, 25.0] },
+        { "at": [-74.5, 24.05], "date": "1492-10-12", "name": { "en": "Guanahani", "es": "Guanahani" }, "log": { "en": "Landfall at Guanahani, which he names San Salvador.", "es": "Toca tierra en Guanahani, que llama San Salvador." }, "reveal": 4 },
+        { "at": [-74.85, 23.6] },
+        { "at": [-75.15, 23.15], "date": "1492-10-16", "name": { "en": "Fernandina", "es": "Fernandina" }, "log": { "en": "Coasts the island he names Fernandina (Long Island).", "es": "Costea la isla que llama Fernandina (Long Island)." } },
+        { "at": [-75.4, 22.2] },
+        { "at": [-75.97, 21.15], "date": "1492-10-28", "name": { "en": "Cuba", "es": "Cuba" }, "log": { "en": "Reaches Cuba, which he takes for part of Asia.", "es": "Llega a Cuba, que toma por parte de Asia." }, "reveal": 5 },
+        { "at": [-74.9, 20.75] },
+        { "at": [-74.3, 20.3] },
+        { "at": [-73.4, 19.85], "date": "1492-12-06", "name": { "en": "Hispaniola", "es": "La Española" }, "log": { "en": "Crosses to the island he names La Española.", "es": "Pasa a la isla que llama La Española." }, "reveal": 4 },
+        { "at": [-72.8, 20.1] },
+        { "at": [-72.1, 19.85], "date": "1492-12-25", "name": { "en": "La Navidad", "es": "La Navidad" }, "log": { "en": "The Santa María runs aground on Christmas night; with her timbers he builds the fort of La Navidad and leaves thirty-nine men.", "es": "La Santa María encalla la noche de Navidad; con su madera levanta el fuerte de La Navidad y deja treinta y nueve hombres." } },
+        { "at": [-71.6, 19.95] },
+        { "at": [-70.4, 19.85] },
+        { "at": [-69.35, 19.3], "date": "1493-01-13", "name": { "en": "Golfo de las Flechas", "es": "Golfo de las Flechas" }, "log": { "en": "First armed clash with the islanders, in the bay of Samaná; he sails for home on the 16th.", "es": "Primer choque armado con los isleños, en la bahía de Samaná; el 16 pone rumbo a casa." } },
+        { "at": [-63, 24.5] },
+        { "at": [-52, 32.5] },
+        { "at": [-40, 36.8] },
+        { "at": [-25.1, 36.97], "date": "1493-02-18", "name": { "en": "Azores", "es": "Azores" }, "log": { "en": "After a great storm, anchors at Santa Maria, in the Azores.", "es": "Tras una gran tormenta, fondea en Santa María, en las Azores." } },
+        { "at": [-16, 38.6] },
+        { "at": [-9.3, 38.68], "date": "1493-03-04", "name": { "en": "Lisbon", "es": "Lisboa" }, "log": { "en": "Driven by storms into the Tagus, he is received by John II of Portugal.", "es": "Arrastrado por los temporales al Tajo, lo recibe Juan II de Portugal." } },
+        { "at": [-8.4, 37.0] },
+        { "at": [-6.89, 37.23], "date": "1493-03-15", "name": { "en": "Palos", "es": "Palos" }, "log": { "en": "Back at Palos, seven and a half months after sailing.", "es": "De vuelta en Palos, siete meses y medio después de zarpar." } }
+      ]
+    },
+    {
+      "id": "columbus-2",
+      "crown": "es",
+      "kind": "sea",
+      "layout": "atlantic",
+      "title": { "en": "Columbus’s second voyage", "es": "El segundo viaje de Colón" },
+      "who": { "en": "Christopher Columbus, for the Crown of Castile", "es": "Cristóbal Colón, por la Corona de Castilla" },
+      "ships": { "en": "Seventeen ships", "es": "Diecisiete naves" },
+      "summary": {
+        "en": "A fleet of settlers crosses further south, into the Lesser Antilles, and follows the islands to Puerto Rico and Hispaniola. La Navidad is found burnt; the colony moves to La Isabela.",
+        "es": "Una flota de pobladores cruza más al sur, por las Antillas Menores, y sigue las islas hasta Puerto Rico y La Española. La Navidad aparece quemada; la colonia se traslada a La Isabela."
+      },
+      "milestones": [],
+      "sources": [
+        "Samuel Eliot Morison, Admiral of the Ocean Sea (Boston, 1942)",
+        "Hernando Colón, Historia del Almirante (Venice, 1571)"
+      ],
+      "note": {
+        "en": "The voyage went on in 1494 along the south of Cuba and to Jamaica; Columbus was back in Spain in June 1496.",
+        "es": "El viaje siguió en 1494 por el sur de Cuba y hasta Jamaica; Colón volvió a España en junio de 1496."
+      },
+      "route": [
+        { "at": [-6.29, 36.53], "date": "1493-09-25", "name": { "en": "Cádiz", "es": "Cádiz" }, "log": { "en": "Leaves Cádiz with seventeen ships and settlers.", "es": "Sale de Cádiz con diecisiete naves y pobladores." } },
+        { "at": [-9.0, 33.4] },
+        { "at": [-17.11, 28.09], "date": "1493-10-13", "name": { "en": "La Gomera", "es": "La Gomera" }, "log": { "en": "Last port before the crossing.", "es": "Último puerto antes de la travesía." } },
+        { "at": [-32, 21.5] },
+        { "at": [-48, 17.2] },
+        { "at": [-61.35, 15.42], "date": "1493-11-03", "name": { "en": "Dominica", "es": "Dominica" }, "log": { "en": "Sights an island on a Sunday and names it Dominica.", "es": "Avista una isla en domingo y la llama Dominica." }, "reveal": 3 },
+        { "at": [-61.55, 16.1], "date": "1493-11-04", "name": { "en": "Guadeloupe", "es": "Guadalupe" }, "log": { "en": "Lands on the island he names after the Virgin of Guadalupe, in Extremadura.", "es": "Desembarca en la isla que llama Guadalupe, por la Virgen extremeña." } },
+        { "at": [-62.6, 17.2] },
+        { "at": [-64.75, 17.75], "date": "1493-11-14", "name": { "en": "Santa Cruz", "es": "Santa Cruz" }, "log": { "en": "Saint Croix, and then the islands he names the Eleven Thousand Virgins.", "es": "Santa Cruz, y luego las islas que llama de las Once Mil Vírgenes." } },
+        { "at": [-65.6, 17.9] },
+        { "at": [-67.25, 18.15], "date": "1493-11-19", "name": { "en": "Puerto Rico", "es": "Puerto Rico" }, "log": { "en": "Puerto Rico, which he names San Juan Bautista.", "es": "Puerto Rico, que llama San Juan Bautista." }, "reveal": 3.5 },
+        { "at": [-68.6, 19.0] },
+        { "at": [-70.2, 19.95] },
+        { "at": [-72.1, 19.85], "date": "1493-11-28", "name": { "en": "La Navidad", "es": "La Navidad" }, "log": { "en": "Finds La Navidad burnt and its thirty-nine men dead.", "es": "Encuentra La Navidad quemada y muertos sus treinta y nueve hombres." } },
+        { "at": [-71.08, 19.89], "date": "1494-01-06", "name": { "en": "La Isabela", "es": "La Isabela" }, "log": { "en": "Founds La Isabela, the first Spanish town in the Americas.", "es": "Funda La Isabela, la primera villa española en América." } }
+      ]
+    },
+    {
+      "id": "gama",
+      "crown": "pt",
+      "kind": "sea",
+      "layout": "atlantic",
+      "title": { "en": "Vasco da Gama reaches India", "es": "Vasco da Gama llega a la India" },
+      "who": { "en": "Vasco da Gama, for the Crown of Portugal", "es": "Vasco da Gama, por la Corona de Portugal" },
+      "ships": { "en": "São Gabriel, São Rafael, Bérrio and a store ship", "es": "São Gabriel, São Rafael, Bérrio y una nave de bastimentos" },
+      "summary": {
+        "en": "Four ships swing far out into the South Atlantic, round the Cape that Dias had reached in 1488, and follow the Swahili coast to Malindi, where a local pilot takes them across the Indian Ocean to Calicut.",
+        "es": "Cuatro naves describen un gran arco por el Atlántico sur, doblan el cabo al que Dias había llegado en 1488 y siguen la costa suajili hasta Malindi, donde un piloto local las lleva por el Índico hasta Calicut."
+      },
+      "milestones": [7, 11],
+      "sources": [
+        "Roteiro of the first voyage (anonymous journal), trans. E. G. Ravenstein, A Journal of the First Voyage of Vasco da Gama (Hakluyt Society, 1898)"
+      ],
+      "note": {
+        "en": "The route shows the outward voyage; da Gama was back in Lisbon in 1499.",
+        "es": "La ruta muestra el viaje de ida; Da Gama volvió a Lisboa en 1499."
+      },
+      "route": [
+        { "at": [-9.21, 38.7], "date": "1497-07-08", "name": { "en": "Lisbon", "es": "Lisboa" }, "log": { "en": "Leaves Restelo, on the Tagus, with four ships.", "es": "Sale de Restelo, en el Tajo, con cuatro naves." } },
+        { "at": [-12.0, 33.0] },
+        { "at": [-16.5, 25.0] },
+        { "at": [-23.5, 14.92], "date": "1497-07-26", "name": { "en": "Cape Verde", "es": "Cabo Verde" }, "log": { "en": "Waters at Santiago, in the Cape Verde islands.", "es": "Hace aguada en Santiago, en Cabo Verde." } },
+        { "at": [-21.0, 3.0] },
+        { "at": [-27.0, -12.0] },
+        { "at": [-25.0, -25.0] },
+        { "at": [-12.0, -32.5] },
+        { "at": [18.0, -32.7], "date": "1497-11-07", "name": { "en": "St Helena Bay", "es": "Bahía de Santa Helena" }, "log": { "en": "After three months out of sight of land, anchors in St Helena Bay.", "es": "Tras tres meses sin ver tierra, fondea en la bahía de Santa Helena." } },
+        { "at": [17.6, -34.4] },
+        { "at": [18.6, -35.1], "date": "1497-11-22", "name": { "en": "Cape of Good Hope", "es": "Cabo de Buena Esperanza" }, "log": { "en": "Rounds the Cape of Good Hope.", "es": "Dobla el cabo de Buena Esperanza." } },
+        { "at": [22.15, -34.4], "date": "1497-11-25", "name": { "en": "São Brás", "es": "São Brás" }, "log": { "en": "Mossel Bay, which the Portuguese called São Brás.", "es": "La bahía de Mossel, que los portugueses llamaban São Brás." } },
+        { "at": [27.5, -33.9] },
+        { "at": [31.3, -29.9], "date": "1497-12-25", "name": { "en": "Natal", "es": "Natal" }, "log": { "en": "Names the coast Natal, for Christmas.", "es": "Llama Natal a la costa, por la Navidad." } },
+        { "at": [35.8, -24.5] },
+        { "at": [40.9, -15.03], "date": "1498-03-02", "name": { "en": "Mozambique", "es": "Mozambique" }, "log": { "en": "Mozambique Island, a port of the Swahili trade.", "es": "La isla de Mozambique, puerto del comercio suajili." } },
+        { "at": [41.5, -8.0] },
+        { "at": [39.8, -4.1], "date": "1498-04-07", "name": { "en": "Mombasa", "es": "Mombasa" }, "log": { "en": "A hostile reception at Mombasa.", "es": "Mal recibimiento en Mombasa." } },
+        { "at": [40.25, -3.22], "date": "1498-04-14", "name": { "en": "Malindi", "es": "Malindi" }, "log": { "en": "At Malindi the sultan gives him a pilot who knows the way to India.", "es": "En Malindi el sultán le da un piloto que conoce el camino a la India." } },
+        { "at": [55.0, 4.5] },
+        { "at": [68.0, 10.5] },
+        { "at": [75.6, 11.25], "date": "1498-05-20", "name": { "en": "Calicut", "es": "Calicut" }, "log": { "en": "Calicut: the sea route from Europe to India is open.", "es": "Calicut: queda abierta la ruta marítima de Europa a la India." }, "reveal": 4 }
+      ]
+    },
+    {
+      "id": "columbus-3",
+      "crown": "es",
+      "kind": "sea",
+      "layout": "atlantic",
+      "title": { "en": "Columbus’s third voyage", "es": "El tercer viaje de Colón" },
+      "who": { "en": "Christopher Columbus, for the Crown of Castile", "es": "Cristóbal Colón, por la Corona de Castilla" },
+      "ships": { "en": "Six ships; three sail on ahead to Hispaniola", "es": "Seis naves; tres se adelantan a La Española" },
+      "summary": {
+        "en": "Columbus crosses further south than before, by Cape Verde, reaches Trinidad and lands on the coast of Paria, his first steps on the mainland. The fresh water of the Orinoco in the gulf persuades him that he has found a great continent.",
+        "es": "Colón cruza más al sur que nunca, por Cabo Verde, llega a Trinidad y desembarca en la costa de Paria, sus primeros pasos en tierra firme. El agua dulce del Orinoco en el golfo lo convence de que ha hallado un gran continente."
+      },
+      "milestones": [],
+      "sources": [
+        "Samuel Eliot Morison, Admiral of the Ocean Sea (Boston, 1942)",
+        "Columbus’s letter to the Catholic Monarchs on the third voyage (1498)"
+      ],
+      "route": [
+        { "at": [-6.35, 36.78], "date": "1498-05-30", "name": { "en": "Sanlúcar", "es": "Sanlúcar" }, "log": { "en": "Leaves Sanlúcar de Barrameda with six ships.", "es": "Sale de Sanlúcar de Barrameda con seis naves." } },
+        { "at": [-10.5, 33.5] },
+        { "at": [-16.9, 32.6] },
+        { "at": [-17.11, 28.09] },
+        { "at": [-20.5, 21.0] },
+        { "at": [-23.5, 14.92], "date": "1498-07-04", "name": { "en": "Cape Verde", "es": "Cabo Verde" }, "log": { "en": "From Santiago, in Cape Verde, steers south-west, to cross nearer the equator.", "es": "Desde Santiago, en Cabo Verde, pone rumbo al suroeste, para cruzar más cerca del ecuador." } },
+        { "at": [-35.0, 9.3] },
+        { "at": [-50.0, 9.3] },
+        { "at": [-60.9, 10.05], "date": "1498-07-31", "name": { "en": "Trinidad", "es": "Trinidad" }, "log": { "en": "Sights three peaks and names the island Trinidad.", "es": "Avista tres picos y llama Trinidad a la isla." }, "reveal": 3 },
+        { "at": [-61.9, 10.3] },
+        { "at": [-62.3, 10.6], "date": "1498-08-05", "name": { "en": "Paria", "es": "Paria" }, "log": { "en": "Lands on the Paria peninsula: the mainland of South America.", "es": "Desembarca en la península de Paria: la tierra firme de América del Sur." }, "reveal": 4.5 },
+        { "at": [-61.85, 10.8] },
+        { "at": [-63.9, 11.15], "date": "1498-08-15", "name": { "en": "Margarita", "es": "Margarita" }, "log": { "en": "Sights the island of Margarita.", "es": "Avista la isla de Margarita." } },
+        { "at": [-66.5, 14.5] },
+        { "at": [-69.88, 18.4], "date": "1498-08-31", "name": { "en": "Santo Domingo", "es": "Santo Domingo" }, "log": { "en": "Reaches Santo Domingo, the colony’s new capital.", "es": "Llega a Santo Domingo, la nueva capital de la colonia." } }
+      ]
+    },
+    {
+      "id": "cabral",
+      "crown": "pt",
+      "kind": "sea",
+      "layout": "atlantic",
+      "title": { "en": "Cabral reaches Brazil", "es": "Cabral llega a Brasil" },
+      "who": { "en": "Pedro Álvares Cabral, for the Crown of Portugal", "es": "Pedro Álvares Cabral, por la Corona de Portugal" },
+      "ships": { "en": "Thirteen ships bound for India", "es": "Trece naves rumbo a la India" },
+      "summary": {
+        "en": "The second Portuguese fleet to India swings so far west that it sights land on the other side of the ocean. Cabral claims it for Portugal, sends a ship home with the news and sails on, round the Cape, to Calicut.",
+        "es": "La segunda armada portuguesa a la India se abre tanto al oeste que avista tierra al otro lado del océano. Cabral la toma para Portugal, envía una nave con la noticia y sigue, por el Cabo, hasta Calicut."
+      },
+      "milestones": [12],
+      "sources": [
+        "Pero Vaz de Caminha, letter to King Manuel I, Porto Seguro, 1 May 1500 (Arquivo Nacional da Torre do Tombo)",
+        "W. B. Greenlee, The Voyage of Pedro Álvares Cabral to Brazil and India (Hakluyt Society, 1938)"
+      ],
+      "route": [
+        { "at": [-9.21, 38.7], "date": "1500-03-09", "name": { "en": "Lisbon", "es": "Lisboa" }, "log": { "en": "Leaves Lisbon with thirteen ships.", "es": "Sale de Lisboa con trece naves." } },
+        { "at": [-13.0, 32.0] },
+        { "at": [-16.0, 27.0] },
+        { "at": [-24.3, 16.6], "date": "1500-03-22", "name": { "en": "Cape Verde", "es": "Cabo Verde" }, "log": { "en": "Passes São Nicolau, in Cape Verde.", "es": "Pasa São Nicolau, en Cabo Verde." } },
+        { "at": [-29.0, 3.0] },
+        { "at": [-34.0, -9.0] },
+        { "at": [-38.6, -16.9], "date": "1500-04-22", "name": { "en": "Monte Pascoal", "es": "Monte Pascoal" }, "log": { "en": "Sights a mountain in Easter week and names it Monte Pascoal.", "es": "Avista un monte en la semana de Pascua y lo llama Monte Pascoal." }, "reveal": 5 },
+        { "at": [-38.95, -16.3], "date": "1500-04-26", "name": { "en": "Porto Seguro", "es": "Porto Seguro" }, "log": { "en": "First Mass on the coast; on 1 May Caminha writes his letter to the king.", "es": "Primera misa en la costa; el 1 de mayo Caminha escribe su carta al rey." } },
+        { "at": [-25.0, -26.0] },
+        { "at": [-3.0, -35.5] },
+        { "at": [12.0, -37.5], "date": "1500-05", "name": { "en": "Storm off the Cape", "es": "Tormenta frente al Cabo" }, "log": { "en": "A storm sinks four ships; Bartolomeu Dias, who had rounded the Cape in 1488, is lost with his.", "es": "Una tormenta hunde cuatro naves; Bartolomeu Dias, que había doblado el Cabo en 1488, se pierde con la suya." } },
+        { "at": [22.0, -36.0] },
+        { "at": [33.0, -28.5] },
+        { "at": [38.5, -21.0] },
+        { "at": [40.9, -15.03], "date": "1500-07-20", "name": { "en": "Mozambique", "es": "Mozambique" }, "log": { "en": "Mozambique Island.", "es": "La isla de Mozambique." } },
+        { "at": [41.0, -8.5] },
+        { "at": [40.25, -3.22], "date": "1500-08-02", "name": { "en": "Malindi", "es": "Malindi" }, "log": { "en": "Malindi, and a pilot for India.", "es": "Malindi, y un piloto para la India." } },
+        { "at": [55.0, 5.0] },
+        { "at": [68.0, 10.5] },
+        { "at": [75.6, 11.25], "date": "1500-09-13", "name": { "en": "Calicut", "es": "Calicut" }, "log": { "en": "Calicut.", "es": "Calicut." } }
+      ]
+    },
+    {
+      "id": "columbus-4",
+      "crown": "es",
+      "kind": "sea",
+      "layout": "atlantic",
+      "title": { "en": "Columbus’s fourth voyage", "es": "El cuarto viaje de Colón" },
+      "who": { "en": "Christopher Columbus, for the Crown of Castile", "es": "Cristóbal Colón, por la Corona de Castilla" },
+      "ships": { "en": "Four ships", "es": "Cuatro naves" },
+      "summary": {
+        "en": "His last voyage looks for a strait to the west and follows the coast of Central America, from Honduras to Panama. The worm-eaten ships end beached in Jamaica, where he waits a year to be rescued.",
+        "es": "Su último viaje busca un paso hacia el oeste y recorre la costa de Centroamérica, de Honduras a Panamá. Las naves, comidas por la broma, acaban varadas en Jamaica, donde espera un año a que lo rescaten."
+      },
+      "milestones": [],
+      "sources": [
+        "Samuel Eliot Morison, Admiral of the Ocean Sea (Boston, 1942)",
+        "Hernando Colón, Historia del Almirante (Venice, 1571)"
+      ],
+      "route": [
+        { "at": [-6.29, 36.53], "date": "1502-05-11", "name": { "en": "Cádiz", "es": "Cádiz" }, "log": { "en": "Leaves Cádiz with four ships, on his last voyage.", "es": "Sale de Cádiz con cuatro naves, en su último viaje." } },
+        { "at": [-9.0, 33.4] },
+        { "at": [-15.42, 28.13] },
+        { "at": [-35.0, 20.0] },
+        { "at": [-50.0, 16.0] },
+        { "at": [-60.95, 14.6], "date": "1502-06-15", "name": { "en": "Martinique", "es": "Martinica" }, "log": { "en": "Martinique, after the fastest crossing of his four voyages.", "es": "Martinica, tras la travesía más rápida de sus cuatro viajes." } },
+        { "at": [-64.5, 16.6] },
+        { "at": [-69.88, 18.4], "date": "1502-06-29", "name": { "en": "Santo Domingo", "es": "Santo Domingo" }, "log": { "en": "Refused entry at Santo Domingo, he shelters from the hurricane that sinks the departing treasure fleet.", "es": "Sin permiso para entrar en Santo Domingo, se resguarda del huracán que hunde la flota que zarpaba." } },
+        { "at": [-73.0, 17.6] },
+        { "at": [-78.5, 17.3] },
+        { "at": [-85.85, 16.5], "date": "1502-07-30", "name": { "en": "Guanaja", "es": "Guanaja" }, "log": { "en": "At Guanaja, in the Bay Islands, meets a great Maya trading canoe.", "es": "En Guanaja, en las islas de la Bahía, encuentra una gran canoa maya de comercio." }, "reveal": 4 },
+        { "at": [-84.2, 16.1] },
+        { "at": [-83.1, 15.0], "date": "1502-09-14", "name": { "en": "Gracias a Dios", "es": "Gracias a Dios" }, "log": { "en": "After weeks against the wind, rounds a cape and names it Gracias a Dios.", "es": "Tras semanas contra el viento, dobla un cabo y lo llama Gracias a Dios." } },
+        { "at": [-83.3, 13.0] },
+        { "at": [-83.5, 11.2] },
+        { "at": [-82.95, 10.0], "date": "1502-09-25", "name": { "en": "Cariay", "es": "Cariay" }, "log": { "en": "Cariay, on the coast of today’s Costa Rica.", "es": "Cariay, en la costa de la actual Costa Rica." } },
+        { "at": [-81.6, 9.35] },
+        { "at": [-79.65, 9.6], "date": "1502-11-02", "name": { "en": "Portobelo", "es": "Portobelo" }, "log": { "en": "Names the harbour Portobelo.", "es": "Llama Portobelo al puerto." } },
+        { "at": [-80.85, 8.95], "date": "1503-01-06", "name": { "en": "Belén", "es": "Belén" }, "log": { "en": "Founds Santa María de Belén, in Veragua, the first attempt at a town on the mainland; it is abandoned in April.", "es": "Funda Santa María de Belén, en Veragua, primer intento de villa en tierra firme; se abandona en abril." } },
+        { "at": [-79.5, 9.7] },
+        { "at": [-77.6, 9.0] },
+        { "at": [-79.5, 13.5] },
+        { "at": [-77.2, 18.5], "date": "1503-06-25", "name": { "en": "Santa Gloria", "es": "Santa Gloria" }, "log": { "en": "The ships are beached at Santa Gloria, Jamaica; he is stranded there for a year.", "es": "Las naves quedan varadas en Santa Gloria, Jamaica; pasa allí un año." }, "reveal": 3 },
+        { "at": [-74.0, 17.6] },
+        { "at": [-69.88, 18.4], "date": "1504-08-13", "name": { "en": "Santo Domingo", "es": "Santo Domingo" }, "log": { "en": "Rescued, reaches Santo Domingo.", "es": "Rescatado, llega a Santo Domingo." } },
+        { "at": [-66.0, 21.5] },
+        { "at": [-45.0, 31.0] },
+        { "at": [-20.0, 36.5] },
+        { "at": [-6.35, 36.78], "date": "1504-11-07", "name": { "en": "Sanlúcar", "es": "Sanlúcar" }, "log": { "en": "Back at Sanlúcar. He does not return to the Indies; he dies at Valladolid in 1506.", "es": "De vuelta en Sanlúcar. No volverá a las Indias; muere en Valladolid en 1506." } }
+      ]
+    },
+    {
+      "id": "balboa",
+      "crown": "es",
+      "kind": "land",
+      "layout": "atlantic",
+      "title": { "en": "Balboa sees the South Sea", "es": "Balboa avista el Mar del Sur" },
+      "who": { "en": "Vasco Núñez de Balboa, governor at Darién", "es": "Vasco Núñez de Balboa, gobernador en el Darién" },
+      "ships": { "en": "On foot, across the isthmus, with Spaniards and Indigenous guides", "es": "A pie, por el istmo, con españoles y guías indígenas" },
+      "summary": {
+        "en": "From Santa María la Antigua del Darién, Balboa crosses the isthmus of Panama with Indigenous guides and, from a summit, is the first European to see the ocean on the other side. He names it the South Sea and takes possession of it for Castile.",
+        "es": "Desde Santa María la Antigua del Darién, Balboa cruza el istmo de Panamá con guías indígenas y, desde una cumbre, es el primer europeo que ve el océano del otro lado. Lo llama Mar del Sur y toma posesión de él por Castilla."
+      },
+      "milestones": [],
+      "sources": [
+        "Pedro Mártir de Anglería, De Orbe Novo, decade III (Alcalá, 1516)",
+        "Kathleen Romoli, Balboa of Darién: Discoverer of the Pacific (New York, 1953)"
+      ],
+      "route": [
+        { "at": [-77.05, 8.05], "date": "1513-09-01", "name": { "en": "Santa María la Antigua", "es": "Santa María la Antigua" }, "log": { "en": "Leaves Santa María la Antigua del Darién.", "es": "Sale de Santa María la Antigua del Darién." } },
+        { "at": [-77.3, 8.6] },
+        { "at": [-77.6, 8.85], "date": "1513-09-06", "name": { "en": "Careta", "es": "Careta" }, "log": { "en": "From Careta, on the Caribbean coast, strikes inland.", "es": "Desde Careta, en la costa del Caribe, se adentra en el istmo." } },
+        { "at": [-77.95, 8.65], "date": "1513-09-25", "name": { "en": "The summit", "es": "La cumbre" }, "log": { "en": "From a summit, sees the ocean to the south.", "es": "Desde una cumbre, ve el océano al sur." } },
+        { "at": [-78.3, 8.4], "date": "1513-09-29", "name": { "en": "Gulf of San Miguel", "es": "Golfo de San Miguel" }, "log": { "en": "Wades into the sea and takes possession of the South Sea for the Crown of Castile.", "es": "Entra en el mar y toma posesión del Mar del Sur por la Corona de Castilla." }, "reveal": 6 }
+      ]
+    },
+    {
+      "id": "magellan",
+      "crown": "es",
+      "kind": "sea",
+      "layout": "globe",
+      "title": { "en": "Magellan and Elcano sail around the world", "es": "Magallanes y Elcano dan la vuelta al mundo" },
+      "who": { "en": "Ferdinand Magellan, then Juan Sebastián Elcano, for the Crown of Castile", "es": "Fernando de Magallanes y luego Juan Sebastián Elcano, por la Corona de Castilla" },
+      "ships": { "en": "Trinidad, San Antonio, Concepción, Victoria, Santiago; only the Victoria returns", "es": "Trinidad, San Antonio, Concepción, Victoria, Santiago; solo vuelve la Victoria" },
+      "summary": {
+        "en": "Five ships sail west for the Spice Islands, find the strait at the foot of South America and cross an ocean no one had measured. Magellan is killed at Mactan; Elcano brings the Victoria home round Africa, three years later, with eighteen men.",
+        "es": "Cinco naves zarpan hacia el oeste en busca de la Especiería, hallan el estrecho al sur de América y cruzan un océano que nadie había medido. Magallanes muere en Mactán; Elcano trae la Victoria de vuelta por África, tres años después, con dieciocho hombres."
+      },
+      "milestones": [15],
+      "sources": [
+        "Antonio Pigafetta, Relazione del primo viaggio intorno al mondo (c. 1524), trans. J. A. Robertson, Magellan’s Voyage around the World (Cleveland, 1906)",
+        "Archivo General de Indias, Patronato 34 (the voyage’s papers)"
+      ],
+      "note": {
+        "en": "The crossing of the Pacific is drawn through the islands Pigafetta records; its exact track is reconstructed.",
+        "es": "La travesía del Pacífico se traza por las islas que anota Pigafetta; su derrota exacta es una reconstrucción."
+      },
+      "route": [
+        { "at": [-6.35, 36.78], "date": "1519-09-20", "name": { "en": "Sanlúcar", "es": "Sanlúcar" }, "log": { "en": "Five ships and some 240 men leave Sanlúcar de Barrameda.", "es": "Cinco naves y unos 240 hombres salen de Sanlúcar de Barrameda." } },
+        { "at": [-16.25, 28.47], "date": "1519-09-26", "name": { "en": "Tenerife", "es": "Tenerife" }, "log": { "en": "Last supplies at Tenerife.", "es": "Últimos bastimentos en Tenerife." } },
+        { "at": [-18.5, 20.0] },
+        { "at": [-15.0, 8.0] },
+        { "at": [-25.0, -1.0] },
+        { "at": [-33.0, -10.0] },
+        { "at": [-40.5, -20.5] },
+        { "at": [-43.15, -23.0], "date": "1519-12-13", "name": { "en": "Rio de Janeiro", "es": "Río de Janeiro" }, "log": { "en": "The bay of Rio de Janeiro.", "es": "La bahía de Río de Janeiro." } },
+        { "at": [-48.0, -28.0] },
+        { "at": [-55.5, -35.2], "date": "1520-01-11", "name": { "en": "Río de la Plata", "es": "Río de la Plata" }, "log": { "en": "Searches the Río de la Plata for a passage, in vain.", "es": "Busca un paso en el Río de la Plata, en vano." } },
+        { "at": [-60.0, -38.6] },
+        { "at": [-64.5, -42.5] },
+        { "at": [-67.4, -49.3], "date": "1520-03-31", "name": { "en": "San Julián", "es": "San Julián" }, "log": { "en": "Winters at San Julián and puts down a mutiny.", "es": "Inverna en San Julián y sofoca un motín." } },
+        { "at": [-68.2, -52.3], "date": "1520-10-21", "name": { "en": "The strait", "es": "El estrecho" }, "log": { "en": "Enters the strait that will bear his name.", "es": "Entra en el estrecho que llevará su nombre." } },
+        { "at": [-70.6, -53.2] },
+        { "at": [-71.9, -53.9] },
+        { "at": [-74.0, -52.9] },
+        { "at": [-75.2, -52.6], "date": "1520-11-28", "name": { "en": "The Pacific", "es": "El Pacífico" }, "log": { "en": "Out of the strait, into a calm ocean he names the Pacific.", "es": "Sale del estrecho a un océano en calma que llama Pacífico." } },
+        { "at": [-78.0, -42.0] },
+        { "at": [-85.0, -32.0] },
+        { "at": [-110.0, -20.0] },
+        { "at": [-138.6, -14.9], "date": "1521-01-24", "name": { "en": "San Pablo", "es": "San Pablo" }, "log": { "en": "An uninhabited island, the first land in two months; they name it San Pablo.", "es": "Una isla deshabitada, la primera tierra en dos meses; la llaman San Pablo." } },
+        { "at": [-155.0, -5.0] },
+        { "at": [-170.0, 6.0] },
+        { "at": [170.0, 12.0] },
+        { "at": [144.75, 13.44], "date": "1521-03-06", "name": { "en": "Guam", "es": "Guam" }, "log": { "en": "Guam, after more than three months at sea, the crews dying of scurvy.", "es": "Guam, tras más de tres meses en el mar, con las tripulaciones muriendo de escorbuto." }, "reveal": 3 },
+        { "at": [133.0, 11.5] },
+        { "at": [125.7, 10.75], "date": "1521-03-16", "name": { "en": "Homonhon", "es": "Homonhon" }, "log": { "en": "Reaches the islands later called the Philippines.", "es": "Llega a las islas que luego se llamarán Filipinas." }, "reveal": 5 },
+        { "at": [125.05, 9.95], "date": "1521-03-31", "name": { "en": "Limasawa", "es": "Limasawa" }, "log": { "en": "First Mass in the archipelago, on Easter Sunday.", "es": "Primera misa en el archipiélago, el domingo de Pascua." } },
+        { "at": [123.9, 10.3], "date": "1521-04-07", "name": { "en": "Cebu", "es": "Cebú" }, "log": { "en": "At Cebu, Rajah Humabon and his people are baptised.", "es": "En Cebú se bautizan el rajá Humabon y su gente." } },
+        { "at": [124.0, 10.28], "date": "1521-04-27", "name": { "en": "Mactan", "es": "Mactán" }, "log": { "en": "Magellan is killed at Mactan, fighting Lapulapu’s men.", "es": "Magallanes muere en Mactán, luchando contra los hombres de Lapulapu." } },
+        { "at": [123.2, 8.9] },
+        { "at": [119.5, 8.6] },
+        { "at": [114.95, 5.0], "date": "1521-07-09", "name": { "en": "Brunei", "es": "Brunéi" }, "log": { "en": "Brunei, with two ships left.", "es": "Brunéi, con dos naves ya." } },
+        { "at": [118.8, 7.0] },
+        { "at": [122.1, 6.6] },
+        { "at": [125.6, 2.6] },
+        { "at": [127.4, 0.68], "date": "1521-11-08", "name": { "en": "Tidore", "es": "Tidore" }, "log": { "en": "Tidore, in the Moluccas: the Spice Islands they had sailed for.", "es": "Tidore, en las Molucas: la Especiería que habían ido a buscar." }, "reveal": 4 },
+        { "at": [126.8, -3.6] },
+        { "at": [125.0, -8.2] },
+        { "at": [124.4, -10.1], "date": "1522-02-11", "name": { "en": "Timor", "es": "Timor" }, "log": { "en": "Elcano leaves Timor in the Victoria, to cross the Indian Ocean far from the Portuguese.", "es": "Elcano sale de Timor en la Victoria, para cruzar el Índico lejos de los portugueses." } },
+        { "at": [110.0, -22.0] },
+        { "at": [80.0, -36.0] },
+        { "at": [45.0, -39.5] },
+        { "at": [18.4, -35.2], "date": "1522-05", "name": { "en": "Cape of Good Hope", "es": "Cabo de Buena Esperanza" }, "log": { "en": "Rounds the Cape of Good Hope.", "es": "Dobla el cabo de Buena Esperanza." } },
+        { "at": [6.0, -24.0] },
+        { "at": [-12.0, -2.0] },
+        { "at": [-23.5, 14.92], "date": "1522-07-09", "name": { "en": "Cape Verde", "es": "Cabo Verde" }, "log": { "en": "At Cape Verde they find their log a day behind: sailing west, they had gained a day.", "es": "En Cabo Verde descubren que su diario va un día atrasado: navegando al oeste, habían ganado un día." } },
+        { "at": [-27.0, 28.0] },
+        { "at": [-15.0, 36.0] },
+        { "at": [-6.35, 36.78], "date": "1522-09-06", "name": { "en": "Sanlúcar", "es": "Sanlúcar" }, "log": { "en": "The Victoria reaches Sanlúcar with eighteen men: the first voyage around the world.", "es": "La Victoria llega a Sanlúcar con dieciocho hombres: la primera vuelta al mundo." } }
+      ]
+    },
+    {
+      "id": "orellana",
+      "crown": "es",
+      "kind": "river",
+      "layout": "atlantic",
+      "title": { "en": "Orellana sails down the Amazon", "es": "Orellana navega el Amazonas" },
+      "who": { "en": "Francisco de Orellana, from Gonzalo Pizarro’s expedition", "es": "Francisco de Orellana, desde la expedición de Gonzalo Pizarro" },
+      "ships": { "en": "The brigantine San Pedro and canoes; later a second brigantine, the Victoria", "es": "El bergantín San Pedro y canoas; después un segundo bergantín, el Victoria" },
+      "summary": {
+        "en": "Sent downriver for food, Orellana cannot come back against the current and follows the Napo into the greatest river on earth, to the Atlantic. The friar Gaspar de Carvajal keeps the account.",
+        "es": "Enviado río abajo en busca de comida, Orellana no puede volver contra la corriente y sigue el Napo hasta el río más caudaloso de la tierra, y por él hasta el Atlántico. El fraile Gaspar de Carvajal escribe la relación."
+      },
+      "milestones": [],
+      "sources": [
+        "Gaspar de Carvajal, Relación del nuevo descubrimiento del famoso río Grande de las Amazonas (1542), ed. J. T. Medina (Seville, 1894)",
+        "H. C. Heaton (ed.), The Discovery of the Amazon according to the Account of Friar Gaspar de Carvajal (American Geographical Society, 1934)"
+      ],
+      "route": [
+        { "at": [-76.97, -0.47], "date": "1541-12-26", "name": { "en": "The Coca", "es": "El Coca" }, "log": { "en": "Leaves Gonzalo Pizarro’s camp to look for food downriver.", "es": "Deja el campamento de Gonzalo Pizarro para buscar comida río abajo." }, "reveal": 2.5 },
+        { "at": [-76.0, -0.75] },
+        { "at": [-75.2, -1.05] },
+        { "at": [-74.5, -1.85] },
+        { "at": [-73.9, -2.7] },
+        { "at": [-73.15, -3.38], "date": "1542-02-12", "name": { "en": "The great river", "es": "El gran río" }, "log": { "en": "The Napo flows into a far greater river.", "es": "El Napo desemboca en un río mucho mayor." } },
+        { "at": [-71.8, -3.9] },
+        { "at": [-69.95, -4.25] },
+        { "at": [-68.0, -3.5] },
+        { "at": [-66.0, -3.25] },
+        { "at": [-64.7, -3.35] },
+        { "at": [-62.5, -3.6] },
+        { "at": [-59.95, -3.15], "date": "1542-06-03", "name": { "en": "Río Negro", "es": "Río Negro" }, "log": { "en": "Passes the mouth of a river black as ink and names it the Río Negro.", "es": "Pasa la boca de un río negro como la tinta y lo llama Río Negro." } },
+        { "at": [-58.5, -3.3] },
+        { "at": [-57.0, -2.6] },
+        { "at": [-56.6, -2.15], "date": "1542-06-24", "name": { "en": "The Amazons", "es": "Las amazonas" }, "log": { "en": "A battle against warriors led, Carvajal writes, by women: the river will take the name of the Amazons.", "es": "Batalla contra guerreros capitaneados, escribe Carvajal, por mujeres: el río tomará el nombre de las amazonas." } },
+        { "at": [-55.0, -2.2] },
+        { "at": [-53.0, -1.85] },
+        { "at": [-51.9, -1.45] },
+        { "at": [-51.0, -0.9] },
+        { "at": [-49.8, -0.2], "date": "1542-08-26", "name": { "en": "The Atlantic", "es": "El Atlántico" }, "log": { "en": "Reaches the sea: the first descent of the Amazon.", "es": "Llega al mar: el primer descenso del Amazonas." } },
+        { "at": [-52.5, 5.3] },
+        { "at": [-57.5, 7.6] },
+        { "at": [-60.5, 9.6] },
+        { "at": [-61.8, 11.0] },
+        { "at": [-64.18, 10.82], "date": "1542-09-11", "name": { "en": "Cubagua", "es": "Cubagua" }, "log": { "en": "Nueva Cádiz, on Cubagua.", "es": "Nueva Cádiz, en Cubagua." } }
+      ]
+    },
+    {
+      "id": "legazpi",
+      "crown": "es",
+      "kind": "sea",
+      "layout": "pacific",
+      "title": { "en": "Legazpi, Urdaneta and the way back", "es": "Legazpi, Urdaneta y la vuelta" },
+      "who": { "en": "Miguel López de Legazpi, with the Augustinian Andrés de Urdaneta as navigator", "es": "Miguel López de Legazpi, con el agustino Andrés de Urdaneta como piloto" },
+      "ships": { "en": "San Pedro, San Pablo, San Juan, San Lucas", "es": "San Pedro, San Pablo, San Juan, San Lucas" },
+      "summary": {
+        "en": "Legazpi’s fleet crosses from New Spain to the Philippines and settles at Cebu. Then Urdaneta takes the San Pedro north, to the latitude of Japan, finds the westerlies and comes back to Acapulco: the tornaviaje, the route the Manila galleons sailed for two and a half centuries.",
+        "es": "La flota de Legazpi cruza de Nueva España a Filipinas y se asienta en Cebú. Luego Urdaneta lleva la San Pedro al norte, a la latitud del Japón, halla los vientos del oeste y vuelve a Acapulco: el tornaviaje, la ruta que siguió el Galeón de Manila durante dos siglos y medio."
+      },
+      "milestones": [18],
+      "image": "galleon",
+      "sources": [
+        "Andrés de Urdaneta, derrotero of the return voyage (1565), Archivo General de Indias",
+        "William Lytle Schurz, The Manila Galleon (New York, 1939)"
+      ],
+      "note": {
+        "en": "Alonso de Arellano, in the San Lucas, had parted from the fleet and reached New Spain first, in August; Urdaneta’s course is the one the galleons followed.",
+        "es": "Alonso de Arellano, en el San Lucas, se había separado de la flota y llegó antes a Nueva España, en agosto; la derrota de Urdaneta es la que siguieron los galeones."
+      },
+      "route": [
+        { "at": [-104.68, 19.2], "date": "1564-11-21", "name": { "en": "Barra de Navidad", "es": "Barra de Navidad" }, "log": { "en": "The fleet leaves Barra de Navidad, in New Spain.", "es": "La flota sale de Barra de Navidad, en Nueva España." } },
+        { "at": [-120.0, 14.5] },
+        { "at": [-140.0, 11.5] },
+        { "at": [-160.0, 10.0] },
+        { "at": [170.0, 10.5] },
+        { "at": [144.75, 13.44], "date": "1565-01-22", "name": { "en": "Guam", "es": "Guam" }, "log": { "en": "Guam, which Legazpi claims for the Crown.", "es": "Guam, que Legazpi toma para la Corona." }, "reveal": 3 },
+        { "at": [133.0, 12.3] },
+        { "at": [125.3, 12.0], "date": "1565-02-13", "name": { "en": "Samar", "es": "Sámar" }, "log": { "en": "Reaches the Philippines at Samar.", "es": "Llega a Filipinas por Sámar." }, "reveal": 5 },
+        { "at": [125.2, 10.5] },
+        { "at": [124.0, 9.6], "date": "1565-03-16", "name": { "en": "Bohol", "es": "Bohol" }, "log": { "en": "At Bohol, Legazpi seals a blood compact with Datu Sikatuna.", "es": "En Bohol, Legazpi sella un pacto de sangre con el datu Sikatuna." } },
+        { "at": [123.9, 10.3], "date": "1565-04-27", "name": { "en": "Cebu", "es": "Cebú" }, "log": { "en": "Lands at Cebu and founds the first Spanish settlement in the islands.", "es": "Desembarca en Cebú y funda el primer asentamiento español en las islas." } },
+        { "at": [123.9, 10.3], "date": "1565-06-01", "name": { "en": "The return", "es": "La vuelta" }, "log": { "en": "Urdaneta sails the San Pedro from Cebu to find the way back.", "es": "Urdaneta sale de Cebú con la San Pedro a buscar la vuelta." } },
+        { "at": [124.6, 12.6] },
+        { "at": [130.0, 20.0] },
+        { "at": [140.0, 31.0] },
+        { "at": [150.0, 37.5] },
+        { "at": [165.0, 39.5] },
+        { "at": [-170.0, 39.5] },
+        { "at": [-150.0, 38.0] },
+        { "at": [-132.0, 35.5] },
+        { "at": [-120.1, 33.95], "date": "1565-09-18", "name": { "en": "California", "es": "California" }, "log": { "en": "Sights the coast of California, near the Channel Islands.", "es": "Avista la costa de California, cerca de las islas del Canal." }, "reveal": 3 },
+        { "at": [-116.0, 29.0] },
+        { "at": [-110.5, 22.5] },
+        { "at": [-104.5, 18.3] },
+        { "at": [-99.9, 16.84], "date": "1565-10-08", "name": { "en": "Acapulco", "es": "Acapulco" }, "log": { "en": "Acapulco, after four months at sea: the way back across the Pacific is found.", "es": "Acapulco, tras cuatro meses de mar: queda hallada la vuelta por el Pacífico." } }
+      ]
+    }
+  ]
+}
