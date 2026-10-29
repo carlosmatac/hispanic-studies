@@ -9,7 +9,8 @@ The website for **Beltrán Arellanes** and his **Institute for Hispano Studies**
 Decided (handoff: `docs/handoff/2026-10-20-real-project.md`):
 - **Direction: O · Atlas** (`proposals/o-atlas/` on the mockup branches): the sober reference-work register Beltrán asked for.
 - **Colours: his existing brand, unchanged** — burgundy `#470B15` / `#2F070D`, paper `#F9F3DD` / `#EDE3C8`, ink `#28231E` (plus his `leather` `#8B5E4B`, used only on the map). Tints of these are fine; new hues are not. **No theme switcher.**
-- From P · Tornaviaje only two things came over: the **footer** and the **canon as a React Flow graph**.
+- From P · Tornaviaje only the **footer** came over. (The canon as a React Flow graph came too, and was dropped on 2026-10-25 at Beltrán's request; see "The canon".)
+- **One paper, burgundy as ornament** (Beltrán and Carlos, 2026-10-24/26): every section of the home sits on the same paper (`--paper`); no section changes ground (they tried paper, leather, burgundy and ink grounds on 2026-10-25 and the page jumped). Sections part with a rule and a small leather lozenge; titles are burgundy, labels leather; a paper grain over everything and warm shadows (`--lift-1/2/3`). The colour comes from the art, in its own colours (the pillars, the Villalpando plate, the valley behind the epigraph). The only burgundy panel is the footer.
 
 Still parked (do not build on a guess): CMS/editing, payments and merch (#9), the newsletter provider behind the pamphlet signup, the Discord invite link.
 
@@ -17,7 +18,7 @@ Still parked (do not build on a guess): CMS/editing, payments and merch (#9), th
 | --- | --- | --- |
 | `site/` | **The real site**: Next.js (App Router, TypeScript) | both, through PRs |
 | `site/app/[lang]/` | Routes, one tree per language (`/en`, `/es`) | both |
-| `site/components/` | Page components; `canon/` is the React Flow canon graph | both |
+| `site/components/` | Page components; `canon/` is the canon's cards and records | both |
 | `site/lib/` | `i18n.ts` (every string, EN + ES), `content.ts` (real videos, essays, channels), `atlas-map.js` (the map plate) | both |
 | `site/data/`, `site/public/data/` | Datasets built from Beltrán's documents (see `tools/`). `public/data` is fetched by the browser; `data/` is imported at build time | both |
 | `proposals/` | The mockups Beltrán saw (archive, not maintained) | nobody |
@@ -70,36 +71,43 @@ Labels: `area:site`, `area:data`, `area:brand`, `area:shared`, `area:research`, 
 
 ## The site: rules of the game
 
-- **Stack**: Next.js 16 (App Router, Turbopack), React 19, TypeScript, plain CSS (custom properties, no CSS framework). `@xyflow/react` for the canon graph, `d3-geo` + `topojson-client` for the map. Versions are pinned exactly in `site/package.json`; upgrade deliberately, in its own PR.
+- **Stack**: Next.js 16 (App Router, Turbopack), React 19, TypeScript, plain CSS (custom properties, no CSS framework). `d3-geo` + `topojson-client` for the map. Versions are pinned exactly in `site/package.json`; upgrade deliberately, in its own PR.
 - **Colours and fonts** are tokens at the top of `site/app/globals.css`. Only the brand colours above, or `color-mix()` tints of them. Fonts (Ibarra Real Nova, Inter, IBM Plex Mono) come from `next/font` in `app/[lang]/layout.tsx`.
 - **EN/ES**: every string we author lives in `site/lib/i18n.ts`; the Spanish table is typed against the English one, so a missing translation fails the build. Third-party content (video and essay titles, the compiler's canon records) stays in its original language.
 - **Real content only**: Beltrán's videos, essays and numbers (`site/lib/content.ts`, `docs/research/context.md`); never invent books, people, prices, numbers or quotes. Followings we have: YouTube 13.5K, Instagram 19K, X 22K, Substack 587; none for TikTok or Patreon. Placeholder copy must look like placeholder (`[The store is not connected yet]`).
 - **Never show the proposed introducers/editors** from the acquisitions workbook: they are real scholars who agreed to nothing.
 - **Images**: only public-domain or properly licensed sources, logged in `assets/art/SOURCES.md` before they ship. Beltrán's Drive folder is a moodboard only.
 - **Motion**: respect `prefers-reduced-motion` everywhere; every animation has a still state; reveals must fail open (content can never stay hidden because a script or a feature is missing).
-- **Homepage order** (since 2026-10-21, issue #60): title page (the eagle and the name, nothing else) → the reel → three pillars → Atlas (with the map and its tour) → canon → books → watch → read → about → community (with the pamphlet signup) → merch → footer.
+- **Pages**: the home, `/[lang]/atlas` (the map, its tour, the sixty milestones) and `/[lang]/canon` (the fifty works). Beltrán found the home too busy with the map and the canon live on it (2026-10-24), so the home shows them as two plates that open their pages.
+- **Homepage order** (since 2026-10-25, issue #64): title page (the eagle and the name, nothing else) → the reel → the epigraph (Lewis Hanke, inked word by word as it scrolls) → three pillars → the two plates, Atlas and canon → books → watch → read → about → community (with the pamphlet signup) → merch → footer.
+- **The title page** (since 2026-10-26): two layers. Behind, seven shapes in tints of burgundy and leather drift, turn and stretch on the paper (cycles of 10 to 17 s); in front, a frosted glass over the whole title page (`.title__page::before`: a light backdrop blur, a cream wash, a lit top edge) carries the eagle and the name, so the shapes come through as soft moving colour; cream stays on top. No frame or inset pane (tried and rejected 2026-10-26). CSS only, still with reduced motion. It answers the footer's glass.
+- **The epigraph** (since 2026-10-26): Hanke's sentence over a wide view of the Valley of Mexico that fills the section (`site/public/art/epigraph-valley.jpg`, AI-generated in Velasco's manner, credited as a generated image; its false signature was painted out). A paper veil from the left (from the top on phones) keeps the words readable.
+- **The footer** (since 2026-10-26): a blind. The page ends with a frosted glass laid out as a grid of cells parted by hairlines (the eagle; Explore, Channels, Community; the motto and blurb above the sources), and a bottom line with © Hispano Studies LLC, the version and "Made by algoreto" with its logo, linking to https://algoreto.com; under it lies Carlos's picture of HISPANO STUDIES with a painting in every letter (`site/public/art/footer-name.jpg`, its cream strip cut off), fixed to the bottom of the window and seen blurred through the glass. Scrolling on lifts the glass and shows the name, heavily: past the bottom of the glass the wheel or finger lifts it less and less, damped. Letting go, it falls back by its weight, a quick smooth scroll (`site/components/FooterBlind.tsx`; never while a finger is down; a touchpad's inertia never holds it up). The footer's ground (`--wine`) is the picture's own burgundy.
 - **Deploys**: Vercel (project root `site/`). Previews for Beltrán sit behind a password: `site/proxy.ts` asks for one whenever the `SITE_PASSWORD` env var is set (any user name; Vercel's own password protection is a paid add-on). Locally, without the variable, the site is open. Deploy only when the user asks.
 
-## The canon graph (`site/components/canon/`)
+## The canon (`site/components/canon/`, `/[lang]/canon`)
 
-- `layout.ts` builds the field: **x = year, y = Bueno band**, nothing auto-arranged (a card may slide ≤ 2.5 years right to avoid a new lane; it always prints its own date).
-- Background layers (bands, decade rules, ruptures, movements) are **not React Flow nodes**; they are drawn in `FieldUnderlay` under the graph. In the HTML mockup they were nodes, and a hover rule lifted a band over every card in its row, which is why clicks stopped working after the first one. Keep it that way; the full story is in `canon.css`.
-- Selection is our own state keyed by id (`elementsSelectable={false}`); clicking a neighbour in the panel moves the camera to it.
-- Edge strokes use `vector-effect: non-scaling-stroke`, and the graph's SVGs are exempt from the global `svg { max-width: 100% }` (it squashes React Flow's edge layer to zero width and nothing paints).
+- Decided with Beltrán on 2026-10-24: no chronological chart for now. The canon is a reference list, after enriquedussel.com's *Obras clásicas del pensamiento latinoamericano*: the compiler's fifty texts in five boxes by period, each a small cover (`CanonCard`) in one of five bindings (paper, burgundy, aged paper, leather, ink) that floats and opens the work's record in a dialog.
+- Data: `site/data/canon-works.json`, built by `tools/build-canon-works.py` from the compiler's JSON. Authors are named as they are known (the compiler's short names cut many Spanish names wrong: "Miguel y Jugo" is Unamuno); the mapping is in the script. The period boxes are ours and carry dates only.
+- Links into the canon are `/[lang]/canon#T030` (the text's id): the page scrolls to the card and opens its record.
+- The old React Flow graph is in git history (before #64) if the chronology comes back.
 
-## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/Temple.tsx`)
+## The pillars (`site/components/Pillars.tsx`, `site/components/pillars/Fresco.tsx`)
 
-- The idea (decided 2026-10-21): **the three pillars hold up the Institute**. An engraved Doric portico (`site/public/art/portico.jpg`, AI-generated with Nano Banana Pro, no text in it; logged in `assets/art/SOURCES.md`) carries our own HTML on top: the Institute's works in the six metopes, its name on the architrave, the words MESTIZAJE, CATOLICISMO, LENGUA on the shafts. No captions or explanations of the columns: the section is about the three ideas.
-- Geometry is in the image's own pixels (2400 × 1792) at the top of `Temple.tsx`; replacing the image means re-measuring it. Selecting a pillar tints its shaft and the metopes it holds up through an SVG multiplied over the plate, and lists real titles beside it (`PILLAR_LINKS` in `site/lib/content.ts`). Canon entries link as `#canon=<record id>`, which the canon graph opens and centres.
-- Rejected on 2026-10-21, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; a fully code-drawn portico (it worked, but looked drawn rather than engraved).
+- The idea: **everything the Institute does rests on three pillars**, mestizaje, catolicismo and lengua. Since 2026-10-26 (after Carlos's mock-ups) it is **one fresco** across the full width: three public-domain paintings melted into one band (`site/public/art/pillars/fresco.jpg`, built by `tools/build-fresco.py`: Morlete's casta painting, Cabrera's Guadalupe altarpiece, the Florentine Codex folio 80 in Spanish and Nahuatl). Under it the three pillars are tabs; pointing at one lights its third of the fresco, opening one unfolds a panel under the tabs (the painting's detail on the left; numeral, a heading, what it covers and the rows of what rests on it on the right: the book series, the Atlas for lengua, and `PILLAR_LINKS` in `site/lib/content.ts`). Esc or "Close" folds it.
+- On phones the fresco crops to its middle and the tabs become a list.
+- Rejected, so nobody re-proposes them: photographed columns engraved in WebGL; 3D gilded columns from Blender (pipeline kept in `tools/blender/`); gold of any kind; the engraved portico with the words laid over it and a list beside it (2026-10-21 to 25); a temple in HTML and CSS with a painting in each shaft, on burgundy and then drawn in burgundy on paper (2026-10-25 to 26: "no me termina de convencer"). Generated "viceregal" paintings for the fresco: it uses real ones.
 
 ## The reel (`film/`, `site/components/Reel.tsx`)
 
 - The second section is a one-minute film about the Institute, after tigranz.com: full width, silent and looping, graded on the page's own paper so it reads as part of the page. It never shrinks or moves: a `Sound on` / `Sound off` switch (it follows the pointer over the film) turns the sound on in place.
-- It is made in **HyperFrames** (HTML + GSAP rendered to MP4) in `film/reel/`, from Beltrán's own videos (catalogue in `film/MATERIAL.md`; raw footage in `film/media/`, never committed). Read `film/reel/SPEC.md` before touching it.
+- It is made in **HyperFrames** (HTML + GSAP rendered to MP4) in `film/reel/`. Read `film/reel/SPEC.md` before touching it.
+- **About the Hispanic world, not about Beltrán** (his feedback, 2026-10-24): it is built from viceregal architecture, baroque paintings and period maps (`film/reel/assets/img/period/`, sources in `assets/art/SOURCES.md`; only public-domain and CC0 files in the film). Beltrán appears only in three short windows, from his **latest** Shorts (September 2026), never the first long video. Catalogue of his footage: `film/MATERIAL.md` (raw files in `film/media/`, never committed).
+- **Cinematic, not slides**: every picture moves (push, tilt, pan), cuts arrive on whips with motion blur, the pillars each enter differently (a flight through the word, a climb up a façade, a pan across the Codex). No layout of "picture on one side, title on the other".
+- **No numbers that go stale**: the end shows the channels' logos and one total that stays true as they grow ("50,000+ followers on five channels"; the verified followings add up to about 55,000). Never put a single channel's count in the film.
 - **The music comes first** and the edit follows it: the track (ElevenLabs, `film/reel/assets/audio/music.mp3`), the hits every scene is cut on, and the brief are in `film/MUSIC.md`. The sound is mixed after the render by `film/tools/mix-reel.py`: music dipping under Beltrán's voice, plus sound effects from earshot's code-made bank (MIT).
 - After the pillars, every shot of the works leaves the same way: the frieze of the portico slides in from the right and the camera dives into the next metope (in the film the metopes are in the film's order: Watch, Read, Canon, Atlas, Books, Community).
-- Every picture goes through the duotone LUT (`film/tools/make-duotone-lut.py`): burgundy ink on the site's paper. Only real titles, numbers and his own words on screen.
+- Every picture is printed in the duotone (`film/tools/grade-period.py` for stills, the LUT `film/reel/assets/luts/ihs-duotone.cube` for video): burgundy ink on the site's paper. The film's grounds follow the site's: paper, burgundy, leather, burgundy-dark. Only real titles, numbers and his own words on screen.
 - The delivered cut (the mixed file) is encoded to `site/public/video/reel.mp4` (+ `reel-poster.jpg`).
 
 ## Unicorn Studio (WebGL scenes)
@@ -130,7 +138,7 @@ The old mockups still open with `make serve` (http://localhost:8000/proposals/) 
 - `npm run lint`, `npm run typecheck` and `npm run build` pass with no errors.
 - Open the production build (`npm start`) at a desktop width (1440) and a mobile width (390), in **EN and ES**; no console errors, no horizontal scroll.
 - Check with reduced motion on (DevTools → Rendering → prefers-reduced-motion).
-- For the canon graph: click several nodes in a row (across empty band space), jump to a neighbour from the panel, open and close full screen (Esc).
+- For the canon: open several records in a row, close with Esc and with a click outside, and open one from a link (`/en/canon#T030`).
 - Screenshot it and attach it to the PR.
 
 ## When you finish a session

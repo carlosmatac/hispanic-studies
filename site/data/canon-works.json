@@ -1,0 +1,952 @@
+{
+ "note": "Fifty texts from Hispanic_Reunification_Canon_data.json, each joined to its author record. Built by tools/build-canon-works.py; author names are the ones each is known by.",
+ "periods": [
+  {
+   "id": "independence",
+   "from": 1800,
+   "to": 1870,
+   "name": {
+    "en": "Independence and the first unions",
+    "es": "La independencia y las primeras uniones"
+   }
+  },
+  {
+   "id": "ninety-eight",
+   "from": 1871,
+   "to": 1900,
+   "name": {
+    "en": "From Iberism to 1898",
+    "es": "Del iberismo al 98"
+   }
+  },
+  {
+   "id": "continent",
+   "from": 1901,
+   "to": 1930,
+   "name": {
+    "en": "Ariel and the continent",
+    "es": "Ariel y el continente"
+   }
+  },
+  {
+   "id": "hispanidad",
+   "from": 1931,
+   "to": 1960,
+   "name": {
+    "en": "Hispanidad, Indo-America, the Lusophone world",
+    "es": "Hispanidad, Indoamérica, el mundo lusófono"
+   }
+  },
+  {
+   "id": "after-empire",
+   "from": 1961,
+   "to": 2000,
+   "name": {
+    "en": "After empire",
+    "es": "Después del imperio"
+   }
+  }
+ ],
+ "works": [
+  {
+   "id": "T001",
+   "title": "Carta de Jamaica",
+   "year": 1818,
+   "author": "Simón Bolívar",
+   "fullName": "Simón José Antonio de la Santísima Trinidad Bolívar Palacios",
+   "life": "1783–1830",
+   "region": "Venezuela; Colombia; wider northern South America",
+   "code": "VE",
+   "counter": false,
+   "camp": "Republican emancipation and confederation",
+   "position": "Bolívar imagined American cooperation amid war and fragmentation but doubted simple continental political unity. Strong executive power, slavery and racial order complicate later egalitarian appropriations.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T002",
+   "title": "Soñaba el abad de San Pedro, y yo también sé soñar",
+   "year": 1822,
+   "author": "José Cecilio del Valle",
+   "fullName": "José Cecilio del Valle",
+   "life": "1780–1834",
+   "region": "Honduras; Guatemala; Central America",
+   "code": "HN",
+   "counter": false,
+   "camp": "Enlightened republican continental association",
+   "position": "Valle proposed a practical American congress and cooperation in knowledge and prosperity. His Central American location disrupts a genealogy beginning and ending with Bolívar.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T003",
+   "title": "Gramática de la lengua castellana destinada al uso de los americanos: prologue and related cultural writings",
+   "year": 1847,
+   "author": "Andrés Bello",
+   "fullName": "Andrés de Jesús María y José Bello López",
+   "life": "1781–1865",
+   "region": "Venezuela; Britain; Chile",
+   "code": "VE",
+   "counter": false,
+   "camp": "Republican cultural-linguistic continuity",
+   "position": "Bello defended a shared language while asserting the legitimacy of American usage and institutions. Linguistic continuity after independence does not mean a wish to restore Spanish sovereignty.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T004",
+   "title": "El Estado federal de Panamá",
+   "year": 1855,
+   "author": "Justo Arosemena",
+   "fullName": "Justo Arosemena Quesada",
+   "life": "1817–1896",
+   "region": "Panama; Colombia",
+   "code": "PA",
+   "counter": false,
+   "camp": "Federal republicanism; isthmian sovereignty",
+   "position": "Arosemena justified local political autonomy within wider constitutional association. The canal corridor makes sovereignty and scale concrete, complicating abstract calls for unity.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T005",
+   "title": "Iniciativa de la América: idea de un Congreso Federal de las Repúblicas",
+   "year": 1856,
+   "author": "Francisco Bilbao",
+   "fullName": "Francisco Bilbao Barquín",
+   "life": "1823–1865",
+   "region": "Chile; France; Argentina",
+   "code": "CL",
+   "counter": false,
+   "camp": "Republican, anti-clerical and anti-imperialist continentalism",
+   "position": "Bilbao's continental language emerged amid U.S. expansion and filibustering, yet also opposed European domination. His anti-clerical republicanism conflicts with Catholic Hispanidad.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T006",
+   "title": "Unión latino-americana, pensamiento de Bolívar para formar una liga americana",
+   "year": 1865,
+   "author": "José María Torres Caicedo",
+   "fullName": "José María Torres Caicedo",
+   "life": "1830–1889",
+   "region": "Colombia; France",
+   "code": "CO",
+   "counter": false,
+   "camp": "Latin-American unionism; diplomatic cultural organization",
+   "position": "Torres Caicedo helped popularize Latin America through poetry, diplomacy and organized association. His project differs from both Bilbao's radical republicanism and French imperial Pan-Latinism.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T007",
+   "title": "Os brahamanes",
+   "year": 1866,
+   "author": "Francisco Luís Gomes",
+   "fullName": "Francisco Luís Gomes",
+   "life": "1829–1869",
+   "region": "Goa; Portugal",
+   "code": "GOA",
+   "counter": false,
+   "camp": "Liberal Catholic anti-caste and antislavery argument",
+   "position": "A Goan parliamentarian and novelist who criticized caste and British power through Portuguese literary forms. His Catholic universalism can coexist with colonial assumptions requiring scrutiny.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T008",
+   "title": "Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días",
+   "year": 1868,
+   "author": "Juan León Mera",
+   "fullName": "Juan León Mera Martínez",
+   "life": "1832–1894",
+   "region": "Ecuador",
+   "code": "EC",
+   "counter": false,
+   "camp": "Catholic conservatism; national literary history",
+   "position": "Mera sought Ecuadorian literary identity through Spanish-language continuity and mediated Indigenous materials. Catholic nationality and American distinctiveness coexist uneasily.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T009",
+   "title": "Antillean federation essays and speeches: new selection",
+   "year": 1870,
+   "author": "Eugenio María de Hostos",
+   "fullName": "Eugenio María de Hostos y Bonilla",
+   "life": "1839–1903",
+   "region": "Puerto Rico; Dominican Republic; Chile",
+   "code": "PR",
+   "counter": false,
+   "camp": "Antillean confederation; secular pedagogy",
+   "position": "Hostos joined Antillean freedom, education and moral sociology. Federation served island sovereignty against empires, including Spain, rather than restoration of colonial unity.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "independence"
+  },
+  {
+   "id": "T010",
+   "title": "História da civilização ibérica",
+   "year": 1879,
+   "author": "Oliveira Martins",
+   "fullName": "Joaquim Pedro de Oliveira Martins",
+   "life": "1845–1894",
+   "region": "Portugal",
+   "code": "PT",
+   "counter": false,
+   "camp": "Historical Iberism; civilizational historiography",
+   "position": "His civilizational narrative treated Spain and Portugal within an Iberian historical field while retaining national differentiation. Economic and racial explanations should be read critically.",
+   "bueno": {
+    "code": "B2.8",
+    "name": "Iberian / Iberophone alternative"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T011",
+   "title": "O abolicionismo",
+   "year": 1883,
+   "author": "Joaquim Nabuco",
+   "fullName": "Joaquim Aurélio Barreto Nabuco de Araújo",
+   "life": "1849–1910",
+   "region": "Brazil; Britain; United States",
+   "code": "BR",
+   "counter": false,
+   "camp": "Abolitionist liberalism; monarchy and later Pan-American diplomacy",
+   "position": "Nabuco's abolitionism attacks the social foundation hidden beneath idealized Luso-Brazilian continuity. His later U.S.-oriented diplomacy complicates an automatically anti-Anglo Brazilian canon.",
+   "bueno": {
+    "code": "B2.5",
+    "name": "Occidentalist alternative"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T012",
+   "title": "Filipinas dentro de cien años",
+   "year": 1889,
+   "author": "José Rizal",
+   "fullName": "José Protasio Rizal Mercado y Alonso Realonda",
+   "life": "1861–1896",
+   "region": "Philippines; Spain; Germany; Hong Kong",
+   "code": "PH",
+   "counter": false,
+   "camp": "Reformist anticolonial critique; Spanish-language Filipino authorship",
+   "position": "Rizal used Spanish to criticize colonial domination and imagine Philippine futures. Language affiliation does not make him a supporter of Spanish imperial restoration; his positions developed under changing conditions.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T013",
+   "title": "Nuestra América",
+   "year": 1891,
+   "author": "José Martí",
+   "fullName": "José Julián Martí Pérez",
+   "life": "1853–1895",
+   "region": "Cuba; Mexico; United States",
+   "code": "CU",
+   "counter": false,
+   "camp": "Republican anti-imperialism; Nuestra América",
+   "position": "Martí grounded American self-government in knowledge of local peoples and histories, opposed colonial domination and criticized racial antagonism. His love of Spanish language did not imply political subordination to Spain.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T014",
+   "title": "Pájinas libres",
+   "year": 1894,
+   "author": "Manuel González Prada",
+   "fullName": "Manuel González Prada",
+   "life": "1844–1918",
+   "region": "Peru",
+   "code": "PE",
+   "counter": true,
+   "camp": "Radical liberalism to anarchism; Indigenous-critical precursor",
+   "position": "He attacked oligarchy, clericalism and the exclusion of Indigenous peoples. His critique was a resource for later radical national thought without making him identical to Mariátegui.",
+   "bueno": {
+    "code": "A2",
+    "name": "Inter-nationalist alternative"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T015",
+   "title": "En torno al casticismo",
+   "year": 1895,
+   "author": "Miguel de Unamuno",
+   "fullName": "Miguel de Unamuno y Jugo",
+   "life": "1864–1936",
+   "region": "Spain",
+   "code": "ES",
+   "counter": false,
+   "camp": "Liberal, existential and religious Hispanism; politically changeable",
+   "position": "A Basque-born Salamanca intellectual located cultural continuity in lived language, intrahistory and spiritual struggle. His European and American correspondence makes him a transatlantic interlocutor, not a consistent programmatic Catholic nationalist.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T016",
+   "title": "Idearium español",
+   "year": 1897,
+   "author": "Ángel Ganivet",
+   "fullName": "Ángel Ganivet García",
+   "life": "1865–1898",
+   "region": "Spain",
+   "code": "ES",
+   "counter": false,
+   "camp": "Regenerationist cultural diagnosis",
+   "position": "A diplomat and essayist who interpreted Spain's crisis through historical psychology, geographical conditions and spiritual energy. Withdrawal from failed external domination could support cultural renewal.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T017",
+   "title": "El triunfo de Calibán and hemispheric writings",
+   "year": 1898,
+   "author": "Rubén Darío",
+   "fullName": "Rubén Darío (Félix Rubén García Sarmiento)",
+   "life": "1867–1916",
+   "region": "Nicaragua; Chile; Argentina; Spain; France",
+   "code": "NI",
+   "counter": false,
+   "camp": "Modernismo; changing Latin and Hispanic solidarities",
+   "position": "Darío's poetry and journalism express competing attitudes toward Spain, Latin America and the United States. The shift between Roosevelt and the eagle poem is essential evidence against a fixed anti-U.S. creed.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T018",
+   "title": "Ariel",
+   "year": 1900,
+   "author": "José Enrique Rodó",
+   "fullName": "José Enrique Rodó Piñeyro",
+   "life": "1871–1917",
+   "region": "Uruguay",
+   "code": "UY",
+   "counter": false,
+   "camp": "Arielismo; liberal literary humanism",
+   "position": "Rodó urged educated youth to reconcile democratic society with cultivated spiritual and aesthetic life. His critique of utilitarianism is not a complete anti-imperialist political program; his selective elitism also matters.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "ninety-eight"
+  },
+  {
+   "id": "T019",
+   "title": "Carácter de la literatura del Perú independiente",
+   "year": 1905,
+   "author": "José de la Riva-Agüero",
+   "fullName": "José de la Riva-Agüero y Osma",
+   "life": "1885–1944",
+   "region": "Peru",
+   "code": "PE",
+   "counter": false,
+   "camp": "From liberal aristocratic criticism to Catholic authoritarian Hispanism",
+   "position": "His early literary history privileged Hispanic continuity; later political and religious commitments became markedly more reactionary. The chronology matters: the 1905 thesis is not a transparent statement of his final politics.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T020",
+   "title": "A América Latina: males de origem",
+   "year": 1905,
+   "author": "Manoel do Bomfim",
+   "fullName": "Manoel José do Bomfim",
+   "life": "1868–1932",
+   "region": "Brazil",
+   "code": "BR",
+   "counter": false,
+   "camp": "Anti-racist, anti-imperialist Latin American diagnosis",
+   "position": "Bomfim shifted explanation from racial inferiority to historical exploitation and social parasitism. His inclusion makes Brazil an active critic of imperial racial narratives, not simply a supplier of Lusotropicalism.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T021",
+   "title": "Creación de la pedagogía nacional",
+   "year": 1910,
+   "author": "Franz Tamayo",
+   "fullName": "Franz Tamayo Solares",
+   "life": "1879–1956",
+   "region": "Bolivia",
+   "code": "BO",
+   "counter": false,
+   "camp": "National pedagogy; racialized valorization of Indigenous vitality",
+   "position": "Tamayo rejected imported pedagogy and valorized Indigenous strength, while retaining racial typologies and elite mediation. He is not straightforwardly an Indigenous liberation theorist.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T022",
+   "title": "La creación de un continente",
+   "year": 1913,
+   "author": "Francisco García Calderón",
+   "fullName": "Francisco García Calderón Rey",
+   "life": "1883–1953",
+   "region": "Peru; France",
+   "code": "PE",
+   "counter": false,
+   "camp": "Arielist-generation liberal-conservative continentalism",
+   "position": "He argued for Latin American civilizational consolidation while drawing on elite liberalism and racial hierarchies. His original French book reveals the role of Paris in American self-definition.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T023",
+   "title": "La leyenda negra y la verdad histórica",
+   "year": 1914,
+   "author": "Julián Juderías",
+   "fullName": "Julián Juderías y Loyot",
+   "life": "1877–1918",
+   "region": "Spain",
+   "code": "ES",
+   "counter": false,
+   "camp": "Historical reputation; Black Legend critique",
+   "position": "Juderías analyzed adverse images of Spain and made the Black Legend a durable historiographic category. His account must itself be tested against archives and earlier uses of the phrase.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T024",
+   "title": "España y el programa americanista",
+   "year": 1917,
+   "author": "Rafael Altamira",
+   "fullName": "Rafael Altamira y Crevea",
+   "life": "1866–1951",
+   "region": "Spain; Mexico",
+   "code": "ES",
+   "counter": false,
+   "camp": "Liberal, educational and juridical Hispanoamericanism",
+   "position": "A historian, jurist and international educator who pursued Spanish-American rapprochement through universities, pedagogy and law. Cultural cooperation could replace political empire, although the asymmetry of Spain's civilizing claim remained an issue.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T025",
+   "title": "La caída del águila",
+   "year": 1920,
+   "author": "Carlos Gagini",
+   "fullName": "Carlos Gagini Chavarría",
+   "life": "1865–1925",
+   "region": "Costa Rica",
+   "code": "CR",
+   "counter": false,
+   "camp": "Anti-imperialist fiction; philology",
+   "position": "A linguist and novelist imagined resistance to U.S. domination through speculative geopolitical fiction. Central American agency and the role of non-Iberian powers prevent easy classification as Spain-centered Hispanidad.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T026",
+   "title": "El destino de un continente",
+   "year": 1923,
+   "author": "Manuel Ugarte",
+   "fullName": "Manuel Baldomero Ugarte",
+   "life": "1875–1951",
+   "region": "Argentina; France; wider Americas",
+   "code": "AR",
+   "counter": false,
+   "camp": "Socialist-origin continental nationalism; Patria Grande",
+   "position": "Ugarte described fragmented American republics as vulnerable to external domination and sought solidarity across Spanish America. His evolving relation to socialism and nationalism requires chronological treatment.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T027",
+   "title": "A aliança peninsular: antecedentes e possibilidades",
+   "year": 1924,
+   "author": "António Sardinha",
+   "fullName": "António Sardinha",
+   "life": "1887–1925",
+   "region": "Portugal; Spain",
+   "code": "PT",
+   "counter": false,
+   "camp": "Integralismo Lusitano; Catholic peninsular alliance",
+   "position": "Sardinha proposed a spiritual and geopolitical alliance of distinct Iberian nations. He resisted liberal federal amalgamation: Portuguese sovereignty and Catholic-monarchical tradition were constitutive, not temporary obstacles.",
+   "bueno": {
+    "code": "B2.8",
+    "name": "Iberian / Iberophone alternative"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T028",
+   "title": "La unidad de la América Indo-Española and related essays",
+   "year": 1924,
+   "author": "José Carlos Mariátegui",
+   "fullName": "José Carlos Mariátegui La Chira",
+   "life": "1894–1930",
+   "region": "Peru; Italy",
+   "code": "PE",
+   "counter": false,
+   "camp": "Marxist and Indigenous-centered continentalism",
+   "position": "Mariátegui accepted a shared historical matrix while insisting that land, class and Indigenous life determine the prospects of emancipation. His Indo-Spanish vocabulary is neither proof of Maeztu-style Hispanidad nor an erasure of conquest.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T029",
+   "title": "Eurindia: ensayo de estética fundado en la experiencia histórica de las culturas americanas",
+   "year": 1924,
+   "author": "Ricardo Rojas",
+   "fullName": "Ricardo Rojas",
+   "life": "1882–1957",
+   "region": "Argentina",
+   "code": "AR",
+   "counter": false,
+   "camp": "Cultural nationalism; Eurindian synthesis",
+   "position": "Rojas proposed an aesthetic synthesis of European and Indigenous inheritances. His inclusive language coexists with the authority of a national elite deciding the terms of synthesis.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T030",
+   "title": "La raza cósmica: misión de la raza iberoamericana. Notas de viajes a la América del Sur",
+   "year": 1925,
+   "author": "José Vasconcelos",
+   "fullName": "José Vasconcelos Calderón",
+   "life": "1882–1959",
+   "region": "Mexico; wider Americas",
+   "code": "MX",
+   "counter": false,
+   "camp": "Revolutionary cultural mission; later conservative Catholic and authoritarian turns",
+   "position": "His future Ibero-American race combines anti-Anglo imperial rivalry, education and spiritual aesthetics with eugenic and hierarchical assumptions. Later political positions cannot be smuggled into every earlier sentence, or omitted from reception.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T031",
+   "title": "Seis ensayos en busca de nuestra expresión",
+   "year": 1928,
+   "author": "Pedro Henríquez Ureña",
+   "fullName": "Pedro Henríquez Ureña",
+   "life": "1884–1946",
+   "region": "Dominican Republic; Mexico; United States; Argentina",
+   "code": "DO",
+   "counter": false,
+   "camp": "Literary Americanism; critical humanism",
+   "position": "A Dominican scholar sought American literary expression within a broad humanist culture. His migration and work in several languages undermine a simple center-periphery literary model.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T032",
+   "title": "Plan de realización del supremo sueño de Bolívar",
+   "year": 1929,
+   "author": "Augusto César Sandino",
+   "fullName": "Augusto César Sandino",
+   "life": "1895–1934",
+   "region": "Nicaragua; Mexico",
+   "code": "NI",
+   "counter": false,
+   "camp": "Armed anti-imperialism; continental confederation",
+   "position": "Sandino linked resistance to U.S. occupation with concrete continental security and cooperation proposals. Its political and spiritual context should not be reduced to later party canonization.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T033",
+   "title": "El mínimum vital",
+   "year": 1929,
+   "author": "Alberto Masferrer",
+   "fullName": "Vicente Alberto Masferrer Mónico",
+   "life": "1868–1932",
+   "region": "El Salvador; Central America",
+   "code": "SV",
+   "counter": false,
+   "camp": "Vitalismo; social reform and unionist milieu",
+   "position": "Masferrer's social ethics make basic subsistence, labor and education the test of civilization. His relevance is social and regional, not an automatic claim that every work advances Hispanic federation.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "continent"
+  },
+  {
+   "id": "T034",
+   "title": "Insularismo: ensayos de interpretación puertorriqueña",
+   "year": 1934,
+   "author": "Antonio S. Pedreira",
+   "fullName": "Antonio Salvador Pedreira Pizarro",
+   "life": "1899–1939",
+   "region": "Puerto Rico",
+   "code": "PR",
+   "counter": false,
+   "camp": "Hispanist national-character diagnosis",
+   "position": "Pedreira diagnosed Puerto Rico's cultural condition under U.S. sovereignty through geography, history and Hispanic inheritance. His account's racial and gender hierarchies are central problems, not peripheral blemishes.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T035",
+   "title": "Defensa de la Hispanidad",
+   "year": 1934,
+   "author": "Ramiro de Maeztu",
+   "fullName": "Ramiro de Maeztu y Whitney",
+   "life": "1874–1936",
+   "region": "Spain; Argentina; Britain",
+   "code": "ES",
+   "counter": false,
+   "camp": "Catholic, monarchist and anti-liberal Hispanidad",
+   "position": "A journalist whose trajectory ran from regenerationism and guild-socialist interests to counterrevolutionary Catholicism. The mature argument makes a universal religious mission, rather than biological purity, the basis of Hispanic solidarity, while defending hierarchy and Spanish imperial memory.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T036",
+   "title": "El antiimperialismo y el APRA",
+   "year": 1936,
+   "author": "Víctor Raúl Haya de la Torre",
+   "fullName": "Víctor Raúl Haya de la Torre",
+   "life": "1895–1979",
+   "region": "Peru; Mexico; exile",
+   "code": "PE",
+   "counter": false,
+   "camp": "Aprismo; Indo-American anti-imperialism",
+   "position": "Haya proposed continental anti-imperialist organization and a broad social coalition adapted to Indo-American conditions. The economic role of imperialism and the stages of revolution separated him from communist critics.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T037",
+   "title": "Pensamiento y poesía en la vida española",
+   "year": 1939,
+   "author": "María Zambrano",
+   "fullName": "María Zambrano Alarcón",
+   "life": "1904–1991",
+   "region": "Spain; Mexico; Cuba; Puerto Rico",
+   "code": "ES",
+   "counter": false,
+   "camp": "Republican exile; poetic reason",
+   "position": "Her exile philosophy reimagined Spanish cultural experience through poetic reason, spiritual inquiry and criticism of European catastrophe. Religious language did not make her a Francoist Hispanist.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T038",
+   "title": "Contrapunteo cubano del tabaco y el azúcar",
+   "year": 1940,
+   "author": "Fernando Ortiz",
+   "fullName": "Fernando Ortiz Fernández",
+   "life": "1881–1969",
+   "region": "Cuba",
+   "code": "CU",
+   "counter": false,
+   "camp": "Transculturation; Afro-Cuban studies; changing racial thought",
+   "position": "Ortiz moved from racialized criminology toward a dynamic account of cultural formation. Transculturation describes conflict and transformation more precisely than an uncomplicated fusion narrative.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T039",
+   "title": "O mundo que o português criou",
+   "year": 1940,
+   "author": "Gilberto Freyre",
+   "fullName": "Gilberto de Mello Freyre",
+   "life": "1900–1987",
+   "region": "Brazil; Portugal; colonial Africa and Asia",
+   "code": "BR",
+   "counter": false,
+   "camp": "Mestizaje sociology; Lusotropicalism",
+   "position": "Freyre interpreted Brazilian formation through household, slavery, sexuality and mixture, then elaborated a transcontinental Portuguese tropical vocation. Recognition of African cultural contributions coexists with paternalism and minimization of coercion.",
+   "bueno": {
+    "code": "B2.7",
+    "name": "Lusophone alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T040",
+   "title": "Hispanoamérica del dolor",
+   "year": 1947,
+   "author": "Jaime Eyzaguirre",
+   "fullName": "Jaime Eyzaguirre Gutiérrez",
+   "life": "1908–1968",
+   "region": "Chile; Spain",
+   "code": "CL",
+   "counter": false,
+   "camp": "Catholic historical Hispanism",
+   "position": "Eyzaguirre interpreted Hispanic America through a religious and historical vocation marked by suffering. His compact prose gives Catholic Hispanism an American, not merely Spanish, center.",
+   "bueno": {
+    "code": "A2",
+    "name": "Inter-nationalist alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T041",
+   "title": "América como conciencia",
+   "year": 1953,
+   "author": "Leopoldo Zea",
+   "fullName": "Leopoldo Zea Aguilar",
+   "life": "1912–2004",
+   "region": "Mexico",
+   "code": "MX",
+   "counter": false,
+   "camp": "Latin American philosophy; historical consciousness",
+   "position": "Zea defended Latin American philosophical self-understanding through historical experience. His universalism seeks participation from a situated perspective rather than abstract imitation.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T042",
+   "title": "Qu'est-ce que le luso-tropicalisme?",
+   "year": 1955,
+   "author": "Mário Pinto de Andrade",
+   "fullName": "Mário Coelho Pinto de Andrade",
+   "life": "1928–1990",
+   "region": "Angola; Portugal; France; Guinea-Bissau",
+   "code": "AO",
+   "counter": true,
+   "camp": "Anticolonial cultural criticism; African Lusophone networks",
+   "position": "Andrade criticized the ideological concealment of colonial domination and helped constitute African Portuguese-language literary networks. His French-language interventions make the genealogy explicitly multilingual.",
+   "bueno": {
+    "code": "A2",
+    "name": "Inter-nationalist alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T043",
+   "title": "Cabo Verde visto por Gilberto Freyre: apontamentos lidos ao microfone de Rádio Barlavento",
+   "year": 1956,
+   "author": "Baltasar Lopes",
+   "fullName": "Baltasar Lopes da Silva",
+   "life": "1907–1989",
+   "region": "Cape Verde",
+   "code": "CV",
+   "counter": false,
+   "camp": "Creole cultural identity; criticism of Freyre",
+   "position": "Lopes challenged Freyre's reading of Cape Verde and asserted a more specific island social and linguistic formation. His criticism does not automatically equal Cabral's revolutionary program.",
+   "bueno": {
+    "code": "B2.7",
+    "name": "Lusophone alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T044",
+   "title": "Um Fernando Pessoa",
+   "year": 1959,
+   "author": "Agostinho da Silva",
+   "fullName": "George Agostinho Baptista da Silva",
+   "life": "1906–1994",
+   "region": "Portugal; Brazil",
+   "code": "PT",
+   "counter": false,
+   "camp": "Spiritual universalism; Portuguese-language community",
+   "position": "Exile in Brazil and educational experiments sustained a non-reductive spiritual vision of Portuguese cultural destiny. His universalism cannot simply be absorbed into Salazar's imperial program.",
+   "bueno": {
+    "code": "B2.8",
+    "name": "Iberian / Iberophone alternative"
+   },
+   "period": "hispanidad"
+  },
+  {
+   "id": "T045",
+   "title": "El Uruguay como problema: en la cuenca del Plata entre Argentina y Brasil",
+   "year": 1967,
+   "author": "Alberto Methol Ferré",
+   "fullName": "Alberto Methol Ferré",
+   "life": "1929–2009",
+   "region": "Uruguay; Southern Cone",
+   "code": "UY",
+   "counter": false,
+   "camp": "Catholic, national-popular and regional integration thought",
+   "position": "Methol made Uruguay's position between Argentina and Brazil a problem of regional scale, sovereignty and industrial development. His Catholicism coexists with national-popular continental politics.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "after-empire"
+  },
+  {
+   "id": "T046",
+   "title": "Historia de la nación latinoamericana",
+   "year": 1968,
+   "author": "Jorge Abelardo Ramos",
+   "fullName": "Jorge Abelardo Ramos",
+   "life": "1921–1994",
+   "region": "Argentina",
+   "code": "AR",
+   "counter": false,
+   "camp": "Marxist left nationalism; continental nation",
+   "position": "Ramos redescribed separate republics as fragments of a larger historical nation and interpreted imperial dependency through left-nationalist politics. His rehabilitation of aspects of Hispanic inheritance differs from Catholic Hispanidad.",
+   "bueno": {
+    "code": "B1",
+    "name": "American / Latin American / Indo-American whole"
+   },
+   "period": "after-empire"
+  },
+  {
+   "id": "T047",
+   "title": "National Liberation and Culture / Libertação nacional e cultura",
+   "year": 1970,
+   "author": "Amílcar Cabral",
+   "fullName": "Amílcar Lopes da Costa Cabral",
+   "life": "1924–1973",
+   "region": "Guinea-Bissau; Cape Verde; Portugal",
+   "code": "GW",
+   "counter": true,
+   "camp": "Anticolonial revolutionary humanism; culture and liberation",
+   "position": "Cabral treated culture as a field of colonial domination and collective resistance. Portuguese could be used instrumentally without accepting Portuguese imperial tutelage.",
+   "bueno": {
+    "code": "A2",
+    "name": "Inter-nationalist alternative"
+   },
+   "period": "after-empire"
+  },
+  {
+   "id": "T048",
+   "title": "Historia y tragedia de Guinea Ecuatorial",
+   "year": 1977,
+   "author": "Donato Ndongo",
+   "fullName": "Donato Ndongo-Bidyogo Makina",
+   "life": "1950–living",
+   "region": "Equatorial Guinea; Spain",
+   "code": "GQ",
+   "counter": true,
+   "camp": "Postcolonial and exile Hispanic writing",
+   "position": "Ndongo uses Spanish to analyze both colonial domination and post-independence dictatorship. His Hispanic literary affiliation is compatible with fierce criticism of Spain and local authoritarianism.",
+   "bueno": {
+    "code": "A1",
+    "name": "Nationalist alternative"
+   },
+   "period": "after-empire"
+  },
+  {
+   "id": "T049",
+   "title": "Culture and History: Occasional Notes on the Process of Philippine Becoming",
+   "year": 1988,
+   "author": "Nick Joaquín",
+   "fullName": "Nick Joaquín (Nicomedes Márquez Joaquín)",
+   "life": "1917–2004",
+   "region": "Philippines",
+   "code": "PH",
+   "counter": false,
+   "camp": "English-language historical-cultural Hispanism",
+   "position": "Joaquín interpreted Philippine formation through transformations produced by Hispanic contact. Writing in English and recognizing historical creation makes him different from a campaign simply to restore Spanish-language dominance.",
+   "bueno": {
+    "code": "B2.6",
+    "name": "Hispanist alternative"
+   },
+   "period": "after-empire"
+  },
+  {
+   "id": "T050",
+   "title": "A nau de Ícaro, seguido de Imagem e miragem da lusofonia",
+   "year": 1999,
+   "author": "Eduardo Lourenço",
+   "fullName": "Eduardo Lourenço de Faria",
+   "life": "1923–2020",
+   "region": "Portugal; France",
+   "code": "PT",
+   "counter": true,
+   "camp": "Critical national self-analysis; post-imperial Lusophony",
+   "position": "Lourenço examined Portuguese self-mythology and the temptation to imagine Lusophony as an empire surviving in language. Cultural affinity must confront asymmetry and divergent histories.",
+   "bueno": {
+    "code": "A2",
+    "name": "Inter-nationalist alternative"
+   },
+   "period": "after-empire"
+  }
+ ]
+}
