@@ -4,15 +4,18 @@ import { dict, LANGS, type Lang } from '@/lib/i18n';
 export const NAV = ['atlas', 'canon', 'books', 'watch', 'read', 'about', 'merch'] as const;
 export type NavKey = (typeof NAV)[number];
 
-/* The Atlas and the canon have their own pages; everything else is a section of the home. */
-export const navHref = (lang: Lang, k: NavKey) => (k === 'atlas' || k === 'canon' ? `/${lang}/${k}` : `/${lang}#${k}`);
+/* The Atlas and the archive have their own pages; everything else is a section
+   of the home. (The archive keeps the key "canon", its name until 2026-10-29.) */
+export const navHref = (lang: Lang, k: NavKey) =>
+  k === 'atlas' ? `/${lang}/atlas` : k === 'canon' ? `/${lang}/archive` : `/${lang}#${k}`;
 
-export default function Header({ lang, current }: { lang: Lang; current?: NavKey }) {
+/** `path` is the page's address without the language (e.g. "/archive/T001"), for the language switch. */
+export default function Header({ lang, current, path }: { lang: Lang; current?: NavKey; path?: string }) {
   const d = dict(lang);
   const links = NAV.map((k) => (
     <a key={k} href={navHref(lang, k)} aria-current={k === current ? 'page' : undefined}>{d.nav[k]}</a>
   ));
-  const here = current === 'atlas' || current === 'canon' ? `/${current}` : '';
+  const here = path ?? (current === 'atlas' ? '/atlas' : current === 'canon' ? '/archive' : '');
   return (
     <header className="bar">
       <a className="skip" href="#main">{d.nav.skip}</a>
