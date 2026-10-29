@@ -25,3 +25,4 @@ film/reel/assets/clips/
 # the duotone prints in film/reel/assets/img/graded/, made by film/tools/grade-period.py
 film/reel/assets/img/period/
 __pycache__/
+tools/.cache/

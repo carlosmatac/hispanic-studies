@@ -1,0 +1,3047 @@
+{
+ "about": "The Atlas map's historical borders, 1492-1898 (issue #71). Twenty keyframes, each a dated act with a source; the map shows the latest keyframe at or before a milestone's year. Geometry: the OpenHistoricalMap relations listed per keyframe (CC0), clipped to the Natural Earth coast and built into public/data/atlas-eras.topo.json by tools/build-atlas-eras.py; drawn lines and claims are in tools/atlas-eras-drawn.json. Level: viceroyalties and captaincies-general, the Americas and the Philippines. Other crowns and states are drawn in a neutral grey for context only. The Mexica Triple Alliance is marked by its capital, not drawn: OHM's polygon for it holds only the basin of Mexico and Soconusco. Left out of the feasibility study's 23 rows: Zaragoza 1529 (a Pacific line off this plate), the Iberian Union 1580-1640 (no border change), Utrecht 1715 (Colonia del Sacramento, below the scale of the plate) and Santo Domingo 1861-65; added: Guadalupe Hidalgo 1848, so the milestones of 1848-97 do not show Mexico's 1826 borders. Kinds: es (Spanish Crown), pt (Portuguese Crown), other, native (Indigenous states), indep and pt-indep (successor states), claim (hatched).",
+ "extracted": "2026-10-29",
+ "source": {
+  "name": "OpenHistoricalMap contributors",
+  "licence": "CC0 1.0",
+  "url": "https://www.openhistoricalmap.org/copyright"
+ },
+ "families": {
+  "indies": {
+   "kind": "es",
+   "tone": 0,
+   "name": {
+    "en": "Viceroyalty of the Indies",
+    "es": "Virreinato de las Indias"
+   },
+   "short": {
+    "en": "The Indies",
+    "es": "Las Indias"
+   },
+   "at": [
+    -72,
+    20.5
+   ]
+  },
+  "new-spain": {
+   "kind": "es",
+   "tone": 0,
+   "name": {
+    "en": "New Spain",
+    "es": "Nueva España"
+   },
+   "at": [
+    -100.5,
+    21.5
+   ]
+  },
+  "peru": {
+   "kind": "es",
+   "tone": 1,
+   "name": {
+    "en": "Peru",
+    "es": "Perú"
+   },
+   "at": [
+    -73,
+    -11
+   ]
+  },
+  "new-granada": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "New Granada",
+    "es": "Nueva Granada"
+   },
+   "at": [
+    -74,
+    3
+   ]
+  },
+  "rio-de-la-plata": {
+   "kind": "es",
+   "tone": 3,
+   "name": {
+    "en": "Río de la Plata",
+    "es": "Río de la Plata"
+   },
+   "at": [
+    -63,
+    -29
+   ]
+  },
+  "guatemala": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Guatemala",
+    "es": "Guatemala"
+   },
+   "at": [
+    -88,
+    14.5
+   ]
+  },
+  "chile": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Chile",
+    "es": "Chile"
+   },
+   "at": [
+    -70.6,
+    -31
+   ]
+  },
+  "venezuela": {
+   "kind": "es",
+   "tone": 3,
+   "name": {
+    "en": "Venezuela",
+    "es": "Venezuela"
+   },
+   "at": [
+    -65.5,
+    7
+   ]
+  },
+  "cuba": {
+   "kind": "es",
+   "tone": 1,
+   "name": {
+    "en": "Cuba",
+    "es": "Cuba"
+   },
+   "at": [
+    -79,
+    22
+   ]
+  },
+  "puerto-rico": {
+   "kind": "es",
+   "tone": 1,
+   "name": {
+    "en": "Puerto Rico",
+    "es": "Puerto Rico"
+   }
+  },
+  "santo-domingo": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Santo Domingo",
+    "es": "Santo Domingo"
+   },
+   "at": [
+    -69.6,
+    17.7
+   ]
+  },
+  "yucatan": {
+   "kind": "es",
+   "tone": 1,
+   "name": {
+    "en": "Yucatán",
+    "es": "Yucatán"
+   }
+  },
+  "provincias-internas": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Interior Provinces",
+    "es": "Provincias Internas"
+   },
+   "at": [
+    -104,
+    29.5
+   ]
+  },
+  "florida": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Florida",
+    "es": "Florida"
+   },
+   "at": [
+    -83,
+    30.5
+   ]
+  },
+  "louisiana": {
+   "kind": "es",
+   "tone": 3,
+   "name": {
+    "en": "Louisiana",
+    "es": "Luisiana"
+   },
+   "at": [
+    -98,
+    41
+   ]
+  },
+  "philippines": {
+   "kind": "es",
+   "tone": 0,
+   "name": {
+    "en": "Philippines",
+    "es": "Filipinas"
+   },
+   "at": [
+    122,
+    15
+   ]
+  },
+  "trinidad": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Trinidad",
+    "es": "Trinidad"
+   }
+  },
+  "jamaica-es": {
+   "kind": "es",
+   "tone": 2,
+   "name": {
+    "en": "Jamaica",
+    "es": "Jamaica"
+   }
+  },
+  "brazil": {
+   "kind": "pt",
+   "tone": 0,
+   "name": {
+    "en": "Brazil",
+    "es": "Brasil"
+   },
+   "at": [
+    -42.5,
+    -9.5
+   ]
+  },
+  "maranhao": {
+   "kind": "pt",
+   "tone": 1,
+   "name": {
+    "en": "Maranhão and Grão-Pará",
+    "es": "Maranhão y Grão-Pará"
+   },
+   "short": {
+    "en": "Maranhão",
+    "es": "Maranhão"
+   },
+   "at": [
+    -55,
+    -5
+   ]
+  },
+  "britain": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "British Crown",
+    "es": "Corona británica"
+   },
+   "short": {
+    "en": "Britain",
+    "es": "Gran Bretaña"
+   }
+  },
+  "france": {
+   "kind": "other",
+   "tone": 1,
+   "name": {
+    "en": "French Crown",
+    "es": "Corona francesa"
+   },
+   "short": {
+    "en": "France",
+    "es": "Francia"
+   }
+  },
+  "denmark": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Danish Crown",
+    "es": "Corona danesa"
+   },
+   "short": {
+    "en": "Denmark",
+    "es": "Dinamarca"
+   }
+  },
+  "netherlands": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Dutch colonies",
+    "es": "Colonias neerlandesas"
+   },
+   "short": {
+    "en": "Netherlands",
+    "es": "Países Bajos"
+   }
+  },
+  "united-states": {
+   "kind": "other",
+   "tone": 1,
+   "name": {
+    "en": "United States",
+    "es": "Estados Unidos"
+   },
+   "at": [
+    -80,
+    37.5
+   ]
+  },
+  "us-cuba": {
+   "kind": "other",
+   "tone": 1,
+   "name": {
+    "en": "Cuba (US military government)",
+    "es": "Cuba (gobierno militar de EE. UU.)"
+   },
+   "short": {
+    "en": "Cuba",
+    "es": "Cuba"
+   },
+   "at": [
+    -79,
+    22
+   ]
+  },
+  "us-philippines": {
+   "kind": "other",
+   "tone": 1,
+   "name": {
+    "en": "Philippines (US military government)",
+    "es": "Filipinas (gobierno militar de EE. UU.)"
+   },
+   "short": {
+    "en": "Philippines",
+    "es": "Filipinas"
+   },
+   "at": [
+    122,
+    15
+   ]
+  },
+  "russia": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Russian America",
+    "es": "América rusa"
+   }
+  },
+  "saint-domingue": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Saint-Domingue (France)",
+    "es": "Saint-Domingue (Francia)"
+   },
+   "short": {
+    "en": "Saint-Domingue",
+    "es": "Saint-Domingue"
+   },
+   "at": [
+    -73.6,
+    20.4
+   ]
+  },
+  "haiti": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Haiti",
+    "es": "Haití"
+   }
+  },
+  "jamaica-gb": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Jamaica (Britain)",
+    "es": "Jamaica (Gran Bretaña)"
+   },
+   "short": {
+    "en": "Jamaica",
+    "es": "Jamaica"
+   },
+   "at": [
+    -77.3,
+    18.2
+   ]
+  },
+  "florida-gb": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "East and West Florida (Britain)",
+    "es": "Floridas oriental y occidental (Gran Bretaña)"
+   },
+   "short": {
+    "en": "Florida",
+    "es": "Florida"
+   },
+   "at": [
+    -83,
+    30.5
+   ]
+  },
+  "trinidad-gb": {
+   "kind": "other",
+   "tone": 0,
+   "name": {
+    "en": "Trinidad (Britain)",
+    "es": "Trinidad (Gran Bretaña)"
+   },
+   "short": {
+    "en": "Trinidad",
+    "es": "Trinidad"
+   }
+  },
+  "tawantinsuyu": {
+   "kind": "native",
+   "tone": 0,
+   "name": {
+    "en": "Tawantinsuyu (the Inca state)",
+    "es": "Tawantinsuyu (el estado inca)"
+   },
+   "short": {
+    "en": "Tawantinsuyu",
+    "es": "Tawantinsuyu"
+   },
+   "at": [
+    -73,
+    -13
+   ]
+  },
+  "sulu": {
+   "kind": "native",
+   "tone": 0,
+   "name": {
+    "en": "Sultanate of Sulu",
+    "es": "Sultanato de Joló"
+   },
+   "short": {
+    "en": "Sulu",
+    "es": "Joló"
+   }
+  },
+  "maguindanao": {
+   "kind": "native",
+   "tone": 0,
+   "name": {
+    "en": "Sultanate of Maguindanao",
+    "es": "Sultanato de Maguindanao"
+   },
+   "short": {
+    "en": "Maguindanao",
+    "es": "Maguindanao"
+   }
+  },
+  "mexico": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Mexico",
+    "es": "México"
+   },
+   "at": [
+    -102,
+    23.5
+   ]
+  },
+  "central-america": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Federal Republic of Central America",
+    "es": "República Federal de Centro América"
+   },
+   "short": {
+    "en": "Central America",
+    "es": "Centroamérica"
+   },
+   "at": [
+    -87.5,
+    14
+   ]
+  },
+  "gran-colombia": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Colombia",
+    "es": "Colombia"
+   },
+   "at": [
+    -72,
+    5
+   ]
+  },
+  "new-granada-rep": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "New Granada",
+    "es": "Nueva Granada"
+   },
+   "at": [
+    -74,
+    4
+   ]
+  },
+  "venezuela-rep": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Venezuela",
+    "es": "Venezuela"
+   },
+   "at": [
+    -66,
+    7
+   ]
+  },
+  "ecuador": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Ecuador",
+    "es": "Ecuador"
+   }
+  },
+  "peru-rep": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Peru",
+    "es": "Perú"
+   },
+   "at": [
+    -75,
+    -9
+   ]
+  },
+  "bolivia": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Bolivia",
+    "es": "Bolivia"
+   },
+   "at": [
+    -64.5,
+    -17
+   ]
+  },
+  "chile-rep": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Chile",
+    "es": "Chile"
+   },
+   "at": [
+    -70.6,
+    -31
+   ]
+  },
+  "argentina": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "United Provinces of the Río de la Plata",
+    "es": "Provincias Unidas del Río de la Plata"
+   },
+   "short": {
+    "en": "Río de la Plata",
+    "es": "Río de la Plata"
+   },
+   "at": [
+    -64,
+    -33
+   ]
+  },
+  "paraguay": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Paraguay",
+    "es": "Paraguay"
+   }
+  },
+  "uruguay": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Uruguay",
+    "es": "Uruguay"
+   }
+  },
+  "guatemala-rep": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Guatemala",
+    "es": "Guatemala"
+   }
+  },
+  "honduras": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Honduras",
+    "es": "Honduras"
+   }
+  },
+  "el-salvador": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "El Salvador",
+    "es": "El Salvador"
+   }
+  },
+  "nicaragua": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Nicaragua",
+    "es": "Nicaragua"
+   }
+  },
+  "costa-rica": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Costa Rica",
+    "es": "Costa Rica"
+   }
+  },
+  "dominican-republic": {
+   "kind": "indep",
+   "tone": 0,
+   "name": {
+    "en": "Dominican Republic",
+    "es": "República Dominicana"
+   }
+  },
+  "brazil-empire": {
+   "kind": "pt-indep",
+   "tone": 0,
+   "name": {
+    "en": "Empire of Brazil",
+    "es": "Imperio del Brasil"
+   },
+   "short": {
+    "en": "Brazil",
+    "es": "Brasil"
+   },
+   "at": [
+    -50,
+    -10
+   ]
+  },
+  "florida-dispute": {
+   "kind": "claim",
+   "tone": 0,
+   "name": {
+    "en": "Disputed with the United States",
+    "es": "En disputa con Estados Unidos"
+   }
+  },
+  "louisiana-dispute": {
+   "kind": "claim",
+   "tone": 0,
+   "name": {
+    "en": "Disputed with the United States",
+    "es": "En disputa con Estados Unidos"
+   }
+  },
+  "nw-coast": {
+   "kind": "claim",
+   "tone": 0,
+   "name": {
+    "en": "Northwest coast, claimed by Spain",
+    "es": "Costa noroeste, reclamada por España"
+   },
+   "short": {
+    "en": "Claimed",
+    "es": "Reclamada"
+   },
+   "at": [
+    -131,
+    55
+   ]
+  }
+ },
+ "eras": [
+  {
+   "year": 1492,
+   "label": "1492",
+   "date": "1492-12-25",
+   "act": {
+    "en": "Capitulations of Santa Fe, 17 April 1492",
+    "es": "Capitulaciones de Santa Fe, 17 de abril de 1492"
+   },
+   "change": {
+    "en": "Columbus is named admiral, viceroy and governor of the islands and mainland he may discover. Hispaniola, where he leaves the fort of La Navidad that December, is Castile’s first foothold. On the mainland two great Indigenous states hold sway: the Mexica Triple Alliance and Tawantinsuyu, the Inca state.",
+    "es": "Colón es nombrado almirante, virrey y gobernador de las islas y tierra firme que descubra. La Española, donde deja en diciembre el fuerte de La Navidad, es el primer asiento de Castilla. En tierra firme dominan dos grandes estados indígenas: la Triple Alianza mexica y el Tawantinsuyu, el estado inca."
+   },
+   "source": {
+    "en": "Archivo de la Corona de Aragón, Cancillería, reg. 3569; Library of Congress, 1492: An Ongoing Voyage",
+    "es": "Archivo de la Corona de Aragón, Cancillería, reg. 3569; Biblioteca del Congreso, 1492: An Ongoing Voyage"
+   },
+   "pulse": [
+    "indies"
+   ],
+   "labels": [
+    "indies",
+    "tawantinsuyu"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "192",
+    "214",
+    "604",
+    "170",
+    "862",
+    "320"
+   ],
+   "units": [
+    {
+     "f": "tawantinsuyu",
+     "ohm": 2744854
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "indies",
+     "ohm": 2845478
+    }
+   ],
+   "marks": [
+    {
+     "at": [
+      -99.13,
+      19.43
+     ],
+     "name": {
+      "en": "Tenochtitlan",
+      "es": "Tenochtitlan"
+     },
+     "kind": "native"
+    }
+   ]
+  },
+  {
+   "year": 1494,
+   "label": "1494",
+   "date": "1494-06-08",
+   "act": {
+    "en": "Treaty of Tordesillas, 7 June 1494",
+    "es": "Tratado de Tordesillas, 7 de junio de 1494"
+   },
+   "change": {
+    "en": "Castile and Portugal divide the Ocean Sea along a meridian 370 leagues west of the Cape Verde islands: the lands to the west for Castile, to the east for Portugal. The line was never surveyed and where it fell was disputed for centuries; it is drawn dashed, at about 48° 30′ W, one reading among several.",
+    "es": "Castilla y Portugal se reparten el Mar Océano por un meridiano a 370 leguas al oeste de las islas de Cabo Verde: las tierras al oeste para Castilla, al este para Portugal. La línea nunca se midió sobre el terreno y su lugar se disputó durante siglos; va de trazos, hacia los 48° 30′ O, una lectura entre varias."
+   },
+   "source": {
+    "en": "UNESCO Memory of the World, Treaty of Tordesillas; Davenport, European Treaties…, vol. 1 (1917)",
+    "es": "UNESCO Memoria del Mundo, Tratado de Tordesillas; Davenport, European Treaties…, vol. 1 (1917)"
+   },
+   "pulse": [
+    "tordesillas"
+   ],
+   "labels": [
+    "indies",
+    "tawantinsuyu"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "tawantinsuyu",
+     "ohm": 2744854
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "indies",
+     "ohm": 2845475
+    }
+   ],
+   "marks": [
+    {
+     "at": [
+      -99.13,
+      19.43
+     ],
+     "name": {
+      "en": "Tenochtitlan",
+      "es": "Tenochtitlan"
+     },
+     "kind": "native"
+    }
+   ]
+  },
+  {
+   "year": 1511,
+   "label": "1511",
+   "date": "1511-10-06",
+   "act": {
+    "en": "Royal provision of Burgos, 5 October 1511",
+    "es": "Real provisión de Burgos, 5 de octubre de 1511"
+   },
+   "change": {
+    "en": "The first Audiencia of the Indies, a royal court of appeal, sits at Santo Domingo over the islands Castile has settled: Hispaniola, Puerto Rico (1508), Jamaica (1509) and Cuba (1511).",
+    "es": "La primera audiencia de las Indias se asienta en Santo Domingo, sobre las islas que Castilla ha poblado: La Española, Puerto Rico (1508), Jamaica (1509) y Cuba (1511)."
+   },
+   "source": {
+    "en": "Recopilación de Leyes de los Reynos de las Indias (1681), book II, title XV",
+    "es": "Recopilación de Leyes de los Reynos de las Indias (1681), libro II, título XV"
+   },
+   "pulse": [
+    "indies",
+    "jamaica-es"
+   ],
+   "labels": [
+    "indies",
+    "tawantinsuyu"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "484",
+    "192",
+    "214",
+    "604",
+    "170",
+    "862",
+    "320"
+   ],
+   "units": [
+    {
+     "f": "tawantinsuyu",
+     "ohm": 2744854
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "indies",
+     "ohm": 2845509
+    },
+    {
+     "f": "jamaica-es",
+     "ohm": 2831983
+    }
+   ],
+   "marks": [
+    {
+     "at": [
+      -99.13,
+      19.43
+     ],
+     "name": {
+      "en": "Tenochtitlan",
+      "es": "Tenochtitlan"
+     },
+     "kind": "native"
+    }
+   ]
+  },
+  {
+   "year": 1535,
+   "label": "1535",
+   "date": "1535-11-15",
+   "act": {
+    "en": "Antonio de Mendoza named first viceroy of New Spain, 17 April 1535",
+    "es": "Nombramiento de Antonio de Mendoza, primer virrey de la Nueva España, 17 de abril de 1535"
+   },
+   "change": {
+    "en": "Fourteen years after the fall of Tenochtitlan, New Spain becomes a viceroyalty over the Audiencia of Mexico (1527); Guatemala is a governorate of its own. On the coast of Brazil, Portugal has granted hereditary captaincies (1534).",
+    "es": "Catorce años después de la caída de Tenochtitlan, la Nueva España se convierte en virreinato sobre la Audiencia de México (1527); Guatemala es gobernación aparte. En la costa del Brasil, Portugal ha repartido capitanías hereditarias (1534)."
+   },
+   "source": {
+    "en": "Recopilación (1681), book III, title III; P. Gerhard, A Guide to the Historical Geography of New Spain (1972)",
+    "es": "Recopilación (1681), libro III, título III; P. Gerhard, A Guide to the Historical Geography of New Spain (1972)"
+   },
+   "pulse": [
+    "new-spain",
+    "brazil"
+   ],
+   "labels": [
+    "new-spain",
+    "guatemala",
+    "brazil"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "france",
+     "ohm": 2861356
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "maguindanao",
+     "ohm": 2860766
+    },
+    {
+     "f": "brazil",
+     "ohm": 2751236
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845464
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2808099
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841735
+    },
+    {
+     "f": "jamaica-es",
+     "ohm": 2831983
+    }
+   ]
+  },
+  {
+   "year": 1542,
+   "label": "1542",
+   "date": "1542-12-01",
+   "act": {
+    "en": "New Laws, Barcelona, 20 November 1542",
+    "es": "Leyes Nuevas, Barcelona, 20 de noviembre de 1542"
+   },
+   "change": {
+    "en": "The New Laws create the Viceroyalty of Peru, for Spanish South America, and the Audiencia of los Confines for Central America. Chile has been a governorate since the founding of Santiago (1541).",
+    "es": "Las Leyes Nuevas crean el Virreinato del Perú, para la América del Sur española, y la Audiencia de los Confines para Centroamérica. Chile es gobernación desde la fundación de Santiago (1541)."
+   },
+   "source": {
+    "en": "Library of Congress, Laws of Burgos and New Laws; Recopilación (1681), book II, title XV",
+    "es": "Biblioteca del Congreso, Leyes de Burgos y Leyes Nuevas; Recopilación (1681), libro II, título XV"
+   },
+   "pulse": [
+    "peru",
+    "chile"
+   ],
+   "labels": [
+    "new-spain",
+    "peru",
+    "chile",
+    "brazil"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "france",
+     "ohm": 2861356
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "maguindanao",
+     "ohm": 2860766
+    },
+    {
+     "f": "brazil",
+     "ohm": 2751236
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845459
+    },
+    {
+     "f": "peru",
+     "ohm": 2850571
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2808099
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841735
+    },
+    {
+     "f": "jamaica-es",
+     "ohm": 2831983
+    }
+   ]
+  },
+  {
+   "year": 1565,
+   "label": "1565–1583",
+   "date": "1583-05-06",
+   "act": {
+    "en": "Legazpi takes possession at Cebu (1565); Manila founded (24 June 1571); Audiencia of Manila (royal cédula, 5 May 1583)",
+    "es": "Legazpi toma posesión en Cebú (1565); fundación de Manila (24 de junio de 1571); Audiencia de Manila (real cédula, 5 de mayo de 1583)"
+   },
+   "change": {
+    "en": "The Philippines are governed from New Spain, joined to it by the galleons between Acapulco and Manila, which return by Urdaneta’s route of 1565. Portuguese Brazil has had a governor-general at Salvador since 1549.",
+    "es": "Filipinas se gobierna desde la Nueva España, unida a ella por los galeones entre Acapulco y Manila, que vuelven por la ruta de Urdaneta de 1565. El Brasil portugués tiene gobernador general en Salvador desde 1549."
+   },
+   "source": {
+    "en": "Library of Congress, Negotiating Empire: the founding of Manila; Recopilación (1681), book II, title XV",
+    "es": "Biblioteca del Congreso, Negotiating Empire: la fundación de Manila; Recopilación (1681), libro II, título XV"
+   },
+   "pulse": [
+    "philippines"
+   ],
+   "labels": [
+    "philippines",
+    "new-spain"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "608",
+    "484"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2831236
+    },
+    {
+     "f": "france",
+     "ohm": 2861355
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "maguindanao",
+     "ohm": 2860766
+    },
+    {
+     "f": "brazil",
+     "ohm": 2848725
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845449
+    },
+    {
+     "f": "peru",
+     "ohm": 2920313
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841735
+    },
+    {
+     "f": "jamaica-es",
+     "ohm": 2831983
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "philippines",
+     "ohm": 2841337
+    }
+   ]
+  },
+  {
+   "year": 1670,
+   "label": "1655–1670",
+   "date": "1670-07-19",
+   "act": {
+    "en": "Treaty of Madrid, 18 July 1670",
+    "es": "Tratado de Madrid, 18 de julio de 1670"
+   },
+   "change": {
+    "en": "England took Jamaica in 1655. At Madrid, Spain recognises the English possessions in America; English, French and Dutch colonies now hold the Atlantic seaboard of the north and parts of the Antilles and the Guianas.",
+    "es": "Inglaterra tomó Jamaica en 1655. En Madrid, España reconoce las posesiones inglesas en América; colonias inglesas, francesas y neerlandesas ocupan ya la costa atlántica del norte y parte de las Antillas y las Guayanas."
+   },
+   "source": {
+    "en": "Davenport, European Treaties…, vol. 2 (1929)",
+    "es": "Davenport, European Treaties…, vol. 2 (1929)"
+   },
+   "pulse": [
+    "jamaica-gb"
+   ],
+   "labels": [
+    "new-spain",
+    "peru",
+    "brazil",
+    "jamaica-gb"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "484",
+    "192",
+    "214",
+    "604",
+    "170",
+    "862",
+    "320"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2834935
+    },
+    {
+     "f": "france",
+     "ohm": 2861160
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848058
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848073
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831982
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "brazil",
+     "ohm": 2848717
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848722
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2851083
+    },
+    {
+     "f": "peru",
+     "ohm": 2861450
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841677
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2851084
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2841927
+    }
+   ]
+  },
+  {
+   "year": 1697,
+   "label": "1697",
+   "date": "1697-09-21",
+   "act": {
+    "en": "Peace of Ryswick, 20 September 1697",
+    "es": "Paz de Ryswick, 20 de septiembre de 1697"
+   },
+   "change": {
+    "en": "The west of Hispaniola, settled by the French since the 1660s, is French in practice after Ryswick: Saint-Domingue. The treaty does not name the island; the border was fixed only in 1776–77 (San Miguel de la Atalaya, Aranjuez).",
+    "es": "El oeste de La Española, poblado por franceses desde la década de 1660, queda en la práctica como francés después de Ryswick: Saint-Domingue. El tratado no nombra la isla; la frontera solo se fijó en 1776–77 (San Miguel de la Atalaya, Aranjuez)."
+   },
+   "source": {
+    "en": "Davenport, European Treaties…, vol. 2 (1929); Treaty of Aranjuez, 3 June 1777",
+    "es": "Davenport, European Treaties…, vol. 2 (1929); Tratado de Aranjuez, 3 de junio de 1777"
+   },
+   "pulse": [
+    "saint-domingue"
+   ],
+   "labels": [
+    "saint-domingue",
+    "santo-domingo",
+    "cuba"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "192",
+    "214",
+    "332",
+    "388",
+    "630"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2862359
+    },
+    {
+     "f": "france",
+     "ohm": 2862362
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848058
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848073
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831982
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "sulu",
+     "ohm": 2860770
+    },
+    {
+     "f": "brazil",
+     "ohm": 2848717
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848722
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845880
+    },
+    {
+     "f": "peru",
+     "ohm": 2861450
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841677
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2851084
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2841927
+    }
+   ]
+  },
+  {
+   "year": 1739,
+   "label": "1717–1739",
+   "date": "1739-08-21",
+   "act": {
+    "en": "Royal cédulas of 27 May 1717 and 20 August 1739",
+    "es": "Reales cédulas de 27 de mayo de 1717 y 20 de agosto de 1739"
+   },
+   "change": {
+    "en": "The Viceroyalty of New Granada is carved out of Peru in 1717, suppressed in 1723 and re-established for good in 1739, with its capital at Santa Fe de Bogotá.",
+    "es": "El Virreinato de la Nueva Granada se separa del Perú en 1717, se suprime en 1723 y se restablece definitivamente en 1739, con capital en Santa Fe de Bogotá."
+   },
+   "source": {
+    "en": "HGIS de las Indias (W. Stangl, University of Graz), territorial gazetteer 1701–1808",
+    "es": "HGIS de las Indias (W. Stangl, Universidad de Graz), nomenclátor territorial 1701–1808"
+   },
+   "pulse": [
+    "new-granada"
+   ],
+   "labels": [
+    "new-spain",
+    "new-granada",
+    "peru",
+    "brazil"
+   ],
+   "lines": [
+    "tordesillas"
+   ],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2861368
+    },
+    {
+     "f": "france",
+     "ohm": 2961682
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848058
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848073
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "brazil",
+     "ohm": 2848716
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848721
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845876
+    },
+    {
+     "f": "peru",
+     "ohm": 2850567
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2848984
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841677
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2841927
+    }
+   ]
+  },
+  {
+   "year": 1750,
+   "label": "1750",
+   "date": "1750-01-14",
+   "act": {
+    "en": "Treaty of Madrid, 13 January 1750",
+    "es": "Tratado de Madrid, 13 de enero de 1750"
+   },
+   "change": {
+    "en": "Spain and Portugal set the Tordesillas line aside for possession on the ground (uti possidetis), and trade Colonia del Sacramento for the Seven Missions. The treaty was annulled at El Pardo in 1761, but it shaped the border that followed.",
+    "es": "España y Portugal abandonan la línea de Tordesillas por la posesión efectiva (uti possidetis) y cambian Colonia del Sacramento por las Siete Misiones. El tratado se anuló en El Pardo en 1761, pero marcó la frontera posterior."
+   },
+   "source": {
+    "en": "C. Calvo, Colección completa de los tratados… de la América Latina (1862–69); HGIS de las Indias, treaty lines 1494–1808",
+    "es": "C. Calvo, Colección completa de los tratados… de la América Latina (1862–69); HGIS de las Indias, líneas de tratados 1494–1808"
+   },
+   "pulse": [
+    "brazil",
+    "maranhao"
+   ],
+   "labels": [
+    "new-spain",
+    "new-granada",
+    "peru",
+    "brazil"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2861682
+    },
+    {
+     "f": "france",
+     "ohm": 2865836
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848058
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848073
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848066
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "brazil",
+     "ohm": 2848716
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848721
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845875
+    },
+    {
+     "f": "peru",
+     "ohm": 2850567
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2848984
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841677
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2841927
+    }
+   ]
+  },
+  {
+   "year": 1763,
+   "label": "1762–1763",
+   "date": "1763-02-11",
+   "act": {
+    "en": "Treaty of Fontainebleau (3 November 1762) and Peace of Paris (10 February 1763)",
+    "es": "Tratado de Fontainebleau (3 de noviembre de 1762) y Paz de París (10 de febrero de 1763)"
+   },
+   "change": {
+    "en": "France cedes Louisiana west of the Mississippi, with New Orleans, to Spain. Spain cedes Florida to Britain and recovers Havana and Manila, taken by the British in 1762.",
+    "es": "Francia cede a España la Luisiana al oeste del Misisipi, con Nueva Orleans. España cede la Florida a Gran Bretaña y recupera La Habana y Manila, tomadas por los británicos en 1762."
+   },
+   "source": {
+    "en": "Yale Law School, Avalon Project (Treaty of Paris, 1763); Davenport, European Treaties…, vol. 4 (1937)",
+    "es": "Yale Law School, Avalon Project (Tratado de París, 1763); Davenport, European Treaties…, vol. 4 (1937)"
+   },
+   "pulse": [
+    "louisiana",
+    "florida-gb"
+   ],
+   "labels": [
+    "new-spain",
+    "louisiana",
+    "florida-gb",
+    "cuba"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "840",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2834930
+    },
+    {
+     "f": "france",
+     "ohm": 2861152
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848058
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848073
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848066
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "florida-gb",
+     "ohm": 2744898
+    },
+    {
+     "f": "florida-gb",
+     "ohm": 2744899
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "brazil",
+     "ohm": 2848716
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848720
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845872
+    },
+    {
+     "f": "peru",
+     "ohm": 2850567
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2848984
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848834
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841674
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2841927
+    },
+    {
+     "f": "louisiana",
+     "ohm": 2807216
+    }
+   ]
+  },
+  {
+   "year": 1777,
+   "label": "1776–1777",
+   "date": "1777-10-02",
+   "act": {
+    "en": "Royal cédulas of 1 August 1776 and 8 September 1777; First Treaty of San Ildefonso, 1 October 1777",
+    "es": "Reales cédulas de 1 de agosto de 1776 y 8 de septiembre de 1777; Primer Tratado de San Ildefonso, 1 de octubre de 1777"
+   },
+   "change": {
+    "en": "The Bourbon reforms redraw the empire: the Viceroyalty of the Río de la Plata and the Commandancy of the Interior Provinces (1776), the Captaincy-General of Venezuela (1777). San Ildefonso leaves Colonia and the Seven Missions to Spain. The northwest coast, sailed by Pérez (1774) and Bodega y Quadra (1775), is claimed, not held: it is hatched.",
+    "es": "Las reformas borbónicas redibujan el imperio: el Virreinato del Río de la Plata y la Comandancia de las Provincias Internas (1776), la Capitanía General de Venezuela (1777). San Ildefonso deja Colonia y las Siete Misiones a España. La costa noroeste, navegada por Pérez (1774) y Bodega y Quadra (1775), se reclama pero no se ocupa: va rayada."
+   },
+   "source": {
+    "en": "HGIS de las Indias (W. Stangl, University of Graz), territorial gazetteer 1701–1808; Calvo, Colección completa de los tratados… (1862–69)",
+    "es": "HGIS de las Indias (W. Stangl, Universidad de Graz), nomenclátor territorial 1701–1808; Calvo, Colección completa de los tratados… (1862–69)"
+   },
+   "pulse": [
+    "rio-de-la-plata",
+    "venezuela",
+    "provincias-internas",
+    "nw-coast"
+   ],
+   "labels": [
+    "new-spain",
+    "provincias-internas",
+    "new-granada",
+    "peru",
+    "rio-de-la-plata",
+    "brazil"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2847839
+    },
+    {
+     "f": "france",
+     "ohm": 2865913
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848058
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848073
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848066
+    },
+    {
+     "f": "united-states",
+     "ohm": 2918624
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "florida-gb",
+     "ohm": 2744898
+    },
+    {
+     "f": "florida-gb",
+     "ohm": 2918612
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "brazil",
+     "ohm": 2860719
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848719
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845871
+    },
+    {
+     "f": "peru",
+     "ohm": 2850566
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2964943
+    },
+    {
+     "f": "venezuela",
+     "ohm": 2842586
+    },
+    {
+     "f": "rio-de-la-plata",
+     "ohm": 2860720
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2859425
+    },
+    {
+     "f": "chile",
+     "ohm": 2848836
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841674
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2841326
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2841927
+    },
+    {
+     "f": "louisiana",
+     "ohm": 2807216
+    },
+    {
+     "f": "nw-coast",
+     "drawn": "nw-coast"
+    }
+   ]
+  },
+  {
+   "year": 1783,
+   "label": "1783",
+   "date": "1784-05-13",
+   "act": {
+    "en": "Peace of Versailles, 3 September 1783",
+    "es": "Paz de Versalles, 3 de septiembre de 1783"
+   },
+   "change": {
+    "en": "Britain returns East and West Florida to Spain and keeps the right to cut logwood on the coast of Belize. The northern border of West Florida is disputed with the new United States (hatched).",
+    "es": "Gran Bretaña devuelve a España las Floridas oriental y occidental y conserva el derecho a cortar palo de tinte en la costa de Belice. La frontera norte de la Florida occidental queda en disputa con los nuevos Estados Unidos (rayada)."
+   },
+   "source": {
+    "en": "Davenport, European Treaties…, vol. 4 (1937)",
+    "es": "Davenport, European Treaties…, vol. 4 (1937)"
+   },
+   "pulse": [
+    "florida",
+    "florida-dispute"
+   ],
+   "labels": [
+    "new-spain",
+    "louisiana",
+    "florida",
+    "united-states"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "840",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2828400
+    },
+    {
+     "f": "france",
+     "ohm": 2861163
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848056
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848064
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848071
+    },
+    {
+     "f": "united-states",
+     "ohm": 2742953
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "brazil",
+     "ohm": 2860719
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848719
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845868
+    },
+    {
+     "f": "peru",
+     "ohm": 2850566
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2964943
+    },
+    {
+     "f": "venezuela",
+     "ohm": 2842586
+    },
+    {
+     "f": "rio-de-la-plata",
+     "ohm": 2860720
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2807682
+    },
+    {
+     "f": "chile",
+     "ohm": 2848836
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841673
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2841326
+    },
+    {
+     "f": "yucatan",
+     "ohm": 2862372
+    },
+    {
+     "f": "louisiana",
+     "ohm": 2807216
+    },
+    {
+     "f": "florida",
+     "ohm": 2744901
+    },
+    {
+     "f": "florida-dispute",
+     "ohm": 2918625
+    },
+    {
+     "f": "nw-coast",
+     "drawn": "nw-coast"
+    }
+   ]
+  },
+  {
+   "year": 1790,
+   "label": "1790",
+   "date": "1790-10-29",
+   "act": {
+    "en": "Nootka Convention, 28 October 1790",
+    "es": "Convención de Nutca, 28 de octubre de 1790"
+   },
+   "change": {
+    "en": "After the crisis at Nootka Sound, Spain opens the northwest coast to British trade and settlement. Spain had claimed it after its voyages of 1774–1779, up to about 61° N; the claim stays hatched.",
+    "es": "Tras la crisis de Nutca, España abre la costa noroeste al comercio y al asentamiento británicos. España la reclamaba tras sus viajes de 1774–1779, hasta unos 61° N; la reclamación sigue rayada."
+   },
+   "source": {
+    "en": "Davenport, European Treaties…, vol. 4 (1937)",
+    "es": "Davenport, European Treaties…, vol. 4 (1937)"
+   },
+   "pulse": [
+    "nw-coast"
+   ],
+   "labels": [
+    "new-spain",
+    "provincias-internas",
+    "louisiana",
+    "nw-coast"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "840",
+    "124"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2828398
+    },
+    {
+     "f": "france",
+     "ohm": 2918510
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848056
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848064
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848071
+    },
+    {
+     "f": "united-states",
+     "ohm": 2742953
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841731
+    },
+    {
+     "f": "brazil",
+     "ohm": 2860719
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848719
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845867
+    },
+    {
+     "f": "peru",
+     "ohm": 2850566
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2964943
+    },
+    {
+     "f": "venezuela",
+     "ohm": 2842586
+    },
+    {
+     "f": "rio-de-la-plata",
+     "ohm": 2860720
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2807681
+    },
+    {
+     "f": "chile",
+     "ohm": 2848837
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841673
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841734
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2867411
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2867412
+    },
+    {
+     "f": "louisiana",
+     "ohm": 2807216
+    },
+    {
+     "f": "florida",
+     "ohm": 2744901
+    },
+    {
+     "f": "florida-dispute",
+     "ohm": 2918625
+    },
+    {
+     "f": "nw-coast",
+     "drawn": "nw-coast"
+    }
+   ]
+  },
+  {
+   "year": 1795,
+   "label": "1795",
+   "date": "1795-10-28",
+   "act": {
+    "en": "Peace of Basel (22 July 1795) and Treaty of San Lorenzo (27 October 1795)",
+    "es": "Paz de Basilea (22 de julio de 1795) y Tratado de San Lorenzo (27 de octubre de 1795)"
+   },
+   "change": {
+    "en": "At Basel Spain cedes its part of Hispaniola, Santo Domingo, to France. At San Lorenzo it fixes the Florida border with the United States at the 31st parallel and opens the Mississippi to American navigation.",
+    "es": "En Basilea España cede a Francia su parte de La Española, Santo Domingo. En San Lorenzo fija en el paralelo 31 la frontera de la Florida con Estados Unidos y abre el Misisipi a la navegación estadounidense."
+   },
+   "source": {
+    "en": "Yale Law School, Avalon Project (Treaty of San Lorenzo, 1795); Davenport, European Treaties…, vol. 4 (1937)",
+    "es": "Yale Law School, Avalon Project (Tratado de San Lorenzo, 1795); Davenport, European Treaties…, vol. 4 (1937)"
+   },
+   "pulse": [
+    "saint-domingue",
+    "florida"
+   ],
+   "labels": [
+    "saint-domingue",
+    "florida",
+    "louisiana",
+    "cuba"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "840",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2831729
+    },
+    {
+     "f": "france",
+     "ohm": 2861015
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848056
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848064
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2848071
+    },
+    {
+     "f": "united-states",
+     "ohm": 2742953
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841730
+    },
+    {
+     "f": "brazil",
+     "ohm": 2860719
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848719
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845866
+    },
+    {
+     "f": "peru",
+     "ohm": 2850566
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2964943
+    },
+    {
+     "f": "venezuela",
+     "ohm": 2842586
+    },
+    {
+     "f": "rio-de-la-plata",
+     "ohm": 2860720
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2807681
+    },
+    {
+     "f": "chile",
+     "ohm": 2848837
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841672
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "trinidad",
+     "ohm": 2834831
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2841325
+    },
+    {
+     "f": "louisiana",
+     "ohm": 2807216
+    },
+    {
+     "f": "florida",
+     "ohm": 2744901
+    },
+    {
+     "f": "nw-coast",
+     "drawn": "nw-coast"
+    }
+   ]
+  },
+  {
+   "year": 1803,
+   "label": "1797–1803",
+   "date": "1803-12-21",
+   "act": {
+    "en": "Third Treaty of San Ildefonso (1 October 1800); Louisiana Purchase (30 April 1803)",
+    "es": "Tercer Tratado de San Ildefonso (1 de octubre de 1800); compra de la Luisiana (30 de abril de 1803)"
+   },
+   "change": {
+    "en": "Britain takes Trinidad (1797; ceded at Amiens, 1802). Spain returns Louisiana to France, which sells it to the United States; its western limit with New Spain is disputed (hatched).",
+    "es": "Gran Bretaña toma Trinidad (1797; cedida en Amiens, 1802). España devuelve la Luisiana a Francia, que la vende a Estados Unidos; su límite occidental con la Nueva España queda en disputa (rayado)."
+   },
+   "source": {
+    "en": "Yale Law School, Avalon Project (Louisiana Purchase, 1803); Davenport, European Treaties…, vol. 4 (1937)",
+    "es": "Yale Law School, Avalon Project (compra de la Luisiana, 1803); Davenport, European Treaties…, vol. 4 (1937)"
+   },
+   "pulse": [
+    "united-states",
+    "trinidad-gb",
+    "louisiana-dispute"
+   ],
+   "labels": [
+    "new-spain",
+    "provincias-internas",
+    "united-states",
+    "florida",
+    "brazil"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "840",
+    "192",
+    "862"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2848106
+    },
+    {
+     "f": "france",
+     "ohm": 2861347
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "russia",
+     "ohm": 2851143
+    },
+    {
+     "f": "united-states",
+     "ohm": 2800401
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "trinidad-gb",
+     "ohm": 2834830
+    },
+    {
+     "f": "saint-domingue",
+     "ohm": 2841730
+    },
+    {
+     "f": "brazil",
+     "ohm": 2860719
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848719
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845865
+    },
+    {
+     "f": "peru",
+     "ohm": 2875951
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2848983
+    },
+    {
+     "f": "venezuela",
+     "ohm": 2842587
+    },
+    {
+     "f": "rio-de-la-plata",
+     "ohm": 2875952
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2807681
+    },
+    {
+     "f": "chile",
+     "ohm": 2848837
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841671
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2841325
+    },
+    {
+     "f": "florida",
+     "ohm": 2744901
+    },
+    {
+     "f": "louisiana-dispute",
+     "ohm": 2692831
+    },
+    {
+     "f": "nw-coast",
+     "drawn": "nw-coast"
+    }
+   ]
+  },
+  {
+   "year": 1819,
+   "label": "1819–1821",
+   "date": "1819-03-01",
+   "act": {
+    "en": "Adams–Onís Treaty, 22 February 1819 (in force 22 February 1821)",
+    "es": "Tratado Adams-Onís, 22 de febrero de 1819 (en vigor el 22 de febrero de 1821)"
+   },
+   "change": {
+    "en": "Spain cedes the Floridas to the United States (handed over in July 1821), and the two states fix a border from the Sabine River to the Pacific along the 42nd parallel. In the south, Chile and the Río de la Plata are already independent in fact; in Venezuela and New Granada the war goes on.",
+    "es": "España cede las Floridas a Estados Unidos (entregadas en julio de 1821) y ambos estados fijan una frontera del río Sabina al Pacífico por el paralelo 42. En el sur, Chile y el Río de la Plata son ya independientes de hecho; en Venezuela y la Nueva Granada sigue la guerra."
+   },
+   "source": {
+    "en": "Yale Law School, Avalon Project (Adams–Onís Treaty, 1819)",
+    "es": "Yale Law School, Avalon Project (Tratado Adams-Onís, 1819)"
+   },
+   "pulse": [
+    "florida",
+    "new-spain",
+    "chile-rep",
+    "argentina"
+   ],
+   "labels": [
+    "new-spain",
+    "florida",
+    "united-states",
+    "peru",
+    "chile-rep",
+    "argentina"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2831332
+    },
+    {
+     "f": "france",
+     "ohm": 2865833
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "russia",
+     "ohm": 2851143
+    },
+    {
+     "f": "united-states",
+     "ohm": 2800460
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "trinidad-gb",
+     "ohm": 2834830
+    },
+    {
+     "f": "haiti",
+     "ohm": 2841724
+    },
+    {
+     "f": "haiti",
+     "ohm": 2841726
+    },
+    {
+     "f": "venezuela-rep",
+     "ohm": 2842579
+    },
+    {
+     "f": "chile-rep",
+     "ohm": 2848840
+    },
+    {
+     "f": "argentina",
+     "ohm": 2848682
+    },
+    {
+     "f": "paraguay",
+     "ohm": 2848691
+    },
+    {
+     "f": "brazil",
+     "ohm": 2860698
+    },
+    {
+     "f": "maranhao",
+     "ohm": 2848709
+    },
+    {
+     "f": "new-spain",
+     "ohm": 2845862
+    },
+    {
+     "f": "peru",
+     "ohm": 2850564
+    },
+    {
+     "f": "new-granada",
+     "ohm": 2848983
+    },
+    {
+     "f": "guatemala",
+     "ohm": 2873458
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841670
+    },
+    {
+     "f": "santo-domingo",
+     "ohm": 2841733
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    },
+    {
+     "f": "provincias-internas",
+     "ohm": 2841619
+    },
+    {
+     "f": "florida",
+     "ohm": 2744902
+    }
+   ]
+  },
+  {
+   "year": 1826,
+   "label": "1810–1826",
+   "date": "1826-01-24",
+   "act": {
+    "en": "The acts of independence, 1810–1825; the last royal garrisons surrender at Chiloé (Tantauco, 15 January 1826) and Callao (23 January 1826)",
+    "es": "Las actas de independencia, 1810–1825; las últimas guarniciones realistas se rinden en Chiloé (Tantauco, 15 de enero de 1826) y El Callao (23 de enero de 1826)"
+   },
+   "change": {
+    "en": "The mainland empire has become successor states: Mexico, the Federal Republic of Central America, Colombia, Peru, Bolivia, Chile, the United Provinces of the Río de la Plata and Paraguay. Brazil has been an independent empire since 1822. Spain keeps Cuba, Puerto Rico and the Philippines.",
+    "es": "El imperio continental se ha convertido en estados sucesores: México, la República Federal de Centro América, Colombia, Perú, Bolivia, Chile, las Provincias Unidas del Río de la Plata y Paraguay. Brasil es un imperio independiente desde 1822. España conserva Cuba, Puerto Rico y Filipinas."
+   },
+   "source": {
+    "en": "UNESCO, Ayacucho battlefield and Callao historical record; National Library of Brazil, independence collections",
+    "es": "UNESCO, campo de Ayacucho y documentación histórica de El Callao; Biblioteca Nacional de Brasil, colecciones de la independencia"
+   },
+   "pulse": [
+    "mexico",
+    "central-america",
+    "gran-colombia",
+    "peru-rep",
+    "bolivia",
+    "chile-rep",
+    "argentina",
+    "paraguay",
+    "brazil-empire"
+   ],
+   "labels": [
+    "mexico",
+    "central-america",
+    "gran-colombia",
+    "peru-rep",
+    "bolivia",
+    "argentina",
+    "brazil-empire",
+    "cuba"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2828397
+    },
+    {
+     "f": "france",
+     "ohm": 2865833
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "russia",
+     "ohm": 2851143
+    },
+    {
+     "f": "united-states",
+     "ohm": 2800462
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "trinidad-gb",
+     "ohm": 2834830
+    },
+    {
+     "f": "haiti",
+     "ohm": 2841722
+    },
+    {
+     "f": "brazil-empire",
+     "ohm": 2848713
+    },
+    {
+     "f": "mexico",
+     "ohm": 2859731
+    },
+    {
+     "f": "central-america",
+     "ohm": 2859576
+    },
+    {
+     "f": "gran-colombia",
+     "ohm": 2848981
+    },
+    {
+     "f": "peru-rep",
+     "ohm": 2848869
+    },
+    {
+     "f": "bolivia",
+     "ohm": 2848685
+    },
+    {
+     "f": "chile-rep",
+     "ohm": 2848841
+    },
+    {
+     "f": "argentina",
+     "ohm": 2907169
+    },
+    {
+     "f": "paraguay",
+     "ohm": 2848691
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841669
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "philippines",
+     "ohm": 2860776
+    }
+   ]
+  },
+  {
+   "year": 1848,
+   "label": "1848",
+   "date": "1848-07-15",
+   "act": {
+    "en": "Treaty of Guadalupe Hidalgo, 2 February 1848",
+    "es": "Tratado de Guadalupe Hidalgo, 2 de febrero de 1848"
+   },
+   "change": {
+    "en": "After the war with the United States, Mexico cedes Alta California and New Mexico; Texas, independent since 1836, had joined the United States in 1845. Central America and Colombia have split into the republics that followed them.",
+    "es": "Tras la guerra con Estados Unidos, México cede la Alta California y Nuevo México; Texas, independiente desde 1836, se había unido a Estados Unidos en 1845. Centroamérica y Colombia se han dividido en las repúblicas que las sucedieron."
+   },
+   "source": {
+    "en": "US National Archives, Treaty of Guadalupe Hidalgo",
+    "es": "Archivos Nacionales de EE. UU., Tratado de Guadalupe Hidalgo"
+   },
+   "pulse": [
+    "mexico",
+    "united-states"
+   ],
+   "labels": [
+    "mexico",
+    "united-states",
+    "new-granada-rep",
+    "peru-rep",
+    "argentina",
+    "brazil-empire",
+    "cuba"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "032",
+    "076",
+    "604",
+    "170",
+    "152",
+    "192"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2828502
+    },
+    {
+     "f": "france",
+     "ohm": 2865831
+    },
+    {
+     "f": "netherlands",
+     "ohm": 2806842
+    },
+    {
+     "f": "russia",
+     "ohm": 2851143
+    },
+    {
+     "f": "united-states",
+     "ohm": 2800549
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2831981
+    },
+    {
+     "f": "trinidad-gb",
+     "ohm": 2834830
+    },
+    {
+     "f": "haiti",
+     "ohm": 2841721
+    },
+    {
+     "f": "brazil-empire",
+     "ohm": 2848712
+    },
+    {
+     "f": "mexico",
+     "ohm": 2841219
+    },
+    {
+     "f": "guatemala-rep",
+     "ohm": 2859575
+    },
+    {
+     "f": "honduras",
+     "ohm": 2808171
+    },
+    {
+     "f": "el-salvador",
+     "ohm": 2808164
+    },
+    {
+     "f": "nicaragua",
+     "ohm": 2808140
+    },
+    {
+     "f": "costa-rica",
+     "ohm": 2808149
+    },
+    {
+     "f": "new-granada-rep",
+     "ohm": 2872376
+    },
+    {
+     "f": "venezuela-rep",
+     "ohm": 2842573
+    },
+    {
+     "f": "ecuador",
+     "ohm": 2848856
+    },
+    {
+     "f": "peru-rep",
+     "ohm": 2851023
+    },
+    {
+     "f": "bolivia",
+     "ohm": 2848690
+    },
+    {
+     "f": "chile-rep",
+     "ohm": 2941082
+    },
+    {
+     "f": "argentina",
+     "ohm": 2848676
+    },
+    {
+     "f": "paraguay",
+     "ohm": 2848691
+    },
+    {
+     "f": "uruguay",
+     "ohm": 2848988
+    },
+    {
+     "f": "dominican-republic",
+     "ohm": 2841715
+    },
+    {
+     "f": "cuba",
+     "ohm": 2841669
+    },
+    {
+     "f": "puerto-rico",
+     "ohm": 2841681
+    },
+    {
+     "f": "philippines",
+     "ohm": 2841332
+    }
+   ],
+   "names": {
+    "argentina": {
+     "name": {
+      "en": "Argentine Confederation",
+      "es": "Confederación Argentina"
+     },
+     "short": {
+      "en": "Argentina",
+      "es": "Argentina"
+     }
+    }
+   }
+  },
+  {
+   "year": 1898,
+   "label": "1898",
+   "date": "1899-04-12",
+   "act": {
+    "en": "Treaty of Paris, 10 December 1898 (in force 11 April 1899)",
+    "es": "Tratado de París, 10 de diciembre de 1898 (en vigor el 11 de abril de 1899)"
+   },
+   "change": {
+    "en": "Spain relinquishes Cuba and cedes Puerto Rico, Guam and the Philippines to the United States; in 1899 it sells the Carolines, the Marianas and Palau to Germany. The sequence ends here.",
+    "es": "España renuncia a Cuba y cede Puerto Rico, Guam y Filipinas a Estados Unidos; en 1899 vende las Carolinas, las Marianas y Palaos a Alemania. La secuencia termina aquí."
+   },
+   "source": {
+    "en": "Library of Congress, Treaty of Paris of 1898; Yale Law School, Avalon Project",
+    "es": "Biblioteca del Congreso, Tratado de París de 1898; Yale Law School, Avalon Project"
+   },
+   "pulse": [
+    "us-cuba",
+    "us-philippines",
+    "united-states"
+   ],
+   "labels": [
+    "us-cuba",
+    "us-philippines",
+    "mexico",
+    "brazil-empire"
+   ],
+   "lines": [],
+   "frame": [
+    "484",
+    "192",
+    "608",
+    "840"
+   ],
+   "units": [
+    {
+     "f": "britain",
+     "ohm": 2848423
+    },
+    {
+     "f": "france",
+     "ohm": 2918086
+    },
+    {
+     "f": "united-states",
+     "ohm": 2815542
+    },
+    {
+     "f": "us-cuba",
+     "ohm": 2861553
+    },
+    {
+     "f": "us-philippines",
+     "ohm": 2889836
+    },
+    {
+     "f": "jamaica-gb",
+     "ohm": 2834850
+    },
+    {
+     "f": "trinidad-gb",
+     "ohm": 2834829
+    },
+    {
+     "f": "haiti",
+     "ohm": 2841719
+    },
+    {
+     "f": "brazil-empire",
+     "ohm": 2751092
+    },
+    {
+     "f": "mexico",
+     "ohm": 2859728
+    },
+    {
+     "f": "guatemala-rep",
+     "ohm": 2859573
+    },
+    {
+     "f": "honduras",
+     "ohm": 2808172
+    },
+    {
+     "f": "el-salvador",
+     "ohm": 2808164
+    },
+    {
+     "f": "nicaragua",
+     "ohm": 2871201
+    },
+    {
+     "f": "costa-rica",
+     "ohm": 2808163
+    },
+    {
+     "f": "gran-colombia",
+     "ohm": 2848969
+    },
+    {
+     "f": "venezuela-rep",
+     "ohm": 2842572
+    },
+    {
+     "f": "ecuador",
+     "ohm": 2848856
+    },
+    {
+     "f": "peru-rep",
+     "ohm": 2947202
+    },
+    {
+     "f": "bolivia",
+     "ohm": 2848688
+    },
+    {
+     "f": "chile-rep",
+     "ohm": 2860799
+    },
+    {
+     "f": "argentina",
+     "ohm": 2860948
+    },
+    {
+     "f": "paraguay",
+     "ohm": 2863122
+    },
+    {
+     "f": "uruguay",
+     "ohm": 2802055
+    },
+    {
+     "f": "dominican-republic",
+     "ohm": 2841713
+    }
+   ],
+   "names": {
+    "argentina": {
+     "name": {
+      "en": "Argentina",
+      "es": "Argentina"
+     },
+     "short": {
+      "en": "Argentina",
+      "es": "Argentina"
+     }
+    }
+   }
+  }
+ ]
+}

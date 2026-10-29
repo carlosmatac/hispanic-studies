@@ -77,4 +77,5 @@ export type TourCard = TourStop & {
   text: string;
   link: { href: string; label: string };
   mediaText?: string;          // credit, or what is still pending
+  era: number | null;          // the borders keyframe to show (lib/atlas.ts), null for today
 };
