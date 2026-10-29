@@ -36,6 +36,7 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
           <p className="eyebrow">{d.atlas.eyebrow}</p>
           <h1 id="atlas-h">{d.atlas.h}</h1>
           <p>{d.atlas.sub}</p>
+          <p className="pending atlas__wip">{d.atlas.rebuilding}</p>
         </section>
 
         <section className="atlas atlas--page" id="atlas" aria-label={d.map.title}>

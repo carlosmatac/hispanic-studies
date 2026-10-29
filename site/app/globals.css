@@ -615,6 +615,9 @@ main .eyebrow { color: var(--leather); }
 .page-head { padding-bottom: clamp(26px, 3vw, 44px); }
 .page-head h1 { font-size: clamp(36px, 5vw, 68px); max-width: 18ch; color: var(--burgundy); }
 .page-head p:not(.eyebrow) { margin-top: 16px; font-size: clamp(16px, 1.15vw, 19px); color: var(--ink-muted); }
+/* the Atlas is being rebuilt (issue #71): an honest placeholder mark on its page and its plate */
+.page-head p.atlas__wip { font-size: 12px; color: var(--ink-muted); }
+.door__wip { justify-self: start; padding: 6px 10px; font-size: 11px; }
 .nav a[aria-current="page"] { border-bottom-color: var(--burgundy); color: var(--burgundy); }
 
 /* ==========================================================================
