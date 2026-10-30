@@ -257,6 +257,15 @@ const en = {
     pamphlet: 'The free pamphlet',
     madeBy: 'Made by',
   },
+  // the private preview's entry page (app/enter, issue #86)
+  enter: {
+    label: 'Password',
+    submit: 'Enter',
+    pending: 'Entering…',
+    wrong: 'That password is not the right one. Please try again.',
+    note: 'A private preview. The site is not public yet.',
+    langLabel: 'Language',
+  },
 };
 
 export type Dict = typeof en;
@@ -508,6 +517,14 @@ const es: Dict = {
     version: 'Primera versión · octubre de 2026 · texto no definitivo',
     pamphlet: 'El folleto gratuito',
     madeBy: 'Hecho por',
+  },
+  enter: {
+    label: 'Contraseña',
+    submit: 'Entrar',
+    pending: 'Entrando…',
+    wrong: 'Esa contraseña no es la correcta. Inténtalo de nuevo, por favor.',
+    note: 'Una vista previa privada. El sitio aún no es público.',
+    langLabel: 'Idioma',
   },
 };
 
