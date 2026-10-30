@@ -18,8 +18,12 @@ import { ENTER_PATH, PREVIEW_COOKIE, checkPass, entryLang, safeNext } from '@/li
    indexed, and neither is the entry page. */
 const ADMIN = /^\/admin(\/|$)/;
 const ENTER = /^\/enter(\/|$)/;
-// what the entry page needs; /_next/image is not here, it would serve the site's pictures
-const OPEN = /^\/(_next\/static\/|_next\/webpack-hmr|__nextjs|brand\/ihs-logo(\.svg|-mask\.png)$|favicon\.ico$|robots\.txt$)/;
+/* Always open: what the entry page needs (scripts, styles, fonts, the eagle),
+   and the pictures in public/art and public/brand. The pictures must be: the
+   image optimizer (/_next/image, itself behind the pass) fetches them from the
+   site without the visitor's cookie, and they are the art and the brand the
+   public site shows anyway. Pages, videos, data and the archive stay closed. */
+const OPEN = /^\/(_next\/static\/|_next\/webpack-hmr|__nextjs|favicon\.ico$|robots\.txt$|(art|brand)\/[^?#]+\.(jpe?g|png|webp|avif|gif|svg)$)/i;
 
 // a browser asking for a page, not a script fetching data, a file or an RSC payload
 function wantsPage(request: NextRequest) {
