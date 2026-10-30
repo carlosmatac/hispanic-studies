@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { dict, LANGS, type Lang } from '@/lib/i18n';
 
-export const NAV = ['atlas', 'canon', 'books', 'watch', 'read', 'about', 'merch'] as const;
+export const NAV = ['atlas', 'canon', 'watch', 'books', 'read', 'about', 'merch'] as const;
 export type NavKey = (typeof NAV)[number];
 
 /* The Atlas and the archive have their own pages; everything else is a section

@@ -3,7 +3,7 @@ import { dict, type Lang } from '@/lib/i18n';
 import { fillCounts, getArchive } from '@/lib/archive';
 import CanonCard from './canon/CanonCard';
 
-/* II and III on the home: the Atlas and the archive as two plates that open
+/* III and IV on the home (after the videos since #89): the Atlas and the archive as two plates that open
    their own pages. The map is a still of the Atlas map (public/art/atlas-plate.jpg,
    captured from the page itself); the archive is five of its own cards, fanned,
    one of each region but Spain, whose burgundy is the plate's own ground. */
@@ -23,7 +23,7 @@ export default async function Doors({ lang }: { lang: Lang }) {
           <Image src="/art/atlas-plate.jpg" alt="" width={2400} height={1174} sizes="(max-width: 900px) 100vw, 58vw" />
         </span>
         <span className="door__text">
-          <span className="eyebrow"><span className="door__n">II</span> {d.atlas.eyebrow}</span>
+          <span className="eyebrow"><span className="door__n">III</span> {d.atlas.eyebrow}</span>
           <span className="door__h">{d.nav.atlas}</span>
           <span className="door__p">{d.atlas.door}</span>
           <span className="pending door__wip">{d.atlas.rebuilding}</span>
@@ -39,7 +39,7 @@ export default async function Doors({ lang }: { lang: Lang }) {
           ))}
         </span>
         <span className="door__text">
-          <span className="eyebrow"><span className="door__n">III</span> {d.canon.eyebrow(works.length, works[0]?.year ?? 0, works[works.length - 1]?.year ?? 0)}</span>
+          <span className="eyebrow"><span className="door__n">IV</span> {d.canon.eyebrow(works.length, works[0]?.year ?? 0, works[works.length - 1]?.year ?? 0)}</span>
           <span className="door__h">{d.nav.canon}</span>
           <span className="door__p">{door ? fillCounts(door, archive) : d.canon.door(works.length)}</span>
           <span className="door__go">{d.canon.open} <i aria-hidden="true">→</i></span>
