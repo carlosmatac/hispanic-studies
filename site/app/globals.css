@@ -41,10 +41,6 @@
   --lift-1: 0 1px 1px color-mix(in srgb, var(--shade) 14%, transparent), 0 6px 14px -6px color-mix(in srgb, var(--shade) 30%, transparent);
   --lift-2: 0 2px 3px color-mix(in srgb, var(--shade) 14%, transparent), 0 22px 44px -18px color-mix(in srgb, var(--shade) 48%, transparent);
   --lift-3: 0 3px 6px color-mix(in srgb, var(--shade) 16%, transparent), 0 38px 70px -26px color-mix(in srgb, var(--shade) 60%, transparent);
-  --radius-s: 8px;
-  --radius-m: 14px;
-  --radius-l: 22px;
-  --radius-pill: 999px;
 
   --gutter: clamp(16px, 4vw, 64px);
   /* one content width for the whole site (2026-10-25): grounds run full width, content sits
@@ -579,7 +575,7 @@ main > .voyage::after { display: none; }
   background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 5%, transparent), transparent 60%), var(--atlas-glass);
   border: 1px solid var(--atlas-edge);
   box-shadow: var(--atlas-sheen), var(--atlas-shadow);
-  -webkit-backdrop-filter: blur(16px) saturate(1.12); backdrop-filter: blur(16px) saturate(1.12);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
 }
 
 /* the year, with a small rule under it */
