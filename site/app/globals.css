@@ -761,7 +761,7 @@ main > .voyage::after { display: none; }
 .canon-shelf { padding: 0 var(--edge); }
 .canon-index { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(30px, 4vw, 56px); }
 .canon-index a {
-  display: inline-flex; align-items: baseline; gap: 10px; padding: 9px 18px 10px; text-decoration: none; border-radius: var(--radius-pill);
+  display: inline-flex; align-items: baseline; gap: 10px; padding: 9px 18px 10px; text-decoration: none; border-radius: var(--radius-l);
   border: 1px solid var(--glass-edge); background: var(--glass-paper); box-shadow: var(--glass-lit), var(--lift-1); transition: background 0.15s, color 0.15s;
 }
 .canon-index a:hover { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
@@ -847,6 +847,8 @@ main > .voyage::after { display: none; }
   /* over the dark veil a translucent sheet turns muddy: the record is solid paper, lit at the top */
   background: var(--paper); color: var(--ink); border: 1px solid var(--glass-edge); box-shadow: var(--glass-lit), var(--lift-3);
 }
+/* the sheet takes focus when it opens from a link; its controls keep their own rings */
+.record:focus-visible { outline: none; }
 .record::backdrop { background: color-mix(in srgb, var(--burgundy-dark) 72%, transparent); backdrop-filter: blur(3px); }
 @media (prefers-reduced-motion: no-preference) {
   .record[open] { animation: record-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1); }
@@ -1297,6 +1299,7 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   .fresco__band { aspect-ratio: 16 / 9; }
   .fresco__band img { object-position: 46% 50%; }
   .fresco__credit { text-align: left; }
+  .books { padding-inline: calc(var(--edge) + 14px); }
   .fresco__tabs { grid-template-columns: 1fr; gap: 4px; }
   .ftab { padding: 10px 16px; border-radius: var(--radius-m); }
   .fpanel__sheet { padding: 10px 10px 18px; }
