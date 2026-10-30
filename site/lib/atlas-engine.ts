@@ -187,14 +187,33 @@ function sliceTo(cv: CVoyage, d: number): LonLat[] {
 /* ---------- public types ---------- */
 
 export type Inset = { l: number; r: number; t: number; b: number };
-export type HitInfo = { x: number; y: number; title: string; date?: string; text?: string };
-export type FrameInfo = { s: number; beat: number; stop: number; day: number; playing: boolean; voyageDay: boolean };
+export type Box = [number, number, number, number];   // x0, y0, x1, y1 on screen
+/** What the card points at on the chart: a landfall of the voyage in this beat
+    (its index among the named stops), a jurisdiction (its family) or a treaty line. */
+export type Focus = { kind: 'stop'; k: number } | { kind: 'unit'; f: string } | { kind: 'line'; id: string };
+export const focusKey = (f: Focus | null | undefined) => (!f ? '' : f.kind === 'stop' ? `stop:${f.k}` : f.kind === 'unit' ? `unit:${f.f}` : `line:${f.id}`);
+export type HitInfo = { x: number; y: number; title: string; date?: string; text?: string; focus?: Focus };
+export type FrameInfo = {
+  s: number; beat: number; tau: number; stop: number; atStop: boolean; day: number; playing: boolean; voyageDay: boolean;
+};
+/** Where things are on the chart just drawn, for the explainer laid over it. */
+export type Anchors = {
+  beat: number;
+  area: Box;                                  // the part of the stage the chart is framed in
+  ship: [number, number] | null;
+  labels: Box[];                              // names already on the chart
+  project: (at: LonLat) => [number, number] | null;
+  unitBox: (family: string) => Box | null;    // the units of a family in the keyframe in force
+  lineBox: (id: string) => Box | null;
+};
 export type EngineOpts = {
   lang: 'en' | 'es';
   reduced: boolean;
   seaNames: { atlantic: string; south: string; pacific: string };
+  lines: Record<string, { name: string; west: string; east: string }>;
   onFrame: (f: FrameInfo) => void;
   onHover: (h: HitInfo | null) => void;
+  onAnchors?: (a: Anchors) => void;
   onReady: () => void;
   onError: () => void;
 };
@@ -205,6 +224,8 @@ export type Engine = {
   play(): void; pause(): void; isPlaying(): boolean;
   seek(s: number): void;
   seekBeat(i: number): void;
+  seekStop(k: number): void;
+  setFocus(f: Focus | null): void;
   setInset(i: Inset): void;
   setReduced(r: boolean): void;
   setVisible(v: boolean): void;
@@ -377,6 +398,13 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   let pulseAt = -1e9;
   let hits: HitInfo[] = [];
   let hoverKey = '';
+  let focus: Focus | null = null;
+  // the shapes the pointer can find on the last chart drawn (jurisdictions, lines),
+  // and the transform they were drawn with
+  let shapeHits: { path: Path2D; stroke: boolean; hit: Omit<HitInfo, 'x' | 'y'> }[] = [];
+  let shapeXf: [number, number, number, number, number, number] = [1, 0, 0, 1, 0, 0];
+  let shapeScale = 1;
+  const boundsCache = new Map<string, Box | null>();
 
   function frame(now: number) {
     raf = 0;
@@ -428,7 +456,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         dirty = false;
         lastKey = key;
       }
-      opts.onFrame({ s, beat: st.bi, stop: st.stop, day: st.day, playing, voyageDay: st.vi >= 0 && !st.atStop });
+      opts.onFrame({ s, beat: st.bi, tau: st.tau, stop: st.stop, atStop: st.atStop, day: st.day, playing, voyageDay: st.vi >= 0 && !st.atStop });
       if (playing || moving || fading) schedule();
     } else if (playing) schedule();
   }
@@ -628,10 +656,29 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       // the units that changed: a pulse, or with reduced motion a still outline
       if (!st.preEra && st.cb.beat.kind === 'era') {
         const pt2 = (now - pulseAt) / 1000;
-        const al = reduced ? 0.8 : pt2 < 2.6 ? (1 - pt2 / 2.6) * (0.55 + 0.45 * Math.sin(pt2 * 7)) : 0;
+        // after the pulse a faint outline stays, so the explainer has something to point at
+        const al = reduced ? 0.8 : pt2 < 2.6 ? Math.max(0.4, (1 - pt2 / 2.6) * (0.55 + 0.45 * Math.sin(pt2 * 7))) : 0.4;
         if (al > 0.01) {
           ctx.lineWidth = lw(2.2); ctx.strokeStyle = css(C.paper, al);
           ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => units.get(u.id)))));
+        }
+      }
+    }
+    // the jurisdiction the card points at: lit, and findable by the pointer
+    shapeHits = [];
+    shapeXf = flat ? [dpr * sc, 0, 0, dpr * sc, dpr * tx, dpr * ty] : [dpr, 0, 0, dpr, 0, 0];
+    shapeScale = flat ? sc : 1;
+    if (!today && !st.preEra) {
+      const listed = new Set(era.pulse);
+      if (focus?.kind === 'unit') listed.add(focus.f);
+      for (const fid of listed) {
+        const us = era.units.filter((u) => u.f === fid && units.get(u.id));
+        if (!us.length || !chron.families[fid]) continue;
+        const path = G(`era:${st.era}:fam:${fid}`, () => fc(us.map((u) => units.get(u.id))));
+        shapeHits.push({ path, stroke: false, hit: { title: era.names[fid] ?? chron.families[fid].name, focus: { kind: 'unit', f: fid } } });
+        if (focus?.kind === 'unit' && focus.f === fid) {
+          ctx.fillStyle = css(C.paper, 0.16); ctx.fill(path);
+          ctx.lineWidth = lw(2.4); ctx.strokeStyle = css(C.paper, 0.95); ctx.stroke(path);
         }
       }
     }
@@ -744,8 +791,12 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       for (const id of era.lines) {
         const g = lines.get(id);
         if (!g) continue;
-        ctx.setLineDash(dash([6, 5])); ctx.lineWidth = lw(1.3); ctx.strokeStyle = css(C.paper, 0.75);
-        ctx.stroke(G(`line:${id}`, () => g)); ctx.setLineDash([]);
+        const on = focus?.kind === 'line' && focus.id === id;
+        const path = G(`line:${id}`, () => g);
+        if (on) { ctx.lineWidth = lw(7); ctx.strokeStyle = css(C.paper, 0.14); ctx.stroke(path); }
+        ctx.setLineDash(dash([6, 5])); ctx.lineWidth = lw(on ? 2.2 : 1.3); ctx.strokeStyle = css(C.paper, on ? 1 : 0.75);
+        ctx.stroke(path); ctx.setLineDash([]);
+        shapeHits.unshift({ path, stroke: true, hit: { title: opts.lines[id]?.name ?? id, focus: { kind: 'line', id } } });
       }
     }
     // the current route, with a soft glow under it
@@ -768,13 +819,30 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       placed.push([x, y, w, h]); return true;
     };
 
-    // the treaty line's name
+    // the treaty line's name, and what it divides: west for Castile, east for Portugal
     if (!today && !st.preEra && era.lines.includes('tordesillas')) {
       const p = pt([-48.5, 30]);
       if (p) {
         ctx.save(); ctx.translate(p[0] + 7, p[1]); ctx.rotate(-Math.PI / 2);
         ctx.font = `500 10px ${fontMono}`; ctx.fillStyle = css(C.paper, 0.8); ctx.textAlign = 'center';
         ctx.fillText('TORDESILLAS · 1494', 0, 0); ctx.restore();
+        placed.push([p[0] - 2, p[1] - 58, 14, 116]);
+      }
+      // what it divides, while it is the subject: its own keyframe, or the card pointing at it
+      const sides = opts.lines.tordesillas;
+      const subject = (st.cb.beat.kind === 'era' && era.pulse.includes('tordesillas')) || (focus?.kind === 'line' && focus.id === 'tordesillas');
+      // just under the line's name, whatever the scale
+      const q = subject ? pt([-48.5, Math.max(-40, 30 - 74 / Math.max(0.5, ppd))]) : null;
+      if (sides && q) {
+        ctx.font = `500 10.5px ${fontMono}`;
+        const west = `← ${sides.west.toUpperCase()}`, east = `${sides.east.toUpperCase()} →`;
+        const ww = ctx.measureText(west).width, we = ctx.measureText(east).width;
+        ctx.fillStyle = css(C.paper, 0.85);
+        ctx.textAlign = 'right';
+        if (free(q[0] - 10 - ww, q[1] - 10, ww, 13)) ctx.fillText(west, q[0] - 10, q[1]);
+        ctx.textAlign = 'left';
+        if (free(q[0] + 10, q[1] - 10, we, 13)) ctx.fillText(east, q[0] + 10, q[1]);
+        ctx.textAlign = 'center';
       }
     }
 
@@ -821,11 +889,11 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
 
     // the places reached and the ship
     for (const r of sailed) {
-      for (const stp of r.cv.stops) {
+      for (const [k, stp] of r.cv.stops.entries()) {
         if (stp.d > r.d + 1e-9) break;
         const p = pt(stp.wp.at);
         if (!p) continue;
-        hits.push({ x: p[0], y: p[1], title: stp.wp.name as string, date: dateLabel(stp.wp.date), text: stp.wp.log });
+        hits.push({ x: p[0], y: p[1], title: stp.wp.name as string, date: dateLabel(stp.wp.date), text: stp.wp.log, focus: r.current ? { kind: 'stop', k } : undefined });
         if (!r.current) { dot(p[0], p[1], 1.8, css(C.paper, 0.5)); }
       }
     }
@@ -855,6 +923,20 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
             ctx.fillStyle = css(C.paper, k === reached.length - 1 ? 1 : 0.78); ctx.fillText(label, p[0] + dx, p[1] + dy);
             break;
           }
+        }
+      }
+      // the landfall the card points at (one not reached yet: a dashed ring)
+      if (focus?.kind === 'stop') {
+        const stp = cur.cv.stops[focus.k];
+        const p = stp && pt(stp.wp.at);
+        if (p) {
+          const ahead = stp.d > cur.d + 1e-9;
+          ctx.beginPath(); ctx.arc(p[0], p[1], 10, 0, Math.PI * 2);
+          ctx.setLineDash(ahead ? [3, 3] : []);
+          ctx.lineWidth = 1.6; ctx.strokeStyle = css(C.paper, 0.95); ctx.stroke(); ctx.setLineDash([]);
+          ctx.beginPath(); ctx.arc(p[0], p[1], 15, 0, Math.PI * 2);
+          ctx.lineWidth = 5; ctx.strokeStyle = css(C.paper, 0.14); ctx.stroke();
+          if (ahead) dot(p[0], p[1], 2.4, css(C.paper, 0.9), css(C.burgundyDark));
         }
       }
       // the ship
@@ -896,6 +978,41 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         dot(p[0], p[1], 2.6, css(ip.tier === 'emersa' ? C.paper : C.leatherLight, 0.95), css(C.burgundyDark));
         hits.push({ x: p[0], y: p[1], title: ip.name });
       }
+    }
+
+    // where things are, for the explainer over the chart
+    if (opts.onAnchors) {
+      const shipAt = cur ? pt(pointAt(cur.cv, cur.d)) : null;
+      const toScreen = (b: Box | null): Box | null => {
+        if (!b) return null;
+        const r: Box = flat ? [b[0] * sc + tx, b[1] * sc + ty, b[2] * sc + tx, b[3] * sc + ty] : b;
+        const x0 = Math.max(0, r[0]), y0 = Math.max(0, r[1]), x1 = Math.min(W, r[2]), y1 = Math.min(H, r[3]);
+        return x1 - x0 < 1 || y1 - y0 < 1 ? null : [x0, y0, x1, y1];
+      };
+      // bounds in a flat chart's own space are cached (there the camera is a transform)
+      const bounds = (key: string, obj: () => GeoObj | null): Box | null => {
+        const k = `${L}:${key}`;
+        if (flat && boundsCache.has(k)) return toScreen(boundsCache.get(k) as Box | null);
+        const o = obj();
+        const b = o ? geoPath(flat ? baseProj[L] : proj).bounds(o) : null;
+        const box: Box | null = b && Number.isFinite(b[0][0]) ? [b[0][0], b[0][1], b[1][0], b[1][1]] : null;
+        if (flat) boundsCache.set(k, box);
+        return toScreen(box);
+      };
+      const eraNow = st.era;
+      const off = today || st.preEra;
+      opts.onAnchors({
+        beat: st.bi,
+        area: [a.x, a.y, a.x + a.w, a.y + a.h],
+        ship: shipAt ? [shipAt[0], shipAt[1]] : null,
+        labels: placed.map(([x, y, w, h]) => [x, y, x + w, y + h] as Box),
+        project: (at) => { const p = pt(at); return p ? [p[0], p[1]] : null; },
+        unitBox: (fid) => (off ? null : bounds(`era:${eraNow}:fam:${fid}`, () => {
+          const us = chron.eras[eraNow].units.filter((u) => u.f === fid && units.get(u.id));
+          return us.length ? fc(us.map((u) => units.get(u.id))) : null;
+        })),
+        lineBox: (id) => (off || !chron.eras[eraNow].lines.includes(id) ? null : bounds(`line:${id}`, () => lines.get(id) ?? null)),
+      });
     }
 
     // a vignette, and the old chart fading out after a change of layout
@@ -1054,6 +1171,18 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       s = reduced ? b.start + b.dur - 1e-3 : b.start;
       kick();
     },
+    seekStop(k: number) {
+      const cur = stateAt(s);
+      if (cur.vi < 0) return;
+      const cv = voyages[cur.vi];
+      const stp = cv.stops[clamp(k, 0, cv.stops.length - 1)];
+      s = cur.cb.start + stp.arrive + 0.02;
+      kick();
+    },
+    setFocus(f: Focus | null) {
+      if (focusKey(f) === focusKey(focus)) return;
+      focus = f; kick();
+    },
     setInset(i: Inset) {
       if (i.l === inset.l && i.r === inset.r && i.t === inset.t && i.b === inset.b) return;
       inset = i; kick();
@@ -1063,6 +1192,17 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     pick(x: number, y: number) {
       let best: HitInfo | null = null, bd = 16;
       for (const h of hits) { const d = Math.hypot(h.x - x, h.y - y); if (d < bd) { bd = d; best = h; } }
+      // no point near: a treaty line, or a jurisdiction the card lists
+      if (!best && shapeHits.length) {
+        ctx.save();
+        ctx.setTransform(...shapeXf);
+        ctx.lineWidth = 12 / shapeScale;
+        for (const sh of shapeHits) {
+          const inside = sh.stroke ? ctx.isPointInStroke(sh.path, x * dpr, y * dpr) : ctx.isPointInPath(sh.path, x * dpr, y * dpr);
+          if (inside) { best = { x, y, ...sh.hit }; break; }
+        }
+        ctx.restore();
+      }
       const key = best ? `${best.title}${best.date ?? ''}` : '';
       if (key !== hoverKey) { hoverKey = key; opts.onHover(best); }
       return best;
