@@ -26,7 +26,6 @@ export default async function Doors({ lang }: { lang: Lang }) {
           <span className="eyebrow"><span className="door__n">II</span> {d.atlas.eyebrow}</span>
           <span className="door__h">{d.nav.atlas}</span>
           <span className="door__p">{d.atlas.door}</span>
-          <span className="pending door__wip">{d.atlas.rebuilding}</span>
           <span className="door__go">{d.atlas.open} <i aria-hidden="true">→</i></span>
         </span>
       </a>

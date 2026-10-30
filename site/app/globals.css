@@ -41,6 +41,10 @@
   --lift-1: 0 1px 1px color-mix(in srgb, var(--shade) 14%, transparent), 0 6px 14px -6px color-mix(in srgb, var(--shade) 30%, transparent);
   --lift-2: 0 2px 3px color-mix(in srgb, var(--shade) 14%, transparent), 0 22px 44px -18px color-mix(in srgb, var(--shade) 48%, transparent);
   --lift-3: 0 3px 6px color-mix(in srgb, var(--shade) 16%, transparent), 0 38px 70px -26px color-mix(in srgb, var(--shade) 60%, transparent);
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --radius-pill: 999px;
 
   --gutter: clamp(16px, 4vw, 64px);
   /* one content width for the whole site (2026-10-25): grounds run full width, content sits
@@ -401,9 +405,6 @@ main .eyebrow { color: var(--leather); }
 .page-head { padding-bottom: clamp(26px, 3vw, 44px); }
 .page-head h1 { font-size: clamp(36px, 5vw, 68px); max-width: 18ch; color: var(--burgundy); }
 .page-head p:not(.eyebrow) { margin-top: 16px; font-size: clamp(16px, 1.15vw, 19px); color: var(--ink-muted); }
-/* the Atlas is being rebuilt (issue #71): an honest placeholder mark on its page and its plate */
-.page-head p.atlas__wip { font-size: 12px; color: var(--ink-muted); }
-.door__wip { justify-self: start; padding: 6px 10px; font-size: 11px; }
 .nav a[aria-current="page"] { border-bottom-color: var(--burgundy); color: var(--burgundy); }
 
 /* ==========================================================================
@@ -513,16 +514,23 @@ main .eyebrow { color: var(--leather); }
 /* the stage (components/atlas/AtlasStage.tsx, issue #71): a dark chart that is
    discovered. The page keeps its paper; the stage is the one dark band, the
    unknown in the brand's own burgundy-black. The chart is a canvas
-   (lib/atlas-engine.ts); the year, the controls and the card sit over it on a
-   dark glass. */
+   (lib/atlas-engine.ts); the year, the controls, the card and the explainer sit
+   over it on a rounded dark glass (issue #88), held to the stage's own edges
+   with one margin at every width: the card on the right, the controls under
+   the part of the chart the card leaves free. */
 .voyage {
   --atlas-fog: color-mix(in srgb, var(--burgundy-dark) 70%, var(--ink));
-  --atlas-glass: color-mix(in srgb, var(--atlas-fog) 80%, transparent);
+  --atlas-glass: color-mix(in srgb, var(--atlas-fog) 74%, transparent);
+  --atlas-glass-strong: color-mix(in srgb, var(--atlas-fog) 86%, transparent);
+  --atlas-edge: color-mix(in srgb, var(--paper) 15%, transparent);
+  --atlas-sheen: inset 0 1px 0 color-mix(in srgb, var(--paper) 9%, transparent);
+  --atlas-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 35%, transparent), 0 24px 54px -22px color-mix(in srgb, var(--burgundy-dark) 70%, var(--ink));
   --atlas-line: color-mix(in srgb, var(--paper) 16%, transparent);
   --atlas-soft: color-mix(in srgb, var(--paper) 70%, transparent);
   --atlas-label: color-mix(in srgb, var(--leather) 55%, var(--paper));
-  --card-w: 384px;
-  padding: 0; color: var(--paper);
+  --atlas-m: clamp(14px, 1.4vw, 28px);
+  --card-w: clamp(344px, 25vw, 430px);
+  position: relative; padding: 0; color: var(--paper);
 }
 main > .voyage { background: var(--atlas-fog); }
 main > .voyage::after { display: none; }
@@ -532,29 +540,40 @@ main > .voyage::after { display: none; }
   position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 24px; text-align: center;
   font-family: var(--mono); font-size: 12px; color: var(--atlas-soft);
 }
-.voyage__when { position: absolute; left: var(--edge); top: clamp(18px, 3vh, 34px); z-index: 2; margin: 0; display: grid; gap: 4px; pointer-events: none; }
+
+/* one glass for everything laid over the chart */
+.voyage__card, .voyage__controls, .voyage__callout {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 5%, transparent), transparent 60%), var(--atlas-glass);
+  border: 1px solid var(--atlas-edge);
+  box-shadow: var(--atlas-sheen), var(--atlas-shadow);
+  -webkit-backdrop-filter: blur(16px) saturate(1.12); backdrop-filter: blur(16px) saturate(1.12);
+}
+
+/* the year, with a small rule under it */
+.voyage__when { position: absolute; left: calc(var(--atlas-m) + 10px); top: calc(var(--atlas-m) + 2px); z-index: 2; margin: 0; display: grid; gap: 5px; pointer-events: none; }
+.voyage__when::after { content: ""; width: 128px; height: 1px; margin-top: 5px; background: linear-gradient(to right, color-mix(in srgb, var(--paper) 55%, transparent), transparent); }
 .voyage__year {
-  font-family: var(--display); font-weight: 600; font-size: clamp(42px, 4.8vw, 80px); line-height: 0.9; color: var(--paper);
+  font-family: var(--display); font-weight: 600; font-size: clamp(42px, 4.4vw, 78px); line-height: 0.9; color: var(--paper);
   text-shadow: 0 2px 30px var(--atlas-fog); font-variant-numeric: lining-nums tabular-nums;
 }
-.voyage__date { min-height: 1.4em; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--atlas-soft); }
+.voyage__date { min-height: 1.4em; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--atlas-soft); }
 
 .voyage__tip {
   position: absolute; z-index: 5; translate: -50% calc(-100% - 14px); width: max-content; max-width: 270px;
-  display: grid; gap: 3px; padding: 9px 12px 11px; pointer-events: none;
+  display: grid; gap: 3px; padding: 9px 12px 11px; pointer-events: none; border-radius: var(--radius-s);
   background: var(--paper); color: var(--ink); box-shadow: var(--lift-2); font-size: 13px; line-height: 1.4;
 }
 .voyage__tip strong { font-family: var(--display); font-size: 17px; font-weight: 600; color: var(--burgundy); }
 .voyage__tip-date { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--leather); }
 
 .voyage__start {
-  position: absolute; z-index: 3; left: calc((100% - var(--card-w)) / 2); top: 56%; translate: -50% -50%;
+  position: absolute; z-index: 3; left: calc((100% - var(--card-w) - var(--atlas-m)) / 2); top: 54%; translate: -50% -50%;
   display: grid; justify-items: center; gap: 14px; width: min(440px, 86%); text-align: center;
 }
 .voyage__start p { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--atlas-soft); text-shadow: 0 1px 12px var(--atlas-fog); }
 .voyage__sail {
-  display: inline-flex; align-items: center; gap: 12px; padding: 14px 28px 15px; cursor: pointer;
-  border: 0; background: var(--paper); color: var(--burgundy);
+  display: inline-flex; align-items: center; gap: 12px; padding: 14px 30px 15px 26px; cursor: pointer;
+  border: 0; border-radius: var(--radius-pill); background: var(--paper); color: var(--burgundy);
   font-family: var(--display); font-weight: 600; font-size: clamp(21px, 2vw, 28px); line-height: 1;
   box-shadow: 0 0 0 6px color-mix(in srgb, var(--paper) 16%, transparent), 0 24px 60px -20px var(--atlas-fog);
   transition: scale 0.2s;
@@ -567,26 +586,57 @@ main > .voyage::after { display: none; }
   .voyage__sail { animation: sail-call 2.6s ease-in-out infinite; }
 }
 
+/* the explainer (./explainer.ts): a note beside what the beat changes, a leader to it */
+.voyage__leader { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.voyage__leader line { stroke: color-mix(in srgb, var(--paper) 72%, transparent); stroke-width: 1; }
+.voyage__leader circle { fill: var(--paper); stroke: var(--paper); stroke-opacity: 0.28; stroke-width: 5; }
+.voyage__callout {
+  position: absolute; z-index: 4; left: 0; top: 0; width: max-content; max-width: min(300px, 64%);
+  display: grid; gap: 3px; padding: 10px 14px 12px; border-radius: var(--radius-m); pointer-events: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--paper) 6%, transparent), transparent 60%), var(--atlas-glass-strong);
+}
+.voyage__callout:not([data-placed]) { visibility: hidden; }
+.voyage__callout-pre { margin-bottom: 4px; padding-bottom: 6px; border-bottom: 1px solid var(--atlas-line); font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--paper); }
+.voyage__callout-kicker { font-family: var(--mono); font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--atlas-label); }
+.voyage__callout-title { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.2; color: var(--paper); }
+.voyage__callout-text { font-size: 13px; line-height: 1.45; color: color-mix(in srgb, var(--paper) 82%, transparent); }
+@keyframes callout-in { from { opacity: 0; scale: 0.97; } }
+@keyframes callout-blink { 0% { stroke-width: 0; stroke-opacity: 0.6; } 100% { stroke-width: 26; stroke-opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  .voyage__callout { transform-origin: 0 0; animation: callout-in 0.45s 0.12s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+  .voyage__leader circle { animation: callout-blink 1.2s 0.2s ease-out 2 backwards; }
+}
+
+/* the controls: one rounded glass, round buttons, under the free part of the chart */
+.voyage__dock {
+  position: absolute; z-index: 3; left: var(--atlas-m); right: calc(var(--card-w) + 2 * var(--atlas-m)); bottom: var(--atlas-m);
+  display: flex; justify-content: center; pointer-events: none;
+}
 .voyage__controls {
-  position: absolute; z-index: 3; left: var(--edge); right: calc(var(--edge) + var(--card-w) + 16px); bottom: clamp(16px, 3vh, 28px);
-  display: flex; align-items: center; gap: 6px; padding: 8px 14px 8px 8px;
-  background: var(--atlas-glass); border: 1px solid var(--atlas-line);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  pointer-events: auto; flex: 1 1 auto; max-width: 940px;
+  display: flex; align-items: center; gap: 8px; padding: 7px 20px 7px 7px; border-radius: var(--radius-pill);
 }
 .voyage__btn {
-  flex: none; display: grid; place-items: center; width: 38px; height: 38px; padding: 0; cursor: pointer;
-  border: 1px solid var(--atlas-line); background: transparent; color: var(--paper); transition: background 0.15s;
+  flex: none; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; cursor: pointer;
+  border: 1px solid var(--atlas-edge); border-radius: 50%; color: var(--paper);
+  background: color-mix(in srgb, var(--paper) 6%, transparent); box-shadow: var(--atlas-sheen);
+  transition: background 0.15s, border-color 0.15s, scale 0.15s;
 }
 .voyage__btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.voyage__btn svg .fill { fill: currentColor; }
-.voyage__btn:hover:not(:disabled) { background: color-mix(in srgb, var(--paper) 10%, transparent); }
-.voyage__btn--play { width: 44px; height: 44px; background: var(--paper); border-color: var(--paper); color: var(--burgundy); }
-.voyage__btn--play:hover:not(:disabled) { background: var(--paper-deep); }
+.voyage__btn svg .fill { fill: currentColor; stroke-width: 1.2; }
+.voyage__btn:hover:not(:disabled) { background: color-mix(in srgb, var(--paper) 14%, transparent); border-color: color-mix(in srgb, var(--paper) 32%, transparent); }
+.voyage__btn:active:not(:disabled) { scale: 0.95; }
+.voyage__btn--play {
+  width: 46px; height: 46px; background: var(--paper); border-color: var(--paper); color: var(--burgundy);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 10%, transparent), 0 8px 20px -8px color-mix(in srgb, var(--ink) 80%, transparent);
+}
+.voyage__btn--play svg { width: 18px; height: 18px; }
+.voyage__btn--play:hover:not(:disabled) { background: var(--paper-deep); border-color: var(--paper-deep); }
 .voyage__btn:disabled { opacity: 0.35; cursor: default; }
 .voyage__btn:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
-.voyage__track { position: relative; flex: 1 1 auto; min-width: 0; height: 40px; margin: 0 10px; }
+.voyage__track { position: relative; flex: 1 1 auto; min-width: 0; height: 40px; margin: 0 10px 0 14px; }
 .voyage__ticks { position: absolute; inset: 0 7px; pointer-events: none; }
-.voyage__tick { position: absolute; top: 18px; width: 1px; height: 4px; background: color-mix(in srgb, var(--paper) 30%, transparent); }
+.voyage__tick { position: absolute; top: 18px; width: 1px; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--paper) 30%, transparent); }
 .voyage__tick--voyage { height: 4px; background: color-mix(in srgb, var(--leather) 60%, var(--paper)); box-shadow: inset 1px 0 var(--atlas-fog); }
 .voyage__tick--era, .voyage__tick--open, .voyage__tick--today { top: 15px; height: 10px; }
 .voyage__tick.is-on { background: var(--paper); }
@@ -596,41 +646,88 @@ main > .voyage::after { display: none; }
 }
 .voyage__tick--open em { translate: 0 0; }
 .voyage__tick--today em { translate: -100% 0; }
-.voyage__track input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; background: transparent; -webkit-appearance: none; appearance: none; }
-.voyage__track input::-webkit-slider-runnable-track { height: 40px; background: linear-gradient(transparent 19.5px, var(--atlas-line) 19.5px 20.5px, transparent 20.5px); }
+/* the scrubber: a hairline, filled up to the thumb (--pct is set as the story runs) */
+.voyage__track input {
+  --fill: calc(7px + (100% - 14px) * var(--pct, 0));
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; background: transparent; -webkit-appearance: none; appearance: none;
+}
+.voyage__track input::-webkit-slider-runnable-track {
+  height: 40px;
+  background:
+    linear-gradient(to right, color-mix(in srgb, var(--paper) 62%, transparent) var(--fill), transparent var(--fill)) 0 19px / 100% 2px no-repeat,
+    linear-gradient(var(--atlas-line), var(--atlas-line)) 0 19.5px / 100% 1px no-repeat;
+}
 .voyage__track input::-moz-range-track { height: 1px; background: var(--atlas-line); }
-.voyage__track input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: 13px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 20%, transparent); }
-.voyage__track input::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 20%, transparent); }
+.voyage__track input::-moz-range-progress { height: 2px; background: color-mix(in srgb, var(--paper) 62%, transparent); }
+.voyage__track input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: 13px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 20%, transparent), 0 2px 8px var(--atlas-fog); }
+.voyage__track input::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 4px color-mix(in srgb, var(--paper) 20%, transparent), 0 2px 8px var(--atlas-fog); }
 .voyage__track input:focus-visible { outline: none; }
 .voyage__track input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--atlas-fog), 0 0 0 5px var(--paper); }
 .voyage__track input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px var(--atlas-fog), 0 0 0 5px var(--paper); }
 .voyage__count { flex: none; min-width: 5.2em; text-align: right; font-family: var(--mono); font-size: 11px; color: var(--atlas-soft); font-variant-numeric: tabular-nums; }
 
+/* the card: a rounded glass on the stage's right edge; it folds to its title */
 .voyage__card {
-  position: absolute; z-index: 3; top: clamp(16px, 3vh, 28px); right: var(--edge); bottom: clamp(16px, 3vh, 28px); width: var(--card-w);
-  overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--atlas-line) transparent;
-  padding: 22px 24px 22px; background: var(--atlas-glass); border: 1px solid var(--atlas-line);
-  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  position: absolute; z-index: 3; top: var(--atlas-m); right: var(--atlas-m); width: var(--card-w);
+  display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-l);
+  bottom: auto; max-height: calc(100% - 2 * var(--atlas-m));
 }
-.voyage__card h2 { margin: 6px 0 0; font-size: clamp(23px, 1.9vw, 29px); line-height: 1.12; color: var(--paper); }
+.voyage__card-head { position: relative; flex: none; padding: 20px 58px 14px 22px; }
+.voyage__card-body {
+  flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 0 22px 22px;
+  scrollbar-width: thin; scrollbar-color: var(--atlas-line) transparent;
+}
+.voyage__card.is-collapsed .voyage__card-head { padding-bottom: 18px; }
+.voyage__fold {
+  position: absolute; top: 14px; right: 14px; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; cursor: pointer;
+  border: 1px solid var(--atlas-edge); border-radius: 50%; color: var(--paper);
+  background: color-mix(in srgb, var(--paper) 6%, transparent); box-shadow: var(--atlas-sheen); transition: background 0.15s;
+}
+.voyage__fold svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; transition: rotate 0.25s; }
+.voyage__fold:hover { background: color-mix(in srgb, var(--paper) 14%, transparent); }
+.voyage__fold:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+.voyage__card.is-collapsed .voyage__fold svg { rotate: 180deg; }
+.voyage__card h2 { margin: 6px 0 0; font-size: clamp(23px, 1.8vw, 29px); line-height: 1.12; color: var(--paper); }
 .voyage__kicker { margin: 0; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--atlas-label); }
-.voyage__fig { margin: 16px 0 0; }
-.voyage__fig img { display: block; width: 100%; height: auto; max-height: 200px; object-fit: cover; }
+.voyage__fig { margin: 2px 0 0; }
+.voyage__fig img { display: block; width: 100%; height: auto; max-height: 200px; object-fit: cover; border-radius: var(--radius-s); }
 .voyage__fig img[src*="galleon"] { object-fit: contain; background: var(--paper); padding: 6px; }
-.voyage__fig figcaption { margin-top: 6px; font-size: 11px; line-height: 1.4; color: color-mix(in srgb, var(--paper) 55%, transparent); }
+.voyage__fig figcaption { margin-top: 7px; font-size: 11px; line-height: 1.4; color: color-mix(in srgb, var(--paper) 55%, transparent); }
 .voyage__text { margin: 14px 0 0; font-size: 14.5px; line-height: 1.58; color: color-mix(in srgb, var(--paper) 90%, transparent); }
+.voyage__fig + .voyage__text { margin-top: 14px; }
+.voyage__card-body > .voyage__text:first-child { margin-top: 0; }
 .voyage__meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; margin: 14px 0 0; font-size: 13px; line-height: 1.45; }
 .voyage__meta dt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--atlas-label); padding-top: 2px; }
 .voyage__meta dd { margin: 0; color: var(--atlas-soft); }
 .voyage__sub { margin: 20px 0 8px; font-family: var(--mono); font-size: 10.5px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--atlas-label); }
+/* what a keyframe changes, as chips that point at the chart */
+.voyage__chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.voyage__chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 6px 10px; cursor: pointer;
+  border: 1px solid var(--atlas-edge); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--paper) 5%, transparent);
+  color: var(--paper); font: 13px/1.25 var(--body); text-align: left; transition: background 0.15s, border-color 0.15s;
+}
+.voyage__chip i { flex: none; width: 9px; height: 9px; border: 1.5px solid currentColor; border-radius: 2px; }
+.voyage__chip--line i { width: 14px; height: 0; border: 0; border-top: 1.5px dashed currentColor; border-radius: 0; }
+.voyage__chip:hover, .voyage__chip.is-hl, .voyage__chip[aria-pressed="true"] { background: color-mix(in srgb, var(--paper) 16%, transparent); border-color: color-mix(in srgb, var(--paper) 46%, transparent); }
+.voyage__chip:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+/* the log: each landfall points at the chart, and goes to it */
 .voyage__log { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-left: 1px solid var(--atlas-line); }
-.voyage__log li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); padding: 0 0 10px 16px; }
-.voyage__log li::before { content: ""; position: absolute; left: -4px; top: 5px; width: 7px; height: 7px; border-radius: 50%; background: var(--atlas-fog); border: 1px solid var(--atlas-soft); }
+.voyage__log li { position: relative; padding: 0 0 2px 8px; }
+.voyage__log li::before { content: ""; position: absolute; left: -4px; top: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--atlas-fog); border: 1px solid var(--atlas-soft); }
 .voyage__log li.is-now::before { background: var(--paper); border-color: var(--paper); box-shadow: 0 0 0 3px color-mix(in srgb, var(--paper) 22%, transparent); }
+.voyage__log li.is-hl::before { border-color: var(--paper); }
+.voyage__log-btn {
+  display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; padding: 4px 8px 6px; cursor: pointer; text-align: left;
+  border: 0; border-radius: var(--radius-s); background: transparent; color: inherit; font: inherit; transition: background 0.15s;
+}
+.voyage__log-btn:hover, .voyage__log li.is-hl .voyage__log-btn { background: color-mix(in srgb, var(--paper) 9%, transparent); }
+.voyage__log-btn:focus-visible { outline: 2px solid var(--paper); outline-offset: -2px; }
 .voyage__log-date { font-family: var(--mono); font-size: 10.5px; color: var(--atlas-label); }
 .voyage__log-name { font-family: var(--display); font-weight: 600; font-size: 16px; line-height: 1.25; }
 .voyage__log-text { font-size: 13px; line-height: 1.45; color: var(--atlas-soft); }
 .voyage__log li.is-past .voyage__log-text { display: none; }
+.voyage__log li.is-ahead .voyage__log-name { color: color-mix(in srgb, var(--paper) 72%, transparent); }
 @keyframes log-in { from { opacity: 0; translate: 0 4px; } }
 @media (prefers-reduced-motion: no-preference) { .voyage__log li.is-now { animation: log-in 0.5s ease both; } }
 .voyage__note { margin: 12px 0 0; padding-left: 10px; border-left: 2px solid var(--leather); font-size: 12.5px; line-height: 1.5; color: var(--atlas-soft); }
@@ -643,22 +740,31 @@ main > .voyage::after { display: none; }
 .voyage__src { margin: 18px 0 0; padding-top: 12px; border-top: 1px solid var(--atlas-line); font-size: 11.5px; line-height: 1.5; color: color-mix(in srgb, var(--paper) 58%, transparent); }
 .voyage__src span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--atlas-label); margin-right: 4px; }
 
-/* below 1000px the card leaves the chart and follows it, still on the dark */
+/* below 1000px the card leaves the chart and follows it, still a glass on the dark */
 @media (max-width: 999px) {
-  .voyage { --card-w: 0px; }
+  .voyage { --card-w: 0px; --atlas-m: 10px; }
   .voyage__stage { height: min(68svh, 640px); min-height: 440px; }
-  .voyage__controls { left: 10px; right: 10px; bottom: 10px; padding: 6px 10px 6px 6px; }
-  .voyage__card { position: static; width: auto; padding: 22px var(--gutter) 30px; background: none; border: 0; border-top: 1px solid var(--atlas-line); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .voyage__start { left: 50%; top: 50%; }
+  .voyage__dock { left: 10px; right: 10px; bottom: 10px; }
+  .voyage__controls { padding: 6px 14px 6px 6px; }
+  .voyage__card { position: static; display: block; width: auto; max-height: none; margin: 12px 12px 0; overflow: visible; }
+  .voyage__card-head { padding: 20px 20px 12px; }
+  .voyage__card-body { overflow: visible; padding: 0 20px 24px; }
+  .voyage__start { left: 50%; top: 48%; }
+  .voyage__callout { max-width: min(270px, calc(100% - 24px)); padding: 8px 12px 10px; }
+  .voyage__callout-title { font-size: 15px; }
+  .voyage__callout-text { font-size: 12.5px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
 }
 @media (max-width: 560px) {
-  .voyage__when { left: 14px; top: 12px; }
+  .voyage__when { left: 16px; top: 12px; }
+  .voyage__when::after { width: 88px; margin-top: 2px; }
   .voyage__year { font-size: 40px; }
   .voyage__date { font-size: 11px; }
   .voyage__count, .voyage__tick em { display: none; }
-  .voyage__track { margin: 0 6px; }
-  .voyage__btn { width: 34px; height: 34px; }
-  .voyage__btn--play { width: 40px; height: 40px; }
+  .voyage__track { margin: 0 8px 0 10px; }
+  .voyage__controls { gap: 6px; padding-right: 10px; }
+  .voyage__btn { width: 36px; height: 36px; }
+  .voyage__btn--play { width: 42px; height: 42px; }
+  .voyage__callout { max-width: min(240px, calc(100% - 24px)); }
 }
 
 /* the chronicle under it: the same story, as text (components/atlas/Chronicle.tsx) */
