@@ -59,22 +59,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <ChannelGrid lang={lang} />
         </section>
 
-        {/* II · III · the Atlas and the canon, as two plates that open their pages */}
-        <Doors lang={lang} />
-
-        {/* IV · books (next version) */}
-        <section className="books" id="books" aria-labelledby="books-h">
-          <span className="numeral" aria-hidden="true">IV<i /></span>
-          <div className="section-head">
-            <p className="eyebrow">{d.books.eyebrow}</p>
-            <h2 id="books-h">{d.books.h}</h2>
-          </div>
-          <p className="pending">{d.books.pending}</p>
-        </section>
-
-        {/* V · watch */}
+        {/* II · watch: his latest videos, right under where to find him (2026-10-30, #89) */}
         <section className="watch" id="watch" aria-labelledby="watch-h">
-          <span className="numeral" aria-hidden="true">V<i /></span>
+          <span className="numeral" aria-hidden="true">II<i /></span>
           <div className="section-head section-head--split reveal">
             <div>
               <p className="eyebrow">{d.watch.eyebrow}</p>
@@ -115,6 +102,19 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             ))}
           </ShortsRail>
           <p className="watch__note mono">{d.watch.asOf}</p>
+        </section>
+
+        {/* III · IV · the Atlas and the archive, as two plates that open their pages */}
+        <Doors lang={lang} />
+
+        {/* V · books (next version) */}
+        <section className="books" id="books" aria-labelledby="books-h">
+          <span className="numeral" aria-hidden="true">V<i /></span>
+          <div className="section-head">
+            <p className="eyebrow">{d.books.eyebrow}</p>
+            <h2 id="books-h">{d.books.h}</h2>
+          </div>
+          <p className="pending">{d.books.pending}</p>
         </section>
 
         {/* VI · read */}
