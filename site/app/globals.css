@@ -1126,7 +1126,8 @@ main > .voyage::after { display: none; }
 }
 @keyframes reader-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-/* where an ad may go later (#70): nothing shows until then */
+/* where an ad goes (#70, components/Ads.tsx): nothing shows until the AdSense env vars are set */
+.ad-slot { margin: var(--space-6, 2rem) 0; }
 .ad-slot[hidden] { display: none; }
 
 /* ==========================================================================
