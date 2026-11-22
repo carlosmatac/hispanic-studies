@@ -57,6 +57,15 @@ main > .atlas::after { display: none; }
 }
 .atlas__date { min-height: 1.4em; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--atlas-soft); text-shadow: 0 1px 10px var(--atlas-space); }
 
+/* a quiet legend under the year, as Prometheus keeps one in view */
+.atlas__legend { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 5px; font-size: 11.5px; color: color-mix(in srgb, var(--paper) 62%, transparent); text-shadow: 0 1px 8px var(--atlas-space); }
+.atlas__legend li { display: flex; align-items: center; gap: 8px; }
+.atlas__legend li::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 3px; }
+.atlas__legend--known::before { background: color-mix(in srgb, var(--paper-deep) 50%, var(--leather)); }
+.atlas__legend--unknown::before { background: var(--atlas-fog); border: 1px solid var(--atlas-edge); }
+.atlas__legend--approx::before { border: 1.5px dashed var(--paper); border-radius: 50% !important; width: 11px !important; height: 11px !important; }
+.atlas__legend--route::before { height: 0 !important; border-top: 2px solid var(--paper); border-radius: 0 !important; }
+
 /* --- top right of the globe: index, globe/flat, zoom, help --- */
 .atlas__tools { position: absolute; z-index: 3; top: var(--atlas-m); right: calc(var(--card-w) + 2 * var(--atlas-m)); display: flex; align-items: center; gap: 8px; }
 .atlas__tool {
@@ -170,6 +179,7 @@ main > .atlas::after { display: none; }
 }
 .atlas__band em { font-style: normal; opacity: 0.8; }
 @container (max-width: 74px) { .atlas__band em { display: none; } }
+@container (max-width: 20px) { .atlas__band span { display: none; } }
 .atlas__band:hover { color: var(--paper) !important; background: color-mix(in srgb, var(--paper) 6%, transparent); }
 .atlas__band.is-on { color: var(--paper) !important; background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--leather) 26%, transparent)); }
 .atlas__track { position: relative; height: 26px; }
@@ -361,7 +371,11 @@ main > .atlas::after { display: none; }
   .atlas__btn { width: 36px; height: 36px; }
   .atlas__btn--play { width: 42px; height: 42px; }
   .atlas__card { position: relative; top: auto; right: auto; bottom: auto; width: auto; max-height: 44%; flex: none; border-radius: var(--radius-l) var(--radius-l) 0 0; border-bottom: 0; }
-  .atlas__card.is-open { max-height: calc(100% - 90px); }
+  .atlas__card.is-open { max-height: calc(100% - 64px); }
+  /* the sheet open is a reading mode: the dock and the note step aside */
+  .atlas__stage:has(.atlas__card.is-open) .atlas__dock,
+  .atlas__stage:has(.atlas__card.is-open) .atlas__callout,
+  .atlas__stage:has(.atlas__card.is-open) .atlas__leader { display: none; }
   .atlas__handle { display: grid; place-items: center; flex: none; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; }
   .atlas__handle span:first-child { width: 44px; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--paper) 40%, transparent); }
   .atlas__card-head { padding: 2px 18px 8px; }

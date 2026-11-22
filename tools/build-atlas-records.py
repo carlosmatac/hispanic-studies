@@ -77,7 +77,7 @@ BEAT_ALIASES = {
 }
 
 # Interpretive layers: shown with the author and a visible label, never as a fact.
-INTERPRETATION = {"A138": "Gustavo Bueno"}
+INTERPRETATION = {"A138": "Gustavo Bueno", "A142": "Gustavo Bueno"}
 
 PLATE_ROLES = {
     "contextual plate, not a depiction of the event itself": "contextual",

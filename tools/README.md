@@ -43,7 +43,7 @@ npx --yes mapshaper@0.6.113 land-50m.json -simplify 25% keep-shapes -filter-isla
 ```
 
 Simplification can leave a ring with no area, which d3 would read as the whole
-sphere; `lib/atlas-engine.ts` (`rewind`) drops such rings when it loads the file.
+sphere; `lib/atlas-globe.ts` (`rewind`) drops such rings when it loads the file.
 The voyages (`site/data/atlas-voyages.json`) are edited by hand; their sources
 are in `docs/research/atlas-voyages.md`.
 
@@ -90,3 +90,20 @@ and Pillow for packing the frames.
   requested and given on the Atlas page.
 - Everything else comes from `docs/provided-documentation/`, which is Beltrán's
   own material.
+
+## The Atlas records (`build-atlas-records.py`, `fetch-atlas-plates.py`)
+
+```bash
+py tools/build-atlas-records.py --report docs/research/atlas-v3/import-report.md
+py tools/fetch-atlas-plates.py      # Commons licences; downloads free plates (needs site/node_modules for sharp)
+py tools/build-atlas-records.py     # again, to merge the plates' licences into the records
+```
+
+Parses section 6 of Beltrán's manuscript (`docs/research/atlas-v3/`) into
+`site/data/atlas-records.json` (and section 7 into its `staging` list), geocodes
+each record's map anchor against `atlas-gazetteer.json` (approximate camera
+anchors, never geometry), and writes the validation and coverage report.
+`fetch-atlas-plates.py` asks the Commons API for each plate's licence, author and
+repository, ships only free files (560 px JPEG in `site/public/art/atlas/`) and
+rewrites its section of `assets/art/SOURCES.md`. Upload.wikimedia.org rate-limits
+quick runs (429): the script backs off and can be run again; it skips files it has.

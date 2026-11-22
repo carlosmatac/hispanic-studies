@@ -297,6 +297,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   let countries = new Map<string, Feature>();
   let borders: MultiLineString | null = null;
   const units = new Map<string, Feature>();
+  const unitsCoarse = new Map<string, Feature>();
   const lines = new Map<string, Feature>();
   let loaded = false;
 
@@ -548,11 +549,14 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       return p;
     };
     const ppd = c.R * RAD;     // pixels per degree at the centre
+    // while the camera moves, the keyframes' shapes with a third of their points
+    const UM = fast && unitsCoarse.size ? unitsCoarse : units;
     const era: Era = chron.eras[st.era];
     const today = st.cs.stop.kind === 'today';
     const centre: LonLat = [c.lon, c.lat];
     const pt = (at: LonLat) => (globe && geoDistance(at, centre) > Math.PI / 2 - 0.03 ? null : proj(at));
     const zoomed = c.R > R0() * 2.6;
+    if (zoomed) loadFine();
     const coastFeat = !fast && zoomed && land50 ? land50 : globe && fast ? (landCoarse ?? land) : land;
     const coast = coastFeat ? G('coast', () => coastFeat as Feature) : null;
     const sphere = G('sphere', () => ({ type: 'Sphere' }));
@@ -580,14 +584,14 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     const drawEra = (ei: number, alpha: number) => {
       const e = chron.eras[ei];
       const tag = `era:${ei}`;
-      const shown = e.units.filter((u) => famOf(u) && units.get(u.id));
+      const shown = e.units.filter((u) => famOf(u) && UM.get(u.id));
       const byColour = new Map<string, typeof shown>();
       for (const u of shown) { const k = css(unitFill(famOf(u))); byColour.set(k, [...(byColour.get(k) ?? []), u]); }
       ctx.globalAlpha = alpha;
-      for (const [colour, us] of byColour) { ctx.fillStyle = colour; ctx.fill(G(`${tag}:${colour}`, () => fc(us.map((u) => units.get(u.id))))); }
+      for (const [colour, us] of byColour) { ctx.fillStyle = colour; ctx.fill(G(`${tag}:${colour}`, () => fc(us.map((u) => UM.get(u.id))))); }
       const claims = shown.filter((u) => famOf(u).kind === 'claim');
       if (claims.length) {
-        const cp = G(`${tag}:claims`, () => fc(claims.map((u) => units.get(u.id))));
+        const cp = G(`${tag}:claims`, () => fc(claims.map((u) => UM.get(u.id))));
         ctx.save(); ctx.clip(cp);
         const h = new Path2D();
         for (let x = -H; x < W; x += 7) { h.moveTo(x, H); h.lineTo(x + H, 0); }
@@ -597,8 +601,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       const solid = shown.filter((u) => famOf(u).kind !== 'native');
       const native = shown.filter((u) => famOf(u).kind === 'native');
       ctx.lineWidth = 0.7; ctx.strokeStyle = css(C.paper, 0.5);
-      if (solid.length) ctx.stroke(G(`${tag}:edge`, () => fc(solid.map((u) => units.get(u.id)))));
-      if (native.length) { ctx.setLineDash([2, 3]); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => units.get(u.id))))); ctx.setLineDash([]); }
+      if (solid.length) ctx.stroke(G(`${tag}:edge`, () => fc(solid.map((u) => UM.get(u.id)))));
+      if (native.length) { ctx.setLineDash([2, 3]); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => UM.get(u.id))))); ctx.setLineDash([]); }
       ctx.globalAlpha = 1;
     };
     if (today) {
@@ -615,7 +619,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         const p2 = (now - pulseAt) / 1000;
         const al = reduced ? 0.8 : p2 < 2.6 ? Math.max(0.4, (1 - p2 / 2.6) * (0.55 + 0.45 * Math.sin(p2 * 7))) : 0.4;
         ctx.lineWidth = 2.2; ctx.strokeStyle = css(C.paper, al);
-        ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => units.get(u.id)))));
+        ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => UM.get(u.id)))));
       }
     }
     shapeHits = [];
@@ -623,9 +627,9 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       const listed = new Set(era.pulse);
       if (focus?.kind === 'unit') listed.add(focus.f);
       for (const fid of listed) {
-        const us = era.units.filter((u) => u.f === fid && units.get(u.id));
+        const us = era.units.filter((u) => u.f === fid && UM.get(u.id));
         if (!us.length || !chron.families[fid]) continue;
-        const path = G(`era:${st.era}:fam:${fid}`, () => fc(us.map((u) => units.get(u.id))));
+        const path = G(`era:${st.era}:fam:${fid}`, () => fc(us.map((u) => UM.get(u.id))));
         shapeHits.push({ path, stroke: false, hit: { title: era.names[fid] ?? chron.families[fid].name, focus: { kind: 'unit', f: fid } } });
         if (focus?.kind === 'unit' && focus.f === fid) {
           ctx.fillStyle = css(C.paper, 0.16); ctx.fill(path);
@@ -672,10 +676,10 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       // after the voyages, the dark thins over the centuries as the world's coasts reach the record
       const charted = clamp((st.year - 1570) / 180, 0, 0.82);
       if (charted > 0) { mctx.globalAlpha = charted; mctx.fill(sphere); mctx.globalAlpha = 1; }
-      if (!st.preEra) mctx.fill(G(`known:${st.era}`, () => fc(knownUnits[st.era].map((id) => units.get(id)))));
+      if (!st.preEra) mctx.fill(G(`known:${st.era}`, () => fc(knownUnits[st.era].map((id) => UM.get(id)))));
       for (const r of sailed) {
         const kind = r.cv.v.kind;
-        mctx.lineWidth = Math.min(ppd * (kind === 'land' ? 1.2 : kind === 'river' ? 1.7 : 3.3), kind === 'sea' ? 26 : 14);
+        mctx.lineWidth = Math.min(ppd * (kind === 'land' ? 1.2 : kind === 'river' ? 1.7 : 3.3), kind === 'sea' ? 18 : 12);
         mctx.stroke(routePath(r));
       }
       for (const r of sailed) {
@@ -1096,17 +1100,23 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   }
 
   /* --- data load --- */
+  // the finer coast only matters close in: fetched the first time the camera gets there
+  let fineAsked = false;
+  function loadFine() {
+    if (fineAsked) return;
+    fineAsked = true;
+    fetch('/data/land-50m.json').then((r) => (r.ok ? r.json() : null)).then((t: Topology | null) => {
+      if (!t) return;
+      land50 = rewind(feature(t, t.objects.land) as unknown as FeatureCollection) as unknown as Feature;
+      kick();
+    }).catch(() => {});
+  }
   (async () => {
     try {
       const [world, eraTopo] = await Promise.all([
         fetch('/data/world-110m.json').then((r) => r.json()),
         fetch('/data/atlas-eras.topo.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
       ]);
-      fetch('/data/land-50m.json').then((r) => (r.ok ? r.json() : null)).then((t: Topology | null) => {
-        if (!t) return;
-        land50 = rewind(feature(t, t.objects.land) as unknown as FeatureCollection) as unknown as Feature;
-        kick();
-      }).catch(() => {});
       const wt = world as Topology;
       const cobj = wt.objects.countries as GeometryCollection;
       land = rewind(feature(wt, wt.objects.land) as unknown as FeatureCollection) as unknown as Feature;
@@ -1129,6 +1139,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       if (eraTopo) {
         const et = eraTopo as Topology;
         for (const f of (feature(et, et.objects.units) as unknown as FeatureCollection<Geometry>).features) units.set(String(f.id), f);
+        const ec = decimate(et, 3);
+        for (const f of (feature(ec, ec.objects.units) as unknown as FeatureCollection<Geometry>).features) unitsCoarse.set(String(f.id), rewindOne(f));
         for (const f of (feature(et, et.objects.lines) as unknown as FeatureCollection<Geometry>).features) lines.set(String(f.id), f);
       }
       readFonts();

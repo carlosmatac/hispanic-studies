@@ -8,7 +8,7 @@ For every plate in site/data/atlas-records.json (run tools/build-atlas-records.p
 first) it asks the Commons API (imageinfo + extmetadata) for the file's licence,
 author, credit line and repository, and records the answer in
 site/data/atlas-plates.json, keyed by the file name. A plate is shipped
-(downloaded as a 560-pixel thumbnail into site/public/art/atlas/<id>.jpg) only
+(downloaded once and resized to 560 pixels wide into site/public/art/atlas/<id>.jpg) only
 when its licence is public domain, CC0, CC BY or CC BY-SA; anything else, or a
 file the API cannot find, is logged and left out. Every shipped plate is also
 listed in assets/art/SOURCES.md (the section between the ATLAS-PLATES markers
@@ -59,6 +59,30 @@ def get(url: str) -> bytes:
     return b""
 
 
+def std_thumb(url: str | None, width: int, w: int = 960) -> str | None:
+    if not url or width <= w:
+        return url
+    head, name = url.rsplit("/", 1)
+    head = head.replace("/wikipedia/commons/", "/wikipedia/commons/thumb/", 1)
+    suffix = ".jpg" if re.search(r"\.(tiff?|pdf|djvu)$", name, re.I) else ""
+    return f"{head}/{name}/{w}px-{name}{suffix}"
+
+
+def resize(src: Path, dest: Path) -> dict:
+    """560 px wide JPEG through sharp (site/node_modules; run `npm ci` in site/ first)."""
+    import subprocess
+    tmp = dest.with_suffix(".tmp.jpg")
+    out = subprocess.run(["node", "scripts/resize-plate.mjs", str(src), str(tmp)], cwd=ROOT / "site", check=True, capture_output=True, text=True).stdout
+    tmp.replace(dest)
+    return json.loads(out)
+
+
+def probe(path: Path) -> dict:
+    import subprocess
+    out = subprocess.run(["node", "-e", "require('sharp')(process.argv[1]).metadata().then(m=>process.stdout.write(JSON.stringify({width:m.width,height:m.height})))", str(path)], cwd=ROOT / "site", check=True, capture_output=True, text=True).stdout
+    return json.loads(out)
+
+
 def strip(s: str | None) -> str | None:
     if not s:
         return None
@@ -76,7 +100,7 @@ def query(files: list[str]) -> dict:
     titles = "|".join(ftitle(f) for f in files)
     params = {
         "action": "query", "format": "json", "formatversion": "2", "prop": "imageinfo",
-        "iiprop": "url|extmetadata|mime|size", "iiurlwidth": str(WIDTH), "titles": titles,
+        "iiprop": "url|extmetadata|mime|size", "titles": titles,
         "iiextmetadatafilter": "LicenseShortName|License|LicenseUrl|Artist|Credit|UsageTerms|Copyrighted|AttributionRequired|DateTimeOriginal|ObjectName",
     }
     data = json.loads(get(API + "?" + urllib.parse.urlencode(params)))
@@ -124,22 +148,31 @@ def main() -> None:
             })
             free = bool(lic and FREE.search(lic.strip()))
             entry["status"] = "free" if free else "not shipped: licence not free"
-            thumb = ii.get("thumburl")
-            if free and thumb:
+            # Commons now answers an arbitrary thumbnail width with the original, so we
+            # ask for its standard 960-pixel thumbnail (or the original when it is
+            # smaller) and resize here (site/scripts/resize-plate.mjs)
+            src_url = std_thumb(ii.get("url"), ii.get("width") or 0)
+            if free and src_url:
                 rid = by_file[f][0]
-                ext = ".png" if thumb.lower().endswith(".png") else ".jpg"
-                dest = IMG / f"{rid.lower()}{ext}"
+                dest = IMG / f"{rid.lower()}.jpg"
                 if not dry and not dest.exists():
+                    raw = IMG / f".{rid.lower()}.download"
                     try:
-                        dest.write_bytes(get(thumb))
+                        raw.write_bytes(get(src_url))
                     except Exception:
                         entry["status"] = "free, not shipped: download failed (run again)"
                         plates[f] = entry
                         continue
                     time.sleep(3)
+                    size = resize(raw, dest)
+                    raw.unlink(missing_ok=True)
+                elif dest.exists():
+                    size = resize(dest, dest) if dest.stat().st_size > 180_000 else probe(dest)
+                else:
+                    size = {}
                 entry["src"] = f"/art/atlas/{dest.name}"
-                entry["width"] = ii.get("thumbwidth")
-                entry["height"] = ii.get("thumbheight")
+                entry["width"] = size.get("width")
+                entry["height"] = size.get("height")
             plates[f] = entry
         time.sleep(1)
     OUT.write_text(json.dumps(plates, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

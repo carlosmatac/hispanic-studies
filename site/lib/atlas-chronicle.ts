@@ -104,7 +104,8 @@ const FRAMES: Record<string, [LonLat, LonLat]> = {
   'era-1819': [[-125, -45], [-35, 45]],
   'era-1826': [[-120, -55], [-30, 35]],
   'era-1848': [[-125, 10], [-75, 45]],
-  'era-1898': [[-130, -5], [140, 35]],
+  // the Caribbean and the Philippines are half a world apart: seen across the Pacific
+  'era-1898': [[120, 0], [285, 30]],
   today: [[-118, -42], [128, 52]],
 };
 
@@ -125,7 +126,7 @@ export type Era = {
   names: Record<string, string>;
 };
 export type Family = { kind: string; tone: number; name: string; at?: LonLat };
-export type StopMilestone = { n: number; date: string; title: string; text: string };
+export type StopMilestone = { n: number; date: string; title: string };
 export type RecordView = {
   id: string;
   title: string;
@@ -181,7 +182,6 @@ export type Chronicle = {
   counts: { records: number; anchored: number };
 };
 
-const firstSentence = (s: string) => (s.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? s).trim();
 const yearOf = (iso: string) => Number(iso.slice(0, 4));
 export const chapterOf = (year: number) => { let c = 0; CHAPTER_STARTS.forEach((y, i) => { if (year >= y) c = i; }); return c; };
 
@@ -240,7 +240,7 @@ export function chronicleFor(lang: Lang): Chronicle {
 
   const ms = (n: number): StopMilestone => {
     const m = MILESTONES.find((x) => x.n === n) as Milestone;
-    return { n: m.n, date: m.date[lang], title: m.title[lang], text: firstSentence(m.body[lang]) };
+    return { n: m.n, date: m.date[lang], title: m.title[lang] };
   };
 
   const view = (r: RawRecord): RecordView => {
@@ -256,7 +256,7 @@ export function chronicleFor(lang: Lang): Chronicle {
       paragraphs: paras.slice(0, 3),
       mapNote: paras[3] ?? '',
       anchors: r.anchors.map((a) => ({ name: a.name, at: a.at })),
-      links: r.links,
+      links: { wikipedia: r.links.wikipedia, book: r.links.book, further: r.links.further },
       plate: r.plate ? {
         src: r.plate.src, caption: r.plate.caption, role: r.plate.role, page: r.plate.page,
         author: r.plate.author, licence: r.plate.licence, w: r.plate.width, h: r.plate.height,
@@ -312,7 +312,8 @@ export function chronicleFor(lang: Lang): Chronicle {
       id: r.id, aliases: [], kind: 'record',
       chapter: chapterOf(r.date.sort), tracks: tracksOf(r), year: r.date.sort,
       label: v.date, kicker: t.types[r.type as keyof typeof t.types] ?? r.type,
-      title: v.title, text: v.paragraphs[0] ?? '', sources: [],
+      // (the record's own paragraphs are its text: not repeated here)
+      title: v.title, text: '', sources: [],
       milestones: r.aliases.milestones.map(ms),
       focus: r.camera ? { at: r.camera.at, span: r.camera.span } : undefined,
       record: v,

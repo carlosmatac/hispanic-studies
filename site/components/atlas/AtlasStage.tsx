@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import { dict, type Lang } from '@/lib/i18n';
-import { stopIndex, TRACKS, yearLabel, type Chronicle, type RecordView, type Track } from '@/lib/atlas-chronicle';
+import { CHAPTER_STARTS, stopIndex, TRACKS, yearLabel, type Chronicle, type RecordView, type Track } from '@/lib/atlas-chronicle';
 import { focusKey, type Anchors, type Box, type Engine, type Focus, type FrameInfo, type HitInfo, type Mode } from '@/lib/atlas-globe';
 import { changedItems, noteFor, place } from './explainer';
 
@@ -143,7 +143,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       const d = new Date(f.day * 864e5);
       year = String(d.getUTCFullYear());
       date = f.voyageDay ? fmt.month.format(d) : fmt.day.format(d);
-    } else if (b.kind === 'era') { year = String(Math.floor(b.year)); date = `${t.bordersKicker} · ${b.label}`; }
+    } else if (b.kind === 'era') { year = String(chronicle.eras[b.era as number].year); date = `${t.bordersKicker} · ${b.label}`; }
     else if (b.kind === 'record') year = yearLabel(b.year, lang).replace(/\.5$/, '');
     const l = last.current;
     if (year !== l.year && yearEl.current) { yearEl.current.textContent = year; l.year = year; }
@@ -164,7 +164,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     if (f.landfall !== l.landfall) { l.landfall = f.landfall; setLandfall(f.landfall); }
     if (f.free !== l.free) { l.free = f.free; setFree(f.free); }
     if (f.playing !== l.playing) { l.playing = f.playing; setPlaying(f.playing); }
-  }, [stops, fmt, t, lang, N]);
+  }, [stops, fmt, t, lang, N, chronicle]);
 
   // the engine: loaded after the page, created once
   useEffect(() => {
@@ -327,7 +327,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       let lastI = -1;
       stops.forEach((s, i) => { if (s.chapter === c) lastI = i; });
       if (first < 0) return null;
-      return { c, name, first, x0: first / N, x1: (lastI + 1) / N, from: yearLabel(stops[first].year, lang) };
+      return { c, name, first, x0: first / N, x1: (lastI + 1) / N, from: yearLabel(CHAPTER_STARTS[c], lang) };
     }).filter((x): x is NonNullable<typeof x> => !!x);
   }, [timeline, stops, t.chapters, lang, N]);
 
@@ -335,7 +335,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const found = useMemo(() => stops.map((s, i) => ({ s, i })).filter(({ s, i }) => {
     if (!inTrack(i, follow)) return false;
     if (!q) return true;
-    const hay = fold(`${s.title} ${s.label} ${s.kicker} ${s.record?.id ?? ''} ${s.record?.anchors.map((a) => a.name).join(' ') ?? ''} ${s.text}`);
+    const hay = fold(`${s.title} ${s.label} ${s.kicker} ${s.record?.id ?? ''} ${s.record?.anchors.map((a) => a.name).join(' ') ?? ''} ${s.text} ${s.record?.paragraphs[0] ?? ''}`);
     return q.split(/\s+/).every((w) => hay.includes(w));
   }), [stops, q, follow, inTrack]);
 
@@ -418,6 +418,14 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
             <span className="atlas__year" ref={yearEl}>{yearLabel(stops[0].year, lang)}</span>
             <span className="atlas__date" ref={dateEl}>{stops[0].label}</span>
           </p>
+          {wide && (
+            <ul className="atlas__legend">
+              <li className="atlas__legend--known">{t.legend.known}</li>
+              <li className="atlas__legend--unknown">{t.legend.unknown}</li>
+              <li className="atlas__legend--approx">{t.legend.approx}</li>
+              <li className="atlas__legend--route">{t.legend.route}</li>
+            </ul>
+          )}
         </div>
 
         <div className="atlas__tools" ref={tools}>
