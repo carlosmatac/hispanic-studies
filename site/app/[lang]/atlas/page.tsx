@@ -7,11 +7,13 @@ import AtlasStage from '@/components/atlas/AtlasStage';
 import Chronicle from '@/components/atlas/Chronicle';
 import { chronicleFor } from '@/lib/atlas-chronicle';
 import milestones from '@/data/milestones.json';
+import './atlas.css';
 
 /* The Atlas, on its own page since 2026-10-25 (Beltrán found the home too busy
-   with the map live on it). Rebuilt for issue #71: a dark chart discovered as
-   the ships sail (components/atlas/AtlasStage.tsx), the same chronicle as text
-   under it, then Beltrán's sixty milestones in their seven chapters. */
+   with the map live on it). Rebuilt for #71 as a dark chart, and for #95 as a
+   planet that tells the story from 218 BCE (components/atlas/AtlasStage.tsx),
+   with Beltrán's records; the same chronicle as text under it, then his sixty
+   milestones in their seven chapters. The stage's styles are in ./atlas.css. */
 
 type Milestone = { n: number; chapter: number; date: { en: string; es: string }; title: { en: string; es: string }; body: { en: string; es: string } };
 const MS = milestones.milestones as Milestone[];
@@ -34,10 +36,10 @@ export default async function AtlasPage({ params }: { params: Promise<{ lang: st
     <>
       <Header lang={lang} current="atlas" />
       <main id="main">
-        <section className="page-head" aria-labelledby="atlas-h">
+        <section className="page-head page-head--atlas" aria-labelledby="atlas-h">
           <p className="eyebrow">{d.atlas.eyebrow}</p>
           <h1 id="atlas-h">{d.atlas.h}</h1>
-          <p>{d.atlas.sub}</p>
+          <p>{d.atlas.sub(chronicle.stops.length)}</p>
         </section>
 
         <AtlasStage lang={lang} chronicle={chronicle} />

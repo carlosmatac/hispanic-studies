@@ -32,7 +32,7 @@
         { "at": [-45, 27.9] },
         { "at": [-60, 26.4] },
         { "at": [-68.5, 25.0] },
-        { "at": [-74.5, 24.05], "date": "1492-10-12", "name": { "en": "Guanahani", "es": "Guanahani" }, "log": { "en": "Landfall at Guanahani, which he names San Salvador.", "es": "Toca tierra en Guanahani, que llama San Salvador." }, "reveal": 2.8 },
+        { "at": [-74.5, 24.05], "date": "1492-10-12", "name": { "en": "Guanahani (site disputed)", "es": "Guanahani (lugar discutido)" }, "log": { "en": "Landfall at Guanahani, which he names San Salvador. Which island it was is disputed: the point is the usual identification, not a ruling.", "es": "Toca tierra en Guanahani, que llama San Salvador. Qué isla fue se discute: el punto es la identificación habitual, no un veredicto." }, "reveal": 2.8 },
         { "at": [-74.85, 23.6] },
         { "at": [-75.15, 23.15], "date": "1492-10-16", "name": { "en": "Fernandina", "es": "Fernandina" }, "log": { "en": "Coasts the island he names Fernandina (Long Island).", "es": "Costea la isla que llama Fernandina (Long Island)." } },
         { "at": [-75.4, 22.2] },

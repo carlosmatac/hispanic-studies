@@ -1,34 +1,37 @@
 /* ==========================================================================
-   The Atlas engine (issue #71): a dark chart that is discovered.
+   The Atlas globe (issue #95; after the dark chart of #71): a planet that is
+   discovered as the story goes.
 
-   One canvas, drawn by d3-geo every frame from three things: the story clock
-   (seconds into the chronicle, lib/atlas-chronicle.ts), the camera, and the
-   data (Natural Earth land, the OpenHistoricalMap keyframes, the voyages).
+   One 2D canvas, drawn by d3-geo every frame from the story clock (seconds
+   into the chronicle, lib/atlas-chronicle.ts), the camera and the data
+   (Natural Earth land, the OpenHistoricalMap keyframes, the voyages). The
+   planet is an orthographic projection shaded as a sphere; a flat Equal Earth
+   view draws the same things for whoever prefers a map (and as the light
+   fallback). No WebGL: Prometheus, the reference, does the same.
 
-   - The dark is what was not on Iberian charts: a fog over the whole chart,
-     cut away by a low-resolution mask (soft edges come free from scaling it
-     up) where ships have sailed, around the places they reached, over the
-     jurisdictions of each keyframe, and dimly over the Old World. Indigenous
-     states are named through it.
-   - Voyages are dense great-circle polylines; a ship sails them at a steady
-     pace, pausing at each dated landfall.
-   - The layout changes with the story: an Atlantic chart, a globe for the
-     circumnavigation, a Pacific chart for the galleon. Changing layout
-     cross-fades; within a layout the camera glides.
-   - Reduced motion: the camera cuts, no ship moves, nothing pulses; the page
-     only ever asks for a beat's finished state.
+   - The dark is what had not yet entered the record: a fog over the planet,
+     cut away by a low-resolution mask where ships have sailed, around the
+     places they reached, over each keyframe's jurisdictions, and dimly over
+     the Old World. Records (Beltrán's 139) never cut it: their places are
+     drawn as rings for the camera, over the fog.
+   - The camera flies from stop to stop (ease in and out, rising a little on
+     long hops) and follows a ship at sea. The reader can take it (drag,
+     Ctrl+wheel or pinch, the zoom buttons); the next stop or "back to the
+     story" gives it back.
+   - Reduced motion: no flights, no inertia, nothing pulses; the page only ever
+     asks for a stop's finished state.
 
    Colours are the brand's (app/globals.css) and tints of them, nothing else.
    ========================================================================== */
 
 import {
-  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoGraticule10, geoInterpolate, geoDistance,
-  geoCentroid, geoArea, type GeoProjection,
+  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoInterpolate, geoDistance, geoCentroid, geoArea,
+  type GeoProjection,
 } from 'd3-geo';
 import { feature, merge, mesh } from 'topojson-client';
 import type { Feature, FeatureCollection, Geometry, MultiPolygon, MultiLineString, Position } from 'geojson';
 import type { Topology, GeometryCollection } from 'topojson-specification';
-import type { Beat, Chronicle, Era, Layout, LonLat, Voyage, Waypoint } from '@/lib/atlas-chronicle';
+import type { Chronicle, Era, LonLat, Stop, Voyage, Waypoint } from '@/lib/atlas-chronicle';
 
 /* ---------- colours: the brand tokens, and tints of them ---------- */
 
@@ -42,10 +45,11 @@ const mix = (a: RGB, b: RGB, t: number): RGB => [0, 1, 2].map((i) => Math.round(
 const css = (c: RGB, a = 1) => (a >= 1 ? `rgb(${c[0]},${c[1]},${c[2]})` : `rgba(${c[0]},${c[1]},${c[2]},${a})`);
 
 const C = {
-  fog: mix(BRAND.burgundyDark, BRAND.ink, 0.3),             // the unknown: wine-black
-  sea: mix(BRAND.ink, BRAND.leather, 0.27),                   // a charted sea
-  land: mix(BRAND.paperDeep, BRAND.leather, 0.5),            // charted land
-  other: mix(BRAND.paperDeep, BRAND.ink, 0.55),              // other crowns and states
+  space: mix(BRAND.burgundyDark, BRAND.ink, 0.45),            // around the planet
+  fog: mix(BRAND.burgundyDark, BRAND.ink, 0.3),               // the unknown: wine-black
+  sea: mix(BRAND.ink, BRAND.leather, 0.3),                    // a recorded sea
+  land: mix(BRAND.paperDeep, BRAND.leather, 0.5),             // recorded land
+  other: mix(BRAND.paperDeep, BRAND.ink, 0.55),
   es: [mix(BRAND.burgundy, BRAND.paper, 0.06), mix(BRAND.burgundy, BRAND.paper, 0.17), mix(BRAND.burgundy, BRAND.paper, 0.27), mix(BRAND.burgundy, BRAND.paper, 0.36)],
   pt: [BRAND.leather, mix(BRAND.leather, BRAND.paper, 0.2)],
   indep: mix(BRAND.burgundy, BRAND.paperDeep, 0.5),
@@ -56,23 +60,25 @@ const C = {
   leatherLight: mix(BRAND.leather, BRAND.paper, 0.45),
   burgundy: BRAND.burgundy,
   burgundyDark: BRAND.burgundyDark,
-  ink: BRAND.ink,
+  glow: mix(BRAND.leather, BRAND.burgundy, 0.35),
 };
 
 /* ---------- small helpers ---------- */
 
 const clamp = (x: number, a: number, b: number) => Math.max(a, Math.min(b, x));
 const smooth = (x: number) => { const t = clamp(x, 0, 1); return t * t * (3 - 2 * t); };
+const easeInOut = (x: number) => { const t = clamp(x, 0, 1); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
 const RAD = Math.PI / 180;
+const DEG = 180 / Math.PI;
 function dayOf(iso: string | undefined): number | undefined {
   if (!iso) return undefined;
   const [y, m = '6', d] = iso.split('-');
   return Date.UTC(+y, +m - 1, d ? +d : 15) / 864e5;
 }
+const yearOfDay = (day: number) => { const d = new Date(day * 864e5); return d.getUTCFullYear() + d.getUTCMonth() / 12 + (d.getUTCDate() - 1) / 365; };
 const angleDiff = (a: number, b: number) => ((b - a + 540) % 360) - 180;
+const normLon = (x: number) => ((x + 540) % 360) - 180;
 
-/** d3 reads a ring's winding on the sphere: a polygon that simplification
-    left wound the wrong way would cover the whole world but itself. */
 function rewind(fc: Feature | FeatureCollection): Feature | FeatureCollection {
   if (fc.type === 'FeatureCollection') { fc.features.forEach(rewindOne); return fc; }
   return rewindOne(fc);
@@ -80,18 +86,14 @@ function rewind(fc: Feature | FeatureCollection): Feature | FeatureCollection {
 function rewindOne(f: Feature): Feature {
   const area = (poly: Position[][]) => geoArea({ type: 'Polygon', coordinates: poly });
   const fix = (poly: Position[][]) => (area(poly) > 2 * Math.PI ? poly.map((r) => [...r].reverse()) : poly);
-  // a ring simplified down to nothing reads as the whole sphere: drop it
   const keep = (poly: Position[][]) => area(poly) < 4 * Math.PI - 1e-3;
   const g = f.geometry;
   if (g?.type === 'Polygon') g.coordinates = fix(g.coordinates);
   else if (g?.type === 'MultiPolygon') g.coordinates = g.coordinates.filter(keep).map(fix);
   return f;
 }
-
-/** A TopoJSON topology with every `n`th point of each arc kept (and both ends). */
 function decimate(t: Topology, n: number): Topology {
   const arcs = t.arcs.map((arc) => {
-    // arcs are delta-encoded: decode, thin, encode again
     let x = 0, y = 0;
     const abs = arc.map(([dx, dy]) => { x += dx; y += dy; return [x, y]; });
     const kept = abs.filter((_, i) => i === 0 || i === abs.length - 1 || i % n === 0);
@@ -103,16 +105,13 @@ function decimate(t: Topology, n: number): Topology {
 
 /* ---------- the compiled story ---------- */
 
-type Stop = { wi: number; d: number; day: number; wp: Waypoint; arrive: number };
+type Landfall = { wi: number; d: number; day: number; wp: Waypoint; arrive: number };
 type Seg = { t0: number; t1: number; d0: number; d1: number; move: boolean };
-type CVoyage = {
-  v: Voyage; pts: LonLat[]; cum: number[]; length: number; wpd: number[];
-  stops: Stop[]; segs: Seg[]; dur: number;
-};
-type CBeat = { beat: Beat; start: number; dur: number; day: number; endDay: number };
+type CVoyage = { v: Voyage; pts: LonLat[]; cum: number[]; length: number; stops: Landfall[]; segs: Seg[]; dur: number };
+type CStop = { stop: Stop; start: number; dur: number };
 
 const PAUSE = 1.05, FIRST = 0.7, LAST = 1.6;
-const ERA_BEAT = 6.5, OPEN_BEAT = 3, TODAY_BEAT = 7;
+const DWELL = { record: 7, era: 6.5, today: 7 } as const;
 
 function compileVoyage(v: Voyage): CVoyage {
   const pts: LonLat[] = [];
@@ -131,7 +130,7 @@ function compileVoyage(v: Voyage): CVoyage {
   });
   const named = v.route.map((w, i) => ({ w, i })).filter(({ w }) => w.name);
   const travel = clamp(3.5 + acc * 4.6, v.kind === 'land' ? 5 : 7, 27);
-  const stops: Stop[] = [];
+  const stops: Landfall[] = [];
   const segs: Seg[] = [];
   let t = 0;
   named.forEach(({ w, i }, k) => {
@@ -147,16 +146,13 @@ function compileVoyage(v: Voyage): CVoyage {
     segs.push({ t0: t, t1: t + pause, d0: d, d1: d, move: false });
     t += pause;
   });
-  return { v, pts, cum, length: acc, wpd, stops, segs, dur: t };
+  return { v, pts, cum, length: acc, stops, segs, dur: t };
 }
-
-/** Where a voyage stands `tau` seconds in: distance sailed and last stop reached. */
 function voyageAt(cv: CVoyage, tau: number): { d: number; stop: number; atStop: boolean; day: number } {
   let d = 0, stop = 0, atStop = true;
   for (const s of cv.segs) {
     if (tau < s.t0) break;
     const u = clamp((tau - s.t0) / (s.t1 - s.t0), 0, 1);
-    // a ship gathers way out of port and shortens sail into the next one
     const e = s.move ? 0.5 * u + 0.5 * smooth(u) : 1;
     d = s.d0 + (s.d1 - s.d0) * e;
     atStop = !s.move || u >= 1;
@@ -166,7 +162,6 @@ function voyageAt(cv: CVoyage, tau: number): { d: number; stop: number; atStop: 
   const day = b === a || b.d === a.d ? a.day : a.day + ((b.day - a.day) * (d - a.d)) / (b.d - a.d);
   return { d, stop, atStop, day };
 }
-
 function pointAt(cv: CVoyage, d: number): LonLat {
   const { cum, pts } = cv;
   if (d <= 0) return pts[0];
@@ -176,41 +171,57 @@ function pointAt(cv: CVoyage, d: number): LonLat {
   const f = (d - cum[lo]) / Math.max(cum[hi] - cum[lo], 1e-9);
   return geoInterpolate(pts[lo], pts[hi])(f) as LonLat;
 }
-
 function sliceTo(cv: CVoyage, d: number): LonLat[] {
   const out: LonLat[] = [];
   for (let i = 0; i < cv.pts.length && cv.cum[i] < d; i++) out.push(cv.pts[i]);
   out.push(pointAt(cv, d));
   return out.length > 1 ? out : [cv.pts[0], cv.pts[0]];
 }
+/** The centre and angular radius (degrees) of a set of points on the sphere. */
+function capOf(pts: LonLat[]): { at: LonLat; span: number } {
+  let x = 0, y = 0, z = 0;
+  for (const [lo, la] of pts) { const c = Math.cos(la * RAD); x += c * Math.cos(lo * RAD); y += c * Math.sin(lo * RAD); z += Math.sin(la * RAD); }
+  const at: LonLat = [Math.atan2(y, x) * DEG, Math.atan2(z, Math.hypot(x, y)) * DEG];
+  let span = 0;
+  for (const p of pts) span = Math.max(span, geoDistance(at, p) * DEG);
+  return { at, span };
+}
+function boxPoints([[w, s], [e, n]]: [LonLat, LonLat]): LonLat[] {
+  const out: LonLat[] = [];
+  for (let lon = w; lon <= e + 0.01; lon += Math.max(2, (e - w) / 8)) for (let lat = s; lat <= n + 0.01; lat += Math.max(2, (n - s) / 6)) out.push([normLon(lon), lat]);
+  return out;
+}
 
 /* ---------- public types ---------- */
 
 export type Inset = { l: number; r: number; t: number; b: number };
-export type Box = [number, number, number, number];   // x0, y0, x1, y1 on screen
-/** What the card points at on the chart: a landfall of the voyage in this beat
-    (its index among the named stops), a jurisdiction (its family) or a treaty line. */
-export type Focus = { kind: 'stop'; k: number } | { kind: 'unit'; f: string } | { kind: 'line'; id: string };
-export const focusKey = (f: Focus | null | undefined) => (!f ? '' : f.kind === 'stop' ? `stop:${f.k}` : f.kind === 'unit' ? `unit:${f.f}` : `line:${f.id}`);
+export type Box = [number, number, number, number];
+export type Mode = 'globe' | 'flat';
+/** What the card points at: a landfall of the voyage in this stop, a jurisdiction
+    (its family), a treaty line, or a place a record names (its index). */
+export type Focus = { kind: 'stop'; k: number } | { kind: 'unit'; f: string } | { kind: 'line'; id: string } | { kind: 'place'; k: number };
+export const focusKey = (f: Focus | null | undefined) => (!f ? '' : f.kind === 'stop' ? `stop:${f.k}` : f.kind === 'unit' ? `unit:${f.f}` : f.kind === 'line' ? `line:${f.id}` : `place:${f.k}`);
 export type HitInfo = { x: number; y: number; title: string; date?: string; text?: string; focus?: Focus };
 export type FrameInfo = {
-  s: number; beat: number; tau: number; stop: number; atStop: boolean; day: number; playing: boolean; voyageDay: boolean;
+  s: number; stop: number; tau: number; landfall: number; atStop: boolean; day: number; year: number;
+  playing: boolean; voyageDay: boolean; free: boolean;
 };
-/** Where things are on the chart just drawn, for the explainer laid over it. */
 export type Anchors = {
-  beat: number;
-  area: Box;                                  // the part of the stage the chart is framed in
+  stop: number;
+  area: Box;
   ship: [number, number] | null;
-  labels: Box[];                              // names already on the chart
+  labels: Box[];
   project: (at: LonLat) => [number, number] | null;
-  unitBox: (family: string) => Box | null;    // the units of a family in the keyframe in force
+  unitBox: (family: string) => Box | null;
   lineBox: (id: string) => Box | null;
 };
 export type EngineOpts = {
   lang: 'en' | 'es';
   reduced: boolean;
+  mode: Mode;
   seaNames: { atlantic: string; south: string; pacific: string };
   lines: Record<string, { name: string; west: string; east: string }>;
+  approxText: string;
   onFrame: (f: FrameInfo) => void;
   onHover: (h: HitInfo | null) => void;
   onAnchors?: (a: Anchors) => void;
@@ -223,12 +234,16 @@ export type Engine = {
   durs: number[];
   play(): void; pause(): void; isPlaying(): boolean;
   seek(s: number): void;
-  seekBeat(i: number): void;
-  seekStop(k: number): void;
+  seekStop(i: number): void;
+  seekLandfall(k: number): void;
   setFocus(f: Focus | null): void;
   setInset(i: Inset): void;
   setReduced(r: boolean): void;
   setVisible(v: boolean): void;
+  setMode(m: Mode): void;
+  setOverview(o: boolean): void;
+  zoomBy(f: number): void;
+  recentre(): void;
   pick(x: number, y: number): HitInfo | null;
   resize(): void;
   destroy(): void;
@@ -236,18 +251,15 @@ export type Engine = {
 
 /* ---------- the engine ---------- */
 
-export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, opts: EngineOpts): Engine {
+export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, opts: EngineOpts): Engine {
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   const mask = document.createElement('canvas');
   const mctx = mask.getContext('2d') as CanvasRenderingContext2D;
   const fogC = document.createElement('canvas');
   const fctx = fogC.getContext('2d') as CanvasRenderingContext2D;
-  let snap: HTMLCanvasElement | null = null;
-  const vignette = document.createElement('canvas');
-  let vignetteKey = '';
-  let snapAt = 0;
 
   let reduced = opts.reduced;
+  let mode: Mode = opts.mode;
   const fmtDay = new Intl.DateTimeFormat(opts.lang, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
   const fmtMonth = new Intl.DateTimeFormat(opts.lang, { month: 'short', year: 'numeric', timeZone: 'UTC' });
   const dateLabel = (iso?: string) => {
@@ -258,16 +270,14 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
 
   /* --- the story --- */
   const voyages = chron.voyages.map(compileVoyage);
-  const beats: CBeat[] = [];
+  const stops: CStop[] = [];
   let total = 0;
-  for (const b of chron.beats) {
-    const dur = b.kind === 'voyage' ? voyages[b.voyage as number].dur
-      : b.kind === 'era' ? ERA_BEAT : b.kind === 'open' ? OPEN_BEAT : TODAY_BEAT;
-    beats.push({ beat: b, start: total, dur, day: dayOf(b.date) as number, endDay: dayOf(b.end) as number });
+  for (const st of chron.stops) {
+    const dur = st.kind === 'voyage' ? voyages[st.voyage as number].dur : DWELL[st.kind];
+    stops.push({ stop: st, start: total, dur });
     total += dur;
   }
-  const eraDays = chron.eras.map((e) => dayOf(e.date) as number);
-  // the jurisdictions known by each keyframe: every unit of it and of all before it
+  const eraYears = chron.eras.map((e) => yearOfDay(dayOf(e.date) as number));
   const knownUnits: string[][] = [];
   {
     const acc = new Set<string>();
@@ -280,27 +290,18 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   /* --- data --- */
   let land: Feature | null = null;
   let land50: Feature | null = null;
-  let oldWorld: Feature | null = null;
-  let iberia: Feature | null = null;
   let landCoarse: Feature | null = null;
+  let oldWorld: Feature | null = null;
   let oldCoarse: Feature | null = null;
+  let iberia: Feature | null = null;
   let countries = new Map<string, Feature>();
   let borders: MultiLineString | null = null;
   const units = new Map<string, Feature>();
   const lines = new Map<string, Feature>();
   let loaded = false;
 
-  /* --- layout and camera --- */
-  const ROT: Record<Layout, number> = { atlantic: 30, pacific: 170, globe: 0 };
-  const unitProj: Record<'atlantic' | 'pacific', GeoProjection> = {
-    atlantic: geoEqualEarth().rotate([ROT.atlantic, 0]).scale(1).translate([0, 0]),
-    pacific: geoEqualEarth().rotate([ROT.pacific, 0]).scale(1).translate([0, 0]),
-  };
-  const worldB = geoPath(unitProj.atlantic).bounds({ type: 'Sphere' });
-  const worldW = worldB[1][0] - worldB[0][0];
-  const worldH = worldB[1][1] - worldB[0][1];
-
-  type Cam = { layout: Layout; k: number; mx: number; my: number; lon: number; lat: number };
+  /* --- camera --- */
+  type Cam = { lon: number; lat: number; R: number };
   let cam: Cam | null = null;
   let W = 0, H = 0, dpr = 1;
   let inset: Inset = { l: 0, r: 0, t: 0, b: 0 };
@@ -308,78 +309,84 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     const w = Math.max(80, W - inset.l - inset.r), h = Math.max(80, H - inset.t - inset.b);
     return { x: inset.l, y: inset.t, w, h, cx: inset.l + w / 2, cy: inset.t + h / 2 };
   };
-  const kFitWorld = () => { const a = avail(); return Math.min(a.w / worldW, a.h / worldH) * 0.98; };
-
-  function fitPoints(layout: 'atlantic' | 'pacific', pts: LonLat[], minSpan: number, pad = 0.1): Cam {
-    const p = unitProj[layout];
-    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-    for (const q of pts) {
-      const r = p(q);
-      if (!r) continue;
-      x0 = Math.min(x0, r[0]); y0 = Math.min(y0, r[1]); x1 = Math.max(x1, r[0]); y1 = Math.max(y1, r[1]);
-    }
+  // the whole planet in view, and how far in the camera may go
+  const R0 = () => { const a = avail(); return mode === 'globe' ? Math.min(a.w, a.h) * 0.46 : Math.min(a.w / 5.6, a.h / 2.75); };
+  const Rmax = () => R0() * 16;
+  // the story keeps the planet in view: close enough to read the place, far
+  // enough to see the curve of the Earth (the reader can zoom further)
+  const RforSpan = (span: number, most = 1.6) => {
     const a = avail();
-    const span = Math.max(minSpan, 1e-3);
-    const bw = Math.max(x1 - x0, span), bh = Math.max(y1 - y0, span * 0.6);
-    const k = clamp(Math.min((a.w * (1 - pad * 2)) / bw, (a.h * (1 - pad * 2)) / bh), kFitWorld(), kFitWorld() * 9);
-    return { layout, k, mx: (x0 + x1) / 2, my: (y0 + y1) / 2, lon: 0, lat: 0 };
-  }
-  function boxPoints(box: [LonLat, LonLat]): LonLat[] {
-    const [[w, s], [e, n]] = box;
-    const out: LonLat[] = [];
-    for (let lon = w; lon <= e + 0.01; lon += Math.max(2, (e - w) / 12)) for (let lat = s; lat <= n + 0.01; lat += Math.max(2, (n - s) / 8)) out.push([lon > 180 ? lon - 360 : lon, lat]);
-    return out;
-  }
+    const m = Math.min(a.w, a.h) * 0.4;
+    const th = clamp(span * 1.2, 2.5, 85) * RAD;
+    return clamp(mode === 'globe' ? m / Math.sin(th) : m / th, R0(), R0() * most);
+  };
 
-  function projectionFor(c: Cam): GeoProjection {
+  let flight: { from: Cam; to?: Cam; t0: number; dur: number; dip: number } | null = null;
+  let free = false;                  // the reader has the camera
+  let overview = true;               // the welcome: the whole planet
+  let overviewAt = 0;
+  let flyNext = false;
+  let vel = { lon: 0, lat: 0 };      // inertia after a drag
+  let lastTarget: Cam | null = null;
+
+  function projectionFor(c: Cam, fast = false): GeoProjection {
     const a = avail();
-    if (c.layout === 'globe') {
-      return geoOrthographic().rotate([-c.lon, -c.lat]).scale(c.k).translate([a.cx, a.cy]).clipAngle(90).precision(0);
+    if (mode === 'globe') {
+      return geoOrthographic().rotate([-c.lon, -c.lat]).scale(c.R).translate([a.cx, a.cy]).clipAngle(90).precision(fast ? 0 : 0.5);
     }
-    return geoEqualEarth().rotate([ROT[c.layout], 0]).scale(c.k).translate([a.cx - c.k * c.mx, a.cy - c.k * c.my]).precision(0.7);
+    const p = geoEqualEarth().rotate([-c.lon, 0]).scale(c.R).translate([0, 0]).precision(fast ? 0.9 : 0.5);
+    const q = p([c.lon, c.lat]) as [number, number];
+    return p.translate([a.cx - q[0], a.cy - q[1]]);
   }
 
   /* --- the state of the story at a time --- */
   type State = {
-    bi: number; cb: CBeat; tau: number;
-    vi: number; vd: number; stop: number; atStop: boolean;
-    day: number; era: number; preEra: boolean; fog: number;
+    si: number; cs: CStop; tau: number;
+    vi: number; vd: number; landfall: number; atStop: boolean;
+    day: number; year: number; era: number; preEra: boolean; fog: number;
   };
   function stateAt(s: number): State {
-    let bi = 0;
-    for (let i = 0; i < beats.length; i++) if (beats[i].start <= s) bi = i;
-    const cb = beats[bi];
-    const tau = clamp(s - cb.start, 0, cb.dur);
-    let vi = -1, vd = 0, stop = 0, atStop = false, day = cb.day;
-    if (cb.beat.kind === 'voyage') {
-      vi = cb.beat.voyage as number;
+    let si = 0;
+    for (let i = 0; i < stops.length; i++) if (stops[i].start <= s) si = i;
+    const cs = stops[si];
+    const tau = clamp(s - cs.start, 0, cs.dur);
+    let vi = -1, vd = 0, landfall = 0, atStop = false;
+    let day = dayOf(cs.stop.date) ?? 0;
+    let year = cs.stop.year;
+    if (cs.stop.kind === 'voyage') {
+      vi = cs.stop.voyage as number;
       const r = voyageAt(voyages[vi], tau);
-      vd = r.d; stop = r.stop; atStop = r.atStop; day = r.day;
-    }
+      vd = r.d; landfall = r.stop; atStop = r.atStop; day = r.day;
+      year = yearOfDay(day);
+    } else if (cs.stop.kind === 'era') year = eraYears[cs.stop.era as number];
     let era = 0;
-    for (let i = 0; i < eraDays.length; i++) if (eraDays[i] <= day) era = i;
-    const preEra = day < eraDays[0];
-    const fog = cb.beat.kind === 'today' ? (reduced ? 0 : 1 - smooth(tau / 3)) : 1;
-    return { bi, cb, tau, vi, vd, stop, atStop, day, era, preEra, fog };
+    for (let i = 0; i < eraYears.length; i++) if (eraYears[i] <= year + 1e-6) era = i;
+    const preEra = year < eraYears[0] - 1e-6;
+    const fog = cs.stop.kind === 'today' ? (reduced ? 0 : 1 - smooth(tau / 3)) : 1;
+    return { si, cs, tau, vi, vd, landfall, atStop, day, year, era, preEra, fog };
   }
 
-  function targetCam(st: State): Cam {
-    const b = st.cb.beat;
+  function targetCam(st: State, now: number): Cam {
+    // before the story starts: the whole planet, turning slowly
+    if (overview) return { lon: normLon(-20 + (reduced ? 0 : (now - overviewAt) / 1000 * 4)), lat: 22, R: R0() };
+    const b = st.cs.stop;
     if (st.vi >= 0) {
       const cv = voyages[st.vi];
       const ship = pointAt(cv, st.vd);
-      if (b.layout === 'globe') {
-        const a = avail();
-        return { layout: 'globe', k: Math.min(a.w, a.h) * 0.47, mx: 0, my: 0, lon: ship[0] + 8, lat: clamp(ship[1] * 0.6, -35, 35) };
-      }
-      const w = clamp(cv.length * 0.24, 0.05, 0.75);
+      const w = clamp(cv.length * 0.22, 0.05, 0.7);
       const pts: LonLat[] = [ship];
-      for (let i = 0; i < cv.pts.length; i++) if (Math.abs(cv.cum[i] - st.vd) <= w) pts.push(cv.pts[i]);
-      const minSpan = cv.v.kind === 'land' ? worldW * 0.035 : b.layout === 'pacific' ? worldW * 0.24 : worldW * 0.13;
-      return fitPoints(b.layout as 'atlantic' | 'pacific', pts, minSpan, 0.12);
+      for (let i = 0; i < cv.pts.length; i += 2) if (Math.abs(cv.cum[i] - st.vd) <= w) pts.push(cv.pts[i]);
+      const cap = capOf(pts);
+      const min = cv.v.kind === 'land' ? 4 : cv.v.kind === 'river' ? 9 : 16;
+      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(min, cap.span), cv.v.kind === 'sea' ? 2.2 : 4) };
     }
-    const layout = (b.layout === 'globe' ? 'atlantic' : b.layout) as 'atlantic' | 'pacific';
-    return fitPoints(layout, b.box ? boxPoints(b.box) : [[-180, -60], [180, 75]], worldW * 0.1, 0.06);
+    if (b.focus) return { lon: b.focus.at[0], lat: clamp(b.focus.at[1], -65, 70), R: RforSpan(Math.max(5, b.focus.span)) };
+    if (b.box) {
+      const cap = capOf(boxPoints(b.box));
+      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(8, cap.span * 0.82), 1.8) };
+    }
+    // a record with no place: stay where the story was
+    return lastTarget ?? { lon: -20, lat: 25, R: R0() };
   }
 
   /* --- clock --- */
@@ -393,18 +400,16 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
   let drawCost = 0;
   let skip = 0;
   let lastEra = -1;
+  let lastStop = -1;
   let eraFadeAt = -1e9;
   let prevEra = -1;
   let pulseAt = -1e9;
   let hits: HitInfo[] = [];
   let hoverKey = '';
   let focus: Focus | null = null;
-  // the shapes the pointer can find on the last chart drawn (jurisdictions, lines),
-  // and the transform they were drawn with
   let shapeHits: { path: Path2D; stroke: boolean; hit: Omit<HitInfo, 'x' | 'y'> }[] = [];
-  let shapeXf: [number, number, number, number, number, number] = [1, 0, 0, 1, 0, 0];
-  let shapeScale = 1;
-  const boundsCache = new Map<string, Box | null>();
+  let dragging = false;
+  let settleAt = 0;
 
   function frame(now: number) {
     raf = 0;
@@ -416,48 +421,75 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     }
     if (loaded && W > 0) {
       const st = stateAt(s);
-      const tgt = targetCam(st);
+      const tgt = targetCam(st, now);
+      lastTarget = tgt;
       let moving = false;
-      if (!cam || reduced || cam.layout !== tgt.layout) {
-        if (cam && cam.layout !== tgt.layout && !reduced) {
-          snap = snap ?? document.createElement('canvas');
-          snap.width = canvas.width; snap.height = canvas.height;
-          (snap.getContext('2d') as CanvasRenderingContext2D).drawImage(canvas, 0, 0);
-          snapAt = now;
+      if (st.si !== lastStop || flyNext) {
+        // a new stop: the camera is the story's again, and flies there
+        if ((lastStop >= 0 || flyNext) && cam && !reduced && !overview) {
+          const far = geoDistance([cam.lon, cam.lat], [tgt.lon, tgt.lat]) * DEG;
+          const dip = clamp(far / 70, 0, 1) * 0.9 + Math.abs(Math.log(tgt.R / cam.R)) * 0.05;
+          flight = { from: { ...cam }, t0: now, dur: 900 + clamp(far / 120, 0, 1) * 900, dip };
         }
+        free = false; vel = { lon: 0, lat: 0 };
+        lastStop = st.si; flyNext = false;
+      }
+      if (!cam || (reduced && !free)) {
         cam = { ...tgt };
+      } else if (free) {
+        // the reader's camera: inertia after a flick
+        if (!dragging && (Math.abs(vel.lon) > 0.002 || Math.abs(vel.lat) > 0.002) && !reduced) {
+          cam = { ...cam, lon: normLon(cam.lon + vel.lon * dt * 60), lat: clamp(cam.lat + vel.lat * dt * 60, -80, 80) };
+          const k = Math.pow(0.92, dt * 60);
+          vel = { lon: vel.lon * k, lat: vel.lat * k };
+          moving = true;
+        }
+        if (flight) {
+          const e = easeInOut((now - flight.t0) / flight.dur);
+          const to = flight.to;
+          if (to) {
+            cam = { lon: flight.from.lon + angleDiff(flight.from.lon, to.lon) * e, lat: flight.from.lat + (to.lat - flight.from.lat) * e, R: Math.exp(Math.log(flight.from.R) + (Math.log(to.R) - Math.log(flight.from.R)) * e) };
+            moving = true;
+            if (e >= 1) flight = null;
+          }
+        }
+      } else if (flight) {
+        const u = (now - flight.t0) / flight.dur;
+        const e = easeInOut(u);
+        const c = geoInterpolate([flight.from.lon, flight.from.lat], [tgt.lon, tgt.lat])(e);
+        const lr = Math.log(flight.from.R) + (Math.log(tgt.R) - Math.log(flight.from.R)) * e - flight.dip * Math.sin(Math.PI * e);
+        cam = { lon: c[0], lat: c[1], R: clamp(Math.exp(lr), R0() * 0.85, Rmax()) };
+        moving = true;
+        if (u >= 1) flight = null;
       } else {
         const f = 1 - Math.exp(-dt * 2.6);
-        const lk = Math.log(cam.k), tk = Math.log(tgt.k);
-        const nk = Math.exp(lk + (tk - lk) * f);
-        const nc: Cam = {
-          layout: tgt.layout, k: nk,
-          mx: cam.mx + (tgt.mx - cam.mx) * f, my: cam.my + (tgt.my - cam.my) * f,
-          lon: cam.lon + angleDiff(cam.lon, tgt.lon) * f, lat: cam.lat + (tgt.lat - cam.lat) * f,
-        };
-        moving = Math.abs(tk - lk) > 1e-3 || Math.abs(tgt.mx - cam.mx) * nk > 0.3 || Math.abs(tgt.my - cam.my) * nk > 0.3 || Math.abs(angleDiff(cam.lon, tgt.lon)) > 0.05 || Math.abs(tgt.lat - cam.lat) > 0.05;
+        const lk = Math.log(cam.R), tk = Math.log(tgt.R);
+        const nc: Cam = { lon: normLon(cam.lon + angleDiff(cam.lon, tgt.lon) * f), lat: cam.lat + (tgt.lat - cam.lat) * f, R: Math.exp(lk + (tk - lk) * f) };
+        moving = Math.abs(tk - lk) > 1e-3 || Math.abs(angleDiff(cam.lon, tgt.lon)) > 0.03 || Math.abs(tgt.lat - cam.lat) > 0.03;
         cam = nc;
       }
       if (st.era !== lastEra) {
         if (lastEra >= 0 && !reduced) { prevEra = lastEra; eraFadeAt = now; pulseAt = now; }
         lastEra = st.era;
       }
-      const fading = now - eraFadeAt < 1000 || now - pulseAt < 2800 || (snap !== null && now - snapAt < 900);
-      // a frame is drawn only when something on it changes: at sea every
-      // frame (the ship rides the swell), on a keyframe only as it arrives
-      const key = `${st.bi}|${st.era}|${st.preEra}|${Math.round(st.fog * 80)}`;
+      if (moving || dragging) settleAt = now;
+      const settling = now - settleAt < 260;   // one fine frame after the camera stops
+      const fading = now - eraFadeAt < 1000 || now - pulseAt < 2800;
+      const key = `${st.si}|${st.era}|${st.preEra}|${Math.round(st.fog * 80)}|${mode}`;
       const atSea = st.vi >= 0 && playing;
-      // on a slow device, a heavy chart (the globe) is drawn every other frame
-      skip = drawCost > 40 ? (skip + 1) % 3 : drawCost > 22 ? (skip + 1) % 2 : 0;
-      if ((dirty || moving || fading || atSea || key !== lastKey) && (skip === 0 || dirty)) {
+      skip = drawCost > 40 ? (skip + 1) % 3 : drawCost > 24 ? (skip + 1) % 2 : 0;
+      if ((dirty || moving || fading || atSea || settling || key !== lastKey) && (skip === 0 || dirty)) {
         const t0 = performance.now();
-        draw(st, now);
+        draw(st, now, moving || dragging || atSea);
         drawCost = drawCost * 0.8 + (performance.now() - t0) * 0.2;
         dirty = false;
         lastKey = key;
       }
-      opts.onFrame({ s, beat: st.bi, tau: st.tau, stop: st.stop, atStop: st.atStop, day: st.day, playing, voyageDay: st.vi >= 0 && !st.atStop });
-      if (playing || moving || fading) schedule();
+      opts.onFrame({
+        s, stop: st.si, tau: st.tau, landfall: st.landfall, atStop: st.atStop, day: st.day, year: st.year,
+        playing, voyageDay: st.vi >= 0 && !st.atStop, free,
+      });
+      if (playing || moving || fading || settling || flight || dragging || (overview && !reduced)) schedule();
     } else if (playing) schedule();
   }
   const schedule = () => { if (!raf && visible) raf = requestAnimationFrame(frame); };
@@ -489,15 +521,6 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     grain = fctx.createPattern(g, 'repeat');
   }
 
-  function pxPerDeg(proj: GeoProjection): number {
-    const a = avail();
-    const c = proj.invert?.([a.cx, a.cy]);
-    if (!c) return 1;
-    const p1 = proj([c[0] - 0.5, c[1]]), p2 = proj([c[0] + 0.5, c[1]]);
-    if (!p1 || !p2) return proj.scale() * RAD;
-    return Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) / Math.max(0.2, Math.cos(c[1] * RAD));
-  }
-
   const famOf = (u: { f: string }) => chron.families[u.f];
   function unitFill(f: { kind: string; tone: number }): RGB {
     switch (f.kind) {
@@ -510,137 +533,72 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       default: return C.other;
     }
   }
-
-  /* --- geometry, projected once per flat chart: the camera is then only a
-     transform, so a frame costs filling paths, not projecting them. The globe
-     turns every frame, so there each path is projected live. --- */
-  const S = 1000;
   type GeoObj = Parameters<ReturnType<typeof geoPath>>[0];
-  const baseProj: Record<'atlantic' | 'pacific', GeoProjection> = {
-    atlantic: geoEqualEarth().rotate([ROT.atlantic, 0]).scale(S).translate([0, 0]).precision(0.4),
-    pacific: geoEqualEarth().rotate([ROT.pacific, 0]).scale(S).translate([0, 0]).precision(0.4),
-  };
-  const caches = new Map<string, Map<string, Path2D>>();
-  function cached(layout: 'atlantic' | 'pacific', key: string, obj: () => GeoObj): Path2D {
-    let m = caches.get(layout);
-    if (!m) { m = new Map(); caches.set(layout, m); }
-    let p = m.get(key);
-    if (!p) {
-      p = new Path2D();
-      // (d3 only calls moveTo, lineTo, closePath and arc, which a Path2D has)
-      geoPath(baseProj[layout], p as unknown as CanvasRenderingContext2D)(obj());
-      m.set(key, p);
-    }
-    return p;
-  }
-  const routeXY = new Map<string, [number, number][]>();
-  function routePts(layout: 'atlantic' | 'pacific', vi: number): [number, number][] {
-    const key = `${layout}:${vi}`;
-    let r = routeXY.get(key);
-    if (!r) { r = voyages[vi].pts.map((q) => baseProj[layout](q) as [number, number]); routeXY.set(key, r); }
-    return r;
-  }
   const fc = (fs: (Feature | undefined)[]): GeoObj => ({ type: 'FeatureCollection', features: fs.filter((f): f is Feature => !!f) });
 
-  function draw(st: State, now: number) {
+  function draw(st: State, now: number, fast: boolean) {
     const c = cam as Cam;
-    const proj = projectionFor(c);
-    const globe = c.layout === 'globe';
-    const flat = !globe;
-    const L = c.layout as 'atlantic' | 'pacific';
+    const globe = mode === 'globe';
+    const proj = projectionFor(c, fast);
     const a = avail();
-    const sc = c.k / S;
-    const tx = a.cx - c.k * c.mx, ty = a.cy - c.k * c.my;
     const live = new Map<string, Path2D>();
     const G = (key: string, obj: () => GeoObj): Path2D => {
-      if (flat) return cached(L, key, obj);
       let p = live.get(key);
       if (!p) { p = new Path2D(); geoPath(proj, p as unknown as CanvasRenderingContext2D)(obj()); live.set(key, p); }
       return p;
     };
-    // the space paths are drawn in, on a context at a given pixel scale
-    const geoSpace = (g: CanvasRenderingContext2D, k: number) => (flat ? g.setTransform(k * sc, 0, 0, k * sc, k * tx, k * ty) : g.setTransform(k, 0, 0, k, 0, 0));
-    const lw = (px: number) => (flat ? px / sc : px);
-    const dash = (d: number[]) => (flat ? d.map((x) => x / sc) : d);
-
-    const ppd = pxPerDeg(proj);
+    const ppd = c.R * RAD;     // pixels per degree at the centre
     const era: Era = chron.eras[st.era];
-    const today = st.cb.beat.kind === 'today';
-    // on the globe, a point on the far side is not drawn
+    const today = st.cs.stop.kind === 'today';
     const centre: LonLat = [c.lon, c.lat];
     const pt = (at: LonLat) => (globe && geoDistance(at, centre) > Math.PI / 2 - 0.03 ? null : proj(at));
-    // close in, the 1:50m coast; further out, the 1:110m one
-    const fine = !!land50 && flat && c.k > kFitWorld() * 2.2;
-    const coast = fine ? G('land50', () => land50 as Feature) : land ? G('land110', () => ((globe ? landCoarse : null) ?? land) as Feature) : null;
+    const zoomed = c.R > R0() * 2.6;
+    const coastFeat = !fast && zoomed && land50 ? land50 : globe && fast ? (landCoarse ?? land) : land;
+    const coast = coastFeat ? G('coast', () => coastFeat as Feature) : null;
     const sphere = G('sphere', () => ({ type: 'Sphere' }));
-    // the globe turns every frame: a lighter grid there
-    const grat = G('grat', () => (flat ? geoGraticule10() : geoGraticule().step([15, 15]).precision(5)()));
+    const grat = G('grat', () => geoGraticule().step([15, 15]).precision(fast ? 5 : 2.5)());
+    const gx = a.cx, gy = a.cy;
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = 'source-over';
 
-    // the sea (and, on the globe, the dark around it)
-    ctx.fillStyle = css(C.fog);
+    // space, and the planet's halo
+    ctx.fillStyle = css(C.space);
     ctx.fillRect(0, 0, W, H);
-    geoSpace(ctx, dpr);
-    ctx.fillStyle = css(C.sea); ctx.fill(sphere);
-
-    // a portolan's rhumb lines, from two wind roses
-    if (flat) {
-      ctx.save();
-      ctx.clip(sphere);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.lineWidth = 0.6;
-      const strong = new Path2D(), weak = new Path2D();
-      for (const at of [[-38, 24], [-150, 8]] as LonLat[]) {
-        const p = proj(at);
-        if (!p) continue;
-        for (let k = 0; k < 32; k++) {
-          const an = (k * Math.PI) / 16;
-          const q = k % 4 === 0 ? strong : weak;
-          q.moveTo(p[0], p[1]); q.lineTo(p[0] + Math.cos(an) * 4000, p[1] + Math.sin(an) * 4000);
-        }
-      }
-      ctx.strokeStyle = css(C.leatherLight, 0.16); ctx.stroke(strong);
-      ctx.strokeStyle = css(C.leatherLight, 0.07); ctx.stroke(weak);
-      ctx.restore();
-      geoSpace(ctx, dpr);
+    if (globe) {
+      const halo = ctx.createRadialGradient(gx, gy, c.R * 0.96, gx, gy, c.R * 1.22);
+      halo.addColorStop(0, css(C.glow, 0.42)); halo.addColorStop(0.35, css(C.glow, 0.12)); halo.addColorStop(1, css(C.glow, 0));
+      ctx.fillStyle = halo;
+      ctx.beginPath(); ctx.arc(gx, gy, c.R * 1.22, 0, Math.PI * 2); ctx.fill();
     }
-    ctx.lineWidth = lw(0.5); ctx.strokeStyle = css(C.paper, 0.07); ctx.stroke(grat);
-
-    // land
+    ctx.fillStyle = css(C.sea); ctx.fill(sphere);
+    ctx.lineWidth = 0.5; ctx.strokeStyle = css(C.paper, 0.08); ctx.stroke(grat);
     if (coast) { ctx.fillStyle = css(C.land); ctx.fill(coast); }
 
-    // jurisdictions: the keyframe in force (cross-fading from the one before),
-    // one path per colour and one for all the edges
-    const drawEra = (ei: number, alpha: number, pre: boolean) => {
+    // jurisdictions: the keyframe in force, cross-fading from the one before
+    const drawEra = (ei: number, alpha: number) => {
       const e = chron.eras[ei];
-      const tag = `era:${ei}:${pre ? 'pre' : 'all'}`;
-      const shown = e.units.filter((u) => famOf(u) && units.get(u.id) && (!pre || famOf(u).kind === 'native'));
+      const tag = `era:${ei}`;
+      const shown = e.units.filter((u) => famOf(u) && units.get(u.id));
       const byColour = new Map<string, typeof shown>();
       for (const u of shown) { const k = css(unitFill(famOf(u))); byColour.set(k, [...(byColour.get(k) ?? []), u]); }
       ctx.globalAlpha = alpha;
-      for (const [colour, us] of byColour) {
-        ctx.fillStyle = colour;
-        ctx.fill(G(`${tag}:${colour}`, () => fc(us.map((u) => units.get(u.id)))));
-      }
+      for (const [colour, us] of byColour) { ctx.fillStyle = colour; ctx.fill(G(`${tag}:${colour}`, () => fc(us.map((u) => units.get(u.id))))); }
       const claims = shown.filter((u) => famOf(u).kind === 'claim');
       if (claims.length) {
         const cp = G(`${tag}:claims`, () => fc(claims.map((u) => units.get(u.id))));
         ctx.save(); ctx.clip(cp);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         const h = new Path2D();
         for (let x = -H; x < W; x += 7) { h.moveTo(x, H); h.lineTo(x + H, 0); }
         ctx.strokeStyle = css(C.paper, 0.25); ctx.lineWidth = 0.8; ctx.stroke(h);
         ctx.restore();
-        geoSpace(ctx, dpr);
       }
       const solid = shown.filter((u) => famOf(u).kind !== 'native');
       const native = shown.filter((u) => famOf(u).kind === 'native');
-      ctx.lineWidth = lw(0.7); ctx.strokeStyle = css(C.paper, 0.5);
+      ctx.lineWidth = 0.7; ctx.strokeStyle = css(C.paper, 0.5);
       if (solid.length) ctx.stroke(G(`${tag}:edge`, () => fc(solid.map((u) => units.get(u.id)))));
-      if (native.length) { ctx.setLineDash(dash([2, 3])); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => units.get(u.id))))); ctx.setLineDash([]); }
+      if (native.length) { ctx.setLineDash([2, 3]); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => units.get(u.id))))); ctx.setLineDash([]); }
       ctx.globalAlpha = 1;
     };
     if (today) {
@@ -648,26 +606,19 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       ctx.fill(G('today:sub', () => fc(chron.iberophone.submersa.map((id) => countries.get(id)))));
       ctx.fillStyle = css(C.es[1]);
       ctx.fill(G('today:em', () => fc(chron.iberophone.emersa.map((id) => countries.get(id)))));
-      if (borders) { ctx.lineWidth = lw(0.6); ctx.strokeStyle = css(C.paper, 0.45); ctx.stroke(G('borders', () => borders as MultiLineString)); }
-    } else {
+      if (borders) { ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paper, 0.45); ctx.stroke(G('borders', () => borders as MultiLineString)); }
+    } else if (!st.preEra) {
       const ef = reduced ? 1 : smooth((now - eraFadeAt) / 900);
-      if (ef < 1 && prevEra >= 0 && prevEra !== st.era) drawEra(prevEra, 1 - ef, false);
-      drawEra(st.era, ef, st.preEra);
-      // the units that changed: a pulse, or with reduced motion a still outline
-      if (!st.preEra && st.cb.beat.kind === 'era') {
-        const pt2 = (now - pulseAt) / 1000;
-        // after the pulse a faint outline stays, so the explainer has something to point at
-        const al = reduced ? 0.8 : pt2 < 2.6 ? Math.max(0.4, (1 - pt2 / 2.6) * (0.55 + 0.45 * Math.sin(pt2 * 7))) : 0.4;
-        if (al > 0.01) {
-          ctx.lineWidth = lw(2.2); ctx.strokeStyle = css(C.paper, al);
-          ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => units.get(u.id)))));
-        }
+      if (ef < 1 && prevEra >= 0 && prevEra !== st.era) drawEra(prevEra, 1 - ef);
+      drawEra(st.era, ef);
+      if (st.cs.stop.kind === 'era') {
+        const p2 = (now - pulseAt) / 1000;
+        const al = reduced ? 0.8 : p2 < 2.6 ? Math.max(0.4, (1 - p2 / 2.6) * (0.55 + 0.45 * Math.sin(p2 * 7))) : 0.4;
+        ctx.lineWidth = 2.2; ctx.strokeStyle = css(C.paper, al);
+        ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => units.get(u.id)))));
       }
     }
-    // the jurisdiction the card points at: lit, and findable by the pointer
     shapeHits = [];
-    shapeXf = flat ? [dpr * sc, 0, 0, dpr * sc, dpr * tx, dpr * ty] : [dpr, 0, 0, dpr, 0, 0];
-    shapeScale = flat ? sc : 1;
     if (!today && !st.preEra) {
       const listed = new Set(era.pulse);
       if (focus?.kind === 'unit') listed.add(focus.f);
@@ -678,113 +629,102 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         shapeHits.push({ path, stroke: false, hit: { title: era.names[fid] ?? chron.families[fid].name, focus: { kind: 'unit', f: fid } } });
         if (focus?.kind === 'unit' && focus.f === fid) {
           ctx.fillStyle = css(C.paper, 0.16); ctx.fill(path);
-          ctx.lineWidth = lw(2.4); ctx.strokeStyle = css(C.paper, 0.95); ctx.stroke(path);
+          ctx.lineWidth = 2.4; ctx.strokeStyle = css(C.paper, 0.95); ctx.stroke(path);
         }
       }
     }
-    // a coastline, so every shore reads against the dark sea
-    if (coast) { ctx.lineWidth = lw(0.6); ctx.strokeStyle = css(C.paperDeep, 0.35); ctx.stroke(coast); }
+    if (coast) { ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paperDeep, 0.35); ctx.stroke(coast); }
 
     // routes: the voyages already sailed, then the one at sea
     const sailed: { cv: CVoyage; vi: number; d: number; current: boolean }[] = [];
-    for (let i = 0; i <= st.bi; i++) {
-      const b = beats[i].beat;
+    for (let i = 0; i <= st.si; i++) {
+      const b = stops[i].stop;
       if (b.kind !== 'voyage') continue;
       const vi = b.voyage as number;
-      sailed.push({ cv: voyages[vi], vi, d: i === st.bi ? st.vd : voyages[vi].length, current: i === st.bi });
+      sailed.push({ cv: voyages[vi], vi, d: i === st.si ? st.vd : voyages[vi].length, current: i === st.si });
     }
-    const routePath = (r: { cv: CVoyage; vi: number; d: number; current: boolean }): Path2D => {
-      if (!r.current) return G(`route:${r.vi}`, () => ({ type: 'LineString', coordinates: r.cv.pts }));
-      if (!flat) return G(`at-sea:${r.vi}`, () => ({ type: 'LineString', coordinates: sliceTo(r.cv, r.d) }));
-      // the leg at sea: from the cached points, breaking where the chart is cut
-      const xy = routePts(L, r.vi);
-      const p = new Path2D();
-      const jump = S * worldW * 0.5;
-      let px = NaN;
-      const add = (q: [number, number]) => {
-        if (Number.isNaN(px) || Math.abs(q[0] - px) > jump) p.moveTo(q[0], q[1]); else p.lineTo(q[0], q[1]);
-        px = q[0];
-      };
-      for (let i = 0; i < xy.length && r.cv.cum[i] < r.d; i++) add(xy[i]);
-      const end = baseProj[L](pointAt(r.cv, r.d));
-      if (end) add(end as [number, number]);
-      return p;
-    };
+    const routePath = (r: { cv: CVoyage; vi: number; d: number; current: boolean }): Path2D =>
+      r.current ? G(`at-sea:${r.vi}`, () => ({ type: 'LineString', coordinates: sliceTo(r.cv, r.d) })) : G(`route:${r.vi}`, () => ({ type: 'LineString', coordinates: r.cv.pts }));
     for (const r of sailed) {
       if (r.current) continue;
-      ctx.lineWidth = lw(1); ctx.setLineDash(dash(r.cv.v.kind === 'land' ? [1.5, 3] : [4, 4]));
+      ctx.lineWidth = 1; ctx.setLineDash(r.cv.v.kind === 'land' ? [1.5, 3] : [4, 4]);
       ctx.strokeStyle = css(r.cv.v.crown === 'pt' ? C.leatherLight : C.paper, 0.32); ctx.stroke(routePath(r));
       ctx.setLineDash([]);
     }
 
-    /* the fog: a low-resolution mask of what is known, scaled up (soft edges) */
+    /* the fog: a low-resolution mask of what is recorded, scaled up (soft edges) */
     if (st.fog > 0.001) {
       const f = 0.25;
       const mw = Math.ceil(W * f), mh = Math.ceil(H * f);
       if (mask.width !== mw || mask.height !== mh) { mask.width = mw; mask.height = mh; }
       mctx.setTransform(1, 0, 0, 1, 0, 0);
       mctx.clearRect(0, 0, mw, mh);
-      geoSpace(mctx, f);
+      mctx.setTransform(f, 0, 0, f, 0, 0);
       mctx.fillStyle = '#fff'; mctx.strokeStyle = '#fff';
       mctx.lineJoin = 'round'; mctx.lineCap = 'round';
-      // the Old World, known by chart or by report: dimly
       if (oldWorld) {
-        const ow = G('old', () => ((globe ? oldCoarse : null) ?? oldWorld) as Feature);
-        mctx.globalAlpha = 0.42;
-        mctx.fill(ow);
-        mctx.lineWidth = lw(ppd * 2.2); mctx.stroke(ow);
+        const ow = G('old', () => ((globe && fast ? oldCoarse : null) ?? oldWorld) as Feature);
+        mctx.globalAlpha = 0.42; mctx.fill(ow);
+        mctx.lineWidth = ppd * 2.2; mctx.stroke(ow);
       }
       mctx.globalAlpha = 1;
-      if (iberia) { const ib = G('iberia', () => iberia as Feature); mctx.fill(ib); mctx.lineWidth = lw(ppd * 4); mctx.stroke(ib); }
-      // after the voyages, the dark thins over the centuries as the rest of the
-      // world's coasts reach the charts; the borders take over the story
-      const year = 1970 + st.day / 365.25;
-      const charted = clamp((year - 1570) / 180, 0, 0.82);
+      if (iberia) { const ib = G('iberia', () => iberia as Feature); mctx.fill(ib); mctx.lineWidth = ppd * 4; mctx.stroke(ib); }
+      // after the voyages, the dark thins over the centuries as the world's coasts reach the record
+      const charted = clamp((st.year - 1570) / 180, 0, 0.82);
       if (charted > 0) { mctx.globalAlpha = charted; mctx.fill(sphere); mctx.globalAlpha = 1; }
-      // jurisdictions known by now
       if (!st.preEra) mctx.fill(G(`known:${st.era}`, () => fc(knownUnits[st.era].map((id) => units.get(id)))));
-      // wakes
       for (const r of sailed) {
         const kind = r.cv.v.kind;
-        mctx.lineWidth = lw(ppd * (kind === 'land' ? 1.2 : kind === 'river' ? 1.7 : 3.3));
+        mctx.lineWidth = Math.min(ppd * (kind === 'land' ? 1.2 : kind === 'river' ? 1.7 : 3.3), kind === 'sea' ? 26 : 14);
         mctx.stroke(routePath(r));
       }
-      // landfalls, in screen space
-      mctx.setTransform(f, 0, 0, f, 0, 0);
       for (const r of sailed) {
         const kind = r.cv.v.kind;
-        for (const stp of r.cv.stops) {
-          if (stp.d > r.d + 1e-9) break;
-          const p = pt(stp.wp.at);
+        for (const lf of r.cv.stops) {
+          if (lf.d > r.d + 1e-9) break;
+          const p = pt(lf.wp.at);
           if (!p) continue;
-          const grow = r.current && !reduced ? smooth((st.tau - stp.arrive) / 1.4) : 1;
-          const rad = (stp.wp.reveal ?? (kind === 'sea' ? 1.8 : 1.2)) * Math.max(0.05, grow) * ppd;
+          const grow = r.current && !reduced ? smooth((st.tau - lf.arrive) / 1.4) : 1;
+          const rad = (lf.wp.reveal ?? (kind === 'sea' ? 1.8 : 1.2)) * Math.max(0.05, grow) * ppd;
           mctx.beginPath(); mctx.arc(p[0], p[1], rad, 0, Math.PI * 2); mctx.fill();
         }
       }
-      // the fog itself, at half resolution: it is soft anyway
       const fw = Math.ceil(W / 2), fh = Math.ceil(H / 2);
       if (fogC.width !== fw || fogC.height !== fh) { fogC.width = fw; fogC.height = fh; grain = null; }
       if (!grain) makeGrain();
       fctx.setTransform(1, 0, 0, 1, 0, 0);
       fctx.globalCompositeOperation = 'source-over';
       fctx.globalAlpha = 1;
+      fctx.clearRect(0, 0, fw, fh);
       fctx.fillStyle = css(C.fog); fctx.fillRect(0, 0, fw, fh);
       if (grain) { fctx.fillStyle = grain; fctx.fillRect(0, 0, fw, fh); }
       fctx.globalCompositeOperation = 'destination-out';
       fctx.imageSmoothingEnabled = true;
       fctx.drawImage(mask, 0, 0, fw, fh);
       fctx.globalCompositeOperation = 'source-over';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.save();
+      ctx.clip(sphere);
       ctx.globalAlpha = st.fog;
       ctx.drawImage(fogC, 0, 0, W, H);
-      ctx.globalAlpha = 1;
+      ctx.restore();
     }
 
-    // the chart's grid runs on into the dark, faintly
-    geoSpace(ctx, dpr);
-    ctx.lineWidth = lw(0.5); ctx.strokeStyle = css(C.paper, 0.035); ctx.stroke(grat);
-    if (globe) { ctx.lineWidth = 1; ctx.strokeStyle = css(C.paper, 0.18); ctx.stroke(sphere); }
+    // the grid runs on into the dark, faintly; the sphere is shaded and lit
+    ctx.lineWidth = 0.5; ctx.strokeStyle = css(C.paper, 0.04); ctx.stroke(grat);
+    if (globe) {
+      ctx.save();
+      ctx.clip(sphere);
+      const lx = gx - c.R * 0.38, ly = gy - c.R * 0.42;
+      const shade = ctx.createRadialGradient(lx, ly, c.R * 0.05, gx, gy, c.R * 1.02);
+      shade.addColorStop(0, css(C.paper, 0.09));
+      shade.addColorStop(0.5, css(C.paper, 0));
+      shade.addColorStop(0.82, css(C.space, 0.16));
+      shade.addColorStop(1, css(C.space, 0.62));
+      ctx.fillStyle = shade;
+      ctx.fillRect(gx - c.R * 1.1, gy - c.R * 1.1, c.R * 2.2, c.R * 2.2);
+      ctx.restore();
+      ctx.lineWidth = 1.2; ctx.strokeStyle = css(C.leatherLight, 0.32); ctx.stroke(sphere);
+    }
 
     // treaty lines, drawn across the unknown as well: they divided what no one had seen
     if (!today && !st.preEra) {
@@ -793,33 +733,31 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         if (!g) continue;
         const on = focus?.kind === 'line' && focus.id === id;
         const path = G(`line:${id}`, () => g);
-        if (on) { ctx.lineWidth = lw(7); ctx.strokeStyle = css(C.paper, 0.14); ctx.stroke(path); }
-        ctx.setLineDash(dash([6, 5])); ctx.lineWidth = lw(on ? 2.2 : 1.3); ctx.strokeStyle = css(C.paper, on ? 1 : 0.75);
+        if (on) { ctx.lineWidth = 7; ctx.strokeStyle = css(C.paper, 0.14); ctx.stroke(path); }
+        ctx.setLineDash([6, 5]); ctx.lineWidth = on ? 2.2 : 1.3; ctx.strokeStyle = css(C.paper, on ? 1 : 0.75);
         ctx.stroke(path); ctx.setLineDash([]);
         shapeHits.unshift({ path, stroke: true, hit: { title: opts.lines[id]?.name ?? id, focus: { kind: 'line', id } } });
       }
     }
-    // the current route, with a soft glow under it
     const cur = sailed.find((r) => r.current);
     if (cur) {
       const rp = routePath(cur);
       const lineStyle = cur.cv.v.crown === 'pt' ? C.leatherLight : C.paper;
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-      ctx.setLineDash(dash(cur.cv.v.kind === 'land' ? [2, 3] : []));
-      ctx.lineWidth = lw(6); ctx.strokeStyle = css(C.leather, 0.35); ctx.stroke(rp);
-      ctx.lineWidth = lw(1.8); ctx.strokeStyle = css(lineStyle, 0.95); ctx.stroke(rp);
+      ctx.setLineDash(cur.cv.v.kind === 'land' ? [2, 3] : []);
+      ctx.lineWidth = 6; ctx.strokeStyle = css(C.leather, 0.35); ctx.stroke(rp);
+      ctx.lineWidth = 1.8; ctx.strokeStyle = css(lineStyle, 0.95); ctx.stroke(rp);
       ctx.setLineDash([]);
     }
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
     hits = [];
     const placed: [number, number, number, number][] = [];
-    const free = (x: number, y: number, w: number, h: number) => {
+    const free_ = (x: number, y: number, w: number, h: number) => {
       if (x < 4 || y < 4 || x + w > W - 4 || y + h > H - 4) return false;
       for (const b of placed) if (x < b[0] + b[2] && x + w > b[0] && y < b[1] + b[3] && y + h > b[1]) return false;
       placed.push([x, y, w, h]); return true;
     };
 
-    // the treaty line's name, and what it divides: west for Castile, east for Portugal
     if (!today && !st.preEra && era.lines.includes('tordesillas')) {
       const p = pt([-48.5, 30]);
       if (p) {
@@ -828,10 +766,8 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         ctx.fillText('TORDESILLAS · 1494', 0, 0); ctx.restore();
         placed.push([p[0] - 2, p[1] - 58, 14, 116]);
       }
-      // what it divides, while it is the subject: its own keyframe, or the card pointing at it
       const sides = opts.lines.tordesillas;
-      const subject = (st.cb.beat.kind === 'era' && era.pulse.includes('tordesillas')) || (focus?.kind === 'line' && focus.id === 'tordesillas');
-      // just under the line's name, whatever the scale
+      const subject = (st.cs.stop.kind === 'era' && era.pulse.includes('tordesillas')) || (focus?.kind === 'line' && focus.id === 'tordesillas');
       const q = subject ? pt([-48.5, Math.max(-40, 30 - 74 / Math.max(0.5, ppd))]) : null;
       if (sides && q) {
         ctx.font = `500 10.5px ${fontMono}`;
@@ -839,32 +775,63 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         const ww = ctx.measureText(west).width, we = ctx.measureText(east).width;
         ctx.fillStyle = css(C.paper, 0.85);
         ctx.textAlign = 'right';
-        if (free(q[0] - 10 - ww, q[1] - 10, ww, 13)) ctx.fillText(west, q[0] - 10, q[1]);
+        if (free_(q[0] - 10 - ww, q[1] - 10, ww, 13)) ctx.fillText(west, q[0] - 10, q[1]);
         ctx.textAlign = 'left';
-        if (free(q[0] + 10, q[1] - 10, we, 13)) ctx.fillText(east, q[0] + 10, q[1]);
+        if (free_(q[0] + 10, q[1] - 10, we, 13)) ctx.fillText(east, q[0] + 10, q[1]);
         ctx.textAlign = 'center';
       }
     }
 
     // seas get their names when they are reached
-    const seas: { at: LonLat; name: string; from?: string }[] = [
-      { at: [-38, 30], name: opts.seaNames.atlantic },
-      { at: [-92, 2], name: opts.seaNames.south, from: '1513-09-25' },
-      { at: [-145, -14], name: opts.seaNames.pacific, from: '1520-11-28' },
+    const seas: { at: LonLat; name: string; from?: number }[] = [
+      { at: [-38, 30], name: opts.seaNames.atlantic, from: 1492 },
+      { at: [-92, 2], name: opts.seaNames.south, from: 1513.7 },
+      { at: [-145, -14], name: opts.seaNames.pacific, from: 1520.9 },
     ];
     ctx.font = `italic 400 ${clamp(ppd * 1.3, 12, 19)}px ${fontSerif}`;
     ctx.textAlign = 'center';
     for (const sea of seas) {
-      if (sea.from && st.day < (dayOf(sea.from) as number)) continue;
+      if (sea.from && st.year < sea.from) continue;
       const p = pt(sea.at);
       if (!p) continue;
       const w = ctx.measureText(sea.name).width;
-      if (!free(p[0] - w / 2, p[1] - 12, w, 16)) continue;
+      if (!free_(p[0] - w / 2, p[1] - 12, w, 16)) continue;
       ctx.fillStyle = css(C.paperDeep, 0.42); ctx.fillText(sea.name, p[0], p[1]);
     }
 
+    // the places the current record names: rings over the fog, never a reveal
+    const rec = st.cs.stop.record;
+    if (rec && st.cs.stop.kind !== 'voyage' && rec.anchors.length) {
+      const pulse = reduced ? 0 : (Math.sin(now / 600) + 1) / 2;
+      rec.anchors.forEach((an, k) => {
+        const p = pt(an.at);
+        if (!p) return;
+        const on = focus?.kind === 'place' && focus.k === k;
+        ctx.beginPath(); ctx.arc(p[0], p[1], on ? 9 : 6.5, 0, Math.PI * 2);
+        ctx.setLineDash([2.5, 2.5]); ctx.lineWidth = on ? 1.8 : 1.3; ctx.strokeStyle = css(C.paper, on ? 1 : 0.88); ctx.stroke(); ctx.setLineDash([]);
+        dot(p[0], p[1], 1.8, css(C.paper, 0.95));
+        if (k === 0 && !reduced) { ctx.beginPath(); ctx.arc(p[0], p[1], 10 + pulse * 6, 0, Math.PI * 2); ctx.lineWidth = 1; ctx.strokeStyle = css(C.paper, 0.18 * (1 - pulse)); ctx.stroke(); }
+        hits.push({ x: p[0], y: p[1], title: an.name, text: opts.approxText, focus: { kind: 'place', k } });
+      });
+      ctx.font = `500 10.5px ${fontMono}`; ctx.textAlign = 'left';
+      rec.anchors.forEach((an, k) => {
+        const p = pt(an.at);
+        if (!p) return;
+        const label = an.name.toUpperCase();
+        const w = ctx.measureText(label).width;
+        for (const [dx, dy] of [[10, 4], [-10 - w, 4], [-w / 2, -11], [-w / 2, 18]] as [number, number][]) {
+          if (free_(p[0] + dx - 2, p[1] + dy - 10, w + 4, 13)) {
+            ctx.fillStyle = css(C.fog, 0.6); ctx.fillRect(p[0] + dx - 3, p[1] + dy - 10, w + 6, 13.5);
+            ctx.fillStyle = css(C.paper, k === 0 || (focus?.kind === 'place' && focus.k === k) ? 1 : 0.8); ctx.fillText(label, p[0] + dx, p[1] + dy);
+            break;
+          }
+        }
+      });
+      ctx.textAlign = 'center';
+    }
+
     // Indigenous states, named through the dark
-    if (!today) {
+    if (!today && !st.preEra) {
       ctx.font = `italic 400 13px ${fontSerif}`;
       for (const u of era.units) {
         const f = famOf(u);
@@ -872,7 +839,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         const p = pt(f.at);
         if (!p) continue;
         const w = ctx.measureText(f.name).width;
-        if (!free(p[0] - w / 2, p[1] - 11, w, 14)) continue;
+        if (!free_(p[0] - w / 2, p[1] - 11, w, 14)) continue;
         ctx.fillStyle = css(C.leatherLight, 0.85); ctx.fillText(f.name, p[0], p[1]);
       }
       for (const m of era.marks) {
@@ -881,7 +848,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         diamond(p[0], p[1], 3.5, css(C.leatherLight, 0.9));
         ctx.font = `italic 400 13px ${fontSerif}`; ctx.textAlign = 'left';
         const w = ctx.measureText(m.name).width;
-        if (free(p[0] + 7, p[1] - 10, w, 14)) { ctx.fillStyle = css(C.leatherLight, 0.9); ctx.fillText(m.name, p[0] + 7, p[1] + 1); }
+        if (free_(p[0] + 7, p[1] - 10, w, 14)) { ctx.fillStyle = css(C.leatherLight, 0.9); ctx.fillText(m.name, p[0] + 7, p[1] + 1); }
         ctx.textAlign = 'center';
         hits.push({ x: p[0], y: p[1], title: m.name });
       }
@@ -889,48 +856,47 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
 
     // the places reached and the ship
     for (const r of sailed) {
-      for (const [k, stp] of r.cv.stops.entries()) {
-        if (stp.d > r.d + 1e-9) break;
-        const p = pt(stp.wp.at);
+      for (const [k, lf] of r.cv.stops.entries()) {
+        if (lf.d > r.d + 1e-9) break;
+        const p = pt(lf.wp.at);
         if (!p) continue;
-        hits.push({ x: p[0], y: p[1], title: stp.wp.name as string, date: dateLabel(stp.wp.date), text: stp.wp.log, focus: r.current ? { kind: 'stop', k } : undefined });
-        if (!r.current) { dot(p[0], p[1], 1.8, css(C.paper, 0.5)); }
+        hits.push({ x: p[0], y: p[1], title: lf.wp.name as string, date: dateLabel(lf.wp.date), text: lf.wp.log, focus: r.current ? { kind: 'stop', k } : undefined });
+        if (!r.current) dot(p[0], p[1], 1.8, css(C.paper, 0.5));
       }
     }
     if (cur) {
-      // landfalls: the newest first, so its name always shows
-      const reached = cur.cv.stops.filter((stp) => stp.d <= cur.d + 1e-9);
-      const named = new Set<string>();   // a port sailed from and back to is named once
+      const reached = cur.cv.stops.filter((lf) => lf.d <= cur.d + 1e-9);
+      const named = new Set<string>();
       for (let k = reached.length - 1; k >= 0; k--) {
-        const stp = reached[k];
-        const p = pt(stp.wp.at);
+        const lf = reached[k];
+        const p = pt(lf.wp.at);
         if (!p) continue;
-        const age = st.tau - stp.arrive;
+        const age = st.tau - lf.arrive;
         if (!reduced && age >= 0 && age < 1.6) {
           ctx.beginPath(); ctx.arc(p[0], p[1], 4 + age * 18, 0, Math.PI * 2);
           ctx.lineWidth = 1.2; ctx.strokeStyle = css(C.paper, 0.7 * (1 - age / 1.6)); ctx.stroke();
         }
         dot(p[0], p[1], k === reached.length - 1 ? 3.2 : 2.4, css(C.paper, 0.95), css(C.burgundyDark));
-        const label = (stp.wp.name as string).toUpperCase();
+        const label = (lf.wp.name as string).toUpperCase();
         if (named.has(label)) continue;
         named.add(label);
         ctx.font = `500 10.5px ${fontMono}`; ctx.textAlign = 'left';
         const w = ctx.measureText(label).width;
-        const spots: [number, number][] = [[8, 4], [-8 - w, 4], [-w / 2, -9], [-w / 2, 16]];
+        // the newest landfall is where the ship is: its name goes clear of the hull
+        const spots: [number, number][] = k === reached.length - 1 ? [[20, 14], [-20 - w, 14], [-w / 2, 26]] : [[8, 4], [-8 - w, 4], [-w / 2, -9], [-w / 2, 16]];
         for (const [dx, dy] of spots) {
-          if (free(p[0] + dx - 2, p[1] + dy - 10, w + 4, 13)) {
+          if (free_(p[0] + dx - 2, p[1] + dy - 10, w + 4, 13)) {
             ctx.fillStyle = css(C.fog, 0.55); ctx.fillRect(p[0] + dx - 3, p[1] + dy - 10, w + 6, 13.5);
             ctx.fillStyle = css(C.paper, k === reached.length - 1 ? 1 : 0.78); ctx.fillText(label, p[0] + dx, p[1] + dy);
             break;
           }
         }
       }
-      // the landfall the card points at (one not reached yet: a dashed ring)
       if (focus?.kind === 'stop') {
-        const stp = cur.cv.stops[focus.k];
-        const p = stp && pt(stp.wp.at);
+        const lf = cur.cv.stops[focus.k];
+        const p = lf && pt(lf.wp.at);
         if (p) {
-          const ahead = stp.d > cur.d + 1e-9;
+          const ahead = lf.d > cur.d + 1e-9;
           ctx.beginPath(); ctx.arc(p[0], p[1], 10, 0, Math.PI * 2);
           ctx.setLineDash(ahead ? [3, 3] : []);
           ctx.lineWidth = 1.6; ctx.strokeStyle = css(C.paper, 0.95); ctx.stroke(); ctx.setLineDash([]);
@@ -939,7 +905,6 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
           if (ahead) dot(p[0], p[1], 2.4, css(C.paper, 0.9), css(C.burgundyDark));
         }
       }
-      // the ship
       const at = pointAt(cur.cv, cur.d);
       const p = pt(at);
       const ahead = pt(pointAt(cur.cv, Math.min(cur.cv.length, cur.d + 0.02)));
@@ -953,7 +918,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       }
     }
 
-    // keyframe labels: the jurisdictions' names
+    // the keyframe's names
     if (!today && !st.preEra) {
       ctx.textAlign = 'center';
       for (const fid of era.labels) {
@@ -966,7 +931,7 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         const size = clamp(ppd * 0.95, 10.5, 16);
         ctx.font = `600 ${size}px ${fontSerif}`;
         const w = ctx.measureText(name).width;
-        if (!free(p[0] - w / 2 - 2, p[1] - size, w + 4, size + 4)) continue;
+        if (!free_(p[0] - w / 2 - 2, p[1] - size, w + 4, size + 4)) continue;
         ctx.lineWidth = 3; ctx.strokeStyle = css(C.burgundyDark, 0.55); ctx.strokeText(name, p[0], p[1]);
         ctx.fillStyle = css(C.paper, 0.95); ctx.fillText(name, p[0], p[1]);
       }
@@ -980,63 +945,35 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       }
     }
 
-    // where things are, for the explainer over the chart
     if (opts.onAnchors) {
       const shipAt = cur ? pt(pointAt(cur.cv, cur.d)) : null;
-      const toScreen = (b: Box | null): Box | null => {
-        if (!b) return null;
-        const r: Box = flat ? [b[0] * sc + tx, b[1] * sc + ty, b[2] * sc + tx, b[3] * sc + ty] : b;
-        const x0 = Math.max(0, r[0]), y0 = Math.max(0, r[1]), x1 = Math.min(W, r[2]), y1 = Math.min(H, r[3]);
+      const clip = (b: [[number, number], [number, number]] | null): Box | null => {
+        if (!b || !Number.isFinite(b[0][0])) return null;
+        const x0 = Math.max(0, b[0][0]), y0 = Math.max(0, b[0][1]), x1 = Math.min(W, b[1][0]), y1 = Math.min(H, b[1][1]);
         return x1 - x0 < 1 || y1 - y0 < 1 ? null : [x0, y0, x1, y1];
       };
-      // bounds in a flat chart's own space are cached (there the camera is a transform)
-      const bounds = (key: string, obj: () => GeoObj | null): Box | null => {
-        const k = `${L}:${key}`;
-        if (flat && boundsCache.has(k)) return toScreen(boundsCache.get(k) as Box | null);
-        const o = obj();
-        const b = o ? geoPath(flat ? baseProj[L] : proj).bounds(o) : null;
-        const box: Box | null = b && Number.isFinite(b[0][0]) ? [b[0][0], b[0][1], b[1][0], b[1][1]] : null;
-        if (flat) boundsCache.set(k, box);
-        return toScreen(box);
-      };
-      const eraNow = st.era;
       const off = today || st.preEra;
+      const eraNow = st.era;
+      const path = geoPath(proj);
       opts.onAnchors({
-        beat: st.bi,
+        stop: st.si,
         area: [a.x, a.y, a.x + a.w, a.y + a.h],
         ship: shipAt ? [shipAt[0], shipAt[1]] : null,
         labels: placed.map(([x, y, w, h]) => [x, y, x + w, y + h] as Box),
         project: (at) => { const p = pt(at); return p ? [p[0], p[1]] : null; },
-        unitBox: (fid) => (off ? null : bounds(`era:${eraNow}:fam:${fid}`, () => {
+        unitBox: (fid) => {
+          if (off) return null;
           const us = chron.eras[eraNow].units.filter((u) => u.f === fid && units.get(u.id));
-          return us.length ? fc(us.map((u) => units.get(u.id))) : null;
-        })),
-        lineBox: (id) => (off || !chron.eras[eraNow].lines.includes(id) ? null : bounds(`line:${id}`, () => lines.get(id) ?? null)),
+          return us.length ? clip(path.bounds(fc(us.map((u) => units.get(u.id))))) : null;
+        },
+        lineBox: (id) => (off || !chron.eras[eraNow].lines.includes(id) || !lines.get(id) ? null : clip(path.bounds(lines.get(id) as Feature))),
       });
     }
 
-    // a vignette, and the old chart fading out after a change of layout
-    const vkey = `${W}x${H}:${a.cx}:${a.cy}`;
-    if (vkey !== vignetteKey) {
-      vignetteKey = vkey;
-      vignette.width = Math.ceil(W / 2); vignette.height = Math.ceil(H / 2);
-      const vc = vignette.getContext('2d') as CanvasRenderingContext2D;
-      vc.scale(0.5, 0.5);
-      const vg = vc.createRadialGradient(a.cx, a.cy, Math.min(W, H) * 0.35, a.cx, a.cy, Math.max(W, H) * 0.75);
-      vg.addColorStop(0, css(C.fog, 0)); vg.addColorStop(1, css(C.fog, 0.55));
-      vc.fillStyle = vg; vc.fillRect(0, 0, W, H);
-    }
-    ctx.drawImage(vignette, 0, 0, W, H);
-    if (snap && !reduced) {
-      const t = (now - snapAt) / 900;
-      if (t < 1) {
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.globalAlpha = 1 - smooth(t);
-        ctx.drawImage(snap, 0, 0);
-        ctx.globalAlpha = 1;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-    }
+    // a vignette at the edges of the stage
+    const vg = ctx.createRadialGradient(a.cx, a.cy, Math.min(W, H) * 0.42, a.cx, a.cy, Math.max(W, H) * 0.8);
+    vg.addColorStop(0, css(C.space, 0)); vg.addColorStop(1, css(C.space, 0.5));
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
   }
 
   function dot(x: number, y: number, r: number, fill: string, stroke?: string) {
@@ -1047,38 +984,30 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     ctx.beginPath(); ctx.moveTo(x, y - r); ctx.lineTo(x + r, y); ctx.lineTo(x, y + r); ctx.lineTo(x - r, y); ctx.closePath();
     ctx.fillStyle = fill; ctx.fill();
   }
-  /** A nao under sail, bow to the right unless `flip`. */
   function ship(x: number, y: number, k: number, flip: boolean, crown: 'es' | 'pt') {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(flip ? -k : k, k);
-    // glow on the water
     const g = ctx.createRadialGradient(0, 2, 0, 0, 2, 22);
     g.addColorStop(0, css(C.paper, 0.35)); g.addColorStop(1, css(C.paper, 0));
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 2, 22, 0, Math.PI * 2); ctx.fill();
     ctx.lineJoin = 'round';
     ctx.strokeStyle = css(C.burgundyDark); ctx.lineWidth = 1.1;
-    // hull: a high stern castle on the left, the bow on the right
     ctx.beginPath();
     ctx.moveTo(-11, -4); ctx.lineTo(-7, -2); ctx.lineTo(9, -2); ctx.lineTo(12, -4);
     ctx.quadraticCurveTo(10, 3, 5, 4.5); ctx.lineTo(-6, 4.5); ctx.quadraticCurveTo(-10, 3, -11, -4); ctx.closePath();
     ctx.fillStyle = css(C.paperDeep); ctx.fill(); ctx.stroke();
-    // masts
     ctx.beginPath(); ctx.moveTo(1, -2); ctx.lineTo(1, -19); ctx.moveTo(7.5, -2); ctx.lineTo(7.5, -13); ctx.moveTo(-6, -3); ctx.lineTo(-6, -14); ctx.stroke();
-    // square sails, filled by the wind
     ctx.fillStyle = css(C.paper);
     ctx.beginPath(); ctx.moveTo(-4.5, -16.5); ctx.lineTo(6.5, -16.5); ctx.quadraticCurveTo(8.5, -11, 6.8, -5.5); ctx.lineTo(-4.8, -5.5); ctx.quadraticCurveTo(-3, -11, -4.5, -16.5); ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(5, -11.5); ctx.lineTo(10.5, -11.5); ctx.quadraticCurveTo(12, -8, 10.8, -4.5); ctx.lineTo(5.2, -4.5); ctx.quadraticCurveTo(6.2, -8, 5, -11.5); ctx.closePath(); ctx.fill(); ctx.stroke();
-    // lateen on the mizzen
     ctx.beginPath(); ctx.moveTo(-6, -14); ctx.lineTo(-11.5, -4.5); ctx.lineTo(-3, -4.5); ctx.closePath(); ctx.fill(); ctx.stroke();
-    // a cross on the mainsail, and a pennant
     ctx.strokeStyle = css(crown === 'pt' ? C.leather : C.burgundy); ctx.lineWidth = 1.4;
     ctx.beginPath(); ctx.moveTo(1, -14.5); ctx.lineTo(1, -7.5); ctx.moveTo(-1.8, -11.2); ctx.lineTo(3.8, -11.2); ctx.stroke();
     ctx.fillStyle = css(crown === 'pt' ? C.leather : C.burgundy);
     ctx.beginPath(); ctx.moveTo(1, -19); ctx.lineTo(7, -20.5); ctx.lineTo(1, -22); ctx.closePath(); ctx.fill();
     ctx.restore();
   }
-  /** A banner on a staff, for an expedition on foot. */
   function banner(x: number, y: number) {
     ctx.save();
     ctx.translate(x, y);
@@ -1094,13 +1023,75 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     ctx.restore();
   }
 
+  /* --- the reader's hands: drag to turn, Ctrl+wheel or pinch to zoom --- */
+  const pointers = new Map<number, { x: number; y: number }>();
+  let pinch = 0;
+  let downAt = { x: 0, y: 0, t: 0 };
+  function takeCamera() {
+    if (!cam) return;
+    free = true; flight = null;
+  }
+  function onDown(e: PointerEvent) {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    downAt = { x: e.clientX, y: e.clientY, t: performance.now() };
+    if (pointers.size === 2) { const [p, q] = [...pointers.values()]; pinch = Math.hypot(p.x - q.x, p.y - q.y); }
+  }
+  function onMove(e: PointerEvent) {
+    const prev = pointers.get(e.pointerId);
+    if (!prev || !cam) return;
+    const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 2) {
+      const [p, q] = [...pointers.values()];
+      const d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (pinch > 0) { takeCamera(); cam = { ...cam, R: clamp(cam.R * (d / pinch), R0() * 0.85, Rmax()) }; }
+      pinch = d;
+      kick();
+      return;
+    }
+    if (!dragging && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 4) return;
+    if (!dragging) { dragging = true; takeCamera(); try { canvas.setPointerCapture(e.pointerId); } catch { /* gone */ } canvas.style.cursor = 'grabbing'; }
+    // degrees per pixel at the centre
+    const k = DEG / cam.R;
+    const dLon = -dx * k / Math.max(0.35, mode === 'globe' ? 1 : Math.cos(cam.lat * RAD));
+    const dLat = e.pointerType === 'touch' ? 0 : dy * k;
+    cam = { ...cam, lon: normLon(cam.lon + dLon), lat: clamp(cam.lat + dLat, -80, 80) };
+    vel = { lon: dLon * 0.9, lat: dLat * 0.9 };
+    kick();
+  }
+  function onUp(e: PointerEvent) {
+    pointers.delete(e.pointerId);
+    if (pointers.size < 2) pinch = 0;
+    if (dragging && pointers.size === 0) {
+      dragging = false; canvas.style.cursor = '';
+      if (performance.now() - downAt.t > 300 && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 30) vel = { lon: 0, lat: 0 };
+      kick();
+    }
+  }
+  function onWheel(e: WheelEvent) {
+    // plain scrolling keeps scrolling the page; Ctrl (and a trackpad pinch) zooms
+    if (!e.ctrlKey || !cam) return;
+    e.preventDefault();
+    takeCamera();
+    cam = { ...cam, R: clamp(cam.R * Math.exp(-e.deltaY * 0.004), R0() * 0.85, Rmax()) };
+    kick();
+  }
+  canvas.addEventListener('pointerdown', onDown);
+  canvas.addEventListener('pointermove', onMove);
+  canvas.addEventListener('pointerup', onUp);
+  canvas.addEventListener('pointercancel', onUp);
+  canvas.addEventListener('wheel', onWheel, { passive: false });
+
   /* --- sizing --- */
   function resize() {
     const r = canvas.getBoundingClientRect();
     W = r.width; H = r.height;
-    dpr = Math.min(2, window.devicePixelRatio || 1);
+    const coarse = window.matchMedia('(pointer: coarse)').matches || W < 700;
+    dpr = Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1);
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    cam = null;
+    if (!free) cam = null;
+    flight = null;
     kick();
   }
 
@@ -1111,7 +1102,6 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
         fetch('/data/world-110m.json').then((r) => r.json()),
         fetch('/data/atlas-eras.topo.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
       ]);
-      // the finer coast comes after, and only matters close in
       fetch('/data/land-50m.json').then((r) => (r.ok ? r.json() : null)).then((t: Topology | null) => {
         if (!t) return;
         land50 = rewind(feature(t, t.objects.land) as unknown as FeatureCollection) as unknown as Feature;
@@ -1120,8 +1110,8 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       const wt = world as Topology;
       const cobj = wt.objects.countries as GeometryCollection;
       land = rewind(feature(wt, wt.objects.land) as unknown as FeatureCollection) as unknown as Feature;
-      const fc = feature(wt, cobj) as unknown as FeatureCollection;
-      countries = new Map(fc.features.map((f) => [String(f.id), f]));
+      const cfc = feature(wt, cobj) as unknown as FeatureCollection;
+      countries = new Map(cfc.features.map((f) => [String(f.id), f]));
       const notOld = new Set(['036', '554', '598', '090', '548', '242', '540', '608', '010', '260', '304']);
       const oldGeoms = cobj.geometries.filter((g) => {
         const id = String(g.id);
@@ -1131,13 +1121,11 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       });
       oldWorld = { type: 'Feature', properties: {}, geometry: merge(wt, oldGeoms as never) as MultiPolygon };
       iberia = { type: 'Feature', properties: {}, geometry: merge(wt, cobj.geometries.filter((g) => ['724', '620'].includes(String(g.id))) as never) as MultiPolygon };
-      // the globe re-projects every frame: it gets the same world with a
-      // third of the points (arcs are shared, so the shapes still meet)
       const wc = decimate(wt, 2);
       const cc = wc.objects.countries as GeometryCollection;
       landCoarse = rewind(feature(wc, wc.objects.land) as unknown as FeatureCollection) as unknown as Feature;
       oldCoarse = { type: 'Feature', properties: {}, geometry: merge(wc, cc.geometries.filter((g) => oldGeoms.some((o) => o.id === g.id)) as never) as MultiPolygon };
-      borders = mesh(wt, cobj, (a, b) => a !== b) as MultiLineString;
+      borders = mesh(wt, cobj, (x, y) => x !== y) as MultiLineString;
       if (eraTopo) {
         const et = eraTopo as Topology;
         for (const f of (feature(et, et.objects.units) as unknown as FeatureCollection<Geometry>).features) units.set(String(f.id), f);
@@ -1153,10 +1141,18 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     }
   })();
 
+  const flyTo = (to: Cam) => {
+    if (!cam) return;
+    takeCamera();
+    if (reduced) { cam = to; kick(); return; }
+    flight = { from: { ...cam }, to, t0: performance.now(), dur: 450, dip: 0 };
+    kick();
+  };
+
   return {
     total,
-    starts: beats.map((b) => b.start),
-    durs: beats.map((b) => b.dur),
+    starts: stops.map((b) => b.start),
+    durs: stops.map((b) => b.dur),
     play() {
       if (reduced) return;
       if (s >= total - 0.01) s = 0;
@@ -1165,18 +1161,17 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     pause() { playing = false; kick(); },
     isPlaying: () => playing,
     seek(x: number) { s = clamp(x, 0, total); kick(); },
-    seekBeat(i: number) {
-      const b = beats[clamp(i, 0, beats.length - 1)];
-      // with reduced motion a beat is shown finished; otherwise from its start
+    seekStop(i: number) {
+      const b = stops[clamp(i, 0, stops.length - 1)];
       s = reduced ? b.start + b.dur - 1e-3 : b.start;
       kick();
     },
-    seekStop(k: number) {
+    seekLandfall(k: number) {
       const cur = stateAt(s);
       if (cur.vi < 0) return;
       const cv = voyages[cur.vi];
-      const stp = cv.stops[clamp(k, 0, cv.stops.length - 1)];
-      s = cur.cb.start + stp.arrive + 0.02;
+      const lf = cv.stops[clamp(k, 0, cv.stops.length - 1)];
+      s = cur.cs.start + lf.arrive + 0.02;
       kick();
     },
     setFocus(f: Focus | null) {
@@ -1185,18 +1180,40 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
     },
     setInset(i: Inset) {
       if (i.l === inset.l && i.r === inset.r && i.t === inset.t && i.b === inset.b) return;
-      inset = i; kick();
+      inset = i; if (!free) cam = null; flight = null; kick();
     },
-    setReduced(r: boolean) { reduced = r; if (r) playing = false; cam = null; kick(); },
+    setReduced(r: boolean) { reduced = r; if (r) { playing = false; flight = null; vel = { lon: 0, lat: 0 }; } if (!free) cam = null; kick(); },
     setVisible(v: boolean) { visible = v; if (v) kick(); else if (raf) { cancelAnimationFrame(raf); raf = 0; } },
+    setMode(m: Mode) {
+      if (m === mode) return;
+      mode = m;
+      if (cam) cam = { ...cam, R: clamp(cam.R, R0() * 0.85, Rmax()) };
+      if (!free) cam = null;
+      flight = null;
+      kick();
+    },
+    setOverview(o: boolean) {
+      if (o === overview) return;
+      overview = o; overviewAt = performance.now();
+      if (o) { free = false; flight = null; }
+      flyNext = !o; kick();
+    },
+    zoomBy(f: number) { if (cam) flyTo({ ...cam, R: clamp(cam.R * f, R0() * 0.85, Rmax()) }); },
+    recentre() {
+      if (!cam) return;
+      free = false; vel = { lon: 0, lat: 0 };
+      if (!reduced) flight = { from: { ...cam }, t0: performance.now(), dur: 900, dip: 0.2 };
+      else cam = null;
+      kick();
+    },
     pick(x: number, y: number) {
+      if (dragging) return null;
       let best: HitInfo | null = null, bd = 16;
       for (const h of hits) { const d = Math.hypot(h.x - x, h.y - y); if (d < bd) { bd = d; best = h; } }
-      // no point near: a treaty line, or a jurisdiction the card lists
       if (!best && shapeHits.length) {
         ctx.save();
-        ctx.setTransform(...shapeXf);
-        ctx.lineWidth = 12 / shapeScale;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineWidth = 12;
         for (const sh of shapeHits) {
           const inside = sh.stroke ? ctx.isPointInStroke(sh.path, x * dpr, y * dpr) : ctx.isPointInPath(sh.path, x * dpr, y * dpr);
           if (inside) { best = { x, y, ...sh.hit }; break; }
@@ -1208,6 +1225,13 @@ export function createAtlasEngine(canvas: HTMLCanvasElement, chron: Chronicle, o
       return best;
     },
     resize,
-    destroy() { if (raf) cancelAnimationFrame(raf); raf = 0; playing = false; },
+    destroy() {
+      if (raf) cancelAnimationFrame(raf); raf = 0; playing = false;
+      canvas.removeEventListener('pointerdown', onDown);
+      canvas.removeEventListener('pointermove', onMove);
+      canvas.removeEventListener('pointerup', onUp);
+      canvas.removeEventListener('pointercancel', onUp);
+      canvas.removeEventListener('wheel', onWheel);
+    },
   };
 }
