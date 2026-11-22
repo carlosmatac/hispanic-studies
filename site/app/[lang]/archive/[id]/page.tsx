@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
-import { dict, isLang, type Lang } from '@/lib/i18n';
+import { archiveDate, dict, isLang, type Lang } from '@/lib/i18n';
 import { curatedWorks, getArchive, getArticles, getPublishedArchive, getText, isEditor, pickText } from '@/lib/archive';
 import { languageName, readHref, showsCurated, splitTitle, workHref, type CanonWork } from '@/lib/canon';
 import { renderTree } from '@/lib/text';
@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     const c = work.curated!;
     const intro = (await getArticles(id)).find((a) => a.locale === lang)?.whyReadToday ?? '';
     return {
-      title: `${c.originalTitle} · ${c.creator} (${c.dateDisplay}) · ${d.reader.archive} · ${d.meta.title}`,
-      description: intro.split(/(?<=\.)\s/)[0] || `${c.creator}, ${c.originalTitle} (${c.dateDisplay}).`,
+      title: `${c.originalTitle} · ${c.creator} (${archiveDate(c.dateDisplay, lang)}) · ${d.reader.archive} · ${d.meta.title}`,
+      description: intro.split(/(?<=\.)\s/)[0] || `${c.creator}, ${c.originalTitle} (${archiveDate(c.dateDisplay, lang)}).`,
       alternates,
       ...(work.status === 'draft' || c.articleStatus !== 'published' ? { robots: { index: false } } : {}),
     };
