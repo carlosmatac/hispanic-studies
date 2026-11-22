@@ -259,7 +259,7 @@ const en = {
     chronEyebrow: 'The chronicle',
     chronH: 'Everything the globe shows, as text.',
     chronSub: 'Every stop in the order the globe tells them, chapter by chapter: the records with their four paragraphs and links, the voyages with their dated landfalls, the border changes with their sources.',
-    credit: 'Records: the Institute’s manuscript of 16 November 2026 (English; Spanish pending); places named in them are approximate camera targets and draw nothing. Political territories: Cliopatria v0.2.1, Seshat Global History Databank (CC BY 4.0), time-sampled and simplified; shown as territory as Cliopatria maps it. Coast: Natural Earth. Historical borders: OpenHistoricalMap contributors (CC0), curated against the sources cited. Routes: from the voyages’ own accounts and standard editions; waypoints are approximate positions of documented places, and the line between them is drawn, not logged.',
+    credit: 'Records: the Institute’s manuscript of 16 November 2026 (written in English; the Spanish is a machine translation pending review); places named in them are approximate camera targets and draw nothing. Political territories: Cliopatria v0.2.1, Seshat Global History Databank (CC BY 4.0), time-sampled and simplified; shown as territory as Cliopatria maps it. Coast: Natural Earth. Historical borders: OpenHistoricalMap contributors (CC0), curated against the sources cited. Routes: from the voyages’ own accounts and standard editions; waypoints are approximate positions of documented places, and the line between them is drawn, not logged.',
     retired: (ids: string) => `Retired from the import and never reassigned: ${ids}.`,
   },
   canon: {
@@ -755,7 +755,7 @@ const es: Dict = {
     chronEyebrow: 'La crónica',
     chronH: 'Todo lo que muestra el globo, en texto.',
     chronSub: 'Todas las paradas en el orden en que las cuenta el globo, capítulo a capítulo: las fichas con sus cuatro párrafos y enlaces, los viajes con sus recaladas fechadas, los cambios de frontera con sus fuentes.',
-    credit: 'Fichas: el manuscrito del Instituto del 16 de noviembre de 2026 (en inglés; el español, pendiente); los lugares que nombran son objetivos aproximados de la cámara y no dibujan nada. Territorios políticos: Cliopatria v0.2.1, Seshat Global History Databank (CC BY 4.0), muestreado en el tiempo y simplificado; se muestra como el territorio según Cliopatria. Costa: Natural Earth. Fronteras históricas: colaboradores de OpenHistoricalMap (CC0), revisadas con las fuentes citadas. Rutas: según las relaciones de los propios viajes y sus ediciones de referencia; las escalas son posiciones aproximadas de lugares documentados, y la línea entre ellas está trazada, no registrada.',
+    credit: 'Fichas: el manuscrito del Instituto del 16 de noviembre de 2026 (escrito en inglés; el español es una traducción automática pendiente de revisión); los lugares que nombran son objetivos aproximados de la cámara y no dibujan nada. Territorios políticos: Cliopatria v0.2.1, Seshat Global History Databank (CC BY 4.0), muestreado en el tiempo y simplificado; se muestra como el territorio según Cliopatria. Costa: Natural Earth. Fronteras históricas: colaboradores de OpenHistoricalMap (CC0), revisadas con las fuentes citadas. Rutas: según las relaciones de los propios viajes y sus ediciones de referencia; las escalas son posiciones aproximadas de lugares documentados, y la línea entre ellas está trazada, no registrada.',
     retired: (ids: string) => `Retiradas de la importación y nunca reasignadas: ${ids}.`,
   },
   canon: {

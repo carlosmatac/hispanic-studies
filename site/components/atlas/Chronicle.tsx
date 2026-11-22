@@ -72,6 +72,7 @@ export default function Chronicle({ lang, data }: { lang: Lang; data: Data }) {
                           <div className="chron__record" lang={rl}>
                             {b.kind !== 'record' && <p className="chron__rec-h" lang={lang}>{t.record} {r.id}: <span lang={rl}>{r.title}</span></p>}
                             {r.pending && <p className="chron__pending" lang={lang}>{t.pendingEs}</p>}
+                            {r.machine && <p className="chron__pending" lang={lang}>{t.machineEs}</p>}
                             {r.interpretation && <p className="chron__note" lang={lang}><strong>{t.interpretation(r.interpretation)}.</strong> {t.interpretationNote}</p>}
                             {r.paragraphs.map((p, k) => <p key={k}>{p}</p>)}
                             <p className="chron__map" lang={lang}><span>{t.onMap}:</span> {r.anchors.length ? `${r.anchors.map((a) => a.name).join(', ')}. ${t.mapRecord}` : t.mapNoAnchor}</p>

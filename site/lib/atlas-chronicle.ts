@@ -78,10 +78,10 @@ const RECORDS = (recordsData as unknown as { records: RawRecord[] }).records;
 export const RETIRED = (recordsData as unknown as { retired: string[] }).retired;
 
 /* The records in Spanish, when they exist: site/data/atlas-records.es.json,
-   keyed by id ({ title, paragraphs: [four], machine }), written by the
+   keyed by id ({ title, dateLabel?, anchorText, paragraphs: [four], machine }), written by the
    translation work and merged here at build time. Read from disk so the site
    builds with or without it. */
-type Spanish = Record<string, { title?: string; paragraphs?: string[]; machine?: boolean }>;
+type Spanish = Record<string, { title?: string; dateLabel?: string; anchorText?: string; paragraphs?: string[]; machine?: boolean }>;
 const SPANISH: Spanish | null = (() => {
   try {
     const f = path.join(process.cwd(), 'data', 'atlas-records.es.json');
@@ -271,7 +271,7 @@ export function chronicleFor(lang: Lang): Chronicle {
       lang: es ? 'es' : 'en',
       pending: lang === 'es' && !es,
       machine: !!(es && !r.paragraphs.es && tr?.machine),
-      date: dateLabel(r.date.label, lang),
+      date: (es && tr?.dateLabel) || dateLabel(r.date.label, lang),
       type: r.type,
       paragraphs: paras.slice(0, 3),
       mapNote: paras[3] ?? '',
