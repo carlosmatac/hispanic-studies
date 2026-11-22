@@ -62,6 +62,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const bar = useRef<HTMLDivElement>(null);
   const nowEl = useRef<HTMLDivElement>(null);
   const tools = useRef<HTMLDivElement>(null);
+  const keyEl = useRef<HTMLDivElement>(null);
   const range = useRef<HTMLInputElement>(null);
   const yearEl = useRef<HTMLSpanElement>(null);
   const eraEl = useRef<HTMLSpanElement>(null);
@@ -139,7 +140,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     const hideLeader = () => { if (ln && dot) ln.style.display = dot.style.display = 'none'; };
     if (!el || !st || !an || !note) { hideLeader(); return; }
     const sr = st.getBoundingClientRect();
-    const avoid = [rel(nowEl.current, sr), rel(tools.current, sr), rel(bar.current, sr), rel(card.current, sr)].filter((b): b is Box => !!b);
+    const avoid = [rel(nowEl.current, sr), rel(tools.current, sr), rel(bar.current, sr), rel(card.current, sr), rel(keyEl.current, sr)].filter((b): b is Box => !!b);
     if (slot.current.key !== note.key) slot.current = { key: note.key, slot: '' };
     const p = place({ note, anchors: an, chron: chronicle, w: el.offsetWidth, h: el.offsetHeight, avoid, prevSlot: slot.current.slot });
     slot.current.slot = p.slot;
@@ -263,7 +264,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       let l = 0, r = 0, top = 0, b = 0;
       if (wide) {
         r = cardOpen && c && c.width ? s.right - c.left + 8 : 0;
-        l = n && n.width && s.width > 1280 ? Math.min(n.right - s.left, s.width * 0.24) : 0;
+        l = !welcome && n && n.width && s.width > 1280 ? Math.min(n.right - s.left, s.width * 0.24) : 0;
         b = k ? s.bottom - k.top : 0;
         top = 40;
       } else {
@@ -406,7 +407,14 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       return { c, name, first, x0: first / N, x1: (lastI + 1) / N, from: yearLabel(CHAPTER_STARTS[c], lang), mark: true };
     }).filter((x): x is NonNullable<typeof x> => !!x)
       // a chapter's year is written only where it has room
-      .map((x, k, all) => ({ ...x, mark: k === all.length - 1 ? x.x1 - x.x0 > (wide ? 0.03 : 0.08) : all[k + 1].x0 - x.x0 > (wide ? 0.06 : 0.13) }));
+      .map((x, k, all) => ({ ...x, k, all }))
+      .reduce<{ out: { c: number; name: string; first: number; x0: number; x1: number; from: string; mark: boolean }[]; lastX: number }>((acc, x) => {
+        const gap = wide ? 0.065 : 0.2;
+        const mark = x.x0 - acc.lastX >= gap && (x.k === x.all.length - 1 ? 1 - x.x0 > gap / 2 : true);
+        acc.out.push({ c: x.c, name: x.name, first: x.first, x0: x.x0, x1: x.x1, from: x.from, mark });
+        if (mark) acc.lastX = x.x0;
+        return acc;
+      }, { out: [], lastX: -1 }).out;
   }, [timeline, stops, t.chapters, lang, N, wide]);
 
   const q = fold(query.trim());
@@ -602,7 +610,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
         )}
 
         {/* bottom left: how to move, and what the colours mean */}
-        <div className="atlas__key">
+        <div className="atlas__key" ref={keyEl}>
           <p className="atlas__hint">{wide ? t.hintDrag : t.hintTouch}</p>
           <ul className="atlas__legend">
             {legend.map((x) => <li key={x.k} className={`atlas__legend--${x.k}`}>{x.label}</li>)}

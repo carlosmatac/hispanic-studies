@@ -408,7 +408,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   const Rmax = () => R0() * 16;
   // the story keeps the planet in view: close enough to read the place, far
   // enough to see the curve of the Earth (the reader can zoom further)
-  const RforSpan = (span: number, most = 1.6) => {
+  const RforSpan = (span: number, most = 1.35) => {
     const a = avail();
     const m = Math.min(a.w, a.h) * 0.4;
     const th = clamp(span * 1.2, 2.5, 85) * RAD;
@@ -472,12 +472,12 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       for (let i = 0; i < cv.pts.length; i += 2) if (Math.abs(cv.cum[i] - st.vd) <= w) pts.push(cv.pts[i]);
       const cap = capOf(pts);
       const min = cv.v.kind === 'land' ? 4 : cv.v.kind === 'river' ? 9 : 16;
-      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(min, cap.span), cv.v.kind === 'sea' ? 2.2 : 4) };
+      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(min, cap.span), cv.v.kind === 'sea' ? 1.7 : 3) };
     }
     if (b.focus) return { lon: b.focus.at[0], lat: clamp(b.focus.at[1], -65, 70), R: RforSpan(Math.max(5, b.focus.span)) };
     if (b.box) {
       const cap = capOf(boxPoints(b.box));
-      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(8, cap.span * 0.82), 1.8) };
+      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(8, cap.span * 0.82), 1.5) };
     }
     // a record with no place: stay where the story was
     return lastTarget ?? { lon: -20, lat: 25, R: R0() };
@@ -1091,6 +1091,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       for (const r of big) {
         const rad = Math.sqrt(Math.max(r.a, 1) / Math.PI) / 6371 * c.R;   // its size on screen, roughly
         if (rad < 16) break;
+        // near the limb a name would sit on the edge of its land: leave it out
+        if (globe && geoDistance(r.l, centre) > 1.15) continue;
         const p = pt(r.l);
         if (!p) continue;
         const size = clamp(rad / 6, 10.5, 15);

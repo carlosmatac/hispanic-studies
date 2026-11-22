@@ -41,7 +41,7 @@ body:has(.atlas-app) > .bar { flex: none; }
   position: absolute; inset: 0; display: grid; place-content: center; gap: 10px; margin: 0; padding: 24px; text-align: center;
   font-size: 15px; color: var(--a-soft); z-index: 1;
 }
-.atlas__noscript { background: var(--a-ground); color: var(--paper); }
+.atlas__noscript { z-index: 20; background: var(--a-ground); color: var(--paper); }
 .atlas__msg a, .atlas__noscript a { color: var(--paper); }
 .atlas-app button { font: inherit; color: inherit; }
 .atlas-app button:focus-visible, .atlas-app select:focus-visible, .atlas-app input:focus-visible, .atlas-app a:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
