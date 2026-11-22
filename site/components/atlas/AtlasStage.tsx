@@ -409,7 +409,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       // a chapter's year is written only where it has room
       .map((x, k, all) => ({ ...x, k, all }))
       .reduce<{ out: { c: number; name: string; first: number; x0: number; x1: number; from: string; mark: boolean }[]; lastX: number }>((acc, x) => {
-        const gap = wide ? 0.065 : 0.2;
+        const gap = wide ? 0.1 : 0.2;
         const mark = x.x0 - acc.lastX >= gap && (x.k === x.all.length - 1 ? 1 - x.x0 > gap / 2 : true);
         acc.out.push({ c: x.c, name: x.name, first: x.first, x0: x.x0, x1: x.x1, from: x.from, mark });
         if (mark) acc.lastX = x.x0;
