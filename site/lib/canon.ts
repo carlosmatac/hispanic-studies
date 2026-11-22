@@ -22,16 +22,24 @@ export const LANGUAGES = [
   { id: 'fr', name: { en: 'French', es: 'francés' } },
   { id: 'en', name: { en: 'English', es: 'inglés' } },
   { id: 'it', name: { en: 'Italian', es: 'italiano' } },
+  { id: 'nah', name: { en: 'Nahuatl', es: 'náhuatl' } },
+  { id: 'qu', name: { en: 'Quechua', es: 'quechua' } },
 ] as const;
 export const languageName = (id: string, lang: Lang) => LANGUAGES.find((l) => l.id === id)?.name[lang] ?? id;
 
-/* Whether we may host the text (rights research of 2026-10-29,
-   docs/research/archive-rights/). The site is served from the US and read
-   mostly in Spain and the Americas, so a text is hosted only when it is in the
-   public domain in the US, in Spain and in its country of origin. The two
-   partial verdicts get the record and links, and say when the text comes free. */
+/* Whether we may host the text. Since 2026-11-22 (issue #93, Beltrán's
+   brief) the rule is U.S. copyright law, where the site is served: a text is
+   hosted when it is in the public domain in the U.S. (in 2026: published in
+   1930 or earlier, or another documented U.S. basis): the first two verdicts
+   below. Until then (rights research of 2026-10-29,
+   docs/research/archive-rights/) it also had to be free in Spain and in the
+   country of origin, so `pd-us-only` texts were not hosted. The other verdicts
+   get the record and links, and say when the text comes free. */
 export const RIGHTS = ['public-domain', 'pd-us-only', 'pd-outside-us', 'in-copyright', 'unverified'] as const;
 export type Rights = (typeof RIGHTS)[number];
+/** The verdicts under which a work's text may be shown on the site (public domain in the U.S.). */
+export const HOSTABLE_RIGHTS: readonly string[] = ['public-domain', 'pd-us-only'];
+export const isHostable = (r: string) => HOSTABLE_RIGHTS.includes(r);
 
 export type ArchiveLink = { label: string; url: string };
 /** A chapter of a text in the reader (its "## " heading). */
