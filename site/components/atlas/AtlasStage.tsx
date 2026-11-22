@@ -355,6 +355,9 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
           </figcaption>
         </figure>
       )}
+      {r.plate && !r.plate.src && (
+        <p className="atlas__plate-link" lang={lang}>{t.plateNotShipped} <a href={r.plate.page} target="_blank" rel="noopener noreferrer" lang="en">{r.plate.caption}</a></p>
+      )}
       {r.paragraphs.slice(0, more ? 3 : 1).map((p, k) => <p key={k} className="atlas__text">{p}</p>)}
       {r.paragraphs.length > 1 && (
         <button type="button" className="atlas__more" aria-expanded={more} onClick={() => setMore((m) => !m)} lang={lang}>
@@ -690,7 +693,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
               const here = found.filter(({ s }) => s.chapter === c);
               if (!here.length) return null;
               return (
-                <section key={c}>
+                <div key={c} role="group" aria-label={name}>
                   <h3><span>{ROMAN[c]}</span> {name}</h3>
                   <ol>
                     {here.map(({ s, i }) => (
@@ -703,7 +706,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
                       </li>
                     ))}
                   </ol>
-                </section>
+                </div>
               );
             })}
           </div>
