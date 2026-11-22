@@ -25,7 +25,7 @@
    ========================================================================== */
 
 import {
-  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoInterpolate, geoDistance, geoCentroid, geoArea,
+  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoInterpolate, geoDistance, geoCentroid, geoArea, geoContains,
   type GeoProjection,
 } from 'd3-geo';
 import { feature, merge, mesh } from 'topojson-client';
@@ -61,6 +61,25 @@ const C = {
   burgundy: BRAND.burgundy,
   burgundyDark: BRAND.burgundyDark,
   glow: mix(BRAND.leather, BRAND.burgundy, 0.35),
+};
+
+/* The map's own colours (Carlos, 2026-11-22: "more colours on the Atlas map
+   layers"; recorded in AGENTS.md). A neutral dark ground, a dark sea, neutral
+   land where nothing is mapped, and muted historical-atlas hues for the
+   polities: ochres, teals, olives, slate blues, roses. Spain stays burgundy and
+   Portugal leather, so the Iberian story still reads. The interface around the
+   map keeps the brand. */
+const MAP = {
+  space: hex('#14191c'),
+  sea: hex('#1e2c32'),
+  land: hex('#474a45'),
+  halo: hex('#6d8e95'),
+  polity: ['#c9a35b', '#5f9c97', '#8f9d5b', '#6f88b0', '#b37b8c', '#8db08a', '#c4ad86', '#8e84b5',
+    '#bb7b5b', '#6e9364', '#7f9bab', '#9a7396', '#b9a24a', '#a8866f', '#5a8fa0', '#a691bd'].map(hex),
+  es: hex('#a8485a'), es2: hex('#94606d'), pt: hex('#ad7f64'),
+  types: { conflict: hex('#c8645a'), jurisdiction: hex('#c9a35b'), treaty: hex('#8e84b5'), route: hex('#5f9c97'), settlement: hex('#8db08a'),
+    control: hex('#bb7b5b'), culture: hex('#b37b8c'), science: hex('#6f88b0'), institution: hex('#c4ad86'), chart: hex('#7f9bab'),
+    contact: hex('#9a7396'), economy: hex('#b9a24a'), interpretation: hex('#a691bd'), law: hex('#a8866f') } as Record<string, RGB>,
 };
 
 /* ---------- small helpers ---------- */
@@ -201,10 +220,14 @@ export type Mode = 'globe' | 'flat';
     (its family), a treaty line, or a place a record names (its index). */
 export type Focus = { kind: 'stop'; k: number } | { kind: 'unit'; f: string } | { kind: 'line'; id: string } | { kind: 'place'; k: number };
 export const focusKey = (f: Focus | null | undefined) => (!f ? '' : f.kind === 'stop' ? `stop:${f.k}` : f.kind === 'unit' ? `unit:${f.f}` : f.kind === 'line' ? `line:${f.id}` : `place:${f.k}`);
-export type HitInfo = { x: number; y: number; title: string; date?: string; text?: string; focus?: Focus };
+export type HitInfo = { x: number; y: number; title: string; date?: string; text?: string; focus?: Focus; go?: number };
+export type Layers = { polities: boolean; iberian: boolean; labels: boolean; routes: boolean; events: boolean; recorded: boolean; fog: boolean };
+export const DEFAULT_LAYERS: Layers = { polities: true, iberian: true, labels: true, routes: true, events: true, recorded: true, fog: false };
 export type FrameInfo = {
   s: number; stop: number; tau: number; landfall: number; atStop: boolean; day: number; year: number;
   playing: boolean; voyageDay: boolean; free: boolean;
+  /** how far in (1 = the whole planet), km per pixel at the centre, polities in view (-1: loading) */
+  zoom: number; kmPx: number; polities: number;
 };
 export type Anchors = {
   stop: number;
@@ -222,6 +245,9 @@ export type EngineOpts = {
   seaNames: { atlantic: string; south: string; pacific: string };
   lines: Record<string, { name: string; west: string; east: string }>;
   approxText: string;
+  layers: Layers;
+  /** the tooltip line under a polity's name */
+  polityText: (from: string, to: string) => string;
   onFrame: (f: FrameInfo) => void;
   onHover: (h: HitInfo | null) => void;
   onAnchors?: (a: Anchors) => void;
@@ -242,6 +268,8 @@ export type Engine = {
   setVisible(v: boolean): void;
   setMode(m: Mode): void;
   setOverview(o: boolean): void;
+  setLayers(l: Layers): void;
+  zoomTo(k: number): void;
   zoomBy(f: number): void;
   recentre(): void;
   pick(x: number, y: number): HitInfo | null;
@@ -260,8 +288,10 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
 
   let reduced = opts.reduced;
   let mode: Mode = opts.mode;
+  let layers: Layers = opts.layers;
   const fmtDay = new Intl.DateTimeFormat(opts.lang, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
   const fmtMonth = new Intl.DateTimeFormat(opts.lang, { month: 'short', year: 'numeric', timeZone: 'UTC' });
+  const yearText = (y: number) => (y < 0 ? `${-y} ${opts.lang === 'es' ? 'a. C.' : 'BCE'}` : String(y));
   const dateLabel = (iso?: string) => {
     const d = dayOf(iso);
     if (d === undefined || !iso) return undefined;
@@ -300,6 +330,69 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   const unitsCoarse = new Map<string, Feature>();
   const lines = new Map<string, Feature>();
   let loaded = false;
+
+  /* --- the world's polities over time (Cliopatria, tools/build-atlas-polities.py):
+     fetched by period, decoded once per row, shown as the rows in force at the
+     last snapshot at or before the year --- */
+  type PRow = { n: string; f: number; t: number; a: number; w: string | null; k: string | number; l: LonLat; g: number[][]; feat?: Feature };
+  type PChunk = { from: number; to: number; file: string };
+  let pIndex: { q: number; chunks: PChunk[] } | null = null;
+  const pChunks = new Map<string, { years: number[]; rows: PRow[] }>();
+  const pAsked = new Set<string>();
+  const pActive = new Map<string, PRow[]>();
+  let lastPolities = -1;
+  let shownRows: PRow[] = [];
+  fetch('/data/atlas-polities/index.json').then((r) => (r.ok ? r.json() : null)).then((x) => { pIndex = x; kick(); }).catch(() => {});
+  function chunkOf(y: number): PChunk | null {
+    if (!pIndex) return null;
+    const cs = pIndex.chunks;
+    return cs.find((c) => y >= c.from && y <= c.to) ?? (y < cs[0].from ? cs[0] : cs[cs.length - 1]);
+  }
+  function askChunk(c: PChunk | null | undefined) {
+    if (!c || pAsked.has(c.file)) return;
+    pAsked.add(c.file);
+    fetch(`/data/atlas-polities/${c.file}`).then((r) => (r.ok ? r.json() : null)).then((x) => { if (x) { pChunks.set(c.file, { years: x.years, rows: x.polities }); kick(); } }).catch(() => {});
+  }
+  function rowFeature(r: PRow): Feature {
+    if (r.feat) return r.feat;
+    const q = pIndex?.q ?? 100;
+    const polys = r.g.map((enc) => {
+      const ring: Position[] = [];
+      let x = 0, y = 0;
+      for (let i = 0; i < enc.length; i += 2) { x += enc[i]; y += enc[i + 1]; ring.push([x / q, y / q]); }
+      ring.push(ring[0]);
+      return [ring];
+    });
+    r.feat = rewindOne({ type: 'Feature', properties: {}, geometry: { type: 'MultiPolygon', coordinates: polys } });
+    return r.feat;
+  }
+  function politiesAt(y: number): { key: string; rows: PRow[] } | null {
+    const c = chunkOf(Math.floor(y));
+    if (!c) return null;
+    askChunk(c);
+    // the next period too, before the story gets there
+    if (pIndex) askChunk(pIndex.chunks[pIndex.chunks.indexOf(c) + 1]);
+    const ch = pChunks.get(c.file);
+    if (!ch) return null;
+    let snap = ch.years[0];
+    for (const yy of ch.years) if (yy <= y + 1e-6) snap = yy;
+    const key = `${c.file}:${snap}`;
+    let rows = pActive.get(key);
+    if (!rows) { rows = ch.rows.filter((r) => r.f <= snap && snap <= r.t); pActive.set(key, rows); }
+    return { key, rows };
+  }
+  const polityFill = (k: string | number): RGB => (k === 'es' ? MAP.es : k === 'es2' ? MAP.es2 : k === 'pt' ? MAP.pt : MAP.polity[Number(k) % MAP.polity.length]);
+  let hatch: CanvasPattern | null = null;
+  function makeHatch() {
+    const g = document.createElement('canvas');
+    g.width = g.height = 8;
+    const gc = g.getContext('2d') as CanvasRenderingContext2D;
+    gc.strokeStyle = 'rgba(249,243,221,0.08)'; gc.lineWidth = 1;
+    gc.beginPath(); gc.moveTo(0, 8); gc.lineTo(8, 0); gc.stroke();
+    hatch = ctx.createPattern(g, 'repeat');
+  }
+  // the records, for the events layer: a pin at the first place each names
+  const eventStops = chron.stops.map((st, i) => ({ st, i })).filter(({ st }) => st.kind === 'record' && !!st.record && st.record.anchors.length > 0);
 
   /* --- camera --- */
   type Cam = { lon: number; lat: number; R: number };
@@ -363,7 +456,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     let era = 0;
     for (let i = 0; i < eraYears.length; i++) if (eraYears[i] <= year + 1e-6) era = i;
     const preEra = year < eraYears[0] - 1e-6;
-    const fog = cs.stop.kind === 'today' ? (reduced ? 0 : 1 - smooth(tau / 3)) : 1;
+    const fog = !layers.fog ? 0 : cs.stop.kind === 'today' ? (reduced ? 0 : 1 - smooth(tau / 3)) : 1;
     return { si, cs, tau, vi, vd, landfall, atStop, day, year, era, preEra, fog };
   }
 
@@ -434,6 +527,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         }
         free = false; vel = { lon: 0, lat: 0 };
         lastStop = st.si; flyNext = false;
+        // the polities of the stops either side, before the reader gets there
+        if (layers.polities) for (const j of [st.si - 1, st.si + 1, st.si + 2]) { const sj = stops[j]?.stop; if (sj) askChunk(chunkOf(Math.floor(sj.year))); }
       }
       if (!cam || (reduced && !free)) {
         cam = { ...tgt };
@@ -489,6 +584,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       opts.onFrame({
         s, stop: st.si, tau: st.tau, landfall: st.landfall, atStop: st.atStop, day: st.day, year: st.year,
         playing, voyageDay: st.vi >= 0 && !st.atStop, free,
+        zoom: cam ? cam.R / R0() : 1, kmPx: cam ? 6371 / cam.R : 0, polities: lastPolities,
       });
       if (playing || moving || fading || settling || flight || dragging || (overview && !reduced)) schedule();
     } else if (playing) schedule();
@@ -499,6 +595,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   /* --- drawing --- */
   let fontSerif = 'Georgia, serif';
   let fontMono = 'ui-monospace, monospace';
+  let fontBody = 'system-ui, sans-serif';
   let grain: CanvasPattern | null = null;
   function readFonts() {
     const cs = getComputedStyle(document.documentElement);
@@ -506,6 +603,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     const m = cs.getPropertyValue('--font-mono').trim();
     if (d) fontSerif = `${d}, Georgia, serif`;
     if (m) fontMono = `${m}, ui-monospace, monospace`;
+    const bd = cs.getPropertyValue('--font-body').trim();
+    if (bd) fontBody = `${bd}, system-ui, sans-serif`;
   }
   function makeGrain() {
     const g = document.createElement('canvas');
@@ -568,17 +667,42 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     ctx.globalCompositeOperation = 'source-over';
 
     // space, and the planet's halo
-    ctx.fillStyle = css(C.space);
+    ctx.fillStyle = css(MAP.space);
     ctx.fillRect(0, 0, W, H);
     if (globe) {
-      const halo = ctx.createRadialGradient(gx, gy, c.R * 0.96, gx, gy, c.R * 1.22);
-      halo.addColorStop(0, css(C.glow, 0.42)); halo.addColorStop(0.35, css(C.glow, 0.12)); halo.addColorStop(1, css(C.glow, 0));
+      const halo = ctx.createRadialGradient(gx, gy, c.R * 0.97, gx, gy, c.R * 1.16);
+      halo.addColorStop(0, css(MAP.halo, 0.32)); halo.addColorStop(0.4, css(MAP.halo, 0.08)); halo.addColorStop(1, css(MAP.halo, 0));
       ctx.fillStyle = halo;
-      ctx.beginPath(); ctx.arc(gx, gy, c.R * 1.22, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(gx, gy, c.R * 1.16, 0, Math.PI * 2); ctx.fill();
     }
-    ctx.fillStyle = css(C.sea); ctx.fill(sphere);
-    ctx.lineWidth = 0.5; ctx.strokeStyle = css(C.paper, 0.08); ctx.stroke(grat);
-    if (coast) { ctx.fillStyle = css(C.land); ctx.fill(coast); }
+    ctx.fillStyle = css(MAP.sea); ctx.fill(sphere);
+    ctx.lineWidth = 0.5; ctx.strokeStyle = css(C.paper, 0.07); ctx.stroke(grat);
+    if (coast) {
+      ctx.fillStyle = css(MAP.land); ctx.fill(coast);
+      // land no dataset maps: hatched, so "not mapped" reads as such
+      if (layers.recorded) { if (!hatch) makeHatch(); if (hatch) { ctx.fillStyle = hatch; ctx.fill(coast); } }
+    }
+    // the world's polities, each in its own hue (Cliopatria)
+    shownRows = [];
+    if (layers.polities) {
+      const pa = politiesAt(st.year);
+      lastPolities = pa ? pa.rows.length : -1;
+      if (pa) {
+        const minA = fast ? 2500 : 0;
+        const rows = pa.rows.filter((r) => r.a >= minA);
+        shownRows = pa.rows;
+        const byKey = new Map<string, PRow[]>();
+        for (const r of rows) { const k = String(r.k); byKey.set(k, [...(byKey.get(k) ?? []), r]); }
+        ctx.globalAlpha = 0.92;
+        for (const [k, rs] of byKey) {
+          ctx.fillStyle = css(polityFill(k === 'es' || k === 'es2' || k === 'pt' ? k : Number(k)));
+          ctx.fill(G(`pol:${pa.key}:${k}:${minA}`, () => fc(rs.map(rowFeature))));
+        }
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 0.6; ctx.strokeStyle = css(MAP.space, 0.55);
+        ctx.stroke(G(`pol:${pa.key}:edges:${minA}`, () => fc(rows.map(rowFeature))));
+      }
+    } else lastPolities = -1;
 
     // jurisdictions: the keyframe in force, cross-fading from the one before
     const drawEra = (ei: number, alpha: number) => {
@@ -605,7 +729,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       if (native.length) { ctx.setLineDash([2, 3]); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => UM.get(u.id))))); ctx.setLineDash([]); }
       ctx.globalAlpha = 1;
     };
-    if (today) {
+    if (!layers.iberian) { /* the Iberian keyframes are off */ } else if (today) {
       ctx.fillStyle = css(C.pt[1]);
       ctx.fill(G('today:sub', () => fc(chron.iberophone.submersa.map((id) => countries.get(id)))));
       ctx.fillStyle = css(C.es[1]);
@@ -623,7 +747,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       }
     }
     shapeHits = [];
-    if (!today && !st.preEra) {
+    if (layers.iberian && !today && !st.preEra) {
       const listed = new Set(era.pulse);
       if (focus?.kind === 'unit') listed.add(focus.f);
       for (const fid of listed) {
@@ -650,7 +774,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     const routePath = (r: { cv: CVoyage; vi: number; d: number; current: boolean }): Path2D =>
       r.current ? G(`at-sea:${r.vi}`, () => ({ type: 'LineString', coordinates: sliceTo(r.cv, r.d) })) : G(`route:${r.vi}`, () => ({ type: 'LineString', coordinates: r.cv.pts }));
     for (const r of sailed) {
-      if (r.current) continue;
+      if (r.current || !layers.routes) continue;
       ctx.lineWidth = 1; ctx.setLineDash(r.cv.v.kind === 'land' ? [1.5, 3] : [4, 4]);
       ctx.strokeStyle = css(r.cv.v.crown === 'pt' ? C.leatherLight : C.paper, 0.32); ctx.stroke(routePath(r));
       ctx.setLineDash([]);
@@ -722,16 +846,16 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       const shade = ctx.createRadialGradient(lx, ly, c.R * 0.05, gx, gy, c.R * 1.02);
       shade.addColorStop(0, css(C.paper, 0.09));
       shade.addColorStop(0.5, css(C.paper, 0));
-      shade.addColorStop(0.82, css(C.space, 0.16));
-      shade.addColorStop(1, css(C.space, 0.62));
+      shade.addColorStop(0.82, css(MAP.space, 0.14));
+      shade.addColorStop(1, css(MAP.space, 0.55));
       ctx.fillStyle = shade;
       ctx.fillRect(gx - c.R * 1.1, gy - c.R * 1.1, c.R * 2.2, c.R * 2.2);
       ctx.restore();
-      ctx.lineWidth = 1.2; ctx.strokeStyle = css(C.leatherLight, 0.32); ctx.stroke(sphere);
+      ctx.lineWidth = 1.2; ctx.strokeStyle = css(MAP.halo, 0.45); ctx.stroke(sphere);
     }
 
     // treaty lines, drawn across the unknown as well: they divided what no one had seen
-    if (!today && !st.preEra) {
+    if (layers.iberian && !today && !st.preEra) {
       for (const id of era.lines) {
         const g = lines.get(id);
         if (!g) continue;
@@ -744,7 +868,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       }
     }
     const cur = sailed.find((r) => r.current);
-    if (cur) {
+    if (cur && layers.routes) {
       const rp = routePath(cur);
       const lineStyle = cur.cv.v.crown === 'pt' ? C.leatherLight : C.paper;
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
@@ -762,7 +886,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       placed.push([x, y, w, h]); return true;
     };
 
-    if (!today && !st.preEra && era.lines.includes('tordesillas')) {
+    if (layers.iberian && layers.labels && !today && !st.preEra && era.lines.includes('tordesillas')) {
       const p = pt([-48.5, 30]);
       if (p) {
         ctx.save(); ctx.translate(p[0] + 7, p[1]); ctx.rotate(-Math.PI / 2);
@@ -795,7 +919,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     ctx.font = `italic 400 ${clamp(ppd * 1.3, 12, 19)}px ${fontSerif}`;
     ctx.textAlign = 'center';
     for (const sea of seas) {
-      if (sea.from && st.year < sea.from) continue;
+      if (!layers.labels || (sea.from && st.year < sea.from)) continue;
       const p = pt(sea.at);
       if (!p) continue;
       const w = ctx.measureText(sea.name).width;
@@ -818,7 +942,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         hits.push({ x: p[0], y: p[1], title: an.name, text: opts.approxText, focus: { kind: 'place', k } });
       });
       ctx.font = `500 10.5px ${fontMono}`; ctx.textAlign = 'left';
-      rec.anchors.forEach((an, k) => {
+      if (layers.labels) rec.anchors.forEach((an, k) => {
         const p = pt(an.at);
         if (!p) return;
         const label = an.name.toUpperCase();
@@ -835,7 +959,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     }
 
     // Indigenous states, named through the dark
-    if (!today && !st.preEra) {
+    if (layers.iberian && layers.labels && !today && !st.preEra) {
       ctx.font = `italic 400 13px ${fontSerif}`;
       for (const u of era.units) {
         const f = famOf(u);
@@ -923,7 +1047,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     }
 
     // the keyframe's names
-    if (!today && !st.preEra) {
+    if (layers.iberian && layers.labels && !today && !st.preEra) {
       ctx.textAlign = 'center';
       for (const fid of era.labels) {
         const f = chron.families[fid];
@@ -940,6 +1064,48 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         ctx.fillStyle = css(C.paper, 0.95); ctx.fillText(name, p[0], p[1]);
       }
     }
+    // the events layer: Beltrán's records in force this year, as round pins
+    if (layers.events) {
+      const pins: [number, number][] = [];
+      const cur = st.cs.stop.kind === 'record' ? st.si : -1;
+      for (const { st: es, i } of eventStops) {
+        if (i === cur) continue;
+        const from = es.year, to = es.until ?? es.year;
+        if (st.year < from - 0.01 || st.year > to + 0.99) continue;
+        const p = pt((es.record as NonNullable<typeof es.record>).anchors[0].at);
+        if (!p || pins.some((q) => Math.hypot(q[0] - p[0], q[1] - p[1]) < 13)) continue;
+        pins.push([p[0], p[1]]);
+        const col = MAP.types[(es.record as NonNullable<typeof es.record>).type] ?? MAP.polity[0];
+        ctx.beginPath(); ctx.arc(p[0], p[1], 7.5, 0, Math.PI * 2);
+        ctx.fillStyle = css(MAP.space, 0.92); ctx.fill();
+        ctx.lineWidth = 1.6; ctx.strokeStyle = css(col); ctx.stroke();
+        ctx.beginPath(); ctx.arc(p[0], p[1], 3, 0, Math.PI * 2); ctx.fillStyle = css(col); ctx.fill();
+        placed.push([p[0] - 8, p[1] - 8, 16, 16]);
+        hits.push({ x: p[0], y: p[1], title: es.title, date: es.label, text: es.kicker, go: i });
+      }
+    }
+
+    // place names: the polities in view, largest first, where there is room
+    if (layers.labels && layers.polities && shownRows.length) {
+      const big = [...shownRows].sort((x, y) => y.a - x.a);
+      for (const r of big) {
+        const rad = Math.sqrt(Math.max(r.a, 1) / Math.PI) / 6371 * c.R;   // its size on screen, roughly
+        if (rad < 16) break;
+        const p = pt(r.l);
+        if (!p) continue;
+        const size = clamp(rad / 6, 10.5, 15);
+        ctx.font = `600 ${size}px ${fontBody}`;
+        const name = r.n.length > 28 ? `${r.n.slice(0, 27)}…` : r.n;
+        const w = ctx.measureText(name).width;
+        if (w > rad * 3.2) continue;
+        if (!free_(p[0] - w / 2 - 2, p[1] - size, w + 4, size + 5)) continue;
+        ctx.textAlign = 'center';
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 3; ctx.strokeStyle = css(MAP.space, 0.7); ctx.strokeText(name, p[0], p[1]);
+        ctx.fillStyle = css(C.paper, 0.96); ctx.fillText(name, p[0], p[1]);
+      }
+    }
+
     if (today) {
       for (const ip of chron.iberophone.points) {
         const p = pt(ip.at);
@@ -976,7 +1142,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
 
     // a vignette at the edges of the stage
     const vg = ctx.createRadialGradient(a.cx, a.cy, Math.min(W, H) * 0.42, a.cx, a.cy, Math.max(W, H) * 0.8);
-    vg.addColorStop(0, css(C.space, 0)); vg.addColorStop(1, css(C.space, 0.5));
+    vg.addColorStop(0, css(MAP.space, 0)); vg.addColorStop(1, css(MAP.space, 0.45));
     ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
   }
 
@@ -1049,7 +1215,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     if (pointers.size === 2) {
       const [p, q] = [...pointers.values()];
       const d = Math.hypot(p.x - q.x, p.y - q.y);
-      if (pinch > 0) { takeCamera(); cam = { ...cam, R: clamp(cam.R * (d / pinch), R0() * 0.85, Rmax()) }; }
+      if (pinch > 0) { takeCamera(); const r = canvas.getBoundingClientRect(); zoomAt((p.x + q.x) / 2 - r.left, (p.y + q.y) / 2 - r.top, clamp(cam.R * (d / pinch), R0() * 0.85, Rmax())); }
       pinch = d;
       kick();
       return;
@@ -1059,7 +1225,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     // degrees per pixel at the centre
     const k = DEG / cam.R;
     const dLon = -dx * k / Math.max(0.35, mode === 'globe' ? 1 : Math.cos(cam.lat * RAD));
-    const dLat = e.pointerType === 'touch' ? 0 : dy * k;
+    const dLat = dy * k;
     cam = { ...cam, lon: normLon(cam.lon + dLon), lat: clamp(cam.lat + dLat, -80, 80) };
     vel = { lon: dLon * 0.9, lat: dLat * 0.9 };
     kick();
@@ -1073,12 +1239,27 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       kick();
     }
   }
+  /** Zoom to a radius, keeping the point under (x, y) where it is. */
+  function zoomAt(x: number, y: number, nR: number) {
+    if (!cam) return;
+    const p = projectionFor(cam);
+    const g = p.invert?.([x, y]) as LonLat | undefined;
+    const ok = g && Number.isFinite(g[0]) && (mode !== 'globe' || geoDistance(g, [cam.lon, cam.lat]) < Math.PI / 2 - 0.05);
+    if (ok) {
+      const t = 1 - cam.R / nR;
+      const cc = geoInterpolate([cam.lon, cam.lat], g as LonLat)(t);
+      cam = { lon: normLon(cc[0]), lat: clamp(cc[1], -80, 80), R: nR };
+    } else cam = { ...cam, R: nR };
+  }
   function onWheel(e: WheelEvent) {
-    // plain scrolling keeps scrolling the page; Ctrl (and a trackpad pinch) zooms
-    if (!e.ctrlKey || !cam) return;
+    // the Atlas is an application: the wheel and the trackpad zoom the planet
     e.preventDefault();
+    if (!cam) return;
     takeCamera();
-    cam = { ...cam, R: clamp(cam.R * Math.exp(-e.deltaY * 0.004), R0() * 0.85, Rmax()) };
+    const k = Math.exp(-e.deltaY * (e.ctrlKey ? 0.012 : 0.0016) * (e.deltaMode === 1 ? 16 : 1));
+    const r = canvas.getBoundingClientRect();
+    zoomAt(e.clientX - r.left, e.clientY - r.top, clamp(cam.R * k, R0() * 0.85, Rmax()));
+    vel = { lon: 0, lat: 0 };
     kick();
   }
   canvas.addEventListener('pointerdown', onDown);
@@ -1210,6 +1391,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       if (o) { free = false; flight = null; }
       flyNext = !o; kick();
     },
+    setLayers(l: Layers) { layers = l; kick(); },
+    zoomTo(k: number) { if (cam) flyTo({ ...cam, R: clamp(R0() * k, R0() * 0.85, Rmax()) }); },
     zoomBy(f: number) { if (cam) flyTo({ ...cam, R: clamp(cam.R * f, R0() * 0.85, Rmax()) }); },
     recentre() {
       if (!cam) return;
@@ -1231,6 +1414,14 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
           if (inside) { best = { x, y, ...sh.hit }; break; }
         }
         ctx.restore();
+      }
+      // nothing else: the polity under the pointer, as Cliopatria maps it
+      if (!best && layers.polities && shownRows.length && cam) {
+        const g = projectionFor(cam).invert?.([x, y]) as LonLat | undefined;
+        if (g && Number.isFinite(g[0]) && (mode !== 'globe' || geoDistance(g, [cam.lon, cam.lat]) < Math.PI / 2)) {
+          const r = shownRows.find((row) => geoContains(rowFeature(row), g));
+          if (r) best = { x, y, title: r.n, text: opts.polityText(yearText(r.f), yearText(r.t)) };
+        }
       }
       const key = best ? `${best.title}${best.date ?? ''}` : '';
       if (key !== hoverKey) { hoverKey = key; opts.onHover(best); }

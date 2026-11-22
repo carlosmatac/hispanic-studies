@@ -5,9 +5,9 @@ import { RETIRED, type Chronicle as Data } from '@/lib/atlas-chronicle';
    the same order, chapter by chapter: the records with their four paragraphs,
    links and plate credit; the voyages with their dated landfalls; the border
    changes with their sources. It is the accessible equivalent of the globe
-   and what a reader without JavaScript gets. "Show on the globe" links
-   (#on-map-<id>) are picked up by the stage and only shown once it runs
-   (html.has-atlas). */
+   and what a reader without JavaScript gets; since the Atlas became a fixed
+   app it lives on its own page, /[lang]/atlas/chronicle. "Show on the globe"
+   links open the app at that stop (/[lang]/atlas#on-map-<id>). */
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 
@@ -99,7 +99,7 @@ export default function Chronicle({ lang, data }: { lang: Lang; data: Data }) {
                           </p>
                         )}
                         {b.sources.length > 0 && <p className="chron__src"><span>{b.sources.length > 1 ? t.sources : t.source}:</span> {b.sources.join(' · ')}</p>}
-                        <a className="chron__go" href={`#on-map-${b.id}`}>{t.showOnMap} ↑</a>
+                        <a className="chron__go" href={`/${lang}/atlas#on-map-${b.id}`}>{t.showOnMap} →</a>
                       </div>
                     </details>
                   </li>

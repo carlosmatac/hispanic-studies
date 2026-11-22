@@ -1,0 +1,127 @@
+{
+ "about": "World polities for the Atlas globe, sampled from Cliopatria v0.2.1 (Seshat Global History Databank), CC BY 4.0. Changes: time-sampled to the snapshot years, relations removed, polygons simplified (~0.1°), holes dropped, coordinates quantized to 0.01° and delta-encoded, split by period. Built by tools/build-atlas-polities.py.",
+ "source": {
+  "name": "Cliopatria",
+  "version": "0.2.1",
+  "by": "Seshat Global History Databank",
+  "licence": "CC BY 4.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://github.com/Seshat-Global-History-Databank/cliopatria",
+  "doi": "10.1038/s41597-025-04516-9"
+ },
+ "q": 100,
+ "chunks": [
+  {
+   "from": -218,
+   "to": -1,
+   "file": "-218_-1.json",
+   "rows": 160,
+   "bytes": 88583
+  },
+  {
+   "from": 0,
+   "to": 499,
+   "file": "0_499.json",
+   "rows": 284,
+   "bytes": 190059
+  },
+  {
+   "from": 500,
+   "to": 999,
+   "file": "500_999.json",
+   "rows": 709,
+   "bytes": 361710
+  },
+  {
+   "from": 1000,
+   "to": 1199,
+   "file": "1000_1199.json",
+   "rows": 689,
+   "bytes": 268611
+  },
+  {
+   "from": 1200,
+   "to": 1399,
+   "file": "1200_1399.json",
+   "rows": 1010,
+   "bytes": 452409
+  },
+  {
+   "from": 1400,
+   "to": 1499,
+   "file": "1400_1499.json",
+   "rows": 690,
+   "bytes": 375220
+  },
+  {
+   "from": 1500,
+   "to": 1549,
+   "file": "1500_1549.json",
+   "rows": 485,
+   "bytes": 312320
+  },
+  {
+   "from": 1550,
+   "to": 1599,
+   "file": "1550_1599.json",
+   "rows": 390,
+   "bytes": 315977
+  },
+  {
+   "from": 1600,
+   "to": 1649,
+   "file": "1600_1649.json",
+   "rows": 277,
+   "bytes": 222343
+  },
+  {
+   "from": 1650,
+   "to": 1699,
+   "file": "1650_1699.json",
+   "rows": 325,
+   "bytes": 292968
+  },
+  {
+   "from": 1700,
+   "to": 1749,
+   "file": "1700_1749.json",
+   "rows": 287,
+   "bytes": 265312
+  },
+  {
+   "from": 1750,
+   "to": 1799,
+   "file": "1750_1799.json",
+   "rows": 488,
+   "bytes": 530879
+  },
+  {
+   "from": 1800,
+   "to": 1849,
+   "file": "1800_1849.json",
+   "rows": 664,
+   "bytes": 631905
+  },
+  {
+   "from": 1850,
+   "to": 1899,
+   "file": "1850_1899.json",
+   "rows": 366,
+   "bytes": 433937
+  },
+  {
+   "from": 1900,
+   "to": 1949,
+   "file": "1900_1949.json",
+   "rows": 298,
+   "bytes": 484000
+  },
+  {
+   "from": 1950,
+   "to": 2024,
+   "file": "1950_2024.json",
+   "rows": 568,
+   "bytes": 523303
+  }
+ ]
+}

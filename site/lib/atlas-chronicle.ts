@@ -1,4 +1,9 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { dict, type Lang } from '@/lib/i18n';
+import { CHAPTER_STARTS, TRACKS, type Track } from '@/lib/atlas-time';
+
+export { CHAPTER_STARTS, TRACKS, yearLabel, stopIndex, type Track } from '@/lib/atlas-time';
 import milestones from '@/data/milestones.json';
 import voyagesData from '@/data/atlas-voyages.json';
 import atlasEras from '@/data/atlas-eras.json';
@@ -72,6 +77,22 @@ type RawRecord = {
 const RECORDS = (recordsData as unknown as { records: RawRecord[] }).records;
 export const RETIRED = (recordsData as unknown as { retired: string[] }).retired;
 
+/* The records in Spanish, when they exist: site/data/atlas-records.es.json,
+   keyed by id ({ title, paragraphs: [four], machine }), written by the
+   translation work and merged here at build time. Read from disk so the site
+   builds with or without it. */
+type Spanish = Record<string, { title?: string; paragraphs?: string[]; machine?: boolean }>;
+const SPANISH: Spanish | null = (() => {
+  try {
+    const f = path.join(process.cwd(), 'data', 'atlas-records.es.json');
+    if (!fs.existsSync(f)) return null;
+    const raw = JSON.parse(fs.readFileSync(f, 'utf-8'));
+    return (raw.records && !Array.isArray(raw.records) ? raw.records : raw) as Spanish;
+  } catch {
+    return null;
+  }
+})();
+
 const IMAGES: Record<string, { src: string; credit: L }> = {
   puebla: {
     src: '/art/tour/puebla-desembarco-1862.jpg',
@@ -109,10 +130,6 @@ const FRAMES: Record<string, [LonLat, LonLat]> = {
   today: [[-118, -42], [128, 52]],
 };
 
-/** Chapters: the first year of each (ours; the dates only divide the story). */
-export const CHAPTER_STARTS = [-218, 711, 1230, 1492, 1580, 1808, 1898];
-export const TRACKS = ['iberia', 'islands', 'north-america', 'south-america', 'africa', 'asia', 'oceania', 'world'] as const;
-export type Track = (typeof TRACKS)[number];
 
 /* ---------- what the client gets ---------- */
 
@@ -133,6 +150,8 @@ export type RecordView = {
   /** the record's own text is in English while Spanish is pending */
   lang: 'en' | 'es';
   pending: boolean;
+  /** a machine translation not yet reviewed */
+  machine: boolean;
   date: string;
   type: string;
   paragraphs: string[];   // the three historical paragraphs
@@ -151,6 +170,8 @@ export type Stop = {
   tracks: Track[];
   /** the year as a number on one axis (BCE negative), for the timeline and the fog */
   year: number;
+  /** a record's last year (open records: today), for the events layer */
+  until?: number;
   /** the years as shown */
   label: string;
   /** ISO dates for voyages and keyframes (a voyage: its first and last landfall) */
@@ -197,10 +218,6 @@ export function dateLabel(label: string, lang: Lang): string {
     .replace(/\bpresent\b/g, 'hoy')
     .replace(/\bonward\b/g, 'en adelante');
 }
-/** A year on the axis as shown: 218 BCE, 1492. */
-export function yearLabel(y: number, lang: Lang): string {
-  return y < 0 ? `${-y} ${lang === 'es' ? 'a. C.' : 'BCE'}` : String(Math.floor(y));
-}
 
 const REGION_TRACK: Record<string, Track> = {};
 {
@@ -244,13 +261,16 @@ export function chronicleFor(lang: Lang): Chronicle {
   };
 
   const view = (r: RawRecord): RecordView => {
-    const es = lang === 'es' && r.paragraphs.es ? r.paragraphs.es : null;
+    // Spanish: the manuscript's own (none yet), else the translations file, else the English
+    const tr = lang === 'es' ? SPANISH?.[r.id] : undefined;
+    const es = lang === 'es' ? (r.paragraphs.es ?? (tr?.paragraphs?.length ? tr.paragraphs : null)) : null;
     const paras = es ?? r.paragraphs.en;
     return {
       id: r.id,
-      title: (lang === 'es' ? r.title.es : null) ?? r.title.en,
+      title: (lang === 'es' ? r.title.es ?? (es ? tr?.title : null) : null) ?? r.title.en,
       lang: es ? 'es' : 'en',
       pending: lang === 'es' && !es,
+      machine: !!(es && !r.paragraphs.es && tr?.machine),
       date: dateLabel(r.date.label, lang),
       type: r.type,
       paragraphs: paras.slice(0, 3),
@@ -310,7 +330,7 @@ export function chronicleFor(lang: Lang): Chronicle {
     const v = view(r);
     stops.push({
       id: r.id, aliases: [], kind: 'record',
-      chapter: chapterOf(r.date.sort), tracks: tracksOf(r), year: r.date.sort,
+      chapter: chapterOf(r.date.sort), tracks: tracksOf(r), year: r.date.sort, until: r.date.open ? 2026 : (r.date.end ?? r.date.start),
       label: v.date, kicker: t.types[r.type as keyof typeof t.types] ?? r.type,
       // (the record's own paragraphs are its text: not repeated here)
       title: v.title, text: '', sources: [],
@@ -361,11 +381,4 @@ export function chronicleFor(lang: Lang): Chronicle {
     },
     counts: { records: RECORDS.length, anchored: RECORDS.filter((r) => r.camera).length },
   };
-}
-
-/** Every stop id and alias, for deep links. */
-export function stopIndex(c: Chronicle): Map<string, number> {
-  const m = new Map<string, number>();
-  c.stops.forEach((s, i) => { m.set(s.id, i); for (const a of s.aliases) m.set(a, i); });
-  return m;
 }
