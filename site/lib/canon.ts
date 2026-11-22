@@ -22,16 +22,24 @@ export const LANGUAGES = [
   { id: 'fr', name: { en: 'French', es: 'francés' } },
   { id: 'en', name: { en: 'English', es: 'inglés' } },
   { id: 'it', name: { en: 'Italian', es: 'italiano' } },
+  { id: 'nah', name: { en: 'Nahuatl', es: 'náhuatl' } },
+  { id: 'qu', name: { en: 'Quechua', es: 'quechua' } },
 ] as const;
 export const languageName = (id: string, lang: Lang) => LANGUAGES.find((l) => l.id === id)?.name[lang] ?? id;
 
-/* Whether we may host the text (rights research of 2026-10-29,
-   docs/research/archive-rights/). The site is served from the US and read
-   mostly in Spain and the Americas, so a text is hosted only when it is in the
-   public domain in the US, in Spain and in its country of origin. The two
-   partial verdicts get the record and links, and say when the text comes free. */
+/* Whether we may host the text. Since 2026-11-22 (issue #93, Beltrán's
+   brief) the rule is U.S. copyright law, where the site is served: a text is
+   hosted when it is in the public domain in the U.S. (in 2026: published in
+   1930 or earlier, or another documented U.S. basis): the first two verdicts
+   below. Until then (rights research of 2026-10-29,
+   docs/research/archive-rights/) it also had to be free in Spain and in the
+   country of origin, so `pd-us-only` texts were not hosted. The other verdicts
+   get the record and links, and say when the text comes free. */
 export const RIGHTS = ['public-domain', 'pd-us-only', 'pd-outside-us', 'in-copyright', 'unverified'] as const;
 export type Rights = (typeof RIGHTS)[number];
+/** The verdicts under which a work's text may be shown on the site (public domain in the U.S.). */
+export const HOSTABLE_RIGHTS: readonly string[] = ['public-domain', 'pd-us-only'];
+export const isHostable = (r: string) => HOSTABLE_RIGHTS.includes(r);
 
 export type ArchiveLink = { label: string; url: string };
 /** A chapter of a text in the reader (its "## " heading). */
@@ -70,10 +78,81 @@ export type CanonWork = {
   needsTranscription: boolean;
   /** true when a full text is in the archive and may be shown (public domain) */
   hasText: boolean;
-  /** the languages its text is in, with the reading time of each */
+  /** the languages its text is in (only those that may be shown), with the reading time of each */
   texts: { lang: string; minutes: number }[];
   references: Reference[];
+  /** its place in the curated 80 (issue #93), or null when it is not one of them */
+  curated: Curated | null;
 };
+
+/* ---------------- the curated 80 (issue #93) ---------------- */
+
+export type Era = { id: string; position: number; name: Localised; from: number | null; to: number | null };
+export type BrowseRegion = { id: string; position: number; name: Localised };
+
+/** An edition as the pages show it. `hosted` is set only when its approval passes every check (lib/editions.ts). */
+export type Edition = {
+  id: string;
+  readingLang: string;
+  primary: boolean;
+  languages: string[];
+  extent: string;
+  url: string;
+  label: string;
+  sourceName: string;
+  translator: string;
+  scopeNote: string;
+  publicationYear: number | null;
+  hosted: 'inline_html' | 'local_pdf' | null;
+  pdfUrl: string;
+};
+
+/** A work's article in one language: its three sections (Markdown). */
+export type Article = { locale: string; title: string; aboutAuthor: string; workInItsTime: string; whyReadToday: string };
+
+export type Curated = {
+  canonId: string;
+  slug: string;
+  /** in the 80 now (false: retired, the record stays) */
+  current: boolean;
+  order: number;
+  era: string;
+  originalTitle: string;
+  creator: string;
+  dateDisplay: string;
+  dateKind: string;
+  scope: string;
+  originalLanguages: string[];
+  browseRegions: string[];
+  geographicNote: string;
+  englishState: string;
+  articleStatus: 'review' | 'published';
+  /** the article titles (variant titles, for search) */
+  titles: Localised;
+  editions: Edition[];
+  companions: { title: string; url: string; note: string; relationship: string }[];
+};
+
+/** The reading languages a curated work can be read in (an edition, or a text here), in the order es, pt, en. */
+export function readingLanguages(w: CanonWork): string[] {
+  const langs = new Set<string>([...(w.curated?.editions ?? []).map((e) => e.readingLang).filter(Boolean), ...w.texts.map((t) => t.lang)]);
+  return ['es', 'pt', 'en'].filter((l) => langs.has(l) && !(l === 'en' && w.curated?.englishState === 'suppressed_by_editor'));
+}
+
+/**
+ * Whether the translation appeal shows (the brief): only when no complete
+ * English translation is known (`not_found`, or `partial_only`: then it says
+ * no complete one was located), and none is hosted here or approved to be.
+ * Never where Beltrán left English out on purpose.
+ */
+export function translationAppeal(w: CanonWork): 'missing' | 'partial' | null {
+  const c = w.curated;
+  if (!c) return null;
+  if (w.texts.some((t) => t.lang === 'en') || c.editions.some((e) => e.readingLang === 'en' && e.hosted)) return null;
+  if (c.englishState === 'not_found') return 'missing';
+  if (c.englishState === 'partial_only') return 'partial';
+  return null;
+}
 
 /** A reference of a work, formatted for the reader by lib/cite.ts. */
 export type Reference = {
@@ -89,6 +168,9 @@ export type Reference = {
   url: string;
   accessed: string;
 };
+
+/** Folded for search: lower case, no accents ("Martí" finds "marti"). */
+export const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 /** "Title: subtitle" → the title, and the subtitle on its own line. */
 export function splitTitle(t: string): [string, string | undefined] {
@@ -107,6 +189,18 @@ const seed = (id: string) => {
 
 /** A small deterministic tilt in degrees (-1.6 … 1.6), so the cards sit like loose sheets. */
 export const tilt = (id: string) => Math.round(((seed(id) * 37) % 33) - 16) / 10;
+
+/* The Collaborate page (issue #93): /en/work-with-us#translations and
+   /es/colabora#traducciones, the addresses Beltrán's brief suggests (next.config.ts
+   serves /es/colabora from app/[lang]/work-with-us). The work an appeal came from
+   rides along as ?work=<slug>. */
+export const collabPath = (lang: Lang) => (lang === 'es' ? '/colabora' : '/work-with-us');
+export const collabAnchor = (lang: Lang) => (lang === 'es' ? 'traducciones' : 'translations');
+export const collabHref = (lang: Lang, slug?: string) =>
+  `/${lang}${collabPath(lang)}${slug ? `?work=${encodeURIComponent(slug)}` : ''}#${collabAnchor(lang)}`;
+
+/** Whether a work shows as one of the 80 to this reader: its article approved, or an editor looking. */
+export const showsCurated = (w: CanonWork, editor: boolean) => !!w.curated?.current && (editor || (w.status === 'published' && w.curated.articleStatus === 'published'));
 
 /** The work's card on the archive page (opens its record). */
 export const workHref = (lang: string, id: string) => `/${lang}/archive#${id}`;
