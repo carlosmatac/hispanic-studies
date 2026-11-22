@@ -248,6 +248,35 @@ a.adm-row:hover { background: var(--adm-field); }
   .adm-swatch-preview { display: none; }
 }
 
+/* the curated 80 (issue #93): the review page and the work form's part */
+.adm-era { margin-bottom: 18px; }
+.adm-era__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 12px; }
+.adm-era__head h2 { flex: 1 1 24ch; font-size: 22px; color: var(--burgundy); }
+.adm-curated .adm-row--static { grid-template-columns: 34px minmax(0, 1fr) auto auto; }
+.adm-curated__n { font-family: var(--mono); font-size: 13px; color: var(--leather); text-align: right; }
+.adm-curated__tools { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.adm-table-wrap { overflow-x: auto; margin-top: 12px; }
+.adm-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.adm-table th, .adm-table td { padding: 8px 10px; border-bottom: 1px solid var(--adm-line); text-align: left; vertical-align: top; }
+.adm-table th { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.adm-table a { color: var(--burgundy); }
+.adm-mono { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.adm-w80 .adm-subhead { grid-column: 1 / -1; margin: 10px 0 0; font-size: 17px; color: var(--burgundy); }
+.adm-w80 textarea { min-height: 9em; }
+.adm-checks { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 4px 0 0; padding: 0; border: 0; }
+.adm-checks label { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; cursor: pointer; }
+.adm-checks input { width: 18px; height: 18px; accent-color: var(--burgundy); }
+.adm-edition { border-left: 4px solid var(--adm-line); }
+.adm-edition.is-hosted { border-left-color: var(--burgundy); }
+.adm-edition__head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.adm-edition__head b { font-family: var(--mono); font-size: 12.5px; font-weight: 500; color: var(--ink-muted); }
+.adm-host { grid-column: 1 / -1; padding: 12px 14px; border: 1px dashed var(--adm-line); border-radius: var(--radius-s); background: color-mix(in srgb, var(--paper) 60%, white); }
+.adm-host.is-error { border-color: var(--adm-error); }
+@media (max-width: 760px) {
+  .adm-curated .adm-row--static { grid-template-columns: 28px minmax(0, 1fr); }
+  .adm-curated .adm-tag, .adm-curated__tools { grid-column: 2; justify-content: flex-start; justify-self: start; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .admin * { transition: none !important; scroll-behavior: auto !important; }
 }

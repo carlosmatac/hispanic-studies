@@ -3,15 +3,17 @@
 import React, { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveWork } from '@/app/admin/actions';
-import { LANGUAGES, RIGHTS, type Reference } from '@/lib/canon';
+import { isHostable, LANGUAGES, RIGHTS, type Reference } from '@/lib/canon';
 import { swatchStyle } from '@/lib/palette';
 import { renderMarkdown, renderTree } from '@/lib/text';
-import { suggestId, type WorkPayload } from '@/lib/admin/types';
+import { suggestId, type CuratedPayload, type WorkPayload } from '@/lib/admin/types';
 import { adminDict, type Lang } from '@/lib/i18n';
-import type { RegionRow, SectionRow } from '@/lib/admin/queries';
+import type { CuratedOptions, RegionRow, SectionRow } from '@/lib/admin/queries';
 import Citation from '@/components/canon/Citation';
 import TextEditor, { minutesFor, type TextEditorHandle } from './TextEditor';
 import ConfirmButton from './ConfirmButton';
+import Field from './Field';
+import CuratedFields from './CuratedFields';
 
 /* The form of a work: every field of its record, its text in Spanish and/or
    English (and in the original language when it is another), its references
@@ -32,26 +34,13 @@ type Props = {
   initial: WorkInitial;
   sections: SectionRow[];
   regions: RegionRow[];
+  /** the eras and browse regions of the curated 80 (issue #93) */
+  curatedOptions: CuratedOptions;
   deleteAction?: () => Promise<void>;
 };
 
 const emptyRef = (): Reference => ({ kind: 'book', author: '', title: '', container: '', edition: '', publisher: '', place: '', year: '', pages: '', url: '', accessed: '' });
 
-function Field({ label, help, error, children, wide, id }: { label: string; help?: string; error?: string; children: React.ReactElement<Record<string, unknown>>; wide?: boolean; id: string }) {
-  const helpId = help ? `${id}-help` : undefined;
-  const errId = error ? `${id}-err` : undefined;
-  const control = React.cloneElement(children, {
-    id, 'aria-invalid': error ? true : undefined, 'aria-describedby': [helpId, errId].filter(Boolean).join(' ') || undefined,
-  });
-  return (
-    <div className={`adm-field${wide ? ' adm-field--wide' : ''}${error ? ' is-error' : ''}`}>
-      <label className="adm-field__label" htmlFor={id}>{label}</label>
-      {control}
-      {help && <p className="adm-help" id={helpId}>{help}</p>}
-      {error && <p className="adm-field__error" id={errId}>{error}</p>}
-    </div>
-  );
-}
 
 /** "Draft (only you see it)": the part in brackets is dropped on a phone, where the bar is narrow. */
 const Two = ({ text }: { text: string }) => {
@@ -59,7 +48,7 @@ const Two = ({ text }: { text: string }) => {
   return m ? <>{m[1]}<span className="adm-wide-only"> {m[2]}</span></> : <>{text}</>;
 };
 
-export default function WorkForm({ lang, initial, sections, regions, deleteAction }: Props) {
+export default function WorkForm({ lang, initial, sections, regions, curatedOptions, deleteAction }: Props) {
   const t = adminDict(lang);
   const w = t.work;
   const router = useRouter();
@@ -92,6 +81,7 @@ export default function WorkForm({ lang, initial, sections, regions, deleteActio
     });
     setDirty(true);
   };
+  const setCurated = (c: CuratedPayload) => { setRec((r) => ({ ...r, c })); setDirty(true); };
   const text = (k: keyof typeof rec) => ({ value: String(rec[k] ?? ''), onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => set(k, e.target.value as never) });
 
   const onDirty = useCallback((l: string) => { setDirty(true); setDirtyTexts((s) => (s.has(l) ? s : new Set(s).add(l))); }, []);
@@ -185,6 +175,9 @@ export default function WorkForm({ lang, initial, sections, regions, deleteActio
         </Field>
       </fieldset>
 
+      <CuratedFields lang={lang} value={rec.c} onChange={setCurated} errors={errors} options={curatedOptions}
+        textLangs={textLangs.filter((l) => (dirtyTexts.has(l) ? wordsNow(l) > 0 : !!statFor(l)))} workId={rec.id} />
+
       <fieldset className="adm-card adm-grid">
         <legend>{w.rights}</legend>
         <Field id="f-rights" label={w.rights} help={w.rightsHelp} error={err('rights')} wide>
@@ -201,7 +194,7 @@ export default function WorkForm({ lang, initial, sections, regions, deleteActio
       <fieldset className="adm-card">
         <legend>{w.texts}</legend>
         <p className="adm-help">{w.textHelp}</p>
-        {rec.rights !== 'public-domain' && <p className="adm-msg adm-msg--warn">{w.textNotShown}</p>}
+        {!isHostable(rec.rights) && <p className="adm-msg adm-msg--warn">{w.textNotShown}</p>}
         <div className="adm-tabs" role="tablist" aria-label={w.texts}>
           {textLangs.map((l) => {
             const has = dirtyTexts.has(l) ? wordsNow(l) > 0 : !!statFor(l);
@@ -335,10 +328,18 @@ export default function WorkForm({ lang, initial, sections, regions, deleteActio
       )}
 
       <div className="adm-savebar" role="region" aria-label={t.common.save}>
+        {rec.c.curated ? (
+          // one of the 80: the article's review state decides (the record follows it; app/admin/actions.ts)
+          <div className="adm-savebar__status" role="radiogroup" aria-label={t.w80.status}>
+            <label><input type="radio" name="status" checked={rec.c.articleStatus !== 'published'} onChange={() => setCurated({ ...rec.c, articleStatus: 'review' })} /> <Two text={t.w80.review} /></label>
+            <label><input type="radio" name="status" checked={rec.c.articleStatus === 'published'} onChange={() => setCurated({ ...rec.c, articleStatus: 'published' })} /> <Two text={t.w80.publish} /></label>
+          </div>
+        ) : (
         <div className="adm-savebar__status" role="radiogroup" aria-label={w.status}>
           <label><input type="radio" name="status" checked={rec.status === 'draft'} onChange={() => set('status', 'draft')} /> <Two text={w.draft} /></label>
           <label><input type="radio" name="status" checked={rec.status === 'published'} onChange={() => set('status', 'published')} /> <Two text={w.published} /></label>
         </div>
+        )}
         <p className="adm-savebar__msg" role="status" aria-live="polite">
           {pending ? t.common.saving : message ? <span className={message.ok ? 'is-ok' : 'is-error'}>{message.text}</span> : dirty ? t.common.unsaved : ''}
         </p>

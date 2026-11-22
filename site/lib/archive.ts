@@ -89,8 +89,8 @@ async function load(includeDrafts: boolean): Promise<Archive> {
     // a text is shown when the work is in the U.S. public domain, or an edition in that language is approved to be hosted as HTML
     const approvedHtml = new Set(editions.filter((e) => e.hosted === 'inline_html').map((e) => e.readingLang));
     const texts = (textsOf.get(w.id) ?? []).filter((t) => isHostable(rights) || approvedHtml.has(t.lang));
-    const curated = w.canonId && w.eraId ? {
-      canonId: w.canonId,
+    const curated = w.eraId && (w.curated || w.canonId) ? {
+      canonId: w.canonId ?? '',
       slug: w.slug ?? w.id,
       current: w.curated,
       order: w.curatedOrder ?? 0,

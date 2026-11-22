@@ -7,8 +7,11 @@ export default async function PageCopyPage() {
   const { lang, t } = await adminText();
   const p = await getPageCopy();
   const [en, es] = [dict('en').canon, dict('es').canon];
+  const [en80, es80] = [dict('en').archive80, dict('es').archive80];
   // an empty field shows the site's own default, so there is always something to start from
   const copy = {
+    landingTitleEn: p?.landingTitleEn || en80.title, landingTitleEs: p?.landingTitleEs || es80.title,
+    landingIntroEn: p?.landingIntroEn || en80.intro, landingIntroEs: p?.landingIntroEs || es80.intro,
     titleEn: p?.titleEn || en.h, titleEs: p?.titleEs || es.h,
     introEn: p?.introEn || en.sub, introEs: p?.introEs || es.sub,
     notesEn: p?.notesEn || en.disclaimer, notesEs: p?.notesEs || es.disclaimer,
