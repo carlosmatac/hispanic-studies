@@ -838,6 +838,181 @@ main .eyebrow { color: var(--leather); }
 .ad-slot[hidden] { display: none; }
 
 /* ==========================================================================
+   THE CURATED 80 (issue #93): the archive's landing, a work's article and
+   editions, the Collaborate page. Same paper, burgundy titles, leather labels;
+   rounded, and glass only where a surface floats (the tools bar).
+   ========================================================================== */
+
+.a80-head h1 { max-width: 24ch; font-size: clamp(32px, 4.4vw, 60px); line-height: 1.04; }
+.a80-head__intro { margin-top: clamp(18px, 2.2vw, 28px); max-width: 72ch; }
+.a80-head__intro p { margin: 0 0 1em; font-size: clamp(16px, 1.1vw, 18.5px); line-height: 1.6; color: var(--ink); }
+.a80-head__intro p:first-child { font-family: var(--display); font-size: clamp(19px, 1.5vw, 23px); line-height: 1.45; }
+.a80-wrap { padding: 0 var(--edge) clamp(40px, 6vw, 90px); }
+.a80-empty { padding: 18px 22px; border: 1px dashed var(--grid); border-radius: var(--radius-m); color: var(--ink-muted); max-width: 70ch; }
+
+/* the search and filters: a glass bar, sticky under the header on wide screens */
+.a80-tools {
+  display: grid; gap: 14px 18px; align-items: end;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  padding: 16px 18px; margin-bottom: clamp(22px, 3vw, 34px);
+  border-radius: var(--radius-l); box-shadow: var(--glass-lit), var(--lift-1);
+}
+@media (min-width: 900px) { .a80-tools { position: sticky; top: calc(var(--bar-h) + 10px); z-index: 30; } }
+.a80-tools label, .a80-tools fieldset { display: grid; gap: 6px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.a80-tools__label { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); padding: 0; }
+.a80-tools input[type="search"], .a80-tools select {
+  width: 100%; min-height: 42px; padding: 9px 14px; font: inherit; font-size: 15px; color: var(--ink);
+  background: color-mix(in srgb, var(--paper-lit) 80%, transparent); border: 1px solid var(--grid); border-radius: var(--radius-pill);
+}
+.a80-tools input[type="search"]:focus-visible, .a80-tools select:focus-visible { outline: 2px solid var(--burgundy); outline-offset: 1px; }
+.a80-seg { display: flex; flex-wrap: wrap; gap: 4px; padding: 3px; border: 1px solid var(--grid); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--paper-lit) 70%, transparent); }
+.a80-seg label { display: block; position: relative; }
+.a80-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.a80-seg span { display: block; padding: 7px 13px; border-radius: var(--radius-pill); font-size: 13.5px; white-space: nowrap; }
+.a80-seg input:checked + span { background: var(--burgundy); color: var(--paper); }
+.a80-seg input:focus-visible + span { outline: 2px solid var(--burgundy); outline-offset: 2px; }
+.a80-tools__count { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; margin: 0; font-family: var(--mono); font-size: 12px; color: var(--ink-muted); max-width: none; }
+.a80-tools__clear { padding: 3px 12px; border: 1px solid var(--grid); border-radius: var(--radius-pill); background: none; font-family: var(--body); font-size: 12.5px; cursor: pointer; }
+.a80-tools__clear:hover { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+@media (max-width: 899px) {
+  .a80-tools { grid-template-columns: 1fr; }
+}
+
+/* the eras: an index, then one block each */
+.a80-index { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(26px, 3.4vw, 44px); }
+.a80-index a {
+  display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 15px 8px 13px; max-width: 100%;
+  border: 1px solid var(--grid); border-radius: var(--radius-pill); text-decoration: none; background: var(--paper);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.a80-index a:hover { background: var(--burgundy); color: var(--paper); border-color: var(--burgundy); }
+.a80-index a[aria-disabled] { opacity: 0.45; }
+.a80-index__n { font-family: var(--mono); font-size: 11px; color: var(--leather); }
+.a80-index a:hover .a80-index__n { color: inherit; }
+.a80-index__name { font-family: var(--display); font-weight: 600; font-size: 15.5px; line-height: 1.2; }
+.a80-era { padding: 0; margin: 0 0 clamp(36px, 5vw, 64px); scroll-margin-top: calc(var(--bar-h) + 16px); }
+.a80-era[hidden] { display: none; }
+.a80-era__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding-bottom: 14px; margin-bottom: clamp(18px, 2.4vw, 28px); border-bottom: 1px solid var(--grid); }
+.a80-era__n { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 3vw, 42px); line-height: 1; color: var(--leather); }
+.a80-era__head h2 { flex: 1 1 24ch; font-size: clamp(22px, 2.4vw, 34px); line-height: 1.1; color: var(--burgundy); }
+.a80-era__meta { font-family: var(--mono); font-size: 11.5px; color: var(--ink-muted); }
+
+/* a work: a rounded card on the paper, bound in its region's colour, its number on the binding */
+.a80-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+.a80-entry { scroll-margin-top: calc(var(--bar-h) + 120px); }
+.a80-entry[hidden] { display: none; }
+.a80-entry > a {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr); height: 100%; text-decoration: none; overflow: hidden;
+  background: color-mix(in srgb, var(--paper-lit) 55%, var(--paper)); border: 1px solid var(--grid-light); border-radius: var(--radius-l);
+  box-shadow: var(--lift-1); transition: box-shadow 0.35s, translate 0.35s, border-color 0.2s;
+}
+.a80-entry > a:hover { box-shadow: var(--lift-2); border-color: var(--grid); }
+@media (prefers-reduced-motion: no-preference) { .a80-entry > a:hover { translate: 0 -3px; } }
+.a80-entry > a:focus-visible { outline: 2px solid var(--burgundy); outline-offset: 3px; }
+.a80-entry.is-marked > a { outline: 2px solid var(--burgundy); outline-offset: 3px; box-shadow: var(--lift-2); }
+.a80-entry__bind { display: flex; justify-content: center; padding-top: 16px; background: var(--bg); color: var(--fg); }
+.a80-entry__bind span { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--accent); }
+.a80-entry__body { display: grid; align-content: start; gap: 5px; padding: 15px 18px 16px; }
+.a80-entry__date { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.02em; color: var(--leather); }
+.a80-entry__title { font-family: var(--display); font-style: italic; font-weight: 600; font-size: clamp(18px, 1.35vw, 21px); line-height: 1.15; color: var(--burgundy); text-wrap: balance; overflow-wrap: break-word; }
+.a80-entry__creator { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.35; }
+.a80-entry__tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.a80-tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--grid); border-radius: var(--radius-pill); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; color: var(--ink-muted); text-decoration: none; }
+.a80-tag--here { border-color: var(--burgundy); color: var(--burgundy); }
+.a80-tag--review { border-style: dashed; border-color: var(--leather); color: var(--leather); }
+.a80-none { padding: 18px 0; color: var(--ink-muted); }
+.a80-legend { margin: clamp(8px, 2vw, 20px) 0 0; }
+.a80-legend figcaption { margin-bottom: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+.a80-legend ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; }
+.a80-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.a80-legend__swatch { width: 14px; height: 18px; border-radius: 4px; background: var(--bg); outline: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); outline-offset: -1px; }
+.a80-more { padding-top: clamp(30px, 5vw, 70px); }
+.a80-more h2 { color: var(--burgundy); }
+
+/* a work of the 80 (its <section>s are parts of one column, not page sections: no section padding) */
+.w80 { --col: calc(var(--read-size) * 32); }
+.w80 section { padding: 0; }
+.w80 .reader__head, .w80-articlewrap, .w80-read, .w80-sources, .w80-pdf { max-width: var(--col); margin-inline: auto; }
+.w80-head__n { margin: 0 auto 10px; font-family: var(--mono); font-size: 12px; color: var(--leather); }
+.w80-title { max-width: 20ch; font-size: clamp(32px, 5vw, 60px); }
+.w80-articlewrap { margin-top: clamp(26px, 4vw, 44px); }
+.w80-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: clamp(18px, 2.6vw, 28px); }
+.w80-switch__label { margin-right: 8px; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+.w80-switch a { padding: 6px 15px; border: 1px solid var(--grid); border-radius: var(--radius-pill); font-size: 13.5px; text-decoration: none; background: var(--paper); }
+.w80-switch a[aria-selected="true"] { background: var(--burgundy); border-color: var(--burgundy); color: var(--paper); }
+.w80-switch a:hover:not([aria-selected="true"]) { border-color: var(--burgundy); color: var(--burgundy); }
+.w80-section + .w80-section { margin-top: clamp(26px, 3.4vw, 40px); }
+.w80-section h2 { margin-bottom: 12px; font-size: clamp(21px, 2vw, 27px); color: var(--burgundy); }
+.w80-prose .reader__text { max-width: none; }
+.w80-prose .reader__text p { margin: 0 0 0.8em; text-indent: 0; }
+
+/* "Read the text": the editions by language */
+.w80 .w80-read { margin-top: clamp(40px, 6vw, 72px); padding-top: clamp(22px, 3vw, 32px); border-top: var(--rule); scroll-margin-top: calc(var(--bar-h) + 16px); }
+.w80-read > h2 { margin-bottom: clamp(16px, 2.4vw, 24px); font-size: clamp(24px, 2.6vw, 34px); color: var(--burgundy); }
+.w80-read__none { color: var(--ink-muted); }
+.w80-groups { display: grid; gap: 16px; }
+.w80-group { padding: clamp(16px, 2vw, 22px); border: 1px solid var(--grid-light); border-radius: var(--radius-l); background: color-mix(in srgb, var(--paper-lit) 55%, var(--paper)); box-shadow: var(--lift-1); }
+.w80-group h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 12px; font-size: 21px; color: var(--burgundy); }
+.w80-group h3 span { font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--leather); }
+.w80-eds { list-style: none; margin: 0; padding: 0; display: grid; }
+.w80-ed { display: grid; gap: 3px; padding: 12px 0; border-top: 1px solid var(--grid-light); }
+.w80-ed:first-child { border-top: 0; padding-top: 0; }
+.w80-ed:last-child { padding-bottom: 0; }
+.w80-ed p { margin: 0; max-width: none; }
+.w80-ed__access { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+.w80-ed--primary .w80-ed__access { color: var(--burgundy); }
+.w80-ed__label { font-size: 15px; line-height: 1.45; overflow-wrap: anywhere; }
+.w80-ed__scope { font-family: var(--display); font-style: italic; font-size: 16px; }
+.w80-ed__by { font-size: 13.5px; color: var(--ink-muted); }
+.w80-ed p.w80-ed__go { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.w80-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; min-height: 40px;
+  border: 1px solid var(--burgundy); border-radius: var(--radius-pill); background: var(--burgundy); color: var(--paper);
+  font-size: 14px; font-weight: 500; line-height: 1.25; text-decoration: none; box-shadow: var(--lift-1); transition: background 0.15s, color 0.15s;
+}
+.w80-btn:hover { background: var(--burgundy-dark); }
+.w80-btn--quiet { background: transparent; color: var(--burgundy); box-shadow: none; }
+.w80-btn--quiet:hover { background: color-mix(in srgb, var(--burgundy) 10%, transparent); }
+.w80-appeal { margin: 16px 0 0; padding: 14px 18px; border: 1px dashed var(--leather); border-radius: var(--radius-m); font-family: var(--display); font-size: 18px; line-height: 1.45; max-width: none; }
+.w80-appeal a { color: var(--burgundy); font-weight: 600; }
+.w80 .w80-sources { margin-top: clamp(26px, 3.4vw, 40px); padding-top: 18px; border-top: var(--rule); font-size: 14.5px; }
+.w80-sources h2 { margin-bottom: 12px; font-family: var(--body); font-size: 12px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+.w80-sources ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.w80-sources li { display: grid; gap: 2px; }
+.w80-sources__lang { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--leather); }
+.w80-sources a { color: var(--burgundy); overflow-wrap: anywhere; text-underline-offset: 3px; }
+.w80-companions__note { margin-bottom: 10px; color: var(--ink-muted); font-size: 13.5px; }
+.w80-companions__what { color: var(--ink-muted); font-size: 13.5px; }
+.w80 .w80-text { margin-top: clamp(40px, 6vw, 72px); padding-top: clamp(22px, 3vw, 32px); border-top: var(--rule); scroll-margin-top: calc(var(--bar-h) + 16px); }
+.w80-text .reader__meta { text-align: center; }
+.w80-text .reader__toc { max-width: var(--col); margin-inline: auto; }
+.w80 .w80-pdf { margin-top: clamp(40px, 6vw, 72px); padding-top: 22px; border-top: var(--rule); scroll-margin-top: calc(var(--bar-h) + 16px); }
+.w80-pdf h2 { font-size: clamp(20px, 2vw, 26px); color: var(--burgundy); margin-bottom: 8px; }
+.w80-pdf__hint { font-size: 13.5px; color: var(--ink-muted); }
+.w80-pdf__frame { display: block; width: 100%; height: min(85vh, 1000px); border: 1px solid var(--grid); border-radius: var(--radius-m); background: var(--paper-deep); }
+.w80-pdf__frame:focus-visible { outline: 2px solid var(--burgundy); outline-offset: 3px; }
+.w80-pdf__fallback { padding: 24px; }
+.w80-pdf__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+/* the Collaborate page */
+.collab__grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); padding: 0 var(--edge) clamp(52px, 7vw, 104px); }
+.collab__card {
+  position: relative; display: grid; align-content: start; gap: 4px; padding: clamp(22px, 2.6vw, 32px);
+  border: 1px solid var(--grid-light); border-radius: var(--radius-l); background: color-mix(in srgb, var(--paper-lit) 55%, var(--paper)); box-shadow: var(--lift-1);
+  scroll-margin-top: calc(var(--bar-h) + 16px);
+}
+.collab__card:target { outline: 2px solid var(--burgundy); outline-offset: 4px; }
+.collab__n { font-family: var(--display); font-weight: 600; font-size: 30px; line-height: 1; color: var(--leather); }
+.collab__card h2 { margin: 8px 0 10px; font-size: clamp(24px, 2.4vw, 32px); color: var(--burgundy); }
+.collab__card h3 { margin: 12px 0 8px; font-size: 18px; }
+.collab__card .pending { justify-self: start; margin-top: 6px; }
+.collab__note { font-size: 14px; color: var(--leather); }
+.collab__go { justify-self: start; display: inline-flex; align-items: center; gap: 10px; margin-top: 10px; }
+.collab__go svg { width: 18px; height: 18px; fill: currentColor; }
+.page-head .collab__from { margin-top: 18px; padding: 10px 16px; display: inline-block; border: 1px solid var(--grid); border-radius: var(--radius-pill); font-size: 14px; color: var(--ink); }
+.collab__from a { color: var(--burgundy); }
+
+/* ==========================================================================
    WATCH, READ
    ========================================================================== */
 

@@ -1,5 +1,49 @@
 import { and, asc, count, desc, eq, notInArray, sql } from 'drizzle-orm';
 import { getDb, schema } from '@/lib/db';
+import { hostedMode } from '@/lib/editions';
+
+/** The curated 80 (issue #93) for the review page: by era, in Beltrán's order, with their editions' state and the hosting queue. */
+export async function listCurated() {
+  const db = getDb();
+  const [eras, works, editions, texts] = await Promise.all([
+    db.select().from(schema.eras).orderBy(asc(schema.eras.position)),
+    db.select({
+      id: schema.works.id, title: schema.works.title, originalTitle: schema.works.originalTitle, creator: schema.works.creator,
+      dateDisplay: schema.works.dateDisplay, eraId: schema.works.eraId, order: schema.works.curatedOrder, canonId: schema.works.canonId,
+      articleStatus: schema.works.articleStatus, status: schema.works.status, legacyRecord: schema.works.legacyRecord,
+      reviewedBy: schema.works.reviewedBy, reviewedAt: schema.works.reviewedAt,
+    }).from(schema.works).where(eq(schema.works.curated, true)).orderBy(asc(schema.works.curatedOrder)),
+    db.select().from(schema.editions).orderBy(asc(schema.editions.workId), asc(schema.editions.position)),
+    db.select({ workId: schema.workTexts.workId, lang: schema.workTexts.lang }).from(schema.workTexts),
+  ]);
+  const ids = new Set(works.map((w) => w.id));
+  const rows = works.map((w) => ({
+    ...w,
+    reviewedAt: w.reviewedAt?.toISOString() ?? null,
+    editions: editions.filter((e) => e.workId === w.id).length,
+    hosted: texts.some((t) => t.workId === w.id) || editions.some((e) => e.workId === w.id && hostedMode(e)),
+  }));
+  const queue = editions
+    .filter((e) => ids.has(e.workId) && (e.deliveryPlan === 'html_candidate' || e.deliveryPlan === 'pdf_candidate'))
+    .map((e) => {
+      const w = works.find((x) => x.id === e.workId)!;
+      return { id: e.id, workId: e.workId, work: `${w.creator}, ${w.originalTitle}`, order: w.order ?? 0, lang: e.readingLang || (e.languages ?? []).join('+'), plan: e.deliveryPlan, year: e.publicationYear, hosted: !!hostedMode(e) };
+    })
+    .sort((a, b) => a.order - b.order);
+  return { eras: eras.map((e) => ({ id: e.id, nameEn: e.nameEn, nameEs: e.nameEs, yearFrom: e.yearFrom, yearTo: e.yearTo })), works: rows, queue };
+}
+export type CuratedList = Awaited<ReturnType<typeof listCurated>>;
+
+/** The eras and the regions to browse by, for the work form. */
+export async function listCuratedOptions() {
+  const db = getDb();
+  const [eras, regions] = await Promise.all([
+    db.select({ id: schema.eras.id, nameEn: schema.eras.nameEn, nameEs: schema.eras.nameEs }).from(schema.eras).orderBy(asc(schema.eras.position)),
+    db.select({ id: schema.browseRegions.id, nameEn: schema.browseRegions.nameEn, nameEs: schema.browseRegions.nameEs }).from(schema.browseRegions).orderBy(asc(schema.browseRegions.position)),
+  ]);
+  return { eras, regions };
+}
+export type CuratedOptions = Awaited<ReturnType<typeof listCuratedOptions>>;
 
 /* What the back office's pages read (never cached: it always shows the database as it is). */
 
@@ -10,6 +54,7 @@ export async function listWorks() {
       id: schema.works.id, title: schema.works.title, author: schema.works.author, year: schema.works.year,
       sectionId: schema.works.sectionId, regionId: schema.works.regionId, status: schema.works.status, rights: schema.works.rights,
       updatedAt: schema.works.updatedAt, updatedBy: schema.works.updatedBy,
+      curated: schema.works.curated, curatedOrder: schema.works.curatedOrder,
     }).from(schema.works).orderBy(asc(schema.works.year), asc(schema.works.id)),
     db.select({ workId: schema.workTexts.workId, lang: schema.workTexts.lang }).from(schema.workTexts),
   ]);

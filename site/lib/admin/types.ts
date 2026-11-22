@@ -1,5 +1,71 @@
-import type { Link } from '@/lib/db/schema';
+import type { Companion, Link } from '@/lib/db/schema';
 import type { Reference, Rights } from '@/lib/canon';
+
+/* An edition as the work form edits it (numbers as text). */
+export type EditionPayload = {
+  id: string;
+  readingLang: string;
+  primary: boolean;
+  /** "es, la" */
+  languages: string;
+  extent: string;
+  url: string;
+  label: string;
+  sourceName: string;
+  translator: string;
+  scopeNote: string;
+  citation: string;
+  publicationYear: string;
+  scopeCheck: string;
+  deliveryPlan: string;
+  usHostingBasis: string;
+  renderMode: string;
+  rightsApproved: boolean;
+  rightsBasis: string;
+  rightsEvidence: string;
+  completeSpan: string;
+  approvedBy: string;
+  approvedOn: string;
+  pdfUrl: string;
+};
+
+export type ArticlePayload = { locale: string; title: string; aboutAuthor: string; workInItsTime: string; whyReadToday: string };
+
+/* A work's place in the curated 80 (issue #93), as the work form edits it. */
+export type CuratedPayload = {
+  curated: boolean;
+  canonId: string;
+  slug: string;
+  curatedOrder: string;
+  eraId: string;
+  originalTitle: string;
+  creator: string;
+  dateDisplay: string;
+  dateKind: string;
+  scope: string;
+  originalLanguages: string[];
+  browseRegionIds: string[];
+  geographicNote: string;
+  englishState: string;
+  editionNotes: string;
+  companions: Companion[];
+  articleStatus: 'review' | 'published';
+  legacyRecord: boolean;
+  articles: ArticlePayload[];
+  editions: EditionPayload[];
+};
+
+export const blankCurated = (): CuratedPayload => ({
+  curated: false, canonId: '', slug: '', curatedOrder: '', eraId: '', originalTitle: '', creator: '', dateDisplay: '', dateKind: 'publication', scope: 'work',
+  originalLanguages: [], browseRegionIds: [], geographicNote: '', englishState: 'not_found', editionNotes: '', companions: [], articleStatus: 'review', legacyRecord: false,
+  articles: [], editions: [],
+});
+
+export const blankEdition = (): EditionPayload => ({
+  id: '', readingLang: 'es', primary: false, languages: '', extent: 'complete_html', url: '', label: '', sourceName: '', translator: '', scopeNote: '', citation: '',
+  publicationYear: '', scopeCheck: '', deliveryPlan: 'external_link', usHostingBasis: '', renderMode: 'external_link',
+  rightsApproved: false, rightsBasis: '', rightsEvidence: '', completeSpan: '', approvedBy: '', approvedOn: '', pdfUrl: '',
+});
 
 /* What the work form sends to the server (app/admin/actions.ts saveWork). */
 export type WorkPayload = {
@@ -37,6 +103,8 @@ export type WorkPayload = {
   references: Reference[];
   /** only the texts that changed, as Markdown; an empty body removes that language */
   texts: { lang: string; body: string }[];
+  /** its place in the curated 80 (issue #93) */
+  c: CuratedPayload;
 };
 
 export type SaveResult =

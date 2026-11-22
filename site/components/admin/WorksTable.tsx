@@ -77,6 +77,7 @@ export default function WorksTable({ lang, works, sections, regions }: {
                   </span>
                   <span className="adm-row__flags">
                     {w.texts.length ? <span className="adm-tag">{w.texts.map((l) => l.toUpperCase()).join(' · ')}</span> : <span className="adm-tag adm-tag--quiet">{t.noText}</span>}
+                    {w.curated && <span className="adm-tag" title={adminDict(lang).curated.h}>80{w.curatedOrder ? ` · ${w.curatedOrder}` : ''}</span>}
                     {w.status === 'draft' && <span className="adm-tag adm-tag--draft">{t.draft}</span>}
                   </span>
                 </a>

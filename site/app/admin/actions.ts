@@ -4,8 +4,10 @@ import { cookies, draftMode, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { and, count, desc, eq, gt, inArray, lt, notInArray, sql } from 'drizzle-orm';
 import { getDb, schema } from '@/lib/db';
-import { readWork, writeWork, type BackupWork } from '@/lib/backup';
+import { readWork, writeWork, type BackupEdition, type BackupWork, type StoredWork } from '@/lib/backup';
 import { RIGHTS, LANGUAGES } from '@/lib/canon';
+import { EXTENTS, hostingProblems } from '@/lib/editions';
+import type { AdminDict } from '@/lib/i18n';
 import { SWATCHES } from '@/lib/palette';
 import { isLang } from '@/lib/i18n';
 import { countWords, readingMinutes } from '@/lib/text';
@@ -13,7 +15,7 @@ import { dummyHash, hashPassword, PASSWORD_MIN, verifyPassword } from '@/lib/adm
 import { clearSessionCookie, requireSession, setSessionCookie } from '@/lib/admin/session';
 import { adminText, LANG_COOKIE } from '@/lib/admin/lang';
 import { refreshSite } from '@/lib/admin/revalidate';
-import { ID_PATTERN, slug, type FormState, type SaveResult, type WorkPayload } from '@/lib/admin/types';
+import { ID_PATTERN, slug, type CuratedPayload, type FormState, type SaveResult, type WorkPayload } from '@/lib/admin/types';
 
 /* Everything the back office changes goes through here. Every action but the
    sign-in checks the session first (requireSession); every change to the
@@ -129,6 +131,13 @@ export async function saveWork(p: WorkPayload): Promise<SaveResult> {
   const before = await readWork(db, id);
   if (p.isNew && before) fields.id = w.idTaken;
   if (!p.isNew && !before) return { ok: false, message: t.common.error };
+
+  // the curated 80 (issue #93): only for a work that is, or was, one of them
+  const textLangsAfter = new Set((before?.texts ?? []).map((x) => x.lang));
+  for (const x of p.texts) { if (x.body.trim()) textLangsAfter.add(x.lang); else textLangsAfter.delete(x.lang); }
+  const curatedPart = p.c && (p.c.curated || before?.canonId || before?.curated)
+    ? await curatedRecord(id, p.c, before, textLangsAfter, fields, t, me.username, p.status, title, clean(p.author))
+    : null;
   if (Object.keys(fields).length) return { ok: false, message: w.errors, fields };
 
   const record: Omit<BackupWork, 'texts' | 'references' | 'createdAt' | 'updatedAt'> = {
@@ -160,7 +169,7 @@ export async function saveWork(p: WorkPayload): Promise<SaveResult> {
     if (before) {
       await tx.insert(schema.revisions).values({ workId: id, action: 'update', title: before.title, snapshot: before, createdBy: me.username });
     }
-    await writeWork(tx, { ...record, references, texts: p.texts.map((x) => ({ lang: x.lang, body: x.body.trim() ? x.body : null })) }, { replaceTexts: false });
+    await writeWork(tx, { ...record, ...(curatedPart ?? {}), references, texts: p.texts.map((x) => ({ lang: x.lang, body: x.body.trim() ? x.body : null })) }, { replaceTexts: false });
   });
   await pruneRevisions(id);
   refreshSite();
@@ -334,10 +343,160 @@ export async function deleteRegion(id: string): Promise<FormState> {
 export async function savePage(_: FormState, form: FormData): Promise<FormState> {
   const me = await requireSession();
   const { t } = await adminText();
-  const keys = ['titleEn', 'titleEs', 'introEn', 'introEs', 'notesEn', 'notesEs', 'doorEn', 'doorEs'] as const;
+  const keys = ['titleEn', 'titleEs', 'introEn', 'introEs', 'notesEn', 'notesEs', 'doorEn', 'doorEs', 'landingTitleEn', 'landingTitleEs', 'landingIntroEn', 'landingIntroEs'] as const;
   const values = Object.fromEntries(keys.map((k) => [k, clean(form.get(k))])) as Record<(typeof keys)[number], string>;
   await getDb().insert(schema.archivePage).values({ id: 1, ...values, updatedBy: me.username })
     .onConflictDoUpdate({ target: schema.archivePage.id, set: { ...values, updatedBy: me.username, updatedAt: new Date() } });
+  refreshSite();
+  return { ok: true, message: t.common.saved };
+}
+
+/* ---------------- the curated 80 (issue #93) ---------------- */
+
+const ENGLISH_STATES = ['known_edition', 'not_found', 'partial_only', 'suppressed_by_editor'];
+const DATE_KINDS = ['publication', 'composition', 'delivery', 'enactment', 'manuscript', 'signature', 'document_date'];
+const SCOPES = ['work', 'document', 'paired_documents', 'bounded_section', 'chapter'];
+const RENDER = ['external_link', 'bibliographic_link', 'inline_html', 'local_pdf'];
+const PLANS = ['external_link', 'html_candidate', 'pdf_candidate', 'reference_only'];
+
+/**
+ * The curated-80 part of a saved work: checked, and shaped for writeWork. Marks
+ * what is wrong in `fields`. Hosting an edition is refused unless its approval
+ * passes every check of lib/editions.ts (U.S. law), and an HTML edition needs
+ * the text in its language. The article's review state decides the record's:
+ * published together; back in review, a work new with the 80 goes back to draft
+ * (one that was public before keeps its old record).
+ */
+async function curatedRecord(
+  id: string, c: CuratedPayload, before: StoredWork | null, textLangs: Set<string>, fields: Record<string, string>,
+  T: AdminDict, user: string, status: 'draft' | 'published', title: string, author: string,
+): Promise<Partial<BackupWork>> {
+  const db = getDb();
+  const t = T.w80;
+  const order = clean(c.curatedOrder);
+  const orderNum = order ? Number(order) : null;
+  if (c.curated) {
+    const [era] = c.eraId ? await db.select({ id: schema.eras.id }).from(schema.eras).where(eq(schema.eras.id, c.eraId)) : [];
+    if (!era) fields['c.eraId'] = T.work.fieldRequired;
+    if (orderNum == null || !Number.isInteger(orderNum) || orderNum < 1 || orderNum > 999) fields['c.curatedOrder'] = t.orderBad;
+  }
+  // Beltrán's number and address never change once set: links and the import rely on them
+  const canonId = before?.canonId ?? (clean(c.canonId) || null);
+  const slugValue = before?.slug ?? (clean(c.slug).toLowerCase() || null);
+  if (slugValue && !before?.slug) {
+    if (!ID_PATTERN.test(slugValue)) fields['c.slug'] = t.slugTaken;
+    const [other] = await db.select({ id: schema.works.id }).from(schema.works)
+      .where(and(sql`${schema.works.id} <> ${id}`, sql`(${schema.works.slug} = ${slugValue} or ${schema.works.id} = ${slugValue})`));
+    if (other) fields['c.slug'] = t.slugTaken;
+  }
+  if (canonId && !before?.canonId) {
+    const [other] = await db.select({ id: schema.works.id }).from(schema.works).where(and(eq(schema.works.canonId, canonId), sql`${schema.works.id} <> ${id}`));
+    if (other) fields['c.canonId'] = t.canonTaken;
+  }
+  const editions: BackupEdition[] = c.editions.map((e, i) => {
+    const url = clean(e.url);
+    if (!okUrl(url)) fields[`ed.${i}.url`] = T.work.badUrl;
+    const year = clean(e.publicationYear);
+    if (year && Number.isNaN(yearOf(year))) fields[`ed.${i}.year`] = T.work.badYear;
+    const row: BackupEdition = {
+      id: clean(e.id) || `${id}-e${Math.random().toString(36).slice(2, 8)}`,
+      position: i,
+      readingLang: ['es', 'pt', 'en'].includes(e.readingLang) ? e.readingLang : '',
+      primary: !!e.primary,
+      languages: e.languages.split(/[,\s]+/).map((l) => l.trim().toLowerCase()).filter(Boolean),
+      extent: (EXTENTS as readonly string[]).includes(e.extent) ? e.extent : 'edition_record',
+      url,
+      label: clean(e.label), sourceName: clean(e.sourceName), translator: clean(e.translator), scopeNote: clean(e.scopeNote), citation: clean(e.citation),
+      publicationYear: year && !Number.isNaN(yearOf(year)) ? yearOf(year) : null,
+      scopeCheck: clean(e.scopeCheck),
+      deliveryPlan: PLANS.includes(e.deliveryPlan) ? e.deliveryPlan : 'external_link',
+      usHostingBasis: clean(e.usHostingBasis),
+      renderMode: (RENDER.includes(e.renderMode) ? e.renderMode : 'external_link') as BackupEdition['renderMode'],
+      rightsApproved: !!e.rightsApproved, rightsBasis: clean(e.rightsBasis), rightsEvidence: clean(e.rightsEvidence), completeSpan: clean(e.completeSpan),
+      approvedBy: clean(e.approvedBy), approvedOn: clean(e.approvedOn), pdfUrl: clean(e.pdfUrl),
+    };
+    const problems = hostingProblems(row).map((k) => t.hostProblems[k]);
+    if (row.renderMode === 'inline_html' && !textLangs.has(row.readingLang)) problems.push(t.hostProblems.text);
+    if (problems.length) fields[`ed.${i}.host`] = problems.join(' ');
+    return row;
+  });
+  const articles = c.articles
+    .filter((a) => a.locale === 'es' || a.locale === 'en')
+    .map((a) => ({ locale: a.locale, title: clean(a.title), aboutAuthor: String(a.aboutAuthor ?? '').trim(), workInItsTime: String(a.workInItsTime ?? '').trim(), whyReadToday: String(a.whyReadToday ?? '').trim() }));
+  const legacy = before?.legacyRecord ?? false;
+  const publish = c.curated && c.articleStatus === 'published';
+  const wasPublished = before?.articleStatus === 'published';
+  return {
+    canonId, slug: slugValue, curated: !!c.curated, curatedOrder: orderNum, eraId: c.eraId || before?.eraId || null,
+    originalTitle: clean(c.originalTitle) || title, creator: clean(c.creator) || author, dateDisplay: clean(c.dateDisplay),
+    dateKind: DATE_KINDS.includes(c.dateKind) ? c.dateKind : '', scope: SCOPES.includes(c.scope) ? c.scope : '',
+    originalLanguages: c.originalLanguages.filter((l) => LANGUAGES.some((x) => x.id === l)),
+    browseRegionIds: c.browseRegionIds, geographicNote: clean(c.geographicNote),
+    englishState: ENGLISH_STATES.includes(c.englishState) ? c.englishState : '', editionNotes: String(c.editionNotes ?? '').trim(),
+    companions: c.companions.map((x) => ({ title: clean(x.title), url: clean(x.url), note: clean(x.note), relationship: clean(x.relationship) || 'separate_work' })).filter((x) => x.title || x.url),
+    articleStatus: publish ? 'published' : 'review',
+    legacyRecord: legacy,
+    ...(publish && !wasPublished ? { reviewedBy: user, reviewedAt: new Date().toISOString() } : {}),
+    // the record follows the article (see above); outside the 80 it keeps its own state
+    ...(c.curated ? { status: publish ? 'published' as const : legacy ? status : 'draft' as const } : {}),
+    articles,
+    editions,
+  };
+}
+
+/**
+ * Approve and publish (or send back to review) curated works: one, or every one
+ * still in review in an era. Each change keeps the version before in the work's
+ * history. Publishing shows the article and the record; back in review, a work
+ * new with the 80 returns to draft, one that was public before keeps its record.
+ */
+export async function setArticleStatus(ids: string[], to: 'published' | 'review') {
+  const me = await requireSession();
+  const db = getDb();
+  let n = 0;
+  await db.transaction(async (tx) => {
+    for (const id of ids) {
+      const before = await readWork(tx, id);
+      if (!before || !before.curated) continue;
+      if (to === 'published' && before.articleStatus === 'published' && before.status === 'published') continue;
+      if (to === 'review' && before.articleStatus === 'review') continue;
+      await tx.insert(schema.revisions).values({ workId: id, action: 'update', title: before.title, snapshot: before, createdBy: me.username });
+      await tx.update(schema.works).set(to === 'published'
+        ? { articleStatus: 'published', status: 'published', reviewedBy: me.username, reviewedAt: new Date(), updatedAt: new Date(), updatedBy: me.username }
+        : { articleStatus: 'review', status: before.legacyRecord ? before.status : 'draft', updatedAt: new Date(), updatedBy: me.username })
+        .where(eq(schema.works.id, id));
+      n++;
+    }
+  });
+  for (const id of ids) await pruneRevisions(id);
+  if (n) refreshSite();
+  return { ok: true, n };
+}
+
+/** Approve and publish every work of an era that is still in review. */
+export async function approveEra(eraId: string) {
+  await requireSession();
+  const rows = await getDb().select({ id: schema.works.id }).from(schema.works)
+    .where(and(eq(schema.works.eraId, eraId), eq(schema.works.curated, true), eq(schema.works.articleStatus, 'review')));
+  return setArticleStatus(rows.map((r) => r.id), 'published');
+}
+
+/** Rename an era (its order and works come from Beltrán's list). */
+export async function saveEra(_: FormState, form: FormData): Promise<FormState> {
+  await requireSession();
+  const { t } = await adminText();
+  const id = String(form.get('id') ?? '');
+  const nameEn = clean(form.get('nameEn'));
+  const nameEs = clean(form.get('nameEs'));
+  const yearFrom = n(form.get('yearFrom'));
+  const yearTo = n(form.get('yearTo'));
+  const fields: Record<string, string> = {};
+  if (!nameEn) fields.nameEn = t.work.fieldRequired;
+  if (!nameEs) fields.nameEs = t.work.fieldRequired;
+  if (yearFrom != null && Number.isNaN(yearFrom)) fields.yearFrom = t.work.badYear;
+  if (yearTo != null && Number.isNaN(yearTo)) fields.yearTo = t.work.badYear;
+  if (Object.keys(fields).length) return { message: t.work.errors, fields, values: { nameEn, nameEs, yearFrom: String(form.get('yearFrom') ?? ''), yearTo: String(form.get('yearTo') ?? '') } };
+  await getDb().update(schema.eras).set({ nameEn, nameEs, yearFrom, yearTo, updatedAt: new Date() }).where(eq(schema.eras.id, id));
   refreshSite();
   return { ok: true, message: t.common.saved };
 }
