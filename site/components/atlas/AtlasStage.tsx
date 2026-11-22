@@ -404,18 +404,45 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       let lastI = -1;
       stops.forEach((s, i) => { if (s.chapter === c) lastI = i; });
       if (first < 0) return null;
-      return { c, name, first, x0: first / N, x1: (lastI + 1) / N, from: yearLabel(CHAPTER_STARTS[c], lang), mark: true };
-    }).filter((x): x is NonNullable<typeof x> => !!x)
-      // a chapter's year is written only where it has room
-      .map((x, k, all) => ({ ...x, k, all }))
-      .reduce<{ out: { c: number; name: string; first: number; x0: number; x1: number; from: string; mark: boolean }[]; lastX: number }>((acc, x) => {
-        const gap = wide ? 0.1 : 0.2;
-        const mark = x.x0 - acc.lastX >= gap && (x.k === x.all.length - 1 ? 1 - x.x0 > gap / 2 : true);
-        acc.out.push({ c: x.c, name: x.name, first: x.first, x0: x.x0, x1: x.x1, from: x.from, mark });
-        if (mark) acc.lastX = x.x0;
-        return acc;
-      }, { out: [], lastX: -1 }).out;
-  }, [timeline, stops, t.chapters, lang, N, wide]);
+      return { c, name, first, x0: first / N, x1: (lastI + 1) / N, from: yearLabel(CHAPTER_STARTS[c], lang) };
+    }).filter((x): x is NonNullable<typeof x> => !!x);
+  }, [timeline, stops, t.chapters, lang, N]);
+
+  /* The chapters' years under the timeline, measured so that no two ever touch.
+     The current chapter first, then the first chapter, then the others from the
+     left; a year that has no room shrinks to its chapter's numeral, and drops
+     out only if even that would touch a neighbour. A phone shows fewer. */
+  const marksRef = useRef<HTMLDivElement>(null);
+  const [marksW, setMarksW] = useState(0);
+  useEffect(() => {
+    const el = marksRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setMarksW(el.clientWidth));
+    ro.observe(el);
+    setMarksW(el.clientWidth);
+    return () => ro.disconnect();
+  }, [timeline]);
+  const marks = useMemo(() => {
+    if (!marksW || !bands.length) return [];
+    const charW = wide ? 6.4 : 5.6;              // the mono at 10.5 / 9 px
+    const pad = wide ? 12 : 16;
+    const place = (x: (typeof bands)[number], text: string) => {
+      const w = text.length * charW + 4;
+      const left = Math.min(Math.max(0, x.x0 * marksW), marksW - w);
+      return { x, text, left, right: left + w };
+    };
+    const cur = bands.findIndex((x) => x.c === chapter);
+    const order = [cur, 0, ...bands.map((_, i) => i)].filter((i, k, all) => i >= 0 && all.indexOf(i) === k);
+    const kept: ReturnType<typeof place>[] = [];
+    const clear = (m: ReturnType<typeof place>, gap: number) => !kept.some((k) => m.left < k.right + gap && m.right + gap > k.left);
+    for (const i of order) {
+      const full = place(bands[i], bands[i].from);
+      if (clear(full, pad)) { kept.push(full); continue; }
+      const short = place(bands[i], ROMAN[bands[i].c]);
+      if (clear(short, pad / 2)) kept.push(short);
+    }
+    return kept.sort((p, q) => p.left - q.left);
+  }, [bands, marksW, wide, chapter]);
 
   const q = fold(query.trim());
   const found = useMemo(() => stops.map((s, i) => ({ s, i })).filter(({ s, i }) => {
@@ -851,11 +878,11 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
                 }}
               />
             </div>
-            <div className="atlas__marks">
-              {bands.filter((x) => x.mark).map((x) => (
-                <button key={x.c} type="button" style={{ left: `${x.x0 * 100}%` }} className={x.c === chapter ? 'is-on' : undefined}
-                  onClick={() => go(x.first)} title={`${ROMAN[x.c]} · ${x.name}`} aria-label={`${t.chapter} ${ROMAN[x.c]}: ${x.name}, ${x.from}`}>
-                  {x.from}
+            <div className="atlas__marks" ref={marksRef}>
+              {marks.map(({ x, left, text }) => (
+                <button key={x.c} type="button" style={{ left: `${left}px` }} className={x.c === chapter ? 'is-on' : undefined}
+                  onClick={() => go(x.first)} title={`${ROMAN[x.c]} · ${x.name} · ${x.from}`} aria-label={`${t.chapter} ${ROMAN[x.c]}: ${x.name}, ${x.from}`}>
+                  {text}
                 </button>
               ))}
             </div>
