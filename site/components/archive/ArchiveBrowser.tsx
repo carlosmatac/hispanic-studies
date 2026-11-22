@@ -54,14 +54,15 @@ export default function ArchiveBrowser({ lang, eras, entries, regions }: {
   ).map((e) => e.id)), [entries, region, reading, words]);
   const filtered = shown.size !== entries.length;
 
-  // #T030 (old links) or #<slug>: scroll to the work and mark it
+  // #T030 (old links) or #<slug>: clear the filters (the work must be visible), scroll to it and mark it
   useEffect(() => {
     const go = () => {
       const h = decodeURIComponent(location.hash.slice(1));
       const e = entries.find((x) => x.id === h || x.slug === h);
       if (!e) return;
+      setQ(''); setRegion(''); setReading('');
       setMark(e.id);
-      requestAnimationFrame(() => document.getElementById(e.id)?.scrollIntoView({ block: 'center' }));
+      requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(e.id)?.scrollIntoView({ block: 'center' })));
     };
     go();
     window.addEventListener('hashchange', go);
