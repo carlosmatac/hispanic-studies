@@ -1,5 +1,5 @@
 import React from 'react';
-import { dict, type Lang } from '@/lib/i18n';
+import { archiveDate, archiveWording, dict, type Lang } from '@/lib/i18n';
 import { collabHref, readHref, translationAppeal, type Article, type CanonWork, type Edition, type Section } from '@/lib/canon';
 import { buttonKind, isReadingLang } from '@/lib/editions';
 import { renderMarkdown, renderTree } from '@/lib/text';
@@ -70,7 +70,7 @@ function EditionItem({ e, lang, work, primary }: { e: Edition; lang: Lang; work:
   return (
     <li className={`w80-ed${primary ? ' w80-ed--primary' : ''}`}>
       <p className="w80-ed__access">{e.hosted ? t.hostedAccess[e.hosted] : t.access[e.extent] ?? e.extent}</p>
-      {e.label && <p className="w80-ed__label">{e.label}{e.publicationYear && !e.label.includes(String(e.publicationYear)) ? ` (${e.publicationYear})` : ''}</p>}
+      {e.label && <p className="w80-ed__label">{archiveWording(e.label, lang)}{e.publicationYear && !e.label.includes(String(e.publicationYear)) ? ` (${e.publicationYear})` : ''}</p>}
       {e.scopeNote && <p className="w80-ed__scope">{e.scopeNote}</p>}
       {e.translator && <p className="w80-ed__by">{t.translator} {e.translator}</p>}
       {actions && <p className="w80-ed__go">{actions}</p>}
@@ -134,7 +134,7 @@ export default function CuratedWork({ lang, work, eraName, eraId, articles, text
           <h1 className="reader__title w80-title" lang={origLang}>{c.originalTitle}</h1>
           <p className="reader__author">{c.creator}</p>
           <dl className="reader__facts">
-            <div><dt>{t.date}</dt><dd>{c.dateDisplay}{dateKind ? ` · ${dateKind}` : ''}</dd></div>
+            <div><dt>{t.date}</dt><dd>{archiveDate(c.dateDisplay, lang)}{dateKind ? ` · ${dateKind}` : ''}</dd></div>
             {scope && <div><dt>{t.scope}</dt><dd>{scope}</dd></div>}
             {c.originalLanguages.length > 0 && <div><dt>{t.originalLanguage}</dt><dd>{c.originalLanguages.map(langName).join(', ')}</dd></div>}
             {regionNames.length > 0 && <div><dt>{t.regions}</dt><dd><span className="reader__swatch" style={swatchStyle(work.swatch)} aria-hidden="true" />{regionNames.join(' · ')}</dd></div>}
@@ -188,7 +188,7 @@ export default function CuratedWork({ lang, work, eraName, eraId, articles, text
               {sources.map((e) => (
                 <li key={e.id}>
                   <span className="w80-sources__lang">{e.languages.map(langName).join(', ') || '—'}</span>
-                  <span className="w80-sources__what">{t.access[e.extent] ?? e.extent}{e.label ? `: ${e.label}` : ''}</span>
+                  <span className="w80-sources__what">{t.access[e.extent] ?? e.extent}{e.label ? `: ${archiveWording(e.label, lang)}` : ''}</span>
                   {e.url && <a href={e.url} target="_blank" rel="noopener">{e.sourceName || e.url}<span className="sr"> ({t.newTab})</span></a>}
                 </li>
               ))}
@@ -204,7 +204,7 @@ export default function CuratedWork({ lang, work, eraName, eraId, articles, text
               {c.companions.map((x) => (
                 <li key={x.url || x.title}>
                   {x.url ? <a href={x.url} target="_blank" rel="noopener">{x.title}<span className="sr"> ({t.newTab})</span></a> : <span>{x.title}</span>}
-                  {x.note && <span className="w80-companions__what">{x.note}</span>}
+                  {x.note && <span className="w80-companions__what">{archiveWording(x.note, lang)}</span>}
                 </li>
               ))}
             </ul>
@@ -237,7 +237,7 @@ export default function CuratedWork({ lang, work, eraName, eraId, articles, text
         )}
 
         {pdfs.map((e) => (
-          <PdfViewer key={e.id} id={e.id} url={e.pdfUrl} title={c.originalTitle} heading={`${langName(e.readingLang)} · ${e.label || t.access[e.extent]}`} lang={lang} />
+          <PdfViewer key={e.id} id={e.id} url={e.pdfUrl} title={c.originalTitle} heading={`${langName(e.readingLang)} · ${e.label ? archiveWording(e.label, lang) : t.access[e.extent]}`} lang={lang} />
         ))}
 
         {work.references.length > 0 && (
@@ -266,7 +266,7 @@ function Neighbour({ work, lang, label, rel }: { work: CanonWork; lang: Lang; la
     <a className={`reader__nb reader__nb--${rel}`} href={readHref(lang, work.id)} rel={rel}>
       <span className="reader__nb-label">{rel === 'prev' ? '← ' : ''}{label}{rel === 'next' ? ' →' : ''}</span>
       <span className="reader__nb-title" lang={c.originalLanguages[0] ?? work.language}>{c.originalTitle}</span>
-      <span className="reader__nb-meta">{c.creator}, {c.dateDisplay}</span>
+      <span className="reader__nb-meta">{c.creator}, {archiveDate(c.dateDisplay, lang)}</span>
     </a>
   );
 }

@@ -2,7 +2,7 @@
 
 import { cookies, draftMode, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { and, count, desc, eq, gt, inArray, lt, notInArray, sql } from 'drizzle-orm';
+import { and, count, eq, gt, inArray, lt, sql } from 'drizzle-orm';
 import { getDb, schema } from '@/lib/db';
 import { readWork, writeWork, type BackupEdition, type BackupWork, type StoredWork } from '@/lib/backup';
 import { RIGHTS, LANGUAGES } from '@/lib/canon';
@@ -15,6 +15,7 @@ import { dummyHash, hashPassword, PASSWORD_MIN, verifyPassword } from '@/lib/adm
 import { clearSessionCookie, requireSession, setSessionCookie } from '@/lib/admin/session';
 import { adminText, LANG_COOKIE } from '@/lib/admin/lang';
 import { refreshSite } from '@/lib/admin/revalidate';
+import { applyArticleStatus, pruneRevisions as pruneHistory } from '@/lib/admin/article-status';
 import { ID_PATTERN, slug, type CuratedPayload, type FormState, type SaveResult, type WorkPayload } from '@/lib/admin/types';
 
 /* Everything the back office changes goes through here. Every action but the
@@ -24,7 +25,6 @@ import { ID_PATTERN, slug, type CuratedPayload, type FormState, type SaveResult,
 const WINDOW_MIN = 15;
 const MAX_PER_USER = 5;
 const MAX_PER_ADDRESS = 30;
-const KEEP_REVISIONS = 50;
 
 /* ---------------- signing in and out ---------------- */
 
@@ -95,12 +95,7 @@ const yearOf = (s: string) => (/^-?\d{1,4}$/.test(s.trim()) ? Number(s.trim()) :
 const okUrl = (s: string) => !s.trim() || /^https?:\/\/\S+$/i.test(s.trim());
 const clean = (s: unknown) => String(s ?? '').trim();
 
-async function pruneRevisions(workId: string) {
-  const db = getDb();
-  const keep = db.select({ id: schema.revisions.id }).from(schema.revisions)
-    .where(eq(schema.revisions.workId, workId)).orderBy(desc(schema.revisions.createdAt)).limit(KEEP_REVISIONS);
-  await db.delete(schema.revisions).where(and(eq(schema.revisions.workId, workId), notInArray(schema.revisions.id, keep)));
-}
+const pruneRevisions = (workId: string) => pruneHistory(getDb(), workId);
 
 export async function saveWork(p: WorkPayload): Promise<SaveResult> {
   const me = await requireSession();
@@ -452,25 +447,10 @@ async function curatedRecord(
  */
 export async function setArticleStatus(ids: string[], to: 'published' | 'review') {
   const me = await requireSession();
-  const db = getDb();
-  let n = 0;
-  await db.transaction(async (tx) => {
-    for (const id of ids) {
-      const before = await readWork(tx, id);
-      if (!before || !before.curated) continue;
-      if (to === 'published' && before.articleStatus === 'published' && before.status === 'published') continue;
-      if (to === 'review' && before.articleStatus === 'review') continue;
-      await tx.insert(schema.revisions).values({ workId: id, action: 'update', title: before.title, snapshot: before, createdBy: me.username });
-      await tx.update(schema.works).set(to === 'published'
-        ? { articleStatus: 'published', status: 'published', reviewedBy: me.username, reviewedAt: new Date(), updatedAt: new Date(), updatedBy: me.username }
-        : { articleStatus: 'review', status: before.legacyRecord ? before.status : 'draft', updatedAt: new Date(), updatedBy: me.username })
-        .where(eq(schema.works.id, id));
-      n++;
-    }
-  });
-  for (const id of ids) await pruneRevisions(id);
-  if (n) refreshSite();
-  return { ok: true, n };
+  // the change itself is shared with `npm run curated:publish` (lib/admin/article-status.ts)
+  const changed = await applyArticleStatus(getDb(), ids, to, me.username);
+  if (changed.length) refreshSite();
+  return { ok: true, n: changed.length };
 }
 
 /** Approve and publish every work of an era that is still in review. */

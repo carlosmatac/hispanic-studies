@@ -31,7 +31,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const d = dict(lang);
-  const patreon = channel('patreon');
+  const substack = channel('substack');
 
   return (
     <>
@@ -181,7 +181,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
           <div className="community__actions">
             <span className="pending"><ChannelIcon name="discord" /> {d.comm.discord} {d.comm.discordPending}</span>
-            <a className="btn btn--ghost" href={patreon.url} target="_blank" rel="noopener noreferrer"><ChannelIcon name="patreon" /> {d.comm.patreon}</a>
+            <a className="btn btn--ghost" href={substack.url} target="_blank" rel="noopener noreferrer"><ChannelIcon name="substack" /> {d.comm.support}</a>
           </div>
         </section>
 
