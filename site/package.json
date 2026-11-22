@@ -19,7 +19,8 @@
     "user:delete": "tsx scripts/users.mts delete",
     "palette:check": "tsx scripts/check-palette.mts",
     "text:import": "tsx scripts/text-import.mts",
-    "iberofonia:import": "tsx scripts/iberofonia-import.mts"
+    "iberofonia:import": "tsx scripts/iberofonia-import.mts",
+    "curated:publish": "tsx scripts/curated-publish.mts"
   },
   "engines": {
     "node": ">=20.9"

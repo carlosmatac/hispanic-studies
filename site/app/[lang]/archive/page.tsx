@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { dict, isLang, type Lang } from '@/lib/i18n';
+import { archiveDate, dict, isLang, type Lang } from '@/lib/i18n';
 import { curatedWorks, fillCounts, getArchive, isEditor } from '@/lib/archive';
 import { fold, readHref, readingLanguages, type CanonWork } from '@/lib/canon';
 import { swatchStyle } from '@/lib/palette';
@@ -42,7 +42,7 @@ function entry(w: CanonWork, lang: Lang, editor: boolean): Entry {
     href: readHref(lang, w.id),
     order: c.order,
     era: c.era,
-    date: c.dateDisplay,
+    date: archiveDate(c.dateDisplay, lang),
     title: c.originalTitle,
     titleLang: c.originalLanguages[0] ?? w.language,
     creator: c.creator,

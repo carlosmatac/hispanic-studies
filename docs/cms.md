@@ -198,6 +198,27 @@ at `/admin` afterwards to refresh the site's cache.
 Develop and test it against a local PGlite first (`npm run db:local`), then
 apply it to Neon: `npm run db:export`, `npm run db:migrate`, the dry run, `--apply`.
 
+**Publishing the 80 from the command line** (issue #97): `npm run
+curated:publish -- --as <name>` lists, era by era, the works still in review;
+add `--apply` to approve and publish them (`--era era-03` for one era). It runs
+the same code as **Aprobar y publicar** at `/admin/curated`
+(`site/lib/admin/article-status.ts`): the version before goes into each work's
+history, `<name>` is kept as the reviewer, and editions and their approvals to
+be hosted are never touched. Take a backup first. The deployed site shows the
+change once its cache is refreshed: save any work at `/admin`, or deploy. (On
+2026-11-22 all 80 were published this way, `--as carlos`, for Beltrán to see
+them on the preview.)
+
+**How readers see the editions' labels.** Beltrán's JSON gave each edition a
+note in English written for staff; the import kept its first clause as the
+label ("Spanish reading copy"), and the companion documents' notes and the
+dates ("4 May 1493") came in English too. The database keeps them as they came;
+`ARCHIVE_WORDING` at the end of `site/lib/i18n.ts` is how they read on the site
+in each language, without the instructions to staff, and `archiveDate` puts the
+months in Spanish. A label edited at `/admin` no longer matches the table and
+shows exactly as typed; when you change one there, write it as readers should
+read it.
+
 ### PDFs of approved editions (Vercel Blob)
 
 The package ships no files. When an edition is approved to be hosted as a PDF
@@ -313,7 +334,7 @@ the archive:
   ~430 kB) → **~900** more. Texts of median length (~37 kB, ~150 kB with
   history) → **~2,600** more.
 - History is capped at 50 versions per work. If space ever gets tight, lower
-  `KEEP_REVISIONS` in `site/app/admin/actions.ts` or prune old versions; `npm run
+  `KEEP_REVISIONS` in `site/lib/admin/article-status.ts` or prune old versions; `npm run
   db:size` shows where the space goes.
 
 **Compute**: Neon's free plan gives 100 CU-hours a month and the database
