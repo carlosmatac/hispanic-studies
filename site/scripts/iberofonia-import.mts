@@ -160,11 +160,12 @@ function colourRegion(w: JWork): string {
   return pt ? 'lusophone' : 'spain';
 }
 
-/** The edition's name for readers: the first clause of the editor's note, without the instructions to staff. */
+/** The edition's name for readers: the first clause of the editor's note, without the instructions to staff ("verify…", "confirm…"). */
 function publicLabel(citation: string): string {
   const first = citation.split(/;\s+/)[0];
-  const parts = first.split(/(?<=\.)\s+|,\s+/).filter((p) => !/\b(verify|confirm|recheck|check|before reuse|user-supplied|must be supplied|to recheck)\b/i.test(p));
-  return parts.join(', ').replace(/,\s*$/, '').trim();
+  const INSTRUCTION = /(verify|confirm|recheck|check|before reuse|user-supplied|must be supplied)/i;
+  if (INSTRUCTION.test(first.split(/[,.]\s+/)[0])) return '';
+  return first.replace(/[,.]\s+[^,.;]*(verify|confirm|recheck|check|before reuse|user-supplied|must be supplied)[^;]*$/i, '').replace(/[\s,.]+$/, '').trim();
 }
 
 function editionsOf(w: JWork): BackupEdition[] {
@@ -232,6 +233,7 @@ const texts = await db.select({ workId: schema.workTexts.workId, lang: schema.wo
 const sections = await db.select().from(schema.sections);
 const regions = await db.select({ id: schema.regions.id }).from(schema.regions);
 const eraRows = await db.select({ id: schema.eras.id }).from(schema.eras);
+const browseRows = await db.select({ id: schema.browseRegions.id }).from(schema.browseRegions);
 const byId = new Map(rows.map((r) => [r.id, r]));
 const byCanon = new Map(rows.filter((r) => r.canonId).map((r) => [r.canonId!, r]));
 const bySlug = new Map(rows.filter((r) => r.slug).map((r) => [r.slug!, r]));
@@ -357,7 +359,7 @@ await db.transaction(async (tx) => {
     const v = { id, position: i, nameEn: n.en, nameEs: n.es };
     const q = tx.insert(schema.browseRegions).values(v);
     const r = overwrite ? await q.onConflictDoUpdate({ target: schema.browseRegions.id, set: { ...v, updatedAt: new Date() } }).returning() : await q.onConflictDoNothing().returning();
-    stats.regions += r.length;
+    if (!browseRows.some((x) => x.id === id)) stats.regions += r.length;
   }
 
   for (const p of plans) {

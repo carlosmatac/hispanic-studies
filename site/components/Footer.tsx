@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { dict, type Lang } from '@/lib/i18n';
 import { CHANNELS, SITE } from '@/lib/content';
+import { collabPath } from '@/lib/canon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
 import FooterBlind from './FooterBlind';
@@ -47,6 +48,7 @@ export default function Footer({ lang }: { lang: Lang }) {
             <ul>
               <li><a href={`/${lang}#community`}>{d.foot.pamphlet}</a></li>
               <li><span>{d.foot.discord} <span className="foot__pending">{d.comm.discordPending}</span></span></li>
+              <li><a href={`/${lang}${collabPath(lang)}`}>{d.collab.meta}</a></li>
               <li><a href={`/${lang}#merch`}>{d.nav.merch}</a></li>
             </ul>
           </div>

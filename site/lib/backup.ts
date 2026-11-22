@@ -99,7 +99,7 @@ export async function exportArchive(db: DB): Promise<Backup> {
   const works = await db.select().from(schema.works).orderBy(asc(schema.works.year), asc(schema.works.id));
   const texts = await db.select().from(schema.workTexts);
   const refs = await db.select().from(schema.workReferences).orderBy(asc(schema.workReferences.position));
-  const articles = await db.select().from(schema.workArticles);
+  const articles = await db.select().from(schema.workArticles).orderBy(asc(schema.workArticles.workId), asc(schema.workArticles.locale));
   const editions = await db.select().from(schema.editions).orderBy(asc(schema.editions.position));
   return {
     format: BACKUP_FORMAT,
@@ -176,7 +176,7 @@ export async function readWork(db: DB | Tx, id: string): Promise<StoredWork | nu
   if (!w) return null;
   const texts = await db.select().from(schema.workTexts).where(sql`${schema.workTexts.workId} = ${id}`);
   const refs = await db.select().from(schema.workReferences).where(sql`${schema.workReferences.workId} = ${id}`).orderBy(asc(schema.workReferences.position));
-  const articles = await db.select().from(schema.workArticles).where(sql`${schema.workArticles.workId} = ${id}`);
+  const articles = await db.select().from(schema.workArticles).where(sql`${schema.workArticles.workId} = ${id}`).orderBy(asc(schema.workArticles.locale));
   const editions = await db.select().from(schema.editions).where(sql`${schema.editions.workId} = ${id}`).orderBy(asc(schema.editions.position));
   return toStored(w, texts, refs, articles, editions);
 }
