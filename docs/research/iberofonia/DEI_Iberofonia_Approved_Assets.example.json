@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "assets": [],
+  "documentation": "Put only approved, proofed assets in assets. Examples below are illustrative and never imported.",
+  "examples": [
+    {
+      "edition_id": "DEI-C043-S1",
+      "language": "es",
+      "kind": "html",
+      "local_file": "proofed/rizal-es.txt",
+      "rights_basis": "US_PUBLIC_DOMAIN_95",
+      "edition_publication_year": 1890,
+      "edition_credit": "Fill in the exact Spanish edition.",
+      "complete_span": "All installments, HTML text proofed against the historical publication.",
+      "rights_evidence": "Fill in the internal U.S. clearance reference.",
+      "approval_date": "2026-11-16",
+      "approver": "Editorial approver",
+      "approved": false
+    },
+    {
+      "edition_id": "DEI-C047-S2",
+      "language": "en",
+      "kind": "pdf",
+      "local_file": "proofed/ariel-stimson-1922.pdf",
+      "viewer_url": "/archive/read/ariel-stimson",
+      "download_url": "/archive/files/ariel-stimson-1922.pdf",
+      "rights_basis": "US_PUBLIC_DOMAIN_95",
+      "edition_publication_year": 1922,
+      "edition_credit": "F. J. Stimson, Houghton, Boston, 1922; identify source scan.",
+      "complete_span": "All pages of the verified translation, excluding unrelated contemporary materials.",
+      "rights_evidence": "Fill in the internal U.S. clearance reference.",
+      "approval_date": "2026-11-16",
+      "approver": "Editorial approver",
+      "approved": false
+    }
+  ]
+}
