@@ -32,14 +32,61 @@ them from there.)
 6. **Secciones** and **Regiones**: rename, reorder (↑ ↓), add, delete (only when
    no work is in them). A region's colour is chosen from the palette; colours
    already used are not offered.
-7. **Página del archivo**: the title, introduction and note of the archive page
-   and its line on the home page. `{obras}` / `{works}` and `{secciones}` /
-   `{sections}` become the numbers.
+7. **Página del archivo**: the title and introduction of the 80 texts (the
+   archive's landing; empty = the copy of your brief), the introduction of
+   "More from the archive", the note at the foot and the line on the home page.
+   `{obras}` / `{works}` and `{secciones}` / `{sections}` become the numbers.
 8. **Mi cuenta**: change your password; **download a backup** of everything.
 
-The rule on texts is unchanged (`docs/archive-sources.md`): a full text is shown
-only for works in the public domain in the US, in Spain and in their own
-country; every other work gets its record and links to legitimate copies.
+### The 80 texts (issue #93)
+
+Your curated archive, "De la Monarquía Universal a la iberofonía", is the
+archive's landing. Every article came in **in review**: nobody but you (signed
+in) sees it.
+
+1. **80 textos** lists them by era, in your order, each marked **En revisión**
+   or **Publicado**. **Ver en la web** opens the work's page as readers will see
+   it (marked "En revisión" while it is).
+2. Happy with it? **Aprobar y publicar**. Or a whole era at once with **Aprobar
+   y publicar los N en revisión** at the top of the era. **Volver a revisión**
+   undoes it. Every change is kept in the work's **Historial**.
+3. To correct something, **Editar** opens the work. Its part **Los 80 textos**
+   has the era and order, the header (original title, author or institution,
+   date and its kind, scope, original languages, regions to browse by), the
+   **English translation** state (it decides the call for translators), then
+   **the article in Spanish and in English** (three sections each; a blank line
+   starts a paragraph, `*word*` is italics), **the editions** and the related
+   documents. At the foot, **En revisión** or **Publicado**, and **Guardar**.
+4. **The editions**: for each, the reading language it is shown under (Spanish,
+   Portuguese, English; or "Sources" for originals in Latin, Italian… and
+   references), whether it is the main one of its language, its **access**
+   (complete text online, facsimile, publisher edition, catalogue record…),
+   the address, how readers see it ("Charles Derbyshire, The Philippines a
+   Century Hence"), where it is ("Project Gutenberg": the button says "Read at
+   Project Gutenberg"), the translator and what it covers. The button follows
+   the access; a site never gets a "full text" or "PDF" button it has not got.
+5. **Hosting an edition here** (the text in the reader, or a PDF): only with an
+   approval under U.S. law. Under **Alojarla aquí** choose the text or a PDF,
+   tick the approval and fill in the basis, the evidence, what was checked, who
+   approved it and when (and, under the 1930 rule, the year of the edition).
+   Saving refuses anything missing. A PDF must first be uploaded to Vercel Blob
+   (Carlos, below); paste its address.
+6. **Épocas**: rename the six eras (Spanish and English).
+
+The edition approval queue (the editions your list marks as candidates to host
+here) is at the foot of **80 textos**: they stay links until approved.
+
+### The rule on texts: U.S. law
+
+Since 2026-11-22 (your brief) the site follows **U.S. copyright law**, where it
+is served: a full text is shown when the work, in that edition, is in the U.S.
+public domain. In 2026 that means **published in 1930 or earlier** (the 95-year
+term), or another documented U.S. basis. Not the author's death, nor when it was
+written, nor a manuscript's age, nor a scan being free online; each translation,
+introduction and annotation is judged on its own (a 1946 translation of an 1897
+book is not free). Every other work gets its record and links to legitimate
+copies. (Before, a text also had to be free in Spain and in its own country.)
+Sources of hosted texts are logged in `docs/archive-sources.md`.
 
 ## For Carlos: setting it up
 
@@ -121,12 +168,58 @@ and hands it over in `site/.data/ingest/<id>.json`; `npm run text:import -- <id>
 puts it in the work (the version before stays in its history). Save the work
 once in `/admin` to refresh the site's cache.
 
+### The 80 texts: the import (issue #93)
+
+Beltrán's package is in `docs/research/iberofonia/` (the brief, the JSON, the
+edition inventory, the drafts). `npm run iberofonia:import` reads the JSON:
+
+```bash
+cd site
+npm run db:export                                        # a backup first, always
+npm run iberofonia:import -- --manifest manifest.md      # dry run: what it would do (merges, new, retired, conflicts, the hosting queue)
+npm run iberofonia:import -- --apply                     # do it (refuses while there are conflicts)
+npm run iberofonia:import -- --apply --json <v4.json>    # a later version of his list
+npm run iberofonia:import -- --apply --overwrite         # take the JSON's curated fields, articles and editions over edits made at /admin
+```
+
+It upserts by Beltrán's id (`canon_id`, DEI-C001…). The works of the 80 we
+already had are connected by hand (`MERGES` in `site/scripts/iberofonia-import.mts`;
+same author but another work is listed in `NOT_THE_SAME`): they keep their id,
+address, record, texts and links, and gain the header, the two articles and the
+editions. The others become new works, as drafts, with Beltrán's `slug` as their
+id; the colour region and the old section are worked out from his regions and
+the year (editable). Run again, it changes nothing and never undoes edits made
+at `/admin` (only what is missing goes in); `--overwrite` takes the JSON (each
+work's version before is kept in its history; approvals to host are never
+touched). A work whose id leaves the JSON leaves the 80 (`curated` off) and
+keeps its record and address. The import never turns hosting on. Save any work
+at `/admin` afterwards to refresh the site's cache.
+
+Develop and test it against a local PGlite first (`npm run db:local`), then
+apply it to Neon: `npm run db:export`, `npm run db:migrate`, the dry run, `--apply`.
+
+### PDFs of approved editions (Vercel Blob)
+
+The package ships no files. When an edition is approved to be hosted as a PDF
+(U.S. basis, evidence, checked span, approver and date: see "The 80 texts"
+above), upload the checked PDF to **Vercel Blob** (Vercel → Storage → Blob:
+create a store for the project once, then upload; or `vercel blob put file.pdf`)
+and paste its public `https://….blob.vercel-storage.com/….pdf` address into the
+edition at `/admin`. The work's page then shows it in the PDF viewer
+(`components/archive/PdfViewer.tsx`: the browser's own viewer, keyboard-usable,
+with a separate download link). Only the address is in the database. For a
+proofed HTML text, paste it into the work's text in that language and approve
+the edition as "the text, in the reader". The brief's
+`DEI_Iberofonia_Apply_Approved_Assets.mjs` is not used: the same checks run when
+the edition is saved (`hostingProblems` in `site/lib/editions.ts`).
+
 ### Backups
 
 - **Download backup** (Mi cuenta, and at the foot of Obras) or `npm run db:export`:
-  one JSON file with the page's words, sections, regions, and every work with its
-  texts and references. Not included: users (their password hashes) and the
-  revision history.
+  one JSON file with the page's words, sections, regions, eras, the regions to
+  browse by, and every work with its texts, references, articles and editions
+  (format version 2; version 1 files still load). Not included: users (their
+  password hashes) and the revision history.
 - Neon keeps its own history too (point-in-time restore; a few hours on the free plan).
 - A good habit: download a backup after a long editing session and keep a copy
   off the computer.
@@ -135,11 +228,24 @@ once in `/admin` to refresh the site's cache.
 
 - **Stack**: Drizzle ORM (`site/lib/db/`) over `pg`; Neon in production, PGlite
   locally. Migrations are SQL files (`site/db/migrations/`).
-- **Tables**: `works` (the record), `work_texts` (one per work and language:
-  Markdown, words, minutes), `work_references`, `sections`, `regions`,
-  `archive_page` (one row), `revisions` (a JSON snapshot of the whole work before
-  every save, restore and delete; the last 50 per work are kept), `users`,
-  `login_attempts`.
+- **Tables**: `works` (the record; since #93 also its place in the curated 80:
+  `canon_id`, `slug`, `curated`, `curated_order`, `era_id`, the header,
+  `english_state`, companions, `article_status`), `work_texts` (one per work and
+  language: Markdown, words, minutes), `work_references`, `work_articles` (the
+  80's articles, one per work and locale es/en, three sections), `editions` (one
+  per edition: reading language, main, access state, address, label, source,
+  translator, scope note, delivery plan, U.S. hosting note and the approval to
+  host it), `eras`, `browse_regions`, `sections`, `regions`, `archive_page` (one
+  row), `revisions` (a JSON snapshot of the whole work, articles and editions
+  included, before every save, restore and delete; the last 50 per work are
+  kept), `users`, `login_attempts`.
+- **Which works show as the 80**: `curated` and `article_status = published`
+  (and the record published); signed-in editors see all of them, marked "in
+  review". The rest of the archive (the works outside the 80, and those of the
+  80 we had before, until approved) follows as the shelf of cards.
+- **Editions and buttons**: `site/lib/editions.ts` maps each access state to the
+  brief's button and decides hosting (`hostedMode`: only with a complete U.S.
+  approval). The work's page is `components/archive/CuratedWork.tsx`.
 - **Texts are Markdown**. The editor (TipTap, `components/admin/TextEditor.tsx`)
   loads it as HTML through Markdoc and writes it back with `lib/markdown.ts`;
   the reader renders it with Markdoc (`lib/text.ts`), exactly as when the texts
@@ -218,8 +324,9 @@ hour of editing costs about 0.25 CU-hours, so the allowance covers hundreds of
 hours of editing a month.
 
 **Images and uploads** are out of scope for now. When they come (a cover per
-work, scans, the Patreon PDFs of #72), the files go in **Vercel Blob** and only
-their addresses in the database.
+work, scans, the approved PDFs of the 80), the files go in **Vercel Blob** and
+only their addresses in the database. (The Patreon PDFs of #72 are cancelled:
+the archive is free and without registration; paid content goes on Substack.)
 
 ## Where things are
 
@@ -230,4 +337,9 @@ their addresses in the database.
 - How the site reads it: `site/lib/archive.ts`; texts: `site/lib/text.ts`,
   `site/lib/markdown.ts`; citations: `site/lib/cite.ts`; palette: `site/lib/palette.ts`;
   backup and import: `site/lib/backup.ts`
+- The 80 texts: the landing `site/app/[lang]/archive/page.tsx` and
+  `site/components/archive/`, the rules `site/lib/editions.ts`, the import
+  `site/scripts/iberofonia-import.mts`, the review page `site/app/admin/(panel)/curated/`,
+  the form's part `site/components/admin/CuratedFields.tsx`; the Collaborate page
+  `site/app/[lang]/work-with-us/` (served at `/es/colabora` too, `next.config.ts`)
 - Words of the back office (ES + EN): `adminDict` at the end of `site/lib/i18n.ts`
