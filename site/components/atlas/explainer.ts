@@ -1,16 +1,17 @@
 import type { Chronicle, LonLat } from '@/lib/atlas-chronicle';
-import type { Anchors, Box, Focus } from '@/lib/atlas-engine';
+import type { Anchors, Box, Focus } from '@/lib/atlas-globe';
 import type { Dict } from '@/lib/i18n';
 
-/* The explainer (issue #88): a short note laid over the chart, next to what the
-   beat changes, with a leader line to it. It says in a line or two what just
-   happened, from the content the card already has (a landfall's log, the first
-   sentence of a keyframe, the treaty's sides); nothing in it is new.
+/* The explainer (issue #88, kept on the globe in #95): a short note laid over
+   the planet, next to what the stop changes, with a leader line to it. It says
+   in a line or two what just happened, from the content the card already has
+   (a landfall's log, the first sentence of a keyframe, the treaty's sides, the
+   places a record names); nothing in it is new.
 
    - a voyage: the latest landfall reached (its date, name and log);
    - a keyframe: what changes (the jurisdictions that pulse, or the treaty line);
-   - a change of layout: the chart turning into a globe or to the Pacific;
-   - the opening: how to read the dark; today: the closing sentence.
+   - a record: the places it names, marked as approximate;
+   - today: the closing sentence.
    Hovering or focusing an item on the card moves the note to that item. */
 
 type T = Dict['atlas'];
@@ -26,7 +27,7 @@ const firstSentence = (s: string) => (s.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? s).tr
 
 /** The jurisdictions and lines a keyframe changes, as the card lists them. */
 export function changedItems(chron: Chronicle, bi: number, t: T): MapItem[] {
-  const b = chron.beats[bi];
+  const b = chron.stops[bi];
   if (b.kind !== 'era' || b.era === undefined) return [];
   const e = chron.eras[b.era];
   const out: MapItem[] = [];
@@ -40,13 +41,11 @@ export function changedItems(chron: Chronicle, bi: number, t: T): MapItem[] {
 }
 
 export function noteFor(opts: {
-  chron: Chronicle; bi: number; stop: number; focus: Focus | null; turning: boolean; reduced: boolean; t: T;
+  chron: Chronicle; bi: number; stop: number; focus: Focus | null; t: T;
   fmtDate: (iso?: string) => string;
 }): Note | null {
-  const { chron, bi, stop, focus, turning, reduced, t, fmtDate } = opts;
-  const b = chron.beats[bi];
-  const prev = chron.beats[bi - 1];
-  const layoutTurn = prev && prev.layout !== b.layout ? t.layoutNote[b.layout] : null;
+  const { chron, bi, stop, focus, t, fmtDate } = opts;
+  const b = chron.stops[bi];
   const voyage = b.voyage !== undefined ? chron.voyages[b.voyage] : undefined;
   const stops = voyage ? voyage.route.filter((w) => w.name) : [];
 
@@ -70,15 +69,16 @@ export function noteFor(opts: {
     if (it) return { key: `${b.id}:unit:${focus.f}`, kicker: t.onMap, title: it.name, anchor: { kind: 'units', families: [focus.f] }, beatLevel: false };
   }
 
-  // the chart turns: said first, while it turns
-  if (layoutTurn && turning && !reduced) {
-    return { key: `${b.id}:turn`, kicker: b.label, title: layoutTurn.title, text: layoutTurn.text, anchor: null, beatLevel: true };
+  const places = b.kind !== 'voyage' && b.record ? b.record.anchors : [];
+  if (focus?.kind === 'place' && places[focus.k]) {
+    return { key: `${b.id}:place:${focus.k}`, kicker: t.placesNamed, title: places[focus.k].name, text: t.approxText, anchor: { kind: 'point', at: places[focus.k].at }, beatLevel: false };
   }
-  const pre = layoutTurn && reduced ? layoutTurn.title : undefined;
 
   let note: Note | null = null;
-  if (b.kind === 'open') {
-    note = { key: 'open', kicker: t.readKicker, title: t.readTitle, text: t.readText, anchor: { kind: 'point', at: [-56, 22] }, beatLevel: true };
+  if (b.kind === 'record') {
+    if (!places.length) return null;
+    const names = places.slice(0, 3).map((p) => p.name).join(' · ') + (places.length > 3 ? ` ${t.andMore(places.length - 3)}` : '');
+    note = { key: `${b.id}:places`, kicker: `${t.placesNamed} · ${b.label}`, title: names, text: t.approxText, anchor: { kind: 'point', at: places[0].at }, beatLevel: true };
   } else if (b.kind === 'today') {
     note = { key: 'today', kicker: b.label, title: b.title, text: firstSentence(b.text), anchor: null, beatLevel: true };
   } else if (b.kind === 'voyage') {
@@ -95,7 +95,6 @@ export function noteFor(opts: {
       beatLevel: true,
     };
   }
-  if (note && pre) note.pre = pre;
   return note;
 }
 
