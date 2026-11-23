@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { DEFAULT_VARIANT, FOOTER_FILM, FOOTER_VARIANTS, rampRgb, type FooterVariant } from '@/lib/footer-pixels';
+import { FOOTER, FOOTER_FILM, GROUND, mixRgb, rampRgb } from '@/lib/footer-pixels';
 
-/* The footer's ground (issue #106): our film (public/video/footer-loop.mp4, a
-   slow drift over four period plans and paintings) redrawn as discrete pixels
-   in the brand's dark colours, at low contrast. The knobs and the three
-   variants are in lib/footer-pixels.ts.
+/* The footer's ground (issue #106): our generated film of a tercio on the
+   march and a ship off the Pillars of Hercules (public/video/footer-film.mp4)
+   redrawn as discrete pixels in the brand's dark colours, at low contrast.
+   Every knob is in lib/footer-pixels.ts.
 
    How: each frame, the film is drawn into a canvas with one pixel per cell
    (the browser averages the frame down), each cell's luminance picks a step of
@@ -19,22 +19,14 @@ import { DEFAULT_VARIANT, FOOTER_FILM, FOOTER_VARIANTS, rampRgb, type FooterVari
      the footer is on screen and the tab is visible, and redraws at most `fps`
      times a second, only when the film has a new frame.
    - Reduced motion, Save-Data, or a film that cannot play: the still
-     (footer-loop.jpg) is pixelated the same way, once; nothing moves.
+     (footer-film.jpg) is pixelated the same way, once; nothing moves.
    - It is decoration (aria-hidden), absolutely placed under the footer's
      content: it never changes the footer's size, and fades in over the ground,
      whose colour is the ramp's own middle. Without a canvas or a script, the
      ground stays. */
 
 const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map((v) => (v + 0.5) / 16 - 0.5);
-const MAX_CELLS = 40_000; // a cap on the cells per frame: past it the cells grow
-
-function pickVariant(): FooterVariant {
-  if (process.env.NODE_ENV !== 'production') {
-    const n = Number(new URLSearchParams(window.location.search).get('footerVariant'));
-    if (n === 1 || n === 2 || n === 3) return FOOTER_VARIANTS[n];
-  }
-  return FOOTER_VARIANTS[DEFAULT_VARIANT];
-}
+const MAX_CELLS = 80_000; // a cap on the cells per frame: past it the cells grow
 
 export default function FooterPixels() {
   const box = useRef<HTMLDivElement>(null);
@@ -47,11 +39,9 @@ export default function FooterPixels() {
     const video = film.current;
     if (!el || !canvas || !video) return;
     video.muted = true;
-    const v = pickVariant();
-    // the knobs the CSS reads (the veil under the text, the mosaic's hairlines, the cell) live on the footer
+    const v = FOOTER;
+    // the veil under the text is a knob too; the CSS reads it on the footer
     const host = el.parentElement ?? el;
-    el.dataset.variant = v.name;
-    host.style.setProperty('--px-grid', String(v.grid));
     host.style.setProperty('--px-veil', String(v.veil));
 
     const ctx = canvas.getContext('2d');
@@ -61,16 +51,19 @@ export default function FooterPixels() {
     sctx.imageSmoothingEnabled = true;
     sctx.imageSmoothingQuality = 'high';
 
-    const ramp = rampRgb(v);
+    const ramp = rampRgb();
     const steps = ramp.length - 1;
-    let [lo, hi] = v.levels;
+    let lo = 0;
+    let hi = 1;
     let leveled = false; // the auto window has been set once (the first frame takes it whole, later ones ease toward theirs)
     const hist = new Uint32Array(64);
     const lut = new Float32Array(256);
     let lum = new Uint8Array(0);
     const bayer = Float32Array.from(BAYER, (t) => t * v.dither);
     // the ramp as 32-bit pixels (RGBA in memory: little-endian ABGR words)
-    const packed = Uint32Array.from(ramp, ([r, g, b]) => ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0);
+    const pack = ([r, g, b]: [number, number, number]) => ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0;
+    const packed = Uint32Array.from(ramp, pack);
+    const ground = pack(mixRgb(GROUND));
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     const saveData = !!(navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     let still = reduce.matches || saveData || !video.canPlayType('video/mp4');
@@ -78,15 +71,18 @@ export default function FooterPixels() {
     let cols = 0;
     let rows = 0;
     let out: ImageData | null = null;
+    let y0 = 0; // the first row of the film's window (the band under the links, down to the foot)
     let shown = false;
     const fit = () => {
       const r = el.getBoundingClientRect();
-      let cell = v.cell;
+      let cell = r.width < 600 ? v.cellNarrow : v.cell;
       while (Math.ceil(r.width / cell) * Math.ceil(r.height / cell) > MAX_CELLS) cell += 1;
       const c = Math.max(1, Math.ceil(r.width / cell));
       const w = Math.max(1, Math.ceil(r.height / cell));
-      host.style.setProperty('--px-cell', `${cell}px`);
-      if (c === cols && w === rows) return false;
+      const band = host.querySelector('.foot__field');
+      const top = band ? Math.max(0, Math.floor((band.getBoundingClientRect().top - r.top) / cell)) : 0;
+      if (c === cols && w === rows && top === y0) return false;
+      y0 = Math.min(top, w - 1);
       cols = c; rows = w;
       canvas.width = sample.width = cols;
       canvas.height = sample.height = rows;
@@ -96,43 +92,49 @@ export default function FooterPixels() {
       return true;
     };
 
-    // one frame: the source, cropped to the box (cover), down to one pixel a cell, then quantised
+    // one frame: the source, cropped (cover, around the focus) to the film's window, down to one pixel a cell, then
+    // quantised. The window is the band under the links and the bottom line; above it the ground stays plain, so the
+    // links read as on a flat colour, and the film dissolves into it at the window's top edge, pixel by pixel.
     const draw = (src: CanvasImageSource, sw: number, sh: number) => {
       if (!out || !sw || !sh) return;
-      const ar = cols / rows;
+      const h = rows - y0;
+      const ar = cols / h;
       let cw = sw;
       let ch = sh;
       if (sw / sh > ar) cw = sh * ar; else ch = sw / ar;
-      sctx.drawImage(src, (sw - cw) / 2, (sh - ch) / 2, cw, ch, 0, 0, cols, rows);
-      const d = sctx.getImageData(0, 0, cols, rows).data;
-      const total = cols * rows;
+      sctx.drawImage(src, (sw - cw) * v.focus[0], (sh - ch) * v.focus[1], cw, ch, 0, y0, cols, h);
+      const d = sctx.getImageData(0, y0, cols, h).data;
+      const total = cols * h;
       if (lum.length !== total) lum = new Uint8Array(total);
       for (let k = 0, i = 0; k < total; k++, i += 4) lum[k] = (54 * d[i] + 183 * d[i + 1] + 19 * d[i + 2]) >> 8; // Rec. 709 luma, 0..255
-      if (v.auto) {
-        hist.fill(0);
-        for (let k = 0; k < total; k++) hist[lum[k] >> 2]++;
-        let acc = 0;
-        let a = -1;
-        let b = 63;
-        for (let k = 0; k < 64; k++) {
-          acc += hist[k];
-          if (a < 0 && acc >= total * 0.03) a = k;
-          if (acc >= total * 0.97) { b = k; break; }
-        }
-        const [na, nb] = [a / 64, Math.max(a + 2, b + 1) / 64];
-        const ease = leveled ? 0.08 : 1;
-        lo += (na - lo) * ease;
-        hi += (nb - hi) * ease;
-        leveled = true;
+      // this frame's levels (its darkest and lightest few per cent clipped), eased from the last frame's
+      hist.fill(0);
+      for (let k = 0; k < total; k++) hist[lum[k] >> 2]++;
+      let acc = 0;
+      let a = -1;
+      let b = 63;
+      for (let k = 0; k < 64; k++) {
+        acc += hist[k];
+        if (a < 0 && acc >= total * v.window[0]) a = k;
+        if (acc >= total * v.window[1]) { b = k; break; }
       }
+      const ease = leveled ? 0.08 : 1;
+      lo += (a / 64 - lo) * ease;
+      hi += (Math.max(a + 2, b + 1) / 64 - hi) * ease;
+      leveled = true;
       // a step (as a fraction) for each of the 256 lumas, this frame
       for (let l = 0; l < 256; l++) lut[l] = Math.min(1, Math.max(0, (l / 255 - lo) / (hi - lo))) * steps + 0.5;
       const o = new Uint32Array(out.data.buffer);
-      for (let y = 0, k = 0; y < rows; y++) {
-        const by = (y & 3) * 4;
-        for (let x = 0; x < cols; x++, k++) {
+      o.fill(ground, 0, y0 * cols);
+      const fade = Math.max(1, Math.min(14, Math.round(h * 0.2)));
+      for (let y = 0, k = 0; y < h; y++) {
+        const by = ((y + y0) & 3) * 4;
+        const f = y < fade ? y / fade : 2;
+        for (let x = 0, at = (y + y0) * cols; x < cols; x++, k++, at++) {
+          const t = BAYER[by + (x & 3)];
+          if (f < t + 0.5) { o[at] = ground; continue; }
           const s = Math.floor(lut[lum[k]] + bayer[by + (x & 3)]);
-          o[k] = packed[s < 0 ? 0 : s > steps ? steps : s];
+          o[at] = packed[s < 0 ? 0 : s > steps ? steps : s];
         }
       }
       ctx.putImageData(out, 0, 0);

@@ -6,10 +6,11 @@ import { navHref } from './Header';
 import FooterPixels from './FooterPixels';
 
 /* The footer (issue #106, after algoreto.com's): one burgundy panel whose
-   ground is a living texture, our film redrawn as discreet pixels in the
-   brand's dark colours (FooterPixels, lib/footer-pixels.ts). Over it, the
-   content as a grid of cells parted by hairlines, a band where the texture
-   shows a little more, and the bottom line. */
+   ground is our generated film of a tercio on the march and a ship off the
+   Pillars of Hercules, redrawn as discreet pixels in the brand's dark colours
+   (FooterPixels, lib/footer-pixels.ts). Over it, the content as a grid of
+   cells parted by hairlines, a band where the film shows, and the bottom
+   line. The film is credited as generated, under Sources. */
 export default function Footer({ lang }: { lang: Lang }) {
   const d = dict(lang);
   return (
@@ -60,6 +61,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               <ul>
                 <li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">{d.foot.naturalEarth}</a></li>
                 <li><span>{d.foot.canonSrc}</span></li>
+                <li><span>{d.foot.film}</span></li>
               </ul>
             </div>
           </div>

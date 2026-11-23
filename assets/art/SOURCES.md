@@ -168,12 +168,14 @@ Wanted for the Mestizaje pillar, pending the museum's permission: Manuel de Arel
 
 `portico.jpg` left the site on 2026-10-25 (the pillars are now HTML and CSS); it stays in the film (`film/reel/assets/img/portico.jpg`). `epigraph-agnus-dei.jpg` (Zurbarán's lamb) left the site on 2026-10-26: the valley replaced it.
 
-## The footer (`site/public/video/footer-loop.mp4`, since 2026-11-23, issue #106)
+## The footer (`site/public/video/footer-film.mp4`, since 2026-11-23, issue #106)
 
 | File | Made from |
 | --- | --- |
-| `footer-loop.mp4` | A 32 s seamless loop made by us with ffmpeg from four of the film's graded period pictures (`film/reel/assets/img/graded/`, all listed above): Jorge Juan and Antonio de Ulloa's *Plano de la Ciudad de los Reyes* (Lima, 1744; CC0 scan of a public-domain engraving), Cristóbal de Villalpando's *Vista de la Plaza Mayor de la Ciudad de México* (1695; public domain), the Nuremberg map of Tenochtitlan (1524; public domain) and Juan and Ulloa's *Plano de Cartagena de las Indias* (1735; CC0 scan of a public-domain engraving). Each is a slow pan of 10 s, crossfaded over 2 s, the last back into the first. 384 × 216, 15 fps, H.264, no sound, 370 KB. The page never shows it as a film: `site/components/FooterPixels.tsx` redraws it as pixels in the brand's colours |
-| `footer-loop.jpg` | One frame of the same loop (at 4 s), the still that reduced motion, Save-Data and a failed film show, pixelated the same way |
+| `footer-film.mp4` | A 16.9 s seamless loop cut by us with ffmpeg from two of our AI-generated films (see "Video" above): `assets/video/tercio-1080.mp4` (Gemini / Veo; its first three shots, 0–5.25 s: the column of pikes against the low sun, the helmets under the banner, the march from the side; slowed to half speed) and `assets/video/columnas-hercules-loop.mp4` (Gemini / Veo; cropped to the ship and the right-hand pillar, two passes of its seamless loop), crossfaded over 2 s each way. 480 × 270, 15 fps, H.264, no sound, 247 KB. **Generated, not a historical record**: the page credits it as a generated video under the footer's Sources, and shows it only as pixels in the brand's colours (`site/components/FooterPixels.tsx`) |
+| `footer-film.jpg` | One frame of the same loop (at 5 s: the helmets under the banner), the still that reduced motion, Save-Data and a failed film show, pixelated the same way |
+
+A first version of the same day used a drift over four period plans and paintings (`footer-loop.mp4`, public domain and CC0); Carlos found the subject unreadable once pixelated, and it was replaced before merging.
 
 Until 2026-11-23 the footer was a frosted glass over `footer-name.jpg`, made from `assets/art/ai/footer-hispano-studies-2026-10-26.png` (AI-generated, see above; the cream strip on its right cut off, 1826 × 809), lifted like a blind by scrolling. The source stays in `assets/art/ai/`; the site file is in git history.
 

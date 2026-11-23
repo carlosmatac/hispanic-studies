@@ -1173,17 +1173,18 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .about__text .lede { font-size: clamp(17px, 1.2vw, 19px); }
 
 /* ==========================================================================
-   FOOTER — one burgundy panel whose ground is a living texture: our film
-   redrawn as discreet pixels in the brand's dark colours (components/
-   FooterPixels.tsx; every knob in lib/footer-pixels.ts). The content sits on
-   a veil of the ground, so the text reads as on a flat colour; the band
-   between the links and the bottom line lets the texture show a little more.
+   FOOTER — one burgundy panel whose ground is our generated film of a tercio
+   on the march and a ship, redrawn as discreet pixels in the brand's dark
+   colours (components/FooterPixels.tsx; every knob in lib/footer-pixels.ts).
+   The film lives in its own window, the band under the links down to the
+   foot, and dissolves into the plain ground above, so the links read as on a
+   flat colour; the bottom line sits on a veil of the ground.
    ========================================================================== */
 
 .foot {
   /* the ground: the ramps' own middle, so the pixels fade in without a jump (GROUND in lib/footer-pixels.ts) */
   --foot-ground: color-mix(in srgb, var(--burgundy) 55%, var(--burgundy-dark));
-  --foot-veil: color-mix(in srgb, var(--foot-ground) calc(var(--px-veil, 0.55) * 100%), transparent);
+  --foot-veil: color-mix(in srgb, var(--foot-ground) calc(var(--px-veil, 0.4) * 100%), transparent);
   position: relative; isolation: isolate; overflow: hidden; background: var(--foot-ground); color: var(--paper);
 }
 .foot__pixels { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -1192,18 +1193,13 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
   opacity: 0; transition: opacity 1.4s ease;
 }
 .foot__pixels.is-on canvas { opacity: 1; }
-.foot__pixels::after { /* the mosaic's hairlines, one cell apart, in the ground colour (variant's grid) */
-  content: ""; position: absolute; inset: 0; opacity: var(--px-grid, 0);
-  background-image: linear-gradient(to right, var(--foot-ground) 1px, transparent 1px), linear-gradient(to bottom, var(--foot-ground) 1px, transparent 1px);
-  background-size: var(--px-cell, 6px) var(--px-cell, 6px);
-}
 .foot__film { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) { .foot__pixels canvas { transition: none; } }
 .foot__body { position: relative; border-top: 1px solid color-mix(in srgb, var(--paper) 14%, transparent); }
-.foot__field { height: clamp(72px, 9vw, 150px); border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+.foot__field { height: clamp(280px, 30vw, 440px); border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
 /* the content is laid out as a grid of cells parted by hairlines: the eagle, three
    columns of links, and a last column with the motto above and the sources below */
-.foot__grid { background: var(--foot-veil); display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr); border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
+.foot__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr); border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
 .foot__grid > * { padding: clamp(28px, 2.6vw, 40px) clamp(18px, 2vw, 30px); }
 .foot__grid > * + * { border-left: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
 .foot__mark { display: grid; place-items: center; padding-left: var(--edge); }
