@@ -591,7 +591,9 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   type Unit = { id: string; f: string };
   const setCache = new Map<string, Unit[]>();
   function unitsAt(st: State): { key: string; list: Unit[] } {
-    const y = st.year;
+    // a record dated by its year shows the realms as that year left them (Ferdinand III's
+    // Crown of Castile dates from September 1230, not 1 January)
+    const y = st.cs.stop.kind === 'record' && Number.isInteger(st.year) ? st.year + 0.99 : st.year;
     const rs = chron.realms.filter((u) => u.from <= y && y < u.to);
     const key = `${st.preEra ? '-' : st.era}|${rs.map((u) => u.id).join(',')}`;
     let list = setCache.get(key);

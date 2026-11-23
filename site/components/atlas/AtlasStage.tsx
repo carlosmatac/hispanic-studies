@@ -109,7 +109,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const followRef = useRef(follow);
   const durs = useRef<number[]>([]);
   const downAt = useRef({ x: 0, y: 0 });
-  const last = useRef({ bi: -1, landfall: -1, year: '', era: '', date: '', free: false, playing: false, zoom: '', scale: '', pol: -2 });
+  const last = useRef({ bi: -1, landfall: -1, year: '', era: '-', date: '', free: false, playing: false, zoom: '', scale: '', pol: -2 });
 
   const fmt = useMemo(() => ({
     day: new Intl.DateTimeFormat(lang, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }),
@@ -289,7 +289,10 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
       let l = 0, r = 0, top = 0, b = 0;
       if (wide) {
         r = cardOpen && c && c.width ? s.right - c.left + 8 : 0;
-        l = !welcome && n && n.width && s.width > 1280 ? Math.min(n.right - s.left, s.width * 0.24) : 0;
+        // the globe is framed right of the left column, while that leaves it room
+        const side = sideEl.current?.getBoundingClientRect();
+        const edge = !welcome && side && side.width ? side.right - s.left + 8 : 0;
+        l = edge && s.width - edge - r > 420 ? edge : 0;
         b = k ? s.bottom - k.top : 0;
         top = 40;
       } else {

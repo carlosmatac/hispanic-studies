@@ -449,6 +449,7 @@ body:has(.atlas-app) > .bar { flex: none; }
 .atlas__side[hidden] { display: none; }
 .atlas__now { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 8px; overflow: hidden; text-shadow: 0 1px 14px var(--a-ground); }
 .atlas__now > * { flex: none; margin: 0; }
+.atlas__now > .atlas__open { align-self: flex-start; }
 .atlas__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; line-clamp: 4; overflow: hidden; }
 .atlas__where { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--a-label); }
 /* the sentence is the part that yields: it fades out at the foot of the room it has */
