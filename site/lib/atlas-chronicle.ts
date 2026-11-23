@@ -7,6 +7,8 @@ export { CHAPTER_STARTS, TRACKS, yearLabel, stopIndex, type Track } from '@/lib/
 import milestones from '@/data/milestones.json';
 import voyagesData from '@/data/atlas-voyages.json';
 import atlasEras from '@/data/atlas-eras.json';
+import atlasRealms from '@/data/atlas-realms.json';
+import atlasStatus from '@/data/atlas-status.json';
 import recordsData from '@/data/atlas-records.json';
 import iberophone from '@/public/data/iberophone.json';
 
@@ -50,9 +52,29 @@ type RawEra = {
   marks?: { at: LonLat; name: L; kind: string }[];
   names?: Record<string, { name: L; short: L }>;
 };
-type RawFamily = { kind: string; tone: number; name: L; short?: L; at?: LonLat };
+type RawFamily = { kind: string; tone?: number; tint?: string; z?: number; name: L; short?: L; at?: LonLat };
 const ERAS = atlasEras.eras as unknown as RawEra[];
 const FAMILIES = atlasEras.families as unknown as Record<string, RawFamily>;
+
+/* The realms outside the American keyframes (#104): the peninsula's polities
+   from 218 BCE, Spain and Portugal, and their holdings in the Old World and the
+   Pacific; each unit is one dated OpenHistoricalMap relation, drawn between its
+   own dates (data/atlas-realms.json, built by tools/build-atlas-eras.py). */
+type RawRealms = {
+  families: Record<string, RawFamily>;
+  units: { id: string; f: string; from: number; to: number }[];
+  gaps: { from: number; to: number; where: string; text: L }[];
+};
+const REALMS = atlasRealms as unknown as RawRealms;
+
+/* What each realm was, year by year (#104; data/atlas-status.json, curated with
+   a source for every period): the globe colours a territory by the status in
+   force, and the click-for-info popover reads it. */
+type RawPeriod = { from: string; to: string; kind: string; type?: string; name?: L; note?: L; sovereign?: string | null; source: L };
+type RawStatus = { sovereigns: Record<string, L>; families: Record<string, { type?: string; sovereign?: string; periods?: RawPeriod[] }> };
+const STATUS = atlasStatus as unknown as RawStatus;
+/** An ISO date (or a bare year) as a decimal year. */
+export const isoYear = (iso: string) => { const [y, m = '1', d = '1'] = iso.replace(/^-/, '').split('-'); const v = +y + (+m - 1) / 12 + (+d - 1) / 365.25; return iso.startsWith('-') ? -v : v; };
 
 type Milestone = { n: number; year: number; date: L; title: L; body: L };
 const MILESTONES = milestones.milestones as Milestone[];
@@ -142,7 +164,9 @@ export type Era = {
   marks: { at: LonLat; name: string; kind: string }[];
   names: Record<string, string>;
 };
-export type Family = { kind: string; tone: number; name: string; at?: LonLat };
+export type Period = { from: number; to: number; kind: string; type?: string; name?: string; note?: string; sovereign?: string | null; source: string };
+export type Family = { kind: string; tint?: string; z: number; name: string; at?: LonLat; type?: string; sovereign?: string; periods?: Period[] };
+export type RealmUnit = { id: string; f: string; from: number; to: number };
 export type StopMilestone = { n: number; date: string; title: string };
 export type RecordView = {
   id: string;
@@ -199,6 +223,9 @@ export type Chronicle = {
   voyages: Voyage[];
   eras: Era[];
   families: Record<string, Family>;
+  /** dated units outside the keyframes, and the spans for which no shape exists */
+  realms: RealmUnit[];
+  gaps: { from: number; to: number; text: string }[];
   iberophone: { emersa: string[]; submersa: string[]; points: { at: LonLat; name: string; tier: string }[] };
   counts: { records: number; anchored: number };
 };
@@ -251,9 +278,22 @@ export function chronicleFor(lang: Lang): Chronicle {
     marks: (e.marks ?? []).map((m) => ({ at: m.at, kind: m.kind, name: m.name[lang] })),
     names: Object.fromEntries(Object.entries(e.names ?? {}).map(([k, v]) => [k, v.short[lang] || v.name[lang]])),
   }));
-  const families = Object.fromEntries(Object.entries(FAMILIES).map(([k, f]) => [k, {
-    kind: f.kind, tone: f.tone, name: (f.short ?? f.name)[lang], at: f.at,
-  }]));
+  const sov = (k: string | null | undefined) => (k === null ? null : k ? STATUS.sovereigns[k]?.[lang] : undefined);
+  const family = (id: string, f: RawFamily): Family => {
+    const st = STATUS.families[id];
+    return {
+      kind: f.kind, tint: f.tint, z: f.z ?? 1, name: (f.short ?? f.name)[lang], at: f.at,
+      type: st?.type, sovereign: sov(st?.sovereign) ?? undefined,
+      periods: st?.periods?.map((p) => ({
+        from: isoYear(p.from), to: isoYear(p.to), kind: p.kind, type: p.type, name: p.name?.[lang], note: p.note?.[lang],
+        sovereign: p.sovereign === undefined ? undefined : sov(p.sovereign), source: p.source[lang],
+      })),
+    };
+  };
+  const families: Record<string, Family> = Object.fromEntries([
+    ...Object.entries(FAMILIES).map(([k, f]) => [k, family(k, f)]),
+    ...Object.entries(REALMS.families).map(([k, f]) => [k, family(k, f)]),
+  ]);
 
   const ms = (n: number): StopMilestone => {
     const m = MILESTONES.find((x) => x.n === n) as Milestone;
@@ -374,6 +414,8 @@ export function chronicleFor(lang: Lang): Chronicle {
   };
   return {
     stops, voyages, eras, families,
+    realms: REALMS.units.map((u) => ({ id: u.id, f: u.f, from: u.from, to: u.to })),
+    gaps: REALMS.gaps.map((g) => ({ from: g.from, to: g.to, text: g.text[lang] })),
     iberophone: {
       emersa: places.countries.filter((c) => c.tier === 'emersa').map((c) => c.iso),
       submersa: places.countries.filter((c) => c.tier === 'submersa').map((c) => c.iso),

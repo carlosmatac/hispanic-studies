@@ -175,7 +175,8 @@ def list_units(date, max_level=2, rx=None):
 
 
 def run(*args):
-    cmd = ['npx', '--yes', MAPSHAPER, *map(str, args)]
+    # (npx is npx.cmd on Windows)
+    cmd = ['npx.cmd' if sys.platform == 'win32' else 'npx', '--yes', MAPSHAPER, *map(str, args)]
     print('  ' + ' '.join(cmd[3:]), file=sys.stderr)
     subprocess.run(cmd, check=True, cwd=ROOT)
 
@@ -241,9 +242,159 @@ def build():
                 print(f"  note: {era['year']} {u['f']} ({key}) is empty after the clip", file=sys.stderr)
 
 
+REALMS = ROOT / 'tools/atlas-realms.json'
+REALMS_DATA = ROOT / 'site/data/atlas-realms.json'
+REALMS_OUT = ROOT / 'site/public/data/atlas-realms.topo.json'
+LAND50 = ROOT / 'site/public/data/land-50m.json'
+
+
+def year(s, end=False):
+    """An OHM date as a decimal year (BCE negative); an open end is 9999."""
+    if not s:
+        return 9999.0 if end else -9999.0
+    m = re.match(r'^(-?)(\d{1,4})(?:-(\d\d))?(?:-(\d\d))?', s.strip())
+    if not m:
+        return 9999.0 if end else -9999.0
+    y = int(m.group(2)) * (-1 if m.group(1) else 1)
+    # an end given as a bare year runs to the end of that year (OHM chains
+    # write 1194-1212 then 1213-1229)
+    if end and not m.group(3):
+        return float(y + 1)
+    mo, d = int(m.group(3) or 1), int(m.group(4) or 1)
+    return round(y + ((mo - 1) * 30.4 + d - 1) / 365.25, 4)
+
+
+def clip_ring(ring, box):
+    """Sutherland-Hodgman: a ring cut to a box (west, south, east, north)."""
+    w, s, e, n = box
+    edges = [(lambda p: p[0] >= w, lambda a, b: (w, a[1] + (b[1] - a[1]) * (w - a[0]) / (b[0] - a[0]))),
+             (lambda p: p[0] <= e, lambda a, b: (e, a[1] + (b[1] - a[1]) * (e - a[0]) / (b[0] - a[0]))),
+             (lambda p: p[1] >= s, lambda a, b: (a[0] + (b[0] - a[0]) * (s - a[1]) / (b[1] - a[1]), s)),
+             (lambda p: p[1] <= n, lambda a, b: (a[0] + (b[0] - a[0]) * (n - a[1]) / (b[1] - a[1]), n))]
+    pts = ring[:-1]
+    for inside_, cut in edges:
+        out = []
+        for i, cur in enumerate(pts):
+            prev = pts[i - 1]
+            if inside_(cur):
+                if not inside_(prev):
+                    out.append(cut(prev, cur))
+                out.append(cur)
+            elif inside_(prev):
+                out.append(cut(prev, cur))
+        pts = out
+        if not pts:
+            return None
+    return pts + [pts[0]] if len(pts) > 2 else None
+
+
+def clip_geom(g, box):
+    polys = []
+    for poly in g['coordinates']:
+        outer = clip_ring(poly[0], box)
+        if not outer:
+            continue
+        polys.append([outer] + [r for r in (clip_ring(h, box) for h in poly[1:]) if r])
+    return {'type': 'MultiPolygon', 'coordinates': polys} if polys else None
+
+
+def build_realms():
+    """The realms outside the American keyframes (#104): chains of dated OHM
+    relations, drawn each between its own dates, in their own TopoJSON."""
+    cur = json.loads(REALMS.read_text(encoding='utf-8'))
+    items = []
+    for ch in cur['chains']:
+        for it in ch['ohm']:
+            it = it if isinstance(it, dict) else {'id': it}
+            items.append((ch['f'], it))
+    fetch(sorted({it['id'] for _, it in items}))
+
+    WORK.mkdir(parents=True, exist_ok=True)
+    feats, units, skipped = [], [], []
+    for f, it in items:
+        rel = json.loads((CACHE / f"{it['id']}.json").read_text())
+        t = rel.get('tags', {})
+        lo, hi = year(t.get('start_date')), year(t.get('end_date'), True)
+        # narrowed, never widened
+        if 'from' in it:
+            lo = max(lo, float(it['from']))
+        if 'to' in it:
+            hi = min(hi, float(it['to']))
+        if hi <= lo:
+            skipped.append((it['id'], 'empty span'))
+            continue
+        try:
+            g = geometry(rel)
+        except SystemExit as err:
+            skipped.append((it['id'], str(err)))
+            continue
+        if 'clip' in it:
+            g = clip_geom(g, it['clip'])
+            if not g:
+                skipped.append((it['id'], 'nothing left after the clip'))
+                continue
+        uid = f"r{it['id']}"
+        feats.append({'type': 'Feature', 'id': uid, 'properties': {'id': uid}, 'geometry': g})
+        units.append({'id': uid, 'f': f, 'ohm': it['id'], 'from': lo, 'to': hi,
+                      'name': t.get('name'), 'start': t.get('start_date'), 'end': t.get('end_date')})
+    # the forts and enclaves on a coast (Ceuta, Oran, Mazagan, Elmina, Macau…)
+    # are smaller than the 1:50m coast can hold: they keep their own outline
+    fams = cur['families']
+    coastal = [x for x in feats if fams[next(u['f'] for u in units if u['id'] == x['id'])].get('coast', True)]
+    own = [x for x in feats if x not in coastal]
+    src, src2 = WORK / 'realms.json', WORK / 'realms-own.json'
+    src.write_text(json.dumps({'type': 'FeatureCollection', 'features': coastal}))
+    src2.write_text(json.dumps({'type': 'FeatureCollection', 'features': own}))
+    land = WORK / 'land50.json'
+    run('-i', LAND50, '-o', land, 'format=geojson', 'force')
+    a, b = WORK / 'realms-a.json', WORK / 'realms-b.json'
+    # coast: Natural Earth 1:50m, so the Balearics, the Canaries and the
+    # Atlantic islands keep their shapes even where the plate's 110m land has none
+    run('-i', src, 'id-field=id',
+        '-simplify', 'interval=3500', 'keep-shapes',
+        '-clip', land, 'remove-slivers',
+        '-filter-slivers', 'min-area=8km2',
+        '-filter', '!this.isNull',
+        '-o', a, 'format=geojson', 'id-field=id', 'force')
+    run('-i', src2, 'id-field=id', '-simplify', 'interval=600', 'keep-shapes',
+        '-o', b, 'format=geojson', 'id-field=id', 'force')
+    tmp = WORK / 'realms.topo.json'
+    run('-i', a, b, 'combine-files', 'id-field=id', '-merge-layers', 'force', 'name=units',
+        '-o', tmp, 'format=topojson', 'quantization=100000', 'id-field=id', 'force')
+    topo = json.loads(tmp.read_text())
+    topo['properties'] = {
+        'source': 'OpenHistoricalMap contributors (CC0 1.0), many boundary ways from IGN/CNIG municipal limits (CC BY 4.0); coast: Natural Earth 1:50m (public domain)',
+        'built_by': 'tools/build-atlas-eras.py',
+    }
+    REALMS_OUT.write_text(json.dumps(topo, separators=(',', ':')))
+    have = {g.get('id') for o in topo['objects'].values() for g in o.get('geometries', [])}
+    for u in units:
+        if u['id'] not in have:
+            skipped.append((u['ohm'], 'empty after the coast clip'))
+    units = [u for u in units if u['id'] in have]
+    out = {
+        'about': 'Built by tools/build-atlas-eras.py from tools/atlas-realms.json: the realms outside the American keyframes, each unit an OpenHistoricalMap relation drawn between its own dates (decimal years, BCE negative). Do not edit by hand.',
+        'source': topo['properties']['source'],
+        'extracted': time.strftime('%Y-%m-%d'),
+        'gaps': cur['gaps'],
+        'families': cur['families'],
+        'units': units,
+        'skipped': [{'ohm': i, 'why': w} for i, w in skipped],
+    }
+    REALMS_DATA.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding='utf-8')
+    raw = REALMS_OUT.read_bytes()
+    print(f'{REALMS_OUT.relative_to(ROOT)}: {len(raw) / 1024:.0f} KB, '
+          f'{len(gzip.compress(raw, 9)) / 1024:.0f} KB gzipped, {len(units)} units', file=sys.stderr)
+    for i, w in skipped:
+        print(f'  skipped {i}: {w}', file=sys.stderr)
+
+
 if __name__ == '__main__':
-    if len(sys.argv) > 2 and sys.argv[1] == '--list':
+    if len(sys.argv) > 1 and sys.argv[1] == '--realms':
+        build_realms()
+    elif len(sys.argv) > 2 and sys.argv[1] == '--list':
         list_units(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 2,
                    sys.argv[4] if len(sys.argv) > 4 else None)
     else:
         build()
+        build_realms()
