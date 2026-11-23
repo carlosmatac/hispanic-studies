@@ -66,6 +66,11 @@ export default function FooterPixels() {
     let [lo, hi] = v.levels;
     let leveled = false; // the auto window has been set once (the first frame takes it whole, later ones ease toward theirs)
     const hist = new Uint32Array(64);
+    const lut = new Float32Array(256);
+    let lum = new Uint8Array(0);
+    const bayer = Float32Array.from(BAYER, (t) => t * v.dither);
+    // the ramp as 32-bit pixels (RGBA in memory: little-endian ABGR words)
+    const packed = Uint32Array.from(ramp, ([r, g, b]) => ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     const saveData = !!(navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     let still = reduce.matches || saveData || !video.canPlayType('video/mp4');
@@ -73,6 +78,7 @@ export default function FooterPixels() {
     let cols = 0;
     let rows = 0;
     let out: ImageData | null = null;
+    let shown = false;
     const fit = () => {
       const r = el.getBoundingClientRect();
       let cell = v.cell;
@@ -99,11 +105,12 @@ export default function FooterPixels() {
       if (sw / sh > ar) cw = sh * ar; else ch = sw / ar;
       sctx.drawImage(src, (sw - cw) / 2, (sh - ch) / 2, cw, ch, 0, 0, cols, rows);
       const d = sctx.getImageData(0, 0, cols, rows).data;
-      const o = out.data;
+      const total = cols * rows;
+      if (lum.length !== total) lum = new Uint8Array(total);
+      for (let k = 0, i = 0; k < total; k++, i += 4) lum[k] = (54 * d[i] + 183 * d[i + 1] + 19 * d[i + 2]) >> 8; // Rec. 709 luma, 0..255
       if (v.auto) {
         hist.fill(0);
-        for (let i = 0; i < d.length; i += 4) hist[Math.min(63, ((0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 4) | 0)]++;
-        const total = cols * rows;
+        for (let k = 0; k < total; k++) hist[lum[k] >> 2]++;
         let acc = 0;
         let a = -1;
         let b = 63;
@@ -118,18 +125,18 @@ export default function FooterPixels() {
         hi += (nb - hi) * ease;
         leveled = true;
       }
-      for (let y = 0, i = 0; y < rows; y++) {
+      // a step (as a fraction) for each of the 256 lumas, this frame
+      for (let l = 0; l < 256; l++) lut[l] = Math.min(1, Math.max(0, (l / 255 - lo) / (hi - lo))) * steps + 0.5;
+      const o = new Uint32Array(out.data.buffer);
+      for (let y = 0, k = 0; y < rows; y++) {
         const by = (y & 3) * 4;
-        for (let x = 0; x < cols; x++, i += 4) {
-          const l = (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255;
-          const t = Math.min(1, Math.max(0, (l - lo) / (hi - lo)));
-          const s = Math.round(t * steps + BAYER[by + (x & 3)] * v.dither);
-          const c = ramp[s < 0 ? 0 : s > steps ? steps : s];
-          o[i] = c[0]; o[i + 1] = c[1]; o[i + 2] = c[2]; o[i + 3] = 255;
+        for (let x = 0; x < cols; x++, k++) {
+          const s = Math.floor(lut[lum[k]] + bayer[by + (x & 3)]);
+          o[k] = packed[s < 0 ? 0 : s > steps ? steps : s];
         }
       }
       ctx.putImageData(out, 0, 0);
-      el.classList.add('is-on');
+      if (!shown) { shown = true; el.classList.add('is-on'); }
     };
 
     // the still: drawn when nothing moves, and first while the film loads
