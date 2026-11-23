@@ -8,21 +8,19 @@ import { CHAPTER_STARTS, stopIndex, TRACKS, yearLabel, type Track } from '@/lib/
 import { DEFAULT_LAYERS, focusKey, type Anchors, type Box, type Engine, type Focus, type FrameInfo, type HitInfo, type Layers, type Mode } from '@/lib/atlas-globe';
 import { changedItems, noteFor, place } from './explainer';
 
-/* The Atlas app (issue #95 and its review of 2026-11-22). Carlos: "a fixed
-   panel where you can't scroll", "like Prometheus", layers, more colour.
+/* The Atlas app (issues #95 and #102). Carlos: "a fixed panel where you can't
+   scroll", layers, colour; then (2026-11-23) "ours, not a copy", and no world
+   polities: only what the Atlas tells is coloured and named.
 
    - The globe (lib/atlas-globe.ts) fills a fixed window under the site's
      header. The wheel and the trackpad zoom it toward the pointer, a pinch on
      phones; dragging turns it. The page never scrolls.
-   - Top left, as in Prometheus: the chapter, a big year, the stop's title and
-     one sentence, and how many polities are mapped and from where.
-   - Top right: Places & events (every stop, searchable, and the text version),
-     Layers (polities, place names, events, routes, Iberian jurisdictions,
-     recorded / not mapped, and the dark, off by default), map options and
-     fullscreen. Right edge: zoom and a scale bar.
-   - Bottom: one time bar (jump to a year, previous, play the story, next, the
-     timeline by chapter). The card that tells each stop is a side panel that
-     can be closed (a sheet on phones).
+   - Top left, a chart's cartouche: the chapter, the year, the stop's title and
+     one sentence. Down the right edge, one rail of instruments: the index,
+     the layers, globe or flat, the whole screen, how it works, and the zoom.
+   - Bottom left, the legend on paper; bottom, the time bar (previous, play the
+     story, next, the timeline by chapter). The card that tells each stop is a
+     side panel that can be closed (a sheet on phones).
 
    It never plays by itself. Reduced motion: no playback, no flights. The card
    and the globe point at each other (#88). Everything is also in the text
@@ -36,7 +34,7 @@ const WIDE = '(min-width: 1000px)';
 const subscribeWide = (cb: () => void) => { const m = window.matchMedia(WIDE); m.addEventListener('change', cb); return () => m.removeEventListener('change', cb); };
 const getWide = () => window.matchMedia(WIDE).matches;
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
-const LAYER_KEYS: (keyof Layers)[] = ['polities', 'labels', 'events', 'routes', 'iberian', 'recorded', 'fog'];
+const LAYER_KEYS: (keyof Layers)[] = ['world', 'iberian', 'recorded', 'routes', 'events', 'labels', 'fog'];
 const STORE = 'ihs-atlas-layers';
 
 const rel = (el: Element | null, to: DOMRect): Box | null => {
@@ -67,7 +65,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const yearEl = useRef<HTMLSpanElement>(null);
   const eraEl = useRef<HTMLSpanElement>(null);
   const dateEl = useRef<HTMLSpanElement>(null);
-  const zoomEl = useRef<HTMLSpanElement>(null);
   const scaleEl = useRef<HTMLDivElement>(null);
   const scaleTx = useRef<HTMLSpanElement>(null);
   const calloutEl = useRef<HTMLDivElement>(null);
@@ -91,8 +88,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const [layers, setLayers] = useState<Layers>(DEFAULT_LAYERS);
   const [follow, setFollow] = useState<Track | ''>('');
   const [query, setQuery] = useState('');
-  const [yearQ, setYearQ] = useState('');
-  const [polities, setPolities] = useState(-1);
   const [full, setFull] = useState(false);
   const [tip, setTip] = useState<HitInfo | null>(null);
   const [cardFocus, setCardFocus] = useState<Focus | null>(null);
@@ -177,8 +172,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     if (year !== l.year && yearEl.current) { yearEl.current.textContent = year; l.year = year; }
     if (era !== l.era && eraEl.current) { eraEl.current.textContent = era; l.era = era; }
     if (date !== l.date && dateEl.current) { dateEl.current.textContent = date; l.date = date; }
-    const zoom = `${f.zoom.toFixed(1)}×`;
-    if (zoom !== l.zoom && zoomEl.current) { zoomEl.current.textContent = zoom; l.zoom = zoom; }
     if (f.kmPx > 0 && scaleEl.current && scaleTx.current) {
       const km = niceKm(f.kmPx * 90);
       const key = `${km}:${Math.round(km / f.kmPx)}`;
@@ -188,7 +181,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
         scaleTx.current.textContent = `${km.toLocaleString(lang)} km`;
       }
     }
-    if (f.polities !== l.pol) { l.pol = f.polities; setPolities(f.polities); }
     if (range.current) range.current.setAttribute('aria-valuetext', `${year} · ${b.title}`);
     if (f.stop !== l.bi) {
       const tr = followRef.current;
@@ -217,7 +209,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
         if (!alive || !canvas.current) return;
         eng = createAtlasGlobe(canvas.current, chronicle, {
           lang, reduced: reducedRef.current, mode: 'globe', seaNames: t.seas, lines: t.lines, approxText: t.approxText,
-          layers: DEFAULT_LAYERS, polityText: t.polityText,
+          layers: DEFAULT_LAYERS,
           onFrame, onHover: setTip, onAnchors,
           onReady: () => alive && setReady(true),
           onError: () => alive && setFailed(true),
@@ -335,18 +327,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     if (reduced) { step(1); return; }
     if (e.isPlaying()) e.pause(); else e.play();
   };
-  const surprise = () => go(Math.floor(Math.random() * N));
-  const jumpYear = (ev: React.FormEvent) => {
-    ev.preventDefault();
-    const raw = yearQ.trim();
-    const n = parseInt(raw.replace(/[^\d-]/g, ''), 10);
-    if (!Number.isFinite(n)) return;
-    const y = /(bc|a\.?\s*c)/i.test(raw) && n > 0 ? -n : n;
-    let j = 0;
-    stops.forEach((s, i) => { if (s.year <= y + 0.999) j = i; });
-    go(j);
-    setYearQ('');
-  };
   const fullscreen = () => {
     const el = app.current;
     if (!el) return;
@@ -395,7 +375,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const said = started ? `${t.stopOf(bi + 1, N)}. ${b.label}. ${b.title}.${heard}` : '';
   const lede = firstSentence(b.kind === 'record' ? b.record?.paragraphs[0] ?? '' : b.text);
   const ledeLang = b.kind === 'record' && b.record && b.record.lang !== lang ? b.record.lang : undefined;
-  const onLayers = LAYER_KEYS.filter((k) => layers[k]).length;
 
   const bands = useMemo(() => {
     if (!timeline) return [];
@@ -454,8 +433,8 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
 
   const trackNames = b.tracks.map((x) => t.tracksShort[x]).join(' · ');
   const legend: { k: string; label: string }[] = [
-    ...(layers.polities ? [{ k: 'polities', label: t.legend2.polities }] : []),
-    ...(layers.recorded ? [{ k: 'notmapped', label: t.legend2.notMapped }] : []),
+    ...(layers.world ? [{ k: 'world', label: t.legend2.world }] : []),
+    ...(layers.recorded ? [{ k: 'recorded', label: t.legend2.recorded }] : []),
     ...(layers.iberian ? [{ k: 'es', label: t.legend2.es }, { k: 'pt', label: t.legend2.pt }] : []),
     ...(layers.events ? [{ k: 'events', label: t.legend2.events }] : []),
     ...(layers.routes ? [{ k: 'route', label: t.legend2.route }] : []),
@@ -539,15 +518,16 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
         {!ready && !failed && <p className="atlas__msg" aria-live="polite">{t.loading}</p>}
         {failed && <p className="atlas__msg" role="alert">{t.failed} <a href={`${base}/chronicle`}>{t.textVersion}</a></p>}
 
-        {/* top left: the chapter, the year, the stop in one sentence */}
+        {/* top left, a chart's cartouche: the chapter, the year, the stop in one sentence */}
         <div className="atlas__now" ref={nowEl} hidden={welcome && ready}>
-          <p className="atlas__era"><span>{ROMAN[chapter]}</span> {t.chapters[chapter]}</p>
-          <p className="atlas__when" aria-hidden="true">
-            <span className="atlas__yw">{t.yearWord}</span>
-            <span className="atlas__year" ref={yearEl}>{Math.abs(Math.floor(stops[0].year))}</span>
-            <span className="atlas__era-mark" ref={eraEl}>{stops[0].year < 0 ? t.eraBCE : t.eraCE}</span>
-          </p>
-          <p className="atlas__date" aria-hidden="true"><span ref={dateEl}>{stops[0].label}</span></p>
+          <div className="atlas__cartouche">
+            <p className="atlas__era"><span>{ROMAN[chapter]}</span>{t.chapters[chapter]}</p>
+            <p className="atlas__when" aria-hidden="true">
+              <span className="atlas__year" ref={yearEl}>{Math.abs(Math.floor(stops[0].year))}</span>
+              <span className="atlas__era-mark" ref={eraEl}>{stops[0].year < 0 ? t.eraBCE : t.eraCE}</span>
+            </p>
+            <p className="atlas__date" aria-hidden="true"><span ref={dateEl}>{stops[0].label}</span></p>
+          </div>
           {started && (
             <>
               <h2 className="atlas__title" lang={ledeLang}>{b.title}</h2>
@@ -555,29 +535,38 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
               {!cardOpen && <button type="button" className="atlas__open" onClick={() => setCardOpen(true)}>{t.openCard} →</button>}
             </>
           )}
-          {wide && layers.polities && (
-            <p className="atlas__count">
-              <span>{polities >= 0 ? t.mapped(polities) : t.mappedLoading}</span>
-              <a href="https://github.com/Seshat-Global-History-Databank/cliopatria" target="_blank" rel="noopener noreferrer">{t.cliopatria}</a>
-            </p>
-          )}
         </div>
 
-        {/* top right: places & events, layers, map options, fullscreen */}
-        <div className="atlas__tools" ref={tools}>
-          <button type="button" className={`atlas__tool${panel === 'places' ? ' is-on' : ''}`} onClick={() => { setQuery(''); setPanel((p) => (p === 'places' ? '' : 'places')); }} aria-expanded={panel === 'places'} title={t.placesEvents}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5" /><path d="M6 2.5v11M8.2 6h3.3M8.2 8.5h3.3" /></svg><span>{t.placesEvents}</span>
+        {/* the right edge: one rail of instruments */}
+        <div className="atlas__rail" ref={tools}>
+          <button type="button" className={`atlas__inst${panel === 'places' ? ' is-on' : ''}`} onClick={() => { setQuery(''); setPanel((p) => (p === 'places' ? '' : 'places')); }} aria-expanded={panel === 'places'} title={t.index}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h7l2 2v9h-9z" /><path d="M5.5 6h5M5.5 8.5h5M5.5 11h3" /></svg><span>{t.index}</span>
           </button>
-          <button type="button" className={`atlas__tool${panel === 'layers' ? ' is-on' : ''}`} onClick={() => setPanel((p) => (p === 'layers' ? '' : 'layers'))} aria-expanded={panel === 'layers'} title={t.layersH}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 2.5 6 3.2-6 3.2-6-3.2z" /><path d="m2 9 6 3.2L14 9" /></svg><span>{t.layersH}</span><b>{onLayers}</b>
+          <button type="button" className={`atlas__inst${panel === 'layers' ? ' is-on' : ''}`} onClick={() => setPanel((p) => (p === 'layers' ? '' : 'layers'))} aria-expanded={panel === 'layers'} title={t.layersH}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m8 2.5 6 3.2-6 3.2-6-3.2z" /><path d="m2 9 6 3.2L14 9" /></svg><span>{t.layersH}</span>
           </button>
-          <button type="button" className={`atlas__tool atlas__tool--opt${panel === 'options' ? ' is-on' : ''}`} onClick={() => setPanel((p) => (p === 'options' ? '' : 'options'))} aria-expanded={panel === 'options'} title={t.mapOptions}>
-            <svg viewBox="0 0 16 16" aria-hidden="true" className="atlas__only-narrow"><circle cx="8" cy="8" r="5.8" /><path d="M2.2 8h11.6M8 2.2c2 2.2 2 9.4 0 11.6M8 2.2c-2 2.2-2 9.4 0 11.6" /></svg>
-            <span>{t.mapOptions}</span>
-            <svg viewBox="0 0 16 16" aria-hidden="true" className="atlas__only-wide"><path d="m4 6 4 4 4-4" /></svg>
+          <button type="button" className="atlas__inst" onClick={() => setMode((m) => (m === 'globe' ? 'flat' : 'globe'))} title={mode === 'globe' ? t.flat : t.globe} aria-label={mode === 'globe' ? t.flat : t.globe}>
+            {mode === 'globe'
+              ? <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3.5" width="12" height="9" rx="1.5" /><path d="M2 8h12M8 3.5v9" /></svg>
+              : <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.8" /><path d="M2.2 8h11.6M8 2.2c2 2.2 2 9.4 0 11.6M8 2.2c-2 2.2-2 9.4 0 11.6" /></svg>}
+            <span>{mode === 'globe' ? t.flat : t.globe}</span>
           </button>
-          <button type="button" className="atlas__tool atlas__tool--full" onClick={fullscreen} aria-label={full ? t.exitFullscreen : t.fullscreen} title={full ? t.exitFullscreen : t.fullscreen}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10" /></svg><span>{full ? t.exitFullscreen : t.fullscreen}</span>
+          <button type="button" className="atlas__inst atlas__inst--full" onClick={fullscreen} aria-label={full ? t.exitFullscreen : t.fullscreen} title={full ? t.exitFullscreen : t.fullscreen}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10" /></svg>
+          </button>
+          <button type="button" className="atlas__inst" onClick={() => { setPanel(''); setWelcome(true); }} aria-label={t.help} title={t.help}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 6.2a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.3v.4M8 11.8v.2" /></svg>
+          </button>
+          <span className="atlas__rail-rule" aria-hidden="true" />
+          <button type="button" className="atlas__inst atlas__inst--zoom" onClick={() => engine.current?.zoomBy(1.6)} aria-label={t.zoomIn} title={t.zoomIn} disabled={!ready}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
+          </button>
+          <button type="button" className="atlas__inst atlas__inst--zoom" onClick={() => engine.current?.zoomBy(1 / 1.6)} aria-label={t.zoomOut} title={t.zoomOut} disabled={!ready}>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" /></svg>
+          </button>
+          <button type="button" className="atlas__inst atlas__inst--zoom" onClick={() => engine.current?.zoomTo(1)} aria-label={t.wholePlanet} title={t.wholePlanet} disabled={!ready}>
+            {/* a compass rose: the whole planet again */}
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5 9.3 6.7 14.5 8 9.3 9.3 8 14.5 6.7 9.3 1.5 8 6.7 6.7z" /></svg>
           </button>
         </div>
 
@@ -596,54 +585,25 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
                 </li>
               ))}
             </ul>
-            <ul className="atlas__legend atlas__legend--pop" aria-hidden="true">
-              {legend.map((x) => <li key={x.k} className={`atlas__legend--${x.k}`}>{x.label}</li>)}
-            </ul>
-          </div>
-        )}
-        {panel === 'options' && (
-          <div className="atlas__pop atlas__pop--options" role="group" aria-label={t.mapOptions}>
-            <p className="atlas__pop-h">{t.projection}</p>
-            <div className="atlas__seg">
-              <button type="button" aria-pressed={mode === 'globe'} onClick={() => setMode('globe')}>{t.globe}</button>
-              <button type="button" aria-pressed={mode === 'flat'} onClick={() => setMode('flat')}>{t.flat}</button>
-            </div>
-            <p className="atlas__pop-h">{t.help}</p>
-            <button type="button" className="atlas__linkbtn" onClick={() => { setPanel(''); setWelcome(true); }}>{t.howTitle} →</button>
-            <a className="atlas__linkbtn" href={`${base}/chronicle`}>{t.textVersion} →</a>
+            <p className="atlas__pop-foot"><a href={`${base}/chronicle`}>{t.textVersion} →</a></p>
           </div>
         )}
 
-        {/* right edge: zoom and the scale */}
-        <div className="atlas__zoom" role="group" aria-label={`${t.zoomIn} / ${t.zoomOut}`}>
-          <button type="button" onClick={() => engine.current?.zoomBy(1.6)} aria-label={t.zoomIn} title={t.zoomIn} disabled={!ready}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
-          </button>
-          <button type="button" onClick={() => engine.current?.zoomBy(1 / 1.6)} aria-label={t.zoomOut} title={t.zoomOut} disabled={!ready}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" /></svg>
-          </button>
-          <button type="button" onClick={() => engine.current?.zoomTo(1)} title={t.wholePlanet} aria-label={t.wholePlanet} disabled={!ready}>
-            <span ref={zoomEl}>1.0×</span>
-          </button>
-          <button type="button" onClick={() => engine.current?.recentre()} title={t.recentre} aria-label={t.recentre} disabled={!ready}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.6" /><path d="M8 1.5v2.8M8 11.7v2.8M1.5 8h2.8M11.7 8h2.8" /></svg>
-          </button>
-        </div>
-        <div className="atlas__scale" aria-hidden="true"><span ref={scaleTx}>1,000 km</span><div ref={scaleEl} /></div>
+        {/* a portolan's scale, and back to the story when the reader has the camera */}
+        <div className="atlas__scale" aria-hidden="true"><div ref={scaleEl} /><span ref={scaleTx}>1,000 km</span></div>
         {free && ready && started && (
           <button type="button" className="atlas__recentre" onClick={() => engine.current?.recentre()}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.4" /><path d="M8 1.5v2.5M8 12v2.5M1.5 8H4M12 8h2.5" /></svg> {t.recentre}
           </button>
         )}
 
-        {/* bottom left: how to move, and what the colours mean */}
+        {/* bottom left: the legend, on paper */}
         <div className="atlas__key" ref={keyEl}>
-          <p className="atlas__hint">{wide ? t.hintDrag : t.hintTouch}</p>
+          <p className="atlas__key-h">{t.legendH}</p>
           <ul className="atlas__legend">
             {legend.map((x) => <li key={x.k} className={`atlas__legend--${x.k}`}>{x.label}</li>)}
           </ul>
         </div>
-        {ready && !welcome && <button type="button" className="atlas__surprise" onClick={surprise}>{t.surprise}</button>}
 
         <svg className="atlas__leader" aria-hidden="true">
           <line ref={leader} style={{ display: 'none' }} />
@@ -681,7 +641,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
                 <li key={h.k} className={`atlas__how--${h.k}`}><i aria-hidden="true" /><strong>{h.t}</strong> {h.d}</li>
               ))}
             </ul>
-            <p className="atlas__welcome-hint">{wide ? `${t.hintDrag} · ${t.keys}` : t.hintTouch} · <a href={`${base}/chronicle`}>{t.textVersion}</a></p>
+            <p className="atlas__welcome-hint">{wide ? `${t.hint} · ${t.keys}` : t.hintTouch} · <a href={`${base}/chronicle`}>{t.textVersion}</a></p>
           </div>
         )}
 
@@ -689,7 +649,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
         {panel === 'places' && (
           <aside className="atlas__places" aria-labelledby="atlas-places-h">
             <div className="atlas__places-head">
-              <h2 id="atlas-places-h">{t.placesEvents}</h2>
+              <h2 id="atlas-places-h">{t.index}</h2>
               <button type="button" className="atlas__x" onClick={() => setPanel('')} aria-label={t.close}>
                 <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" /></svg>
               </button>
@@ -833,10 +793,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
 
         {/* the time bar */}
         <div className="atlas__bar" ref={bar}>
-          <form className="atlas__jump" onSubmit={jumpYear}>
-            <input value={yearQ} onChange={(e) => setYearQ(e.currentTarget.value)} inputMode="numeric" placeholder={yearLabel(Math.floor(b.year), lang)} aria-label={t.yearInput} title={t.yearInput} />
-            <button type="submit" disabled={!ready}>{t.goYear}</button>
-          </form>
           <button type="button" className="atlas__btn" onClick={() => step(-1)} disabled={!ready || (started && prevI < 0)} aria-label={t.prev} title={t.prev}>
             <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" /></svg>
           </button>
@@ -887,9 +843,6 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
               ))}
             </div>
           </div>
-          <button type="button" className="atlas__btn atlas__btn--help" onClick={() => setWelcome(true)} aria-label={t.help} title={t.help}>
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 6.2a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.3v.4M8 11.8v.2" /></svg>
-          </button>
         </div>
       </div>
       <p className="visually-hidden" aria-live="polite">{said}</p>
