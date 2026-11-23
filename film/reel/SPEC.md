@@ -16,16 +16,17 @@ LOOK:    the medium is the page itself, printed: paper #F9F3DD (exactly the site
          #2F070D. Every picture (paintings, architecture, period maps, Beltrán's footage) goes through the duotone LUT
          (assets/luts/ihs-duotone.cube, film/tools/make-duotone-lut.py): burgundy shadows,
          paper whites, 12% grain. His own thumbnails stay in colour: they are the product; so
-         do the site's own pictures (the Atlas globe and its realms, the archive's pages).
+         does the Atlas globe, in its realms' own colours.
          Display: Ibarra Real Nova 600 (the site's face), 150–220 px for hero words, -2.5%
          tracking; italic 500 for the quiet line. Body: Inter 500, 30–38 px.
 OBJECTS: the IHS eagle (its stepped wings are the film's signature: they open in 7 steps
          and the scene changes are stepped wipes); the three pillars as columns holding up
          the name; from bar 20 on, the portico's frieze is the transition: each works shot
          is pushed out left, the frieze slides in and the camera dives into the next metope; book spines;
-         the site itself where the film shows the site: the Atlas globe rendered by our own
-         engine (site/lib/atlas-globe.ts), the archive's pages, the home's essay cards,
-         captured by film/tools/capture-site.mjs (2026-11-23, issue #107).
+         the Atlas globe rendered alone by our own engine (site/lib/atlas-globe.ts, no UI) by
+         film/tools/capture-site.mjs; the archive as covers of real works, coloured by region,
+         built in the film (issue #107). Never a capture of the site's pages or the app's UI:
+         the film represents the site, it does not screenshot it (Carlos, 2026-11-23).
 MOTION:  arrivals expo.out 0.4–0.5 s; titles blur in per word (8 px → 0, 0.14 s) on the
          beat; wipes power3.in in, power3.out out; stepped reveals use steps(n).
          Hits are tl.set or steps, never eased.

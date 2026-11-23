@@ -33,8 +33,8 @@ librosa: onsets, low-band hits, harmonic/percussive energy, chords).
 | 39.39 | 39.24 | the rise peaks | the portico; the camera dives into "Watch" |
 | 42.11 | 41.96 | **the drop** (D) | Watch |
 | 45.16 / 47.54 | 45.01 / 47.39 | hits (47.54 is the biggest) | Read; its ring of essays folds on 47.54 |
-| 50.18 | 50.03 | hit | the archive |
-| 55.68 | 55.53 | hit | the Atlas (the app, its globe flying between stops) |
+| 50.18 | 50.03 | hit | the archive: covers of the curated works fan, sort into the six eras, one opens on its article |
+| 55.68 | 55.53 | hit | the Atlas: the globe flies from Iberia across the Atlantic to the Americas and on to Manila, the realms filling era by era, the year ticking, milestone cards on their places |
 | 61.29 | 61.14 | **the climax** (back on D) | De Indiis Editions |
 | 64.62 | 64.47 | hit | "Join the argument." |
 | 66.22 · 67.69 · 68.49 · 69.28 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | the five logos · 50,000+ · followers on five channels · @hispano_studies |

@@ -4,10 +4,14 @@ of the reel (bars 21-29). Everything on screen comes from the site's own data:
   - Watch: his real thumbnails (film/reel/assets/img/yt-*.jpg)
   - Read: the eight essays in site/lib/content.ts, as the home's essay cards (the post's
     cover, its date, author and translator), flying in 3D
-  - The archive: the archive page itself and a work's page, as the site shows them
-    (film/reel/assets/img/site/, captured by film/tools/capture-site.mjs)
-  - The Atlas: the Atlas app itself, its globe flying between stops (film/reel/assets/atlas/,
-    captured by film/tools/capture-site.mjs from our own engine, lib/atlas-globe.ts)
+  - The archive: covers of real works of the curated 80, coloured by region as on the site
+    (film/reel/assets/archive.json, exported from the archive's database by
+    film/tools/capture-site.mjs archive), fanned, sorted into the six eras, and one opened
+    to its article (the article's own first lines)
+  - The Atlas: the globe alone, rendered from our own engine (lib/atlas-globe.ts) by
+    film/tools/capture-site.mjs atlas: the camera flies Iberia, the Atlantic, the Americas,
+    Manila, the realms fill era by era and the voyages draw themselves; the year, the
+    milestone cards and their pins are built here, on the places the render reports
   - De Indiis Editions: the series names (site/lib/i18n.ts)
   - Follow: the channels' own logos (Simple Icons, CC0, as on the site) and one total
     that stays true as they grow: the verified followings add up to more than 50,000
@@ -59,9 +63,8 @@ THUMBS = ["BISc6y6fIuM", "JNLr7NM_buA", "3LYcIzK8mxo", "5Yug5P6lbCc", "NJKfmnwbO
 # the channels' glyphs, straight from the site's seal component
 icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text(encoding="utf-8")
 GLYPHS = dict(re.findall(r"^  (\w+): '([^']+)',$", icon_src, flags=re.M))
-# the pictures of the site, as captured (film/tools/capture-site.mjs): the archive page from the
-# collection's title down its first era, a work's page, and the Atlas app's frames
-SITE = json.loads((ROOT / "film/reel/assets/img/site/site.json").read_text(encoding="utf-8"))
+ARCHIVE = json.loads((ROOT / "film/reel/assets/archive.json").read_text(encoding="utf-8"))
+ATLAS_PINS = json.loads((ROOT / "film/reel/assets/atlas/atlas-pins.json").read_text(encoding="utf-8"))
 
 # ---------------------------------------------------------------- the frieze between shots
 # The portico of the pillars scene (bar 20) ends with a dive into the "Watch" metope. Every
@@ -88,15 +91,101 @@ for i, (t, a, tr, d, slug) in enumerate(ESSAYS):
           </article></div>''')
 grid = [((i % 4) - 1.5) * 470 for i in range(8)], [((i // 4) - 0.5) * 330 for i in range(8)]
 
-# ---------------------------------------------------------------- the archive and the Atlas, as captured
-ARCH = SITE["archive"]      # the archive page: its size in CSS px and where the camera looks
-WORK = SITE["work"]         # a work's page
-APP = SITE["atlas"]         # the Atlas app: the first film frame it was captured at, and how many
-# a video's frame i is the film's frame first + i: start it a hair before that frame's time, so
-# both rounding and flooring land on the same frame
+# ---------------------------------------------------------------- the archive: covers, built here
+WORKS = {w["id"]: w for w in ARCHIVE["works"]}
+ERAS = ARCHIVE["eras"]
+ROMAN = ["I", "II", "III", "IV", "V", "VI"]
+# three covers an era (Beltrán's order inside it), the first twelve fanned when the shot opens
+COLUMNS = [
+    ["inter-caetera-1493", "vitoria-de-indis", "las-casas-tratado-comprobatorio"],
+    ["sahagun-codice-florentino", "cortes-de-tomar", "garcilaso-comentarios-reales"],
+    ["constitucion-cadiz", "T001", "T003"],
+    ["T012", "T013", "T030"],
+    ["T035", "T038", "T039"],
+    ["T046", "cplp-declaracao-constitutiva", "durantez-iberofonia-paniberismo"],
+]
+FAN = ["inter-caetera-1493", "garcilaso-comentarios-reales", "T001", "cortes-de-tomar", "T013", "T012",
+       "T039", "T030", "T035", "sahagun-codice-florentino", "T046", "durantez-iberofonia-paniberismo"]
+OPEN = "T030"
+ART = next(a for a in ARCHIVE["articles"] if a["id"] == OPEN)
+CW2, CH2 = 210, 280
+COLX = [260 + i * 280 for i in range(6)]
+
+
+def first_sentence(t):
+    t = " ".join(t.split())
+    i = t.find(". ")
+    return t[: i + 1] if 0 < i < 260 else t[:200].rsplit(" ", 1)[0] + "…"
+
+
+def split_title(t):
+    for sep in (" — ", ": ", " / "):
+        i = t.find(sep)
+        if i > 0:
+            return t[:i]
+    return t
+
+
+def cover(w, extra="", pre="ac-"):
+    t = split_title(w["title"])
+    long = " is-long" if len(t) > 34 else ""
+    fg = "#f9f3dd" if w["fg"] == "paper" else "#28231e"
+    return (f'<div id="{pre}{w["id"]}" class="ac{extra}" style="--bg: {w["bg"]}; --fg: {fg}; --accent: {w["accent"]}; --line: {w["line"]}">'
+            f'<p class="ac-top">{esc(w["date"] if len(w["date"]) < 12 else str(w["year"]))}</p>'
+            f'<p class="ac-t{long}">{esc(t)}</p>'
+            f'<p class="ac-foot"><i></i><b>{esc(w["author"])}</b></p></div>')
+
+
+ar_cards = []
+order = [wid for col in COLUMNS for wid in col]
+for wid in order:
+    ar_cards.append("        " + cover(WORKS[wid]))
+eras_html = "\n".join(
+    f'        <p id="ae-{i}" class="ae" style="left: {COLX[i] - 120}px"><b>{ROMAN[i]}</b><span>{e["from"]}–{e["to"]}</span></p>'
+    for i, e in enumerate(ERAS))
+ow = WORKS[OPEN]
+article = f"""        <div id="aa-page">
+          <p class="aa-k">{esc(str(ow["year"]))} · {esc(ow["author"])}</p>
+          <p class="aa-t">{esc(split_title(ow["title"]))}</p>
+          <div class="aa-s"><h4>The author or issuing body</h4><p>{esc(first_sentence(ART["aboutAuthor"]))}</p></div>
+          <div class="aa-s"><h4>The work in its time</h4><p>{esc(first_sentence(ART["workInItsTime"]))}</p></div>
+          <div class="aa-s"><h4>Why read it today?</h4><p>{esc(first_sentence(ART["whyReadToday"]))}</p></div>
+        </div>"""
+# where each cover goes: the fan (a hand of twelve around a pivot below the frame), then its era
+fan_pos = {}
+for i, wid in enumerate(FAN):
+    a = (i - (len(FAN) - 1) / 2) * 6.2
+    r = 980
+    fan_pos[wid] = [round(1230 + r * math.sin(math.radians(a))), round(1580 - r * math.cos(math.radians(a))), round(a, 1)]
+col_pos = {}
+for c, col in enumerate(COLUMNS):
+    for k, wid in enumerate(col):
+        col_pos[wid] = [COLX[c], 610 + k * 66, round(((sum(map(ord, wid)) % 9) - 4) * 0.7, 1)]
+
+# ---------------------------------------------------------------- the Atlas: the globe, rendered; the rest built here
 FILM0 = 42.114              # where this scene starts in the film (index.html)
-AV0 = round(APP["first"] / 30 - 0.004 - FILM0, 4)
-AVD = round(APP["frames"] / 30, 4)
+AV0 = round(ATLAS_PINS["first"] / 30 - 0.004 - FILM0, 4)
+AVD = round(len(ATLAS_PINS["rows"]) / 30, 4)
+# the milestone cards: real titles (site/data/milestones.json and the Atlas's stops), each on its place
+# [id, pin, kicker, title, from, to (seconds into the shot), card offset from the pin]
+AT_CARDS = [
+    ["granada", "granada", "1492", "Granada enters the Castilian crown", 0.3, 1.25, [70, -40]],
+    ["tordesillas", "tordesillas", "1494", "Treaty of Tordesillas", 1.72, 2.62, [64, -150]],
+    ["lima", "lima", "1542", "The New Laws create the Viceroyalty of Peru", 2.52, 3.4, [70, -190]],
+    ["manila", "manila", "1565–1571", "The Pacific crossing and Manila", 4.0, 9.0, [60, 40]],
+    ["interior", "interior", "1776–1777", "The Bourbon reforms redraw the empire", 4.4, 9.0, [-590, -230]],
+]
+AT_YEARS = [[0.0, 1492], [1.6, 1494], [2.4, 1542], [3.2, 1565], [4.0, 1777]]
+at_cards = []
+for cid, pin, k, title, t0, t1, (dx, dy) in AT_CARDS:
+    lx, ly = (dx, dy + 40) if dx > 0 else (dx + 520, dy + 40)
+    at_cards.append(f"""      <div id="atc-{cid}" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-{cid}" d="M0 0 L{lx} {ly}" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-{cid}" class="atc-card" style="left: {dx}px; top: {dy}px"><p class="atc-k">{esc(k)}</p><h3>{esc(title)}</h3></article>
+      </div></div>""")
+# per frame: the pin's place and how far it faces us [frame, x, y, cos] for each card
+AT_TRACKS = {cid: [[r["f"], *r[pin]] for r in ATLAS_PINS["rows"]] for cid, pin, *_ in AT_CARDS}
 
 # ---------------------------------------------------------------- page
 logos = "\n".join(f'        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="{GLYPHS[k]}" /></svg></div>' for k in ["youtube", "instagram", "x", "tiktok", "substack"])
@@ -143,17 +232,60 @@ page = f'''<template>
     .rd-by {{ font-family: Inter, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.3; color: #6a625a; }}
     #wk-read .wk-word, #wk-read .wk-fig {{ z-index: 2; }}
 
-    /* the archive: its own page, the camera over it; then a work's page, whipped in */
-    #ar-world {{ position: absolute; left: 0; top: 0; width: {ARCH["w"]}px; height: {ARCH["h"]}px; transform-origin: 0 0; }}
-    #ar-world > img, #ar-work > img {{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }}
-    #ar-work {{ position: absolute; left: 0; top: 0; width: {WORK["w"]}px; height: {WORK["h"]}px; transform-origin: 0 0; z-index: 1; }}
-    #wk-archive .wk-word, #wk-archive .wk-fig, #wk-archive .wk-slab {{ z-index: 2; }}
+    /* the archive: covers of the curated works, on burgundy, as the old canon cards were */
+    #wk-archive {{ background: #470b15; background-image: radial-gradient(70% 80% at 60% 55%, rgba(139, 94, 75, 0.5), transparent 75%); }}
+    #wk-archive .wk-slab {{ background: #470b15; }}
+    #wk-archive .wk-word {{ color: #f9f3dd; z-index: 2; }}
+    #wk-archive .wk-fig {{ color: #ede3c8; z-index: 2; }}
+    #wk-archive .wk-slab {{ z-index: 2; }}
+    #ar-deck {{ position: absolute; inset: 0; perspective: 1800px; }}
+    .ac {{ --paper: #f9f3dd; --leather: #8b5e4b; --burgundy: #470b15; --ink: #28231e; --region-sea: #2a4d51; --region-olive: #4c5327;
+      position: absolute; left: {-CW2 // 2}px; top: {-CH2 // 2}px; width: {CW2}px; height: {CH2}px; display: flex; flex-direction: column; gap: 9px; padding: 17px 16px 15px;
+      background: var(--bg); color: var(--fg); border-radius: 8px; box-shadow: 0 3px 6px rgba(20, 6, 8, 0.28), 0 30px 50px -22px rgba(20, 6, 8, 0.8); backface-visibility: hidden; }}
+    .ac::before {{ content: ""; position: absolute; inset: 7px; border: 1px solid var(--line); border-radius: 3px; }}
+    .ac-top {{ font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; font-size: 17px; color: var(--accent); }}
+    .ac-t {{ font-style: italic; font-weight: 600; font-size: 27px; line-height: 1.07; }}
+    .ac-t.is-long {{ font-size: 22px; line-height: 1.1; }}
+    .ac-foot {{ margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }}
+    .ac-foot i {{ display: block; width: 30px; height: 1.5px; background: var(--accent); margin-bottom: 7px; }}
+    .ac-foot b {{ font-weight: 600; font-size: 13.5px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }}
+    #ar-head {{ position: absolute; left: 0; right: 0; top: 150px; text-align: center; font-style: italic; font-weight: 600; font-size: 78px; line-height: 1; color: #f9f3dd; white-space: nowrap; }}
+    #ar-head span {{ display: inline-block; }}
+    .ae {{ position: absolute; top: 300px; width: 240px; text-align: center; color: #f9f3dd; }}
+    .ae b {{ display: block; font-weight: 600; font-size: 54px; line-height: 1; }}
+    .ae span {{ display: block; margin-top: 8px; font-family: "IBM Plex Mono", Consolas, monospace; font-size: 24px; color: #dcc8ad; }}
+    #ar-veil {{ position: absolute; inset: 0; background: rgba(47, 7, 13, 0.82); opacity: 0; }}
+    /* the opened work: its cover swings open on the article's first lines */
+    #ar-book {{ position: absolute; left: 960px; top: 560px; width: 0; height: 0; perspective: 2200px; }}
+    #aa-page {{ position: absolute; left: -380px; top: -330px; width: 760px; height: 660px; padding: 40px 48px; border-radius: 14px; background: #f9f3dd; color: #28231e;
+      box-shadow: 0 4px 10px rgba(20, 6, 8, 0.35), 0 50px 90px -30px rgba(20, 6, 8, 0.85); opacity: 0; }}
+    .aa-k {{ font-family: "IBM Plex Mono", Consolas, monospace; font-size: 26px; color: #470b15; }}
+    .aa-t {{ margin: 8px 0 20px; font-style: italic; font-weight: 600; font-size: 52px; line-height: 1.02; color: #470b15; }}
+    .aa-s {{ margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(40, 35, 30, 0.18); }}
+    .aa-s h4 {{ font-weight: 600; font-size: 32px; line-height: 1.1; color: #28231e; }}
+    .aa-s p {{ margin-top: 6px; font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; line-height: 1.35; color: #5b534b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
+    #ar-lid {{ position: absolute; left: -380px; top: -330px; width: 760px; height: 660px; transform-origin: 0 50%; transform-style: preserve-3d; }}
+    #ar-lid .ac {{ left: 0; top: 0; width: 760px; height: 660px; padding: 40px 42px; gap: 16px; border-radius: 14px; }}
+    #ar-lid .ac::before {{ inset: 14px; border-radius: 6px; }}
+    #ar-lid .ac-top {{ font-size: 30px; }}
+    #ar-lid .ac-t {{ font-size: 76px; }}
+    #ar-lid .ac-foot b {{ font-size: 26px; }}
+    #ar-lid .ac-foot i {{ width: 60px; height: 2px; }}
 
-    /* the Atlas: the app itself, as it runs (a video of our own engine, the page's glass around it) */
+    /* the Atlas: the globe, rendered from our engine; the year, the cards and their pins built here */
     #wk-atlas {{ background: transparent; }}
-    /* its chip sits at the top, over the dark above the planet: the year card keeps its corner */
-    #at-chip {{ left: 50%; top: 104px; translate: -50% 0; }}
-    #at-app {{ position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; object-fit: cover; transform-origin: 50% 46%; background: #17130f; }}
+    #at-globe {{ position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; background: #17130f; }}
+    #at-shade {{ position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23, 19, 15, 0.78) 0%, rgba(23, 19, 15, 0) 38%), linear-gradient(0deg, rgba(23, 19, 15, 0.7) 0%, rgba(23, 19, 15, 0) 30%); }}
+    #wk-atlas .wk-word {{ color: #f9f3dd; }}
+    #wk-atlas .wk-fig {{ color: #ede3c8; }}
+    #at-year {{ position: absolute; left: 120px; bottom: 60px; font-weight: 600; font-size: 230px; line-height: 0.9; letter-spacing: -0.03em; color: #f9f3dd; font-variant-numeric: lining-nums tabular-nums; text-shadow: 0 6px 40px rgba(23, 19, 15, 0.8); }}
+    .atc, .atc-in {{ position: absolute; left: 0; top: 0; width: 0; height: 0; }}
+    .atc-lead {{ position: absolute; left: -800px; top: -800px; width: 1600px; height: 1600px; overflow: visible; }}
+    .atc-lead path {{ fill: none; stroke: #f9f3dd; stroke-width: 3; stroke-dasharray: 0.03 0.02; }}
+    .atc-pin {{ position: absolute; left: -15px; top: -15px; width: 30px; height: 30px; border-radius: 50%; background: #470b15; border: 5px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15, 0 4px 14px rgba(0, 0, 0, 0.5); }}
+    .atc-card {{ position: absolute; width: 520px; padding: 22px 28px 26px; border-radius: 14px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7); }}
+    .atc-k {{ font-family: "IBM Plex Mono", Consolas, monospace; font-size: 26px; color: #470b15; margin-bottom: 8px; }}
+    .atc-card h3 {{ font-weight: 600; font-size: 44px; line-height: 1.04; color: #28231e; }}
 
     /* books */
     #wk-shelf {{ position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }}
@@ -210,18 +342,28 @@ page = f'''<template>
     </div>
 
     <div id="wk-archive" class="wk-shot clip" data-start="{C0}" data-duration="{round(A0 - C0, 4)}">
-      <div id="ar-world"><img src="assets/img/site/{ARCH["file"]}" alt="" /></div>
-      <div id="ar-work"><img src="assets/img/site/{WORK["file"]}" alt="" /></div>
+      <div id="ar-deck">
+{chr(10).join(ar_cards)}
+      </div>
+      <p id="ar-head"><span>From</span> <span>Universal</span> <span>Monarchy</span> <span>to</span> <span>Iberofonía</span></p>
+{eras_html}
+      <div id="ar-veil"></div>
+      <div id="ar-book">
+{article}
+        <div id="ar-lid">{cover(WORKS[OPEN], " ac--lid", "lid-")}</div>
+      </div>
       <div class="wk-slab" id="ar-slab"></div>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>archive</span></p>
       <p class="wk-fig" style="top: 250px">The primary sources of Hispanic thought</p>
       <p class="wk-chip" id="ar-chip"><b>The archive</b><span>the primary sources of Hispanic thought</span></p>
     </div>
 
-    <!-- the app, timed by itself (a timed video must not sit in a timed wrapper): under its shot -->
-    <video id="at-app" class="clip" src="assets/atlas/{APP["file"]}" muted playsinline data-start="{AV0}" data-duration="{AVD}"></video>
+    <!-- the globe, timed by itself (a timed video must not sit in a timed wrapper): under its shot -->
+    <video id="at-globe" class="clip" src="assets/atlas/atlas-shot.mp4" muted playsinline data-start="{AV0}" data-duration="{AVD}"></video>
     <div id="wk-atlas" class="wk-shot clip" data-start="{A0}" data-duration="{round(K0 - A0, 4)}">
-      <div class="wk-slab" id="at-slab"></div>
+      <div id="at-shade"></div>
+{chr(10).join(at_cards)}
+      <p id="at-year">1492</p>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>Atlas</span></p>
       <p class="wk-fig" style="top: 250px">An interactive globe, 218 BCE to today</p>
       <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>218 BCE to today</span></p>
@@ -290,31 +432,70 @@ page = f'''<template>
       tl.fromTo("#rd-ring", {{ rotationY: -110, rotationX: 8 }}, {{ rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }}, {R0} + 2.35);
       tl.fromTo("#rd-ring", {{ rotationY: -372, rotationX: 10 }}, {{ rotationY: -360, rotationX: 10, duration: {round(C0 - R0 - 3.3, 3)}, ease: "none", immediateRender: false }}, {R0} + 3.3);
 
-      // THE ARCHIVE: close on the collection's title, down into its first era, its cards one under
-      // another; on the beat a work's page whips in (its article), and the camera reads down it
+      // THE ARCHIVE: a hand of covers flies in and fans out; on the beat they sort into the six eras
+      // under the collection's title; on the next, one comes forward and opens on its article
       arrive("#wk-archive .wk-word", {C0}, 510, 383); fig("#wk-archive", {C0} + 0.8 * B);
-      const AR = {json.dumps(ARCH["cam"])}, WK = {json.dumps(WORK["cam"])};
-      move("#ar-world", cam(...AR[0]), cam(...AR[1]), {C0}, 1.0, "power1.inOut", true);
-      move("#ar-world", cam(...AR[1]), cam(...AR[2]), {C0} + 1.0, 1.3, "power2.inOut");
-      move("#ar-world", cam(...AR[2]), cam(...AR[3]), {C0} + 2.3, {round(WORK["at"] - 2.3, 3)}, "none");
-      const wt = {C0} + {WORK["at"]};
-      tl.set("#ar-work", {{ autoAlpha: 0 }}, {C0});
-      tl.set("#ar-work", {{ autoAlpha: 1 }}, wt);
-      tl.fromTo("#ar-work img", {{ x: 300, filter: "blur(18px)" }}, {{ x: 0, filter: "blur(0px)", duration: 0.16, ease: "power3.out" }}, wt);
-      move("#ar-work", cam(...WK[0]), cam(...WK[1]), wt, {round(A0 - C0 - WORK["at"], 3)}, "power1.out", true);
       tl.fromTo("#ar-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {C0});
       const toChip = (id, slab, chip, t) => {{
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", {{ opacity: 1, filter: "blur(0px)" }}, {{ opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }}, t);
-        tl.fromTo(slab, {{ opacity: 0.94 }}, {{ opacity: 0, duration: 0.25, immediateRender: false }}, t);
+        if (slab) tl.fromTo(slab, {{ opacity: 0.94 }}, {{ opacity: 0, duration: 0.25, immediateRender: false }}, t);
         tl.fromTo(chip, {{ opacity: 0, x: -30 }}, {{ opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }}, t + 0.1);
       }};
       toChip("#wk-archive", "#ar-slab", "#ar-chip", {C0} + 1.05);
+      const FAN = {json.dumps(fan_pos)}, COL = {json.dumps(col_pos)}, ORDER = {json.dumps(order)};
+      const SORT = {C0} + 1.6, OPEN = {C0} + 3.2;
+      ORDER.forEach((id, i) => {{
+        const el = "#ac-" + id, c = COL[id], f = FAN[id];
+        if (f) {{
+          // from off the frame, below and to the right, tumbling in; then a slow breath of the fan
+          tl.fromTo(el, {{ x: 1500 + i * 60, y: 1500, rotation: 50 + i * 4, scale: 1.25, rotationY: -40 }}, {{ x: f[0], y: f[1], rotation: f[2], rotationY: 0, duration: 0.7, ease: "expo.out" }}, {C0} + 0.06 + i * 0.035);
+          tl.to(el, {{ x: f[0] - 40, rotation: f[2] * 1.12, duration: SORT - ({C0} + 0.76 + i * 0.035), ease: "none" }}, {C0} + 0.76 + i * 0.035);
+          tl.to(el, {{ x: c[0], y: c[1], rotation: c[2], scale: 1, duration: 0.75, ease: "power3.inOut" }}, SORT + i * 0.022);
+        }} else {{
+          tl.fromTo(el, {{ x: c[0] + 160, y: -320, rotation: -25, scale: 1 }}, {{ x: c[0], y: c[1], rotation: c[2], duration: 0.6, ease: "expo.out" }}, SORT + 0.2 + i * 0.022);
+        }}
+      }});
+      // the collection's title, word by word, and the eras' numerals over their columns
+      document.querySelectorAll("#ar-head span").forEach((el, i) => tl.fromTo(el, {{ opacity: 0, filter: "blur(8px)" }}, {{ opacity: 1, filter: "blur(0px)", duration: 0.14 }}, SORT + 0.25 + i * 0.09));
+      tl.fromTo(".ae", {{ opacity: 0, y: -24 }}, {{ opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "expo.out" }}, SORT + 0.45);
+      // one work comes forward (its cover takes the place of the one in its column) and opens
+      tl.set("#ar-book", {{ autoAlpha: 0 }}, {C0});
+      tl.set("#ar-book", {{ autoAlpha: 1 }}, OPEN);
+      tl.set("#ac-{OPEN}", {{ autoAlpha: 0 }}, OPEN);
+      tl.fromTo("#ar-veil", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.35, ease: "power2.out" }}, OPEN);
+      tl.fromTo("#ar-book", {{ x: COL["{OPEN}"][0] - 960, y: COL["{OPEN}"][1] - 560, scale: {CW2} / 760, rotation: COL["{OPEN}"][2] }}, {{ x: 0, y: 0, scale: 1, rotation: 0, duration: 0.5, ease: "expo.out" }}, OPEN);
+      tl.set("#aa-page", {{ opacity: 1 }}, OPEN + 0.3);
+      tl.fromTo("#ar-lid", {{ rotationY: 0 }}, {{ rotationY: -150, duration: 0.55, ease: "power2.inOut" }}, OPEN + 0.42);
+      tl.fromTo("#aa-page > *", {{ opacity: 0, y: 14 }}, {{ opacity: 1, y: 0, duration: 0.3, stagger: 0.09, ease: "expo.out" }}, OPEN + 0.62);
+      tl.fromTo("#ar-head, .ae", {{ opacity: 1 }}, {{ opacity: 0.25, duration: 0.3, immediateRender: false }}, OPEN);
 
-      // THE ATLAS: the app as it runs, the story flying from stop to stop; the camera eases back
+      // THE ATLAS: the globe flies (in the video); the year ticks, the cards land on their places
       arrive("#wk-atlas .wk-word", {A0}, 515, 383); fig("#wk-atlas", {A0} + 0.8 * B);
-      tl.fromTo("#at-app", {{ scale: 1.14 }}, {{ scale: 1.0, duration: {round(K0 - A0, 3)}, ease: "power2.out" }}, {A0});
-      tl.fromTo("#at-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {A0});
-      toChip("#wk-atlas", "#at-slab", "#at-chip", {A0} + 1.05);
+      toChip("#wk-atlas", null, "#at-chip", {A0} + 1.05);
+      const YEARS = {json.dumps(AT_YEARS)};
+      tl.set("#at-year", {{ textContent: YEARS[0][1] }}, {A0});
+      tl.fromTo("#at-year", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }}, {A0} + 0.15);
+      YEARS.slice(1).forEach(([t, y], i) => {{
+        tl.fromTo("#at-year", {{ textContent: YEARS[i][1] }}, {{ textContent: y, snap: {{ textContent: 1 }}, duration: 0.3, ease: "steps(9)", immediateRender: false }}, {A0} + t - 0.05);
+        tl.fromTo("#at-year", {{ scale: 1.08 }}, {{ scale: 1, duration: 0.3, ease: "expo.out", immediateRender: false }}, {A0} + t + 0.25);
+      }});
+      const CARDS = {json.dumps([[c[0], c[4], c[5]] for c in AT_CARDS])}, TRACK = {json.dumps(AT_TRACKS, separators=(",", ":"))};
+      const F0FILM = {FILM0};
+      CARDS.forEach(([id, t0, t1]) => {{
+        const a = {A0} + t0, b = {A0} + t1;
+        // the group rides on its place, frame by frame, and fades as the place turns away
+        TRACK[id].forEach(([f, x, y, c]) => {{
+          const t = f / 30 - F0FILM;
+          if (t < a - 0.05 || t > b + 0.4) return;
+          tl.set("#atc-" + id, {{ x, y, opacity: Math.max(0, Math.min(1, (c - 0.05) / 0.15)) }}, t - 0.002);
+        }});
+        tl.set("#atc-" + id + " .atc-in", {{ autoAlpha: 0 }}, {C0});
+        tl.set("#atc-" + id + " .atc-in", {{ autoAlpha: 1 }}, a);
+        tl.fromTo("#atc-" + id + " .atc-pin", {{ scale: 0 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)" }}, a);
+        tl.fromTo("#atl-" + id, {{ strokeDashoffset: 1 }}, {{ strokeDashoffset: 0, duration: 0.25, ease: "power2.out" }}, a + 0.05);
+        tl.fromTo("#atk-" + id, {{ opacity: 0, y: 30, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }}, a + 0.12);
+        if (t1 < 8) tl.to("#atc-" + id + " .atc-in", {{ autoAlpha: 0, duration: 0.25, ease: "power2.in" }}, b);
+      }});
 
       // BOOKS, on the climax: the spines rise onto the shelf, one an eighth apart
       arrive("#wk-books .wk-word", {K0}, 530, 285); fig("#wk-books", {K0} + 0.6 * B);
@@ -333,7 +514,7 @@ page = f'''<template>
       // dives into it, as it dived into "Watch" at the end of the pillars
       const MX = {json.dumps(fz_x)};
       const KF = 1.64, CY = 255;
-      const outgoing = ["#wk-watch", "#wk-read", "#wk-archive", "#wk-atlas, #at-app", "#wk-books"];
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-archive", "#wk-atlas, #at-globe", "#wk-books"];
       tl.set("#fz-pane", {{ x: 1920 }}, 0);
       [{R0}, {C0}, {A0}, {K0}, {F0}].forEach((t, i) => {{
         const m = MX[i + 1], t0 = t - 0.78;
