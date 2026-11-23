@@ -2,7 +2,7 @@
 
 ```text
 GOAL:    a stranger who lands on the site knows within a minute what IHS is (a Hispanic-world
-         institute: Beltrán's channel, essays, a canon, an atlas, books) and wants to scroll on.
+         institute: Beltrán's channel, essays, an archive, an atlas, books) and wants to scroll on.
 OUTPUT:  HyperFrames, 1920 x 1080, 30 fps, 75.35 s. Plays muted in a loop on the page (it must
          read without sound); "Sound on" turns the sound on in place.
 TIME:    75.35 s x 30 = 2261 frames, the length of the music (one phrase of its soft section
@@ -13,15 +13,20 @@ TIME:    75.35 s x 30 = 2261 frames, the length of the music (one phrase of its 
 LOOK:    the medium is the page itself, printed: paper #F9F3DD (exactly the site's ground, so
          the film melts into it), burgundy #470B15 as the one ink, ink #28231E for small type.
          The grounds follow the site's: paper, burgundy #470B15, leather #8B5E4B, burgundy-dark
-         #2F070D. Every picture (paintings, architecture, maps, Beltrán's footage) goes through the duotone LUT
+         #2F070D. Every picture (paintings, architecture, period maps, Beltrán's footage) goes through the duotone LUT
          (assets/luts/ihs-duotone.cube, film/tools/make-duotone-lut.py): burgundy shadows,
-         paper whites, 12% grain. His own thumbnails stay in colour: they are the product.
+         paper whites, 12% grain. His own thumbnails stay in colour: they are the product; so
+         does the Atlas globe, in its realms' own colours.
          Display: Ibarra Real Nova 600 (the site's face), 150–220 px for hero words, -2.5%
          tracking; italic 500 for the quiet line. Body: Inter 500, 30–38 px.
 OBJECTS: the IHS eagle (its stepped wings are the film's signature: they open in 7 steps
          and the scene changes are stepped wipes); the three pillars as columns holding up
          the name; from bar 20 on, the portico's frieze is the transition: each works shot
-         is pushed out left, the frieze slides in and the camera dives into the next metope; book spines; a year axis with one dot per canon text and Atlas milestone.
+         is pushed out left, the frieze slides in and the camera dives into the next metope; book spines;
+         the Atlas globe rendered alone by our own engine (site/lib/atlas-globe.ts, no UI) by
+         film/tools/capture-site.mjs; the archive as covers of real works, coloured by region,
+         built in the film (issue #107). Never a capture of the site's pages or the app's UI:
+         the film represents the site, it does not screenshot it (Carlos, 2026-11-23).
 MOTION:  arrivals expo.out 0.4–0.5 s; titles blur in per word (8 px → 0, 0.14 s) on the
          beat; wipes power3.in in, power3.out out; stepped reveals use steps(n).
          Hits are tl.set or steps, never eased.

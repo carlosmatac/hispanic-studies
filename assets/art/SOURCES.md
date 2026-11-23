@@ -91,7 +91,10 @@ The glyphs are the [Simple Icons](https://simpleicons.org/) paths (CC0 1.0), set
 | Clips of Beltrán talking (13 fragments, list in `film/tools/fetch-clips.sh`) | His own YouTube videos and Shorts (@hispano_studies); catalogue in `film/MATERIAL.md`. Only shots of him: no third-party footage, no burnt-in captions (cropped out) | His own work, used on his own site |
 | Video thumbnails (`film/reel/assets/img/yt-*.jpg`) | His YouTube thumbnails (i.ytimg.com) | His own work |
 | The three pillar paintings | `assets/art/pillars/` (see above) | Public domain |
-| The Iberophone map (`iberophone-map.jpg`) | A capture of this site's own map plate (Natural Earth geometry) | Ours; Natural Earth is public domain |
+| The Iberophone map (`iberophone-map.jpg`; out of the film since 2026-11-23, #107) | A capture of this site's own map plate (Natural Earth geometry) | Ours; Natural Earth is public domain |
+| The Atlas globe (`film/reel/assets/atlas/globe-today.mp4`, `atlas-shot.mp4`, since 2026-11-23, #107) | Rendered alone (no UI) from this site's own engine (`site/lib/atlas-globe.ts`) by `film/tools/capture-site.mjs` | Ours; its data carry their own credits (Natural Earth, OpenHistoricalMap CC0, IGN/CNIG CC BY 4.0: see the Atlas data rows below), the same as on the page |
+| The archive's covers (`film/reel/assets/archive.json`) | The curated works' titles, authors, years and region colours and three articles' first lines, exported from the archive's database by `film/tools/capture-site.mjs archive`; the covers are built in the film | Ours |
+| Essay covers (`film/reel/assets/img/essays/`) | Copies of `site/public/art/essays/` (see Essay covers in Read, below) | As on the site |
 | Ibarra Real Nova | Google Fonts (`film/reel/assets/fonts/OFL.txt`) | SIL Open Font License |
 | Music (`film/reel/assets/audio/music.mp3`) | ElevenLabs Music, generated 2026-10-22 from the brief and prompts in `film/MUSIC.md` (file `2026-10-22-20-34-30.mp3`) | Generated for IHS; commercial use needs a paid ElevenLabs plan: confirm the plan it was made on |
 | Sound effects | earshot's code-made bank (github.com/Leonxlnx/earshot), rendered by `film/tools/mix-reel.py` | MIT |
