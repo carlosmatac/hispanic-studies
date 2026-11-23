@@ -2,10 +2,12 @@
 of the reel (bars 21-29). Everything on screen comes from the site's own data:
 
   - Watch: his real thumbnails (film/reel/assets/img/yt-*.jpg)
-  - Read: the eight essays in site/lib/content.ts, as cards flying in 3D
-  - The canon: the fifty works as the site's cards (site/data/canon-works.json),
-    in the same five bindings, on burgundy
-  - The Atlas: milestones from site/data/milestones.json pinned on the map
+  - Read: the eight essays in site/lib/content.ts, as the home's essay cards (the post's
+    cover, its date, author and translator), flying in 3D
+  - The archive: the archive page itself and a work's page, as the site shows them
+    (film/reel/assets/img/site/, captured by film/tools/capture-site.mjs)
+  - The Atlas: the Atlas app itself, its globe flying between stops (film/reel/assets/atlas/,
+    captured by film/tools/capture-site.mjs from our own engine, lib/atlas-globe.ts)
   - De Indiis Editions: the series names (site/lib/i18n.ts)
   - Follow: the channels' own logos (Simple Icons, CC0, as on the site) and one total
     that stays true as they grow: the verified followings add up to more than 50,000
@@ -39,25 +41,27 @@ NUMS = [at(66.065), at(67.537), at(68.344), at(69.133)]
 esc = html.escape
 
 # ---------------------------------------------------------------- data
+# as on the home (site/lib/content.ts), newest first; dates as the home prints them in English
 ESSAYS = [
-    ("The Catholic-Hispanic Position on Racism", "Francisco Elías de Tejada", "19 Dec 2025"),
-    ("The Vikings Did Not Discover America", "Iván Vélez", "29 Dec 2025"),
-    ("Oiréis hablar de mí: A Tribute to José Vasconcelos", "Ismael Carvallo Robledo", "17 Sep 2025"),
-    ("Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire", "Santiago Armesilla", "2 Jun 2025"),
-    ("Spain and America", "Gustavo Bueno", "17 Apr 2025"),
-    ("On Bullfighting", "Gustavo Bueno", "21 May 2025"),
-    ("Aryan Indigenismo and Manifest Destiny", "Beltrán Arellanes", "6 Apr 2025"),
-    ("The Black Legend: Threat to Hispanic Civilization (Part 1)", "Alicia Melchor Herrera", "12 Apr 2025"),
+    ("The Vikings Did Not Discover America", "Iván Vélez", "", "Dec 29, 2025", "the-vikings-did-not-discover-america"),
+    ("The Catholic-Hispanic Position on Racism", "Francisco Elías de Tejada", "", "Dec 19, 2025", "the-catholic-hispanic-position-on"),
+    ("Oiréis hablar de mí: A Tribute to José Vasconcelos", "Ismael Carvallo Robledo", "Beltrán Arellanes", "Sep 17, 2025", "oireis-hablar-de-mi-a-tribute-to"),
+    ("Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire", "Santiago Armesilla", "Beltrán Arellanes", "Jun 2, 2025", "transitional-political-society-neither"),
+    ("On Bullfighting", "Gustavo Bueno", "Beltrán Arellanes", "May 21, 2025", "on-bullfighting"),
+    ("Spain and America", "Gustavo Bueno", "Beltrán Arellanes", "Apr 17, 2025", "spain-and-america"),
+    ("The Black Legend: Threat to Hispanic Civilization (Part 1)", "Alicia Melchor Herrera", "", "Apr 12, 2025", "the-black-legend-threat-to-hispanic"),
+    ("Aryan Indigenismo and Manifest Destiny", "Beltrán Arellanes", "", "Apr 6, 2025", "aryan-indigenismo-and-manifest-destiny"),
 ]
 SERIES = ["Race, Mixture and Difference", "Indo-Hispanic Thought and Its Critics", "Classics and Critics of Hispanidad",
           "Hispanic Political Theology", "Pan-Iberian and Lusophone Thought", "Literary Continentalism"]
 THUMBS = ["BISc6y6fIuM", "JNLr7NM_buA", "3LYcIzK8mxo", "5Yug5P6lbCc", "NJKfmnwbOXQ", "Xinb9TN9aOM"]
 
-WORKS = json.loads((ROOT / "site/data/canon-works.json").read_text())["works"]
 # the channels' glyphs, straight from the site's seal component
 icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text()
 GLYPHS = dict(re.findall(r"^  (\w+): '([^']+)',$", icon_src, flags=re.M))
-MILES = {m["n"]: m for m in json.loads((ROOT / "site/data/milestones.json").read_text())["milestones"]}
+# the pictures of the site, as captured (film/tools/capture-site.mjs): the archive page from the
+# collection's title down its first era, a work's page, and the Atlas app's frames
+SITE = json.loads((ROOT / "film/reel/assets/img/site/site.json").read_text())
 
 # ---------------------------------------------------------------- the frieze between shots
 # The portico of the pillars scene (bar 20) ends with a dive into the "Watch" metope. Every
@@ -68,7 +72,7 @@ GRADE = re.search(r'<img (data-color-grading="[^"]*")[^>]*id="pil-plate"', pilla
 TINT = "\n".join("            " + re.sub(r' data-hf-id="[^"]*"', "", t).replace('id="pil-sh', 'id="fz-sh')
                  for t in re.findall(r'<path[^>]*id="pil-sh\d"[^>]*/>', pillars))
 METOPES = [(258, 218), (582, 227), (915, 227), (1248, 227), (1582, 226), (1916, 218)]
-LABELS = ["Watch", "Read", "Canon", "Atlas", "Books", "Community"]
+LABELS = ["Watch", "Read", "Archive", "Atlas", "Books", "Community"]
 mets = "\n".join(f'          <p id="fz-m{i}" class="fz-met" style="left: {x}px; width: {w}px">{LABELS[i]}</p>'
                  for i, (x, w) in enumerate(METOPES))
 fz_x = [round(x + w / 2, 1) for x, w in METOPES]
@@ -76,56 +80,23 @@ fz_x = [round(x + w / 2, 1) for x, w in METOPES]
 # ---------------------------------------------------------------- read: 3D cards
 ring_r = 760
 cards = []
-for i, (t, a, d) in enumerate(ESSAYS):
+for i, (t, a, tr, d, slug) in enumerate(ESSAYS):
+    by = esc(a) + (f" · trans. {esc(tr)}" if tr else "")
     cards.append(f'''          <div id="rd-a{i}" class="rd-arm"><article id="rd-c{i}" class="rd-card">
-            <p class="rd-k">Substack · {esc(d)}</p><h3>{esc(t)}</h3><p class="rd-by">{esc(a)}</p>
+            <span class="rd-cover"><img src="assets/img/essays/{slug}.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">{esc(d)}</p><h3>{esc(t)}</h3><p class="rd-by">{by}</p></span>
           </article></div>''')
 grid = [((i % 4) - 1.5) * 470 for i in range(8)], [((i // 4) - 0.5) * 330 for i in range(8)]
 
-# ---------------------------------------------------------------- canon: the fifty works as cards
-# the same cards as the site's canon page: ten to a row, in order of year, five bindings
-BINDINGS = ["paper", "burgundy", "vellum", "leather", "ink"]
-CW, CH, GX, GY = 236, 315, 44, 52
-COLS = 10
-def split_title(t):
-    i = t.find(": ")
-    return (t[:i], t[i + 2:]) if i > 0 else (t, "")
-card_pos, cards_html = {}, []
-for i, w in enumerate(WORKS):
-    n = int(w["id"][1:])
-    col, row = i % COLS, i // COLS
-    x, y = 120 + col * (CW + GX), 140 + row * (CH + GY)
-    card_pos[w["id"]] = (x + CW / 2, y + CH / 2)
-    tilt = round(((n * 37) % 33 - 16) / 10, 1)
-    title, sub = split_title(w["title"])
-    long = " is-long" if len(title) > 46 else ""
-    counter = " cc--counter" if w["counter"] else ""
-    cards_html.append(
-        f'          <div class="cc-slot" style="left: {x}px; top: {y}px"><div id="cc-{w["id"]}" class="cc cc--{BINDINGS[(n * 3) % 5]}{counter}" style="rotate: {tilt}deg">'
-        f'<p class="cc-top"><b>{w["year"]}</b><span>{esc(w["code"])}</span></p>'
-        f'<p class="cc-t{long}">{esc(title)}</p>'
-        f'<p class="cc-foot"><i></i><b>{esc(w["author"])}</b><span>{esc(w["life"])}</span></p></div></div>')
-CANON_W = 120 * 2 + COLS * CW + (COLS - 1) * GX
-CANON_H = 140 * 2 + 5 * CH + 4 * GY
-# ---------------------------------------------------------------- atlas: milestones on the map
-# pins in the map image's own pixels (3584 x 1746), card offsets beside them
-STOPS = [
-    (60, (1994, 358), (70, -250)),
-    (9, (1288, 571), (60, -60)),
-    (14, (1053, 600), (-610, 40)),
-    (16, (1348, 959), (-640, 30)),
-    (22, (1707, 1042), (70, 20)),
-    (18, (3266, 672), (-640, -260)),
-]
-pins, mcards = [], []
-for i, (n, (px, py), (dx, dy)) in enumerate(STOPS):
-    m = MILES[n]
-    pins.append(f'          <i id="at-p{i}" class="at-pin" style="left: {px}px; top: {py}px"></i>')
-    lx, ly = px + dx + (0 if dx > 0 else 560), py + dy + 70
-    pins.append(f'          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l{i}" d="M{px} {py} L{lx} {ly}" pathLength="1" /></svg>')
-    mcards.append(f'''          <article id="at-c{i}" class="at-card" style="left: {px + dx}px; top: {py + dy}px">
-            <p class="at-k">{esc(m["date"]["en"])} · Milestone {n} of 60</p><h3>{esc(m["title"]["en"])}</h3>
-          </article>''')
+# ---------------------------------------------------------------- the archive and the Atlas, as captured
+ARCH = SITE["archive"]      # the archive page: its size in CSS px and where the camera looks
+WORK = SITE["work"]         # a work's page
+APP = SITE["atlas"]         # the Atlas app: the first film frame it was captured at, and how many
+# a video's frame i is the film's frame first + i: start it a hair before that frame's time, so
+# both rounding and flooring land on the same frame
+FILM0 = 42.114              # where this scene starts in the film (index.html)
+AV0 = round(APP["first"] / 30 - 0.004 - FILM0, 4)
+AVD = round(APP["frames"] / 30, 4)
 
 # ---------------------------------------------------------------- page
 logos = "\n".join(f'        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="{GLYPHS[k]}" /></svg></div>' for k in ["youtube", "instagram", "x", "tiktok", "substack"])
@@ -145,7 +116,8 @@ page = f'''<template>
     .wk-slab {{ position: absolute; left: 0; top: 0; width: 1020px; height: 380px; background: #f9f3dd; }}
 
     /* after its entrance a title becomes a small chip, so the world can be seen */
-    .wk-chip {{ position: absolute; left: 60px; top: 46px; padding: 12px 26px 14px; background: #f9f3dd; border: 3px solid #470b15; white-space: nowrap; z-index: 3; }}
+    .wk-chip {{ position: absolute; left: 60px; top: 46px; padding: 12px 34px 15px; border-radius: 999px; background: rgba(252, 248, 236, 0.84); border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.5); -webkit-backdrop-filter: blur(16px) saturate(1.25); backdrop-filter: blur(16px) saturate(1.25); white-space: nowrap; z-index: 3; }}
     .wk-chip b {{ font-weight: 600; font-size: 46px; color: #470b15; }}
     .wk-chip span {{ margin-left: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #28231e; }}
 
@@ -153,54 +125,33 @@ page = f'''<template>
     #wk-watch .wk-word {{ top: 640px; }}
     #wk-watch .wk-fig {{ top: 830px; }}
     #wk-wall {{ position: absolute; left: 690px; top: 110px; display: grid; grid-template-columns: repeat(3, 340px); gap: 20px; }}
-    .wk-thumb {{ width: 340px; height: 191px; object-fit: cover; display: block; }}
+    .wk-thumb {{ width: 340px; height: 191px; object-fit: cover; display: block; border-radius: 14px; border: 1px solid rgba(40, 35, 30, 0.14); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 10px 22px -8px rgba(44, 18, 20, 0.4); }}
 
     /* read: eight essays as cards in space */
     #rd-stage {{ position: absolute; inset: 0; perspective: 1700px; perspective-origin: 51% 58%; }}
     #rd-ring {{ position: absolute; left: 980px; top: 660px; width: 0; height: 0; transform-style: preserve-3d; }}
     .rd-arm {{ position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }}
-    .rd-card {{ position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 26px 30px; background: #f9f3dd; border: 3px solid #470b15; outline: 1px solid #470b15; outline-offset: 6px; backface-visibility: hidden; display: flex; flex-direction: column; }}
-    .rd-k {{ font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; color: #470b15; margin-bottom: 14px; }}
+    /* the home's essay card (globals.css .essay): rounded, the post's cover, its date, title and byline */
+    .rd-card {{ position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 18px; border-radius: 22px; background: #fbf7e9; border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.48); backface-visibility: hidden; display: grid; grid-template-columns: 122px minmax(0, 1fr); gap: 0 20px; align-items: start; }}
+    .rd-cover {{ display: block; width: 122px; height: 152px; overflow: hidden; border-radius: 8px; border: 1px solid rgba(40, 35, 30, 0.16); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 6px 14px -6px rgba(44, 18, 20, 0.3); }}
+    .rd-cover img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+    .rd-text {{ display: grid; gap: 8px; align-content: start; }}
+    .rd-k {{ font-family: "IBM Plex Mono", monospace; font-size: 20px; color: #6a625a; }}
     /* the clamp clips at the box: a little padding keeps the last line's descenders, not the next line */
-    .rd-card h3 {{ font-weight: 600; font-size: 40px; line-height: 1.05; color: #28231e; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.05em; }}
-    .rd-by {{ margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }}
+    .rd-card h3 {{ font-weight: 600; font-size: 30px; line-height: 1.08; color: #28231e; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.06em; }}
+    .rd-by {{ font-family: Inter, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.3; color: #6a625a; }}
     #wk-read .wk-word, #wk-read .wk-fig {{ z-index: 2; }}
 
-    /* the canon: the fifty works as the site's cards, on burgundy */
-    #wk-canon {{ background: #470b15; background-image: radial-gradient(70% 80% at 55% 45%, rgba(139, 94, 75, 0.55), transparent 75%); }}
-    #cn-world {{ position: absolute; left: 0; top: 0; width: {CANON_W}px; height: {CANON_H}px; transform-origin: 0 0; }}
-    .cc-slot {{ position: absolute; width: {CW}px; height: {CH}px; }}
-    .cc {{ --bg: #f9f3dd; --fg: #28231e; --ac: #470b15; --ln: rgba(40, 35, 30, 0.3);
-      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px; background: var(--bg); color: var(--fg);
-      box-shadow: 0 3px 6px rgba(20, 6, 8, 0.25), 0 30px 50px -22px rgba(20, 6, 8, 0.75); }}
-    .cc::before {{ content: ""; position: absolute; inset: 8px; border: 1.5px solid var(--ln); }}
-    .cc--burgundy {{ --bg: #5a1420; --fg: #f9f3dd; --ac: #dcc8ad; --ln: rgba(249, 243, 221, 0.3); }}
-    .cc--leather {{ --bg: #8b5e4b; --fg: #f9f3dd; --ac: #f9f3dd; --ln: rgba(249, 243, 221, 0.36); }}
-    .cc--ink {{ --bg: #28231e; --fg: #f9f3dd; --ac: #c9a993; --ln: rgba(249, 243, 221, 0.24); }}
-    .cc--vellum {{ --bg: #ede3c8; }}
-    .cc--counter::before {{ border-style: dashed; }}
-    .cc-top {{ display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: var(--ac); }}
-    .cc-top b {{ font-weight: 500; font-size: 18px; }}
-    .cc-t {{ font-style: italic; font-weight: 600; font-size: 29px; line-height: 1.06; }}
-    .cc-t.is-long {{ font-size: 23px; line-height: 1.1; }}
-    .cc-foot {{ margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }}
-    .cc-foot i {{ display: block; width: 34px; height: 1.5px; background: var(--ac); margin-bottom: 8px; }}
-    .cc-foot b {{ font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }}
-    .cc-foot span {{ font-family: "IBM Plex Mono", monospace; font-size: 13px; opacity: 0.75; }}
-    #wk-canon .wk-slab {{ background: #470b15; }}
-    #wk-canon .wk-word {{ color: #f9f3dd; }}
-    #wk-canon .wk-fig {{ color: #ede3c8; }}
-    #wk-canon .wk-chip {{ background: #f9f3dd; }}
+    /* the archive: its own page, the camera over it; then a work's page, whipped in */
+    #ar-world {{ position: absolute; left: 0; top: 0; width: {ARCH["w"]}px; height: {ARCH["h"]}px; transform-origin: 0 0; }}
+    #ar-world > img, #ar-work > img {{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }}
+    #ar-work {{ position: absolute; left: 0; top: 0; width: {WORK["w"]}px; height: {WORK["h"]}px; transform-origin: 0 0; z-index: 1; }}
+    #wk-archive .wk-word, #wk-archive .wk-fig, #wk-archive .wk-slab {{ z-index: 2; }}
 
-    /* the Atlas: milestones pinned on the Iberophone map */
-    #at-world {{ position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }}
-    #at-world > img {{ position: absolute; inset: 0; width: 3584px; height: 1746px; display: block; }}
-    .at-lead {{ position: absolute; inset: 0; width: 3584px; height: 1746px; overflow: visible; }}
-    .at-lead path {{ fill: none; stroke: #470b15; stroke-width: 4; stroke-dasharray: 0.02 0.02; }}
-    .at-pin {{ position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: #470b15; border: 6px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15; }}
-    .at-card {{ position: absolute; width: 560px; padding: 24px 30px 28px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; }}
-    .at-k {{ font-family: "IBM Plex Mono", monospace; font-size: 24px; color: #470b15; margin-bottom: 10px; }}
-    .at-card h3 {{ font-weight: 600; font-size: 46px; line-height: 1.05; color: #28231e; }}
+    /* the Atlas: the app itself, as it runs (a video of our own engine, the page's glass around it) */
+    #wk-atlas {{ background: transparent; }}
+    #at-app {{ position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; object-fit: cover; transform-origin: 50% 46%; background: #17130f; }}
 
     /* books */
     #wk-shelf {{ position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }}
@@ -256,26 +207,22 @@ page = f'''<template>
       <p class="wk-fig" style="top: 250px">Essays and translations on Substack</p>
     </div>
 
-    <div id="wk-canon" class="wk-shot clip" data-start="{C0}" data-duration="{round(A0 - C0, 4)}">
-      <div id="cn-world">
-{chr(10).join(cards_html)}
-      </div>
-      <div class="wk-slab" id="cn-slab"></div>
-      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig" style="top: 250px">Fifty classic texts, 1818 to 1999</p>
-      <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
+    <div id="wk-archive" class="wk-shot clip" data-start="{C0}" data-duration="{round(A0 - C0, 4)}">
+      <div id="ar-world"><img src="assets/img/site/{ARCH["file"]}" alt="" /></div>
+      <div id="ar-work"><img src="assets/img/site/{WORK["file"]}" alt="" /></div>
+      <div class="wk-slab" id="ar-slab"></div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>archive</span></p>
+      <p class="wk-fig" style="top: 250px">The primary sources of Hispanic thought</p>
+      <p class="wk-chip" id="ar-chip"><b>The archive</b><span>the primary sources of Hispanic thought</span></p>
     </div>
 
+    <!-- the app, timed by itself (a timed video must not sit in a timed wrapper): under its shot -->
+    <video id="at-app" class="clip" src="assets/atlas/{APP["file"]}" muted playsinline data-start="{AV0}" data-duration="{AVD}"></video>
     <div id="wk-atlas" class="wk-shot clip" data-start="{A0}" data-duration="{round(K0 - A0, 4)}">
-      <div id="at-world">
-        <img src="assets/img/iberophone-map.jpg" alt="" />
-{chr(10).join(pins)}
-{chr(10).join(mcards)}
-      </div>
       <div class="wk-slab" id="at-slab"></div>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>Atlas</span></p>
-      <p class="wk-fig" style="top: 250px">Sixty milestones, c. 722 to 2026</p>
-      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>sixty milestones, c. 722 to 2026</span></p>
+      <p class="wk-fig" style="top: 250px">An interactive globe, 218 BCE to today</p>
+      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>218 BCE to today</span></p>
     </div>
 
     <div id="wk-books" class="wk-shot clip" data-start="{K0}" data-duration="{round(F0 - K0, 4)}">
@@ -341,42 +288,29 @@ page = f'''<template>
       tl.fromTo("#rd-ring", {{ rotationY: -110, rotationX: 8 }}, {{ rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }}, {R0} + 2.35);
       tl.fromTo("#rd-ring", {{ rotationY: -372, rotationX: 10 }}, {{ rotationY: -360, rotationX: 10, duration: {round(C0 - R0 - 3.3, 3)}, ease: "none", immediateRender: false }}, {R0} + 3.3);
 
-      // THE CANON: close on La raza cósmica, along the row to Ariel and Nuestra América, then the
-      // camera pulls back to all fifty; the cards drop in from the focus outwards, each on its own tilt
-      arrive("#wk-canon .wk-word", {C0}, 510, 383); fig("#wk-canon", {C0} + 0.8 * B);
-      const P = {json.dumps({k: [round(v[0]), round(v[1])] for k, v in card_pos.items()})};
-      move("#cn-world", cam(P.T030[0], P.T030[1], 2.0), cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), {C0}, 0.9, "power2.inOut", true);
-      move("#cn-world", cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), cam(P.T018[0], P.T018[1], 1.7), {C0} + 0.95, 0.9, "power2.inOut");
-      move("#cn-world", cam(P.T018[0], P.T018[1], 1.7), cam(P.T013[0], P.T013[1], 1.9), {C0} + 1.9, 0.7, "power2.inOut");
-      move("#cn-world", cam(P.T013[0], P.T013[1], 1.9), cam({CANON_W / 2}, {CANON_H / 2}, 0.56), {C0} + 2.6, 1.5, "expo.inOut");
-      move("#cn-world", cam({CANON_W / 2}, {CANON_H / 2}, 0.56), cam({CANON_W / 2}, {CANON_H / 2}, 0.53), {C0} + 4.1, {round(A0 - C0 - 4.1, 3)}, "none");
-      document.querySelectorAll("#cn-world .cc").forEach((el) => {{
-        const [x, y] = P[el.id.slice(3)], d = Math.hypot(x - P.T030[0], y - P.T030[1]);
-        tl.fromTo(el, {{ opacity: 0, y: -90, scale: 1.08 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }}, {C0} + Math.min(1.3, d / 1700 * 1.1));
-      }});
+      // THE ARCHIVE: close on the collection's title, down into its first era, its cards one under
+      // another; on the beat a work's page whips in (its article), and the camera reads down it
+      arrive("#wk-archive .wk-word", {C0}, 510, 383); fig("#wk-archive", {C0} + 0.8 * B);
+      const AR = {json.dumps(ARCH["cam"])}, WK = {json.dumps(WORK["cam"])};
+      move("#ar-world", cam(...AR[0]), cam(...AR[1]), {C0}, 1.0, "power1.inOut", true);
+      move("#ar-world", cam(...AR[1]), cam(...AR[2]), {C0} + 1.0, 1.3, "power2.inOut");
+      move("#ar-world", cam(...AR[2]), cam(...AR[3]), {C0} + 2.3, {round(WORK["at"] - 2.3, 3)}, "none");
+      const wt = {C0} + {WORK["at"]};
+      tl.set("#ar-work", {{ autoAlpha: 0 }}, {C0});
+      tl.set("#ar-work", {{ autoAlpha: 1 }}, wt);
+      tl.fromTo("#ar-work img", {{ x: 300, filter: "blur(18px)" }}, {{ x: 0, filter: "blur(0px)", duration: 0.16, ease: "power3.out" }}, wt);
+      move("#ar-work", cam(...WK[0]), cam(...WK[1]), wt, {round(A0 - C0 - WORK["at"], 3)}, "power1.out", true);
+      tl.fromTo("#ar-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {C0});
       const toChip = (id, slab, chip, t) => {{
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", {{ opacity: 1, filter: "blur(0px)" }}, {{ opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }}, t);
         tl.fromTo(slab, {{ opacity: 0.94 }}, {{ opacity: 0, duration: 0.25, immediateRender: false }}, t);
         tl.fromTo(chip, {{ opacity: 0, x: -30 }}, {{ opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }}, t + 0.1);
       }};
-      tl.fromTo("#cn-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {C0});
-      toChip("#wk-canon", "#cn-slab", "#cn-chip", {C0} + 1.05);
+      toChip("#wk-archive", "#ar-slab", "#ar-chip", {C0} + 1.05);
 
-      // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
+      // THE ATLAS: the app as it runs, the story flying from stop to stop; the camera eases back
       arrive("#wk-atlas .wk-word", {A0}, 515, 383); fig("#wk-atlas", {A0} + 0.8 * B);
-      const route = {json.dumps([list(p) for _, p, _ in STOPS])};
-      const k = 1.25;
-      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), {A0}, 0.65, "power2.inOut", true);
-      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), {A0} + 0.72, 0.65, "power2.inOut");
-      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), {A0} + 1.44, 0.6, "power2.inOut");
-      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), {A0} + 2.1, 0.6, "power2.inOut");
-      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), {A0} + 2.76, 1.3, "expo.inOut");
-      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.54), {A0} + 4.1, {round(K0 - A0 - 4.1, 3)}, "none");
-      [0, 0.54, 1.26, 1.94, 2.58, 3.3].forEach((t, i) => {{
-        tl.fromTo("#at-p" + i, {{ scale: 0 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)" }}, {A0} + t);
-        tl.fromTo("#at-l" + i, {{ strokeDashoffset: 1, opacity: 1 }}, {{ strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }}, {A0} + t + 0.05);
-        tl.fromTo("#at-c" + i, {{ opacity: 0, y: 30, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }}, {A0} + t + 0.12);
-      }});
+      tl.fromTo("#at-app", {{ scale: 1.14 }}, {{ scale: 1.0, duration: {round(K0 - A0, 3)}, ease: "power2.out" }}, {A0});
       tl.fromTo("#at-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {A0});
       toChip("#wk-atlas", "#at-slab", "#at-chip", {A0} + 1.05);
 
@@ -397,7 +331,7 @@ page = f'''<template>
       // dives into it, as it dived into "Watch" at the end of the pillars
       const MX = {json.dumps(fz_x)};
       const KF = 1.64, CY = 255;
-      const outgoing = ["#wk-watch", "#wk-read", "#wk-canon", "#wk-atlas", "#wk-books"];
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-archive", "#wk-atlas, #at-app", "#wk-books"];
       tl.set("#fz-pane", {{ x: 1920 }}, 0);
       [{R0}, {C0}, {A0}, {K0}, {F0}].forEach((t, i) => {{
         const m = MX[i + 1], t0 = t - 0.78;

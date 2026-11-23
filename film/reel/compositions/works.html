@@ -11,7 +11,8 @@
     .wk-slab { position: absolute; left: 0; top: 0; width: 1020px; height: 380px; background: #f9f3dd; }
 
     /* after its entrance a title becomes a small chip, so the world can be seen */
-    .wk-chip { position: absolute; left: 60px; top: 46px; padding: 12px 26px 14px; background: #f9f3dd; border: 3px solid #470b15; white-space: nowrap; z-index: 3; }
+    .wk-chip { position: absolute; left: 60px; top: 46px; padding: 12px 34px 15px; border-radius: 999px; background: rgba(252, 248, 236, 0.84); border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.5); -webkit-backdrop-filter: blur(16px) saturate(1.25); backdrop-filter: blur(16px) saturate(1.25); white-space: nowrap; z-index: 3; }
     .wk-chip b { font-weight: 600; font-size: 46px; color: #470b15; }
     .wk-chip span { margin-left: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #28231e; }
 
@@ -19,54 +20,33 @@
     #wk-watch .wk-word { top: 640px; }
     #wk-watch .wk-fig { top: 830px; }
     #wk-wall { position: absolute; left: 690px; top: 110px; display: grid; grid-template-columns: repeat(3, 340px); gap: 20px; }
-    .wk-thumb { width: 340px; height: 191px; object-fit: cover; display: block; }
+    .wk-thumb { width: 340px; height: 191px; object-fit: cover; display: block; border-radius: 14px; border: 1px solid rgba(40, 35, 30, 0.14); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 10px 22px -8px rgba(44, 18, 20, 0.4); }
 
     /* read: eight essays as cards in space */
     #rd-stage { position: absolute; inset: 0; perspective: 1700px; perspective-origin: 51% 58%; }
     #rd-ring { position: absolute; left: 980px; top: 660px; width: 0; height: 0; transform-style: preserve-3d; }
     .rd-arm { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
-    .rd-card { position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 26px 30px; background: #f9f3dd; border: 3px solid #470b15; outline: 1px solid #470b15; outline-offset: 6px; backface-visibility: hidden; display: flex; flex-direction: column; }
-    .rd-k { font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; color: #470b15; margin-bottom: 14px; }
+    /* the home's essay card (globals.css .essay): rounded, the post's cover, its date, title and byline */
+    .rd-card { position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 18px; border-radius: 22px; background: #fbf7e9; border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.48); backface-visibility: hidden; display: grid; grid-template-columns: 122px minmax(0, 1fr); gap: 0 20px; align-items: start; }
+    .rd-cover { display: block; width: 122px; height: 152px; overflow: hidden; border-radius: 8px; border: 1px solid rgba(40, 35, 30, 0.16); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 6px 14px -6px rgba(44, 18, 20, 0.3); }
+    .rd-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .rd-text { display: grid; gap: 8px; align-content: start; }
+    .rd-k { font-family: "IBM Plex Mono", monospace; font-size: 20px; color: #6a625a; }
     /* the clamp clips at the box: a little padding keeps the last line's descenders, not the next line */
-    .rd-card h3 { font-weight: 600; font-size: 40px; line-height: 1.05; color: #28231e; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.05em; }
-    .rd-by { margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }
+    .rd-card h3 { font-weight: 600; font-size: 30px; line-height: 1.08; color: #28231e; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.06em; }
+    .rd-by { font-family: Inter, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.3; color: #6a625a; }
     #wk-read .wk-word, #wk-read .wk-fig { z-index: 2; }
 
-    /* the canon: the fifty works as the site's cards, on burgundy */
-    #wk-canon { background: #470b15; background-image: radial-gradient(70% 80% at 55% 45%, rgba(139, 94, 75, 0.55), transparent 75%); }
-    #cn-world { position: absolute; left: 0; top: 0; width: 2996px; height: 2063px; transform-origin: 0 0; }
-    .cc-slot { position: absolute; width: 236px; height: 315px; }
-    .cc { --bg: #f9f3dd; --fg: #28231e; --ac: #470b15; --ln: rgba(40, 35, 30, 0.3);
-      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px; background: var(--bg); color: var(--fg);
-      box-shadow: 0 3px 6px rgba(20, 6, 8, 0.25), 0 30px 50px -22px rgba(20, 6, 8, 0.75); }
-    .cc::before { content: ""; position: absolute; inset: 8px; border: 1.5px solid var(--ln); }
-    .cc--burgundy { --bg: #5a1420; --fg: #f9f3dd; --ac: #dcc8ad; --ln: rgba(249, 243, 221, 0.3); }
-    .cc--leather { --bg: #8b5e4b; --fg: #f9f3dd; --ac: #f9f3dd; --ln: rgba(249, 243, 221, 0.36); }
-    .cc--ink { --bg: #28231e; --fg: #f9f3dd; --ac: #c9a993; --ln: rgba(249, 243, 221, 0.24); }
-    .cc--vellum { --bg: #ede3c8; }
-    .cc--counter::before { border-style: dashed; }
-    .cc-top { display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: var(--ac); }
-    .cc-top b { font-weight: 500; font-size: 18px; }
-    .cc-t { font-style: italic; font-weight: 600; font-size: 29px; line-height: 1.06; }
-    .cc-t.is-long { font-size: 23px; line-height: 1.1; }
-    .cc-foot { margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }
-    .cc-foot i { display: block; width: 34px; height: 1.5px; background: var(--ac); margin-bottom: 8px; }
-    .cc-foot b { font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }
-    .cc-foot span { font-family: "IBM Plex Mono", monospace; font-size: 13px; opacity: 0.75; }
-    #wk-canon .wk-slab { background: #470b15; }
-    #wk-canon .wk-word { color: #f9f3dd; }
-    #wk-canon .wk-fig { color: #ede3c8; }
-    #wk-canon .wk-chip { background: #f9f3dd; }
+    /* the archive: its own page, the camera over it; then a work's page, whipped in */
+    #ar-world { position: absolute; left: 0; top: 0; width: 1920px; height: 2159px; transform-origin: 0 0; }
+    #ar-world > img, #ar-work > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    #ar-work { position: absolute; left: 0; top: 0; width: 1920px; height: 1500px; transform-origin: 0 0; z-index: 1; }
+    #wk-archive .wk-word, #wk-archive .wk-fig, #wk-archive .wk-slab { z-index: 2; }
 
-    /* the Atlas: milestones pinned on the Iberophone map */
-    #at-world { position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }
-    #at-world > img { position: absolute; inset: 0; width: 3584px; height: 1746px; display: block; }
-    .at-lead { position: absolute; inset: 0; width: 3584px; height: 1746px; overflow: visible; }
-    .at-lead path { fill: none; stroke: #470b15; stroke-width: 4; stroke-dasharray: 0.02 0.02; }
-    .at-pin { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: #470b15; border: 6px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15; }
-    .at-card { position: absolute; width: 560px; padding: 24px 30px 28px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; }
-    .at-k { font-family: "IBM Plex Mono", monospace; font-size: 24px; color: #470b15; margin-bottom: 10px; }
-    .at-card h3 { font-weight: 600; font-size: 46px; line-height: 1.05; color: #28231e; }
+    /* the Atlas: the app itself, as it runs (a video of our own engine, the page's glass around it) */
+    #wk-atlas { background: transparent; }
+    #at-app { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; object-fit: cover; transform-origin: 50% 46%; background: #17130f; }
 
     /* books */
     #wk-shelf { position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }
@@ -121,28 +101,36 @@
       <div id="rd-stage">
         <div id="rd-ring">
           <div id="rd-a0" class="rd-arm"><article id="rd-c0" class="rd-card">
-            <p class="rd-k">Substack · 19 Dec 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco Elías de Tejada</p>
+            <span class="rd-cover"><img src="assets/img/essays/the-vikings-did-not-discover-america.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Dec 29, 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">Iv�n V�lez</p></span>
           </article></div>
           <div id="rd-a1" class="rd-arm"><article id="rd-c1" class="rd-card">
-            <p class="rd-k">Substack · 29 Dec 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">Iván Vélez</p>
+            <span class="rd-cover"><img src="assets/img/essays/the-catholic-hispanic-position-on.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Dec 19, 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco El�as de Tejada</p></span>
           </article></div>
           <div id="rd-a2" class="rd-arm"><article id="rd-c2" class="rd-card">
-            <p class="rd-k">Substack · 17 Sep 2025</p><h3>Oiréis hablar de mí: A Tribute to José Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo</p>
+            <span class="rd-cover"><img src="assets/img/essays/oireis-hablar-de-mi-a-tribute-to.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Sep 17, 2025</p><h3>Oir�is hablar de m�: A Tribute to Jos� Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo � trans. Beltr�n Arellanes</p></span>
           </article></div>
           <div id="rd-a3" class="rd-arm"><article id="rd-c3" class="rd-card">
-            <p class="rd-k">Substack · 2 Jun 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla</p>
+            <span class="rd-cover"><img src="assets/img/essays/transitional-political-society-neither.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Jun 2, 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla � trans. Beltr�n Arellanes</p></span>
           </article></div>
           <div id="rd-a4" class="rd-arm"><article id="rd-c4" class="rd-card">
-            <p class="rd-k">Substack · 17 Apr 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno</p>
+            <span class="rd-cover"><img src="assets/img/essays/on-bullfighting.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">May 21, 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno � trans. Beltr�n Arellanes</p></span>
           </article></div>
           <div id="rd-a5" class="rd-arm"><article id="rd-c5" class="rd-card">
-            <p class="rd-k">Substack · 21 May 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno</p>
+            <span class="rd-cover"><img src="assets/img/essays/spain-and-america.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Apr 17, 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno � trans. Beltr�n Arellanes</p></span>
           </article></div>
           <div id="rd-a6" class="rd-arm"><article id="rd-c6" class="rd-card">
-            <p class="rd-k">Substack · 6 Apr 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">Beltrán Arellanes</p>
+            <span class="rd-cover"><img src="assets/img/essays/the-black-legend-threat-to-hispanic.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Apr 12, 2025</p><h3>The Black Legend: Threat to Hispanic Civilization (Part 1)</h3><p class="rd-by">Alicia Melchor Herrera</p></span>
           </article></div>
           <div id="rd-a7" class="rd-arm"><article id="rd-c7" class="rd-card">
-            <p class="rd-k">Substack · 12 Apr 2025</p><h3>The Black Legend: Threat to Hispanic Civilization (Part 1)</h3><p class="rd-by">Alicia Melchor Herrera</p>
+            <span class="rd-cover"><img src="assets/img/essays/aryan-indigenismo-and-manifest-destiny.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Apr 6, 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">Beltr�n Arellanes</p></span>
           </article></div>
         </div>
       </div>
@@ -150,103 +138,22 @@
       <p class="wk-fig" style="top: 250px">Essays and translations on Substack</p>
     </div>
 
-    <div id="wk-canon" class="wk-shot clip" data-start="8.065" data-duration="5.496">
-      <div id="cn-world">
-          <div class="cc-slot" style="left: 120px; top: 140px"><div id="cc-T001" class="cc cc--leather" style="rotate: -1.2deg"><p class="cc-top"><b>1818</b><span>VE</span></p><p class="cc-t">Carta de Jamaica</p><p class="cc-foot"><i></i><b>Simón Bolívar</b><span>1783–1830</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 140px"><div id="cc-T002" class="cc cc--burgundy" style="rotate: -0.8deg"><p class="cc-top"><b>1822</b><span>HN</span></p><p class="cc-t is-long">Soñaba el abad de San Pedro, y yo también sé soñar</p><p class="cc-foot"><i></i><b>José Cecilio del Valle</b><span>1780–1834</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 140px"><div id="cc-T003" class="cc cc--ink" style="rotate: -0.4deg"><p class="cc-top"><b>1847</b><span>VE</span></p><p class="cc-t is-long">Gramática de la lengua castellana destinada al uso de los americanos</p><p class="cc-foot"><i></i><b>Andrés Bello</b><span>1781–1865</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 140px"><div id="cc-T004" class="cc cc--vellum" style="rotate: 0.0deg"><p class="cc-top"><b>1855</b><span>PA</span></p><p class="cc-t">El Estado federal de Panamá</p><p class="cc-foot"><i></i><b>Justo Arosemena</b><span>1817–1896</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 140px"><div id="cc-T005" class="cc cc--paper" style="rotate: 0.4deg"><p class="cc-top"><b>1856</b><span>CL</span></p><p class="cc-t">Iniciativa de la América</p><p class="cc-foot"><i></i><b>Francisco Bilbao</b><span>1823–1865</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 140px"><div id="cc-T006" class="cc cc--leather" style="rotate: 0.8deg"><p class="cc-top"><b>1865</b><span>CO</span></p><p class="cc-t is-long">Unión latino-americana, pensamiento de Bolívar para formar una liga americana</p><p class="cc-foot"><i></i><b>José María Torres Caicedo</b><span>1830–1889</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 140px"><div id="cc-T007" class="cc cc--burgundy" style="rotate: 1.2deg"><p class="cc-top"><b>1866</b><span>GOA</span></p><p class="cc-t">Os brahamanes</p><p class="cc-foot"><i></i><b>Francisco Luís Gomes</b><span>1829–1869</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 140px"><div id="cc-T008" class="cc cc--ink" style="rotate: 1.6deg"><p class="cc-top"><b>1868</b><span>EC</span></p><p class="cc-t is-long">Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días</p><p class="cc-foot"><i></i><b>Juan León Mera</b><span>1832–1894</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 140px"><div id="cc-T009" class="cc cc--vellum" style="rotate: -1.3deg"><p class="cc-top"><b>1870</b><span>PR</span></p><p class="cc-t">Antillean federation essays and speeches</p><p class="cc-foot"><i></i><b>Eugenio María de Hostos</b><span>1839–1903</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 140px"><div id="cc-T010" class="cc cc--paper" style="rotate: -0.9deg"><p class="cc-top"><b>1879</b><span>PT</span></p><p class="cc-t">História da civilização ibérica</p><p class="cc-foot"><i></i><b>Oliveira Martins</b><span>1845–1894</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 507px"><div id="cc-T011" class="cc cc--leather" style="rotate: -0.5deg"><p class="cc-top"><b>1883</b><span>BR</span></p><p class="cc-t">O abolicionismo</p><p class="cc-foot"><i></i><b>Joaquim Nabuco</b><span>1849–1910</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 507px"><div id="cc-T012" class="cc cc--burgundy" style="rotate: -0.1deg"><p class="cc-top"><b>1889</b><span>PH</span></p><p class="cc-t">Filipinas dentro de cien años</p><p class="cc-foot"><i></i><b>José Rizal</b><span>1861–1896</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 507px"><div id="cc-T013" class="cc cc--ink" style="rotate: 0.3deg"><p class="cc-top"><b>1891</b><span>CU</span></p><p class="cc-t">Nuestra América</p><p class="cc-foot"><i></i><b>José Martí</b><span>1853–1895</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 507px"><div id="cc-T014" class="cc cc--vellum cc--counter" style="rotate: 0.7deg"><p class="cc-top"><b>1894</b><span>PE</span></p><p class="cc-t">Pájinas libres</p><p class="cc-foot"><i></i><b>Manuel González Prada</b><span>1844–1918</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 507px"><div id="cc-T015" class="cc cc--paper" style="rotate: 1.1deg"><p class="cc-top"><b>1895</b><span>ES</span></p><p class="cc-t">En torno al casticismo</p><p class="cc-foot"><i></i><b>Miguel de Unamuno</b><span>1864–1936</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 507px"><div id="cc-T016" class="cc cc--leather" style="rotate: 1.5deg"><p class="cc-top"><b>1897</b><span>ES</span></p><p class="cc-t">Idearium español</p><p class="cc-foot"><i></i><b>Ángel Ganivet</b><span>1865–1898</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 507px"><div id="cc-T017" class="cc cc--burgundy" style="rotate: -1.4deg"><p class="cc-top"><b>1898</b><span>NI</span></p><p class="cc-t">El triunfo de Calibán and hemispheric writings</p><p class="cc-foot"><i></i><b>Rubén Darío</b><span>1867–1916</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 507px"><div id="cc-T018" class="cc cc--ink" style="rotate: -1.0deg"><p class="cc-top"><b>1900</b><span>UY</span></p><p class="cc-t">Ariel</p><p class="cc-foot"><i></i><b>José Enrique Rodó</b><span>1871–1917</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 507px"><div id="cc-T019" class="cc cc--vellum" style="rotate: -0.6deg"><p class="cc-top"><b>1905</b><span>PE</span></p><p class="cc-t is-long">Carácter de la literatura del Perú independiente</p><p class="cc-foot"><i></i><b>José de la Riva-Agüero</b><span>1885–1944</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 507px"><div id="cc-T020" class="cc cc--paper" style="rotate: -0.2deg"><p class="cc-top"><b>1905</b><span>BR</span></p><p class="cc-t">A América Latina</p><p class="cc-foot"><i></i><b>Manoel do Bomfim</b><span>1868–1932</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 874px"><div id="cc-T021" class="cc cc--leather" style="rotate: 0.2deg"><p class="cc-top"><b>1910</b><span>BO</span></p><p class="cc-t">Creación de la pedagogía nacional</p><p class="cc-foot"><i></i><b>Franz Tamayo</b><span>1879–1956</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 874px"><div id="cc-T022" class="cc cc--burgundy" style="rotate: 0.6deg"><p class="cc-top"><b>1913</b><span>PE</span></p><p class="cc-t">La creación de un continente</p><p class="cc-foot"><i></i><b>Francisco García Calderón</b><span>1883–1953</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 874px"><div id="cc-T023" class="cc cc--ink" style="rotate: 1.0deg"><p class="cc-top"><b>1914</b><span>ES</span></p><p class="cc-t">La leyenda negra y la verdad histórica</p><p class="cc-foot"><i></i><b>Julián Juderías</b><span>1877–1918</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 874px"><div id="cc-T024" class="cc cc--vellum" style="rotate: 1.4deg"><p class="cc-top"><b>1917</b><span>ES</span></p><p class="cc-t">España y el programa americanista</p><p class="cc-foot"><i></i><b>Rafael Altamira</b><span>1866–1951</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 874px"><div id="cc-T025" class="cc cc--paper" style="rotate: -1.5deg"><p class="cc-top"><b>1920</b><span>CR</span></p><p class="cc-t">La caída del águila</p><p class="cc-foot"><i></i><b>Carlos Gagini</b><span>1865–1925</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 874px"><div id="cc-T026" class="cc cc--leather" style="rotate: -1.1deg"><p class="cc-top"><b>1923</b><span>AR</span></p><p class="cc-t">El destino de un continente</p><p class="cc-foot"><i></i><b>Manuel Ugarte</b><span>1875–1951</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 874px"><div id="cc-T027" class="cc cc--burgundy" style="rotate: -0.7deg"><p class="cc-top"><b>1924</b><span>PT</span></p><p class="cc-t">A aliança peninsular</p><p class="cc-foot"><i></i><b>António Sardinha</b><span>1887–1925</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 874px"><div id="cc-T028" class="cc cc--ink" style="rotate: -0.3deg"><p class="cc-top"><b>1924</b><span>PE</span></p><p class="cc-t is-long">La unidad de la América Indo-Española and related essays</p><p class="cc-foot"><i></i><b>José Carlos Mariátegui</b><span>1894–1930</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 874px"><div id="cc-T029" class="cc cc--vellum" style="rotate: 0.1deg"><p class="cc-top"><b>1924</b><span>AR</span></p><p class="cc-t">Eurindia</p><p class="cc-foot"><i></i><b>Ricardo Rojas</b><span>1882–1957</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 874px"><div id="cc-T030" class="cc cc--paper" style="rotate: 0.5deg"><p class="cc-top"><b>1925</b><span>MX</span></p><p class="cc-t">La raza cósmica</p><p class="cc-foot"><i></i><b>José Vasconcelos</b><span>1882–1959</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 1241px"><div id="cc-T031" class="cc cc--leather" style="rotate: 0.9deg"><p class="cc-top"><b>1928</b><span>DO</span></p><p class="cc-t">Seis ensayos en busca de nuestra expresión</p><p class="cc-foot"><i></i><b>Pedro Henríquez Ureña</b><span>1884–1946</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 1241px"><div id="cc-T032" class="cc cc--burgundy" style="rotate: 1.3deg"><p class="cc-top"><b>1929</b><span>NI</span></p><p class="cc-t is-long">Plan de realización del supremo sueño de Bolívar</p><p class="cc-foot"><i></i><b>Augusto César Sandino</b><span>1895–1934</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 1241px"><div id="cc-T033" class="cc cc--ink" style="rotate: -1.6deg"><p class="cc-top"><b>1929</b><span>SV</span></p><p class="cc-t">El mínimum vital</p><p class="cc-foot"><i></i><b>Alberto Masferrer</b><span>1868–1932</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 1241px"><div id="cc-T034" class="cc cc--vellum" style="rotate: -1.2deg"><p class="cc-top"><b>1934</b><span>PR</span></p><p class="cc-t">Insularismo</p><p class="cc-foot"><i></i><b>Antonio S. Pedreira</b><span>1899–1939</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 1241px"><div id="cc-T035" class="cc cc--paper" style="rotate: -0.8deg"><p class="cc-top"><b>1934</b><span>ES</span></p><p class="cc-t">Defensa de la Hispanidad</p><p class="cc-foot"><i></i><b>Ramiro de Maeztu</b><span>1874–1936</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 1241px"><div id="cc-T036" class="cc cc--leather" style="rotate: -0.4deg"><p class="cc-top"><b>1936</b><span>PE</span></p><p class="cc-t">El antiimperialismo y el APRA</p><p class="cc-foot"><i></i><b>Víctor Raúl Haya de la Torre</b><span>1895–1979</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 1241px"><div id="cc-T037" class="cc cc--burgundy" style="rotate: 0.0deg"><p class="cc-top"><b>1939</b><span>ES</span></p><p class="cc-t">Pensamiento y poesía en la vida española</p><p class="cc-foot"><i></i><b>María Zambrano</b><span>1904–1991</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 1241px"><div id="cc-T038" class="cc cc--ink" style="rotate: 0.4deg"><p class="cc-top"><b>1940</b><span>CU</span></p><p class="cc-t">Contrapunteo cubano del tabaco y el azúcar</p><p class="cc-foot"><i></i><b>Fernando Ortiz</b><span>1881–1969</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 1241px"><div id="cc-T039" class="cc cc--vellum" style="rotate: 0.8deg"><p class="cc-top"><b>1940</b><span>BR</span></p><p class="cc-t">O mundo que o português criou</p><p class="cc-foot"><i></i><b>Gilberto Freyre</b><span>1900–1987</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 1241px"><div id="cc-T040" class="cc cc--paper" style="rotate: 1.2deg"><p class="cc-top"><b>1947</b><span>CL</span></p><p class="cc-t">Hispanoamérica del dolor</p><p class="cc-foot"><i></i><b>Jaime Eyzaguirre</b><span>1908–1968</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 1608px"><div id="cc-T041" class="cc cc--leather" style="rotate: 1.6deg"><p class="cc-top"><b>1953</b><span>MX</span></p><p class="cc-t">América como conciencia</p><p class="cc-foot"><i></i><b>Leopoldo Zea</b><span>1912–2004</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 1608px"><div id="cc-T042" class="cc cc--burgundy cc--counter" style="rotate: -1.3deg"><p class="cc-top"><b>1955</b><span>AO</span></p><p class="cc-t">Qu&#x27;est-ce que le luso-tropicalisme?</p><p class="cc-foot"><i></i><b>Mário Pinto de Andrade</b><span>1928–1990</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 1608px"><div id="cc-T043" class="cc cc--ink" style="rotate: -0.9deg"><p class="cc-top"><b>1956</b><span>CV</span></p><p class="cc-t">Cabo Verde visto por Gilberto Freyre</p><p class="cc-foot"><i></i><b>Baltasar Lopes</b><span>1907–1989</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 1608px"><div id="cc-T044" class="cc cc--vellum" style="rotate: -0.5deg"><p class="cc-top"><b>1959</b><span>PT</span></p><p class="cc-t">Um Fernando Pessoa</p><p class="cc-foot"><i></i><b>Agostinho da Silva</b><span>1906–1994</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 1608px"><div id="cc-T045" class="cc cc--paper" style="rotate: -0.1deg"><p class="cc-top"><b>1967</b><span>UY</span></p><p class="cc-t">El Uruguay como problema</p><p class="cc-foot"><i></i><b>Alberto Methol Ferré</b><span>1929–2009</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 1608px"><div id="cc-T046" class="cc cc--leather" style="rotate: 0.3deg"><p class="cc-top"><b>1968</b><span>AR</span></p><p class="cc-t">Historia de la nación latinoamericana</p><p class="cc-foot"><i></i><b>Jorge Abelardo Ramos</b><span>1921–1994</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 1608px"><div id="cc-T047" class="cc cc--burgundy cc--counter" style="rotate: 0.7deg"><p class="cc-top"><b>1970</b><span>GW</span></p><p class="cc-t is-long">National Liberation and Culture / Libertação nacional e cultura</p><p class="cc-foot"><i></i><b>Amílcar Cabral</b><span>1924–1973</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 1608px"><div id="cc-T048" class="cc cc--ink cc--counter" style="rotate: 1.1deg"><p class="cc-top"><b>1977</b><span>GQ</span></p><p class="cc-t">Historia y tragedia de Guinea Ecuatorial</p><p class="cc-foot"><i></i><b>Donato Ndongo</b><span>1950–living</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 1608px"><div id="cc-T049" class="cc cc--vellum" style="rotate: 1.5deg"><p class="cc-top"><b>1988</b><span>PH</span></p><p class="cc-t">Culture and History</p><p class="cc-foot"><i></i><b>Nick Joaquín</b><span>1917–2004</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 1608px"><div id="cc-T050" class="cc cc--paper cc--counter" style="rotate: -1.4deg"><p class="cc-top"><b>1999</b><span>PT</span></p><p class="cc-t is-long">A nau de Ícaro, seguido de Imagem e miragem da lusofonia</p><p class="cc-foot"><i></i><b>Eduardo Lourenço</b><span>1923–2020</span></p></div></div>
-      </div>
-      <div class="wk-slab" id="cn-slab"></div>
-      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig" style="top: 250px">Fifty classic texts, 1818 to 1999</p>
-      <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
+    <div id="wk-archive" class="wk-shot clip" data-start="8.065" data-duration="5.496">
+      <div id="ar-world"><img src="assets/img/site/archive-page.jpg" alt="" /></div>
+      <div id="ar-work"><img src="assets/img/site/archive-work.jpg" alt="" /></div>
+      <div class="wk-slab" id="ar-slab"></div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>archive</span></p>
+      <p class="wk-fig" style="top: 250px">The primary sources of Hispanic thought</p>
+      <p class="wk-chip" id="ar-chip"><b>The archive</b><span>the primary sources of Hispanic thought</span></p>
     </div>
 
+    <!-- the app, timed by itself (a timed video must not sit in a timed wrapper): under its shot -->
+    <video id="at-app" class="clip" src="assets/atlas/atlas-app.mp4" muted playsinline data-start="13.582" data-duration="5.6"></video>
     <div id="wk-atlas" class="wk-shot clip" data-start="13.561" data-duration="5.612">
-      <div id="at-world">
-        <img src="assets/img/iberophone-map.jpg" alt="" />
-          <i id="at-p0" class="at-pin" style="left: 1994px; top: 358px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l0" d="M1994 358 L2064 178" pathLength="1" /></svg>
-          <i id="at-p1" class="at-pin" style="left: 1288px; top: 571px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l1" d="M1288 571 L1348 581" pathLength="1" /></svg>
-          <i id="at-p2" class="at-pin" style="left: 1053px; top: 600px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l2" d="M1053 600 L1003 710" pathLength="1" /></svg>
-          <i id="at-p3" class="at-pin" style="left: 1348px; top: 959px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l3" d="M1348 959 L1268 1059" pathLength="1" /></svg>
-          <i id="at-p4" class="at-pin" style="left: 1707px; top: 1042px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l4" d="M1707 1042 L1777 1132" pathLength="1" /></svg>
-          <i id="at-p5" class="at-pin" style="left: 3266px; top: 672px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l5" d="M3266 672 L3186 482" pathLength="1" /></svg>
-          <article id="at-c0" class="at-card" style="left: 2064px; top: 108px">
-            <p class="at-k">2015-2026 · Milestone 60 of 60</p><h3>Iberofonía becomes an explicit pan-Iberian proposal</h3>
-          </article>
-          <article id="at-c1" class="at-card" style="left: 1348px; top: 511px">
-            <p class="at-k">1492 · Milestone 9 of 60</p><h3>The Atlantic crossing joins two hemispheres</h3>
-          </article>
-          <article id="at-c2" class="at-card" style="left: 443px; top: 640px">
-            <p class="at-k">1519-1521 · Milestone 14 of 60</p><h3>The fall of Tenochtitlan</h3>
-          </article>
-          <article id="at-c3" class="at-card" style="left: 708px; top: 989px">
-            <p class="at-k">1532-1535 · Milestone 16 of 60</p><h3>Conquest and reorganization of the Andes</h3>
-          </article>
-          <article id="at-c4" class="at-card" style="left: 1777px; top: 1062px">
-            <p class="at-k">1807-1808 · Milestone 22 of 60</p><h3>The Portuguese court moves to Rio de Janeiro</h3>
-          </article>
-          <article id="at-c5" class="at-card" style="left: 2626px; top: 412px">
-            <p class="at-k">1565-1571 · Milestone 18 of 60</p><h3>The Pacific crossing and Manila</h3>
-          </article>
-      </div>
       <div class="wk-slab" id="at-slab"></div>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>Atlas</span></p>
-      <p class="wk-fig" style="top: 250px">Sixty milestones, c. 722 to 2026</p>
-      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>sixty milestones, c. 722 to 2026</span></p>
+      <p class="wk-fig" style="top: 250px">An interactive globe, 218 BCE to today</p>
+      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>218 BCE to today</span></p>
     </div>
 
     <div id="wk-books" class="wk-shot clip" data-start="19.173" data-duration="3.33">
@@ -289,7 +196,7 @@
           <i id="fz-fill"></i>
           <p id="fz-m0" class="fz-met" style="left: 258px; width: 218px">Watch</p>
           <p id="fz-m1" class="fz-met" style="left: 582px; width: 227px">Read</p>
-          <p id="fz-m2" class="fz-met" style="left: 915px; width: 227px">Canon</p>
+          <p id="fz-m2" class="fz-met" style="left: 915px; width: 227px">Archive</p>
           <p id="fz-m3" class="fz-met" style="left: 1248px; width: 227px">Atlas</p>
           <p id="fz-m4" class="fz-met" style="left: 1582px; width: 226px">Books</p>
           <p id="fz-m5" class="fz-met" style="left: 1916px; width: 218px">Community</p>
@@ -328,42 +235,29 @@
       tl.fromTo("#rd-ring", { rotationY: -110, rotationX: 8 }, { rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }, 3.042 + 2.35);
       tl.fromTo("#rd-ring", { rotationY: -372, rotationX: 10 }, { rotationY: -360, rotationX: 10, duration: 1.723, ease: "none", immediateRender: false }, 3.042 + 3.3);
 
-      // THE CANON: close on La raza cósmica, along the row to Ariel and Nuestra América, then the
-      // camera pulls back to all fifty; the cards drop in from the focus outwards, each on its own tilt
-      arrive("#wk-canon .wk-word", 8.065, 510, 383); fig("#wk-canon", 8.065 + 0.8 * B);
-      const P = {"T001": [238, 298], "T002": [518, 298], "T003": [798, 298], "T004": [1078, 298], "T005": [1358, 298], "T006": [1638, 298], "T007": [1918, 298], "T008": [2198, 298], "T009": [2478, 298], "T010": [2758, 298], "T011": [238, 664], "T012": [518, 664], "T013": [798, 664], "T014": [1078, 664], "T015": [1358, 664], "T016": [1638, 664], "T017": [1918, 664], "T018": [2198, 664], "T019": [2478, 664], "T020": [2758, 664], "T021": [238, 1032], "T022": [518, 1032], "T023": [798, 1032], "T024": [1078, 1032], "T025": [1358, 1032], "T026": [1638, 1032], "T027": [1918, 1032], "T028": [2198, 1032], "T029": [2478, 1032], "T030": [2758, 1032], "T031": [238, 1398], "T032": [518, 1398], "T033": [798, 1398], "T034": [1078, 1398], "T035": [1358, 1398], "T036": [1638, 1398], "T037": [1918, 1398], "T038": [2198, 1398], "T039": [2478, 1398], "T040": [2758, 1398], "T041": [238, 1766], "T042": [518, 1766], "T043": [798, 1766], "T044": [1078, 1766], "T045": [1358, 1766], "T046": [1638, 1766], "T047": [1918, 1766], "T048": [2198, 1766], "T049": [2478, 1766], "T050": [2758, 1766]};
-      move("#cn-world", cam(P.T030[0], P.T030[1], 2.0), cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), 8.065, 0.9, "power2.inOut", true);
-      move("#cn-world", cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), cam(P.T018[0], P.T018[1], 1.7), 8.065 + 0.95, 0.9, "power2.inOut");
-      move("#cn-world", cam(P.T018[0], P.T018[1], 1.7), cam(P.T013[0], P.T013[1], 1.9), 8.065 + 1.9, 0.7, "power2.inOut");
-      move("#cn-world", cam(P.T013[0], P.T013[1], 1.9), cam(1498.0, 1031.5, 0.56), 8.065 + 2.6, 1.5, "expo.inOut");
-      move("#cn-world", cam(1498.0, 1031.5, 0.56), cam(1498.0, 1031.5, 0.53), 8.065 + 4.1, 1.396, "none");
-      document.querySelectorAll("#cn-world .cc").forEach((el) => {
-        const [x, y] = P[el.id.slice(3)], d = Math.hypot(x - P.T030[0], y - P.T030[1]);
-        tl.fromTo(el, { opacity: 0, y: -90, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 8.065 + Math.min(1.3, d / 1700 * 1.1));
-      });
+      // THE ARCHIVE: close on the collection's title, down into its first era, its cards one under
+      // another; on the beat a work's page whips in (its article), and the camera reads down it
+      arrive("#wk-archive .wk-word", 8.065, 510, 383); fig("#wk-archive", 8.065 + 0.8 * B);
+      const AR = [[900, 290, 1.55], [930, 420, 1.4], [960, 1560, 1.12], [960, 1720, 1.05]], WK = [[960, 560, 1.08], [960, 700, 1.0]];
+      move("#ar-world", cam(...AR[0]), cam(...AR[1]), 8.065, 1.0, "power1.inOut", true);
+      move("#ar-world", cam(...AR[1]), cam(...AR[2]), 8.065 + 1.0, 1.3, "power2.inOut");
+      move("#ar-world", cam(...AR[2]), cam(...AR[3]), 8.065 + 2.3, 0.9, "none");
+      const wt = 8.065 + 3.2;
+      tl.set("#ar-work", { autoAlpha: 0 }, 8.065);
+      tl.set("#ar-work", { autoAlpha: 1 }, wt);
+      tl.fromTo("#ar-work img", { x: 300, filter: "blur(18px)" }, { x: 0, filter: "blur(0px)", duration: 0.16, ease: "power3.out" }, wt);
+      move("#ar-work", cam(...WK[0]), cam(...WK[1]), wt, 2.296, "power1.out", true);
+      tl.fromTo("#ar-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 8.065);
       const toChip = (id, slab, chip, t) => {
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }, t);
         tl.fromTo(slab, { opacity: 0.94 }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
         tl.fromTo(chip, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }, t + 0.1);
       };
-      tl.fromTo("#cn-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 8.065);
-      toChip("#wk-canon", "#cn-slab", "#cn-chip", 8.065 + 1.05);
+      toChip("#wk-archive", "#ar-slab", "#ar-chip", 8.065 + 1.05);
 
-      // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
+      // THE ATLAS: the app as it runs, the story flying from stop to stop; the camera eases back
       arrive("#wk-atlas .wk-word", 13.561, 515, 383); fig("#wk-atlas", 13.561 + 0.8 * B);
-      const route = [[1994, 358], [1288, 571], [1053, 600], [1348, 959], [1707, 1042], [3266, 672]];
-      const k = 1.25;
-      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), 13.561, 0.65, "power2.inOut", true);
-      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), 13.561 + 0.72, 0.65, "power2.inOut");
-      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), 13.561 + 1.44, 0.6, "power2.inOut");
-      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), 13.561 + 2.1, 0.6, "power2.inOut");
-      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), 13.561 + 2.76, 1.3, "expo.inOut");
-      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.54), 13.561 + 4.1, 1.512, "none");
-      [0, 0.54, 1.26, 1.94, 2.58, 3.3].forEach((t, i) => {
-        tl.fromTo("#at-p" + i, { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, 13.561 + t);
-        tl.fromTo("#at-l" + i, { strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, 13.561 + t + 0.05);
-        tl.fromTo("#at-c" + i, { opacity: 0, y: 30, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }, 13.561 + t + 0.12);
-      });
+      tl.fromTo("#at-app", { scale: 1.14 }, { scale: 1.0, duration: 5.612, ease: "power2.out" }, 13.561);
       tl.fromTo("#at-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 13.561);
       toChip("#wk-atlas", "#at-slab", "#at-chip", 13.561 + 1.05);
 
@@ -384,7 +278,7 @@
       // dives into it, as it dived into "Watch" at the end of the pillars
       const MX = [367.0, 695.5, 1028.5, 1361.5, 1695.0, 2025.0];
       const KF = 1.64, CY = 255;
-      const outgoing = ["#wk-watch", "#wk-read", "#wk-canon", "#wk-atlas", "#wk-books"];
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-archive", "#wk-atlas, #at-app", "#wk-books"];
       tl.set("#fz-pane", { x: 1920 }, 0);
       [3.042, 8.065, 13.561, 19.173, 22.503].forEach((t, i) => {
         const m = MX[i + 1], t0 = t - 0.78;
