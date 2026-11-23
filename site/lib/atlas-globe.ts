@@ -35,7 +35,8 @@ import { feature, merge, mesh } from 'topojson-client';
 import type { Feature, FeatureCollection, Geometry, MultiPolygon, MultiLineString, Position } from 'geojson';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import type { Chronicle, Era, LonLat, Stop, Voyage, Waypoint } from '@/lib/atlas-chronicle';
-import { GROUND, TINTS, type Tint } from '@/lib/atlas-palette';
+import { GROUND, INDEPENDENT, TINTS, type Tint } from '@/lib/atlas-palette';
+import { legendKind, statusAt } from '@/lib/atlas-status';
 
 /* ---------- colours: the brand tokens, and tints of them ---------- */
 
@@ -219,6 +220,7 @@ function boxPoints([[w, s], [e, n]]: [LonLat, LonLat]): LonLat[] {
 /* ---------- public types ---------- */
 
 export type Inset = { l: number; r: number; t: number; b: number };
+export type Spot = { at: LonLat; unit?: string; f?: string; name?: string; iso?: string; year: number; today: boolean };
 export type Box = [number, number, number, number];
 export type Mode = 'globe' | 'flat';
 /** What the card points at: a landfall of the voyage in this stop, a jurisdiction
@@ -236,6 +238,9 @@ export type FrameInfo = {
 };
 export type Anchors = {
   stop: number;
+  /** every realm on the globe now, top first (the Layers panel lists them), and where a realm's name was drawn */
+  realms: { f: string; name: string }[];
+  labelOf: (f: string) => Box | null;
   /** the realms the stop's places lie in, and the kinds of realm drawn (for the legend) */
   here: { f: string; name: string }[];
   kinds: string;
@@ -281,6 +286,17 @@ export type Engine = {
   zoomBy(f: number): void;
   recentre(): void;
   pick(x: number, y: number): HitInfo | null;
+  /** What lies under a point of the canvas: the topmost realm drawn there (unit and family), today's
+      country (ISO numeric) and whether it is land at all; null at sea or off the planet. */
+  infoAt(x: number, y: number): Spot | null;
+  /** The same for a realm chosen from a list (its largest part). */
+  realmSpot(f: string): Spot | null;
+  /** Where a realm sits on the canvas now: its name if drawn, else its largest part. */
+  realmPoint(f: string): [number, number] | null;
+  /** Turn the globe to a place (the reader keeps the camera). */
+  lookAt(at: LonLat): void;
+  /** Whether a unit's shape holds a place. */
+  unitHolds(unitId: string, at: LonLat): boolean;
   resize(): void;
   destroy(): void;
 };
@@ -455,6 +471,12 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   let dragging = false;
   let settleAt = 0;
   let avoidBoxes: Box[] = [];
+  // what is on the globe now, for the click-for-info popover
+  let curList: { id: string; f: string }[] = [];
+  let curYear = 0;
+  let curToday = false;
+  let curNames: Record<string, string> = {};
+  const labelBoxes = new Map<string, Box>();
   let avoidKey = '';
 
   function frame(now: number) {
@@ -572,17 +594,26 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   }
 
   const famOf = (u: { f: string }) => chron.families[u.f];
-  /* A realm's fill: its own shade from the palette (lib/atlas-palette.ts).
-     Independent successor states wear their shade quieter; other crowns and
-     Indigenous states sit on the grey land, told by an edge and a name. */
-  function unitFill(f: { kind: string; tint?: string }): RGB {
-    switch (f.kind) {
+  /* A realm's fill, by its status in the year shown (#104, data/atlas-status.json):
+     its own shade from the palette while it is Spain's or Portugal's (or
+     al-Andalus's, or Rome's); the pale counterpart of that shade once it is
+     independent; the grey land, a step lighter, when another crown holds it;
+     the land itself for Indigenous states (told by a dotted edge and a name).
+     During the wars of independence it keeps its shade, hatched. */
+  const statusOf = (fid: string, year: number) => statusAt(chron.families[fid], year);
+  function unitFill(fid: string, year: number): RGB {
+    const f = chron.families[fid];
+    const k = statusOf(fid, year).kind;
+    const own = (f.tint as Tint) in TINTS ? (f.tint as Tint) : KIND_TINT[f.kind] ?? 'es.spain';
+    switch (k) {
       case 'other': return MAP.landHi;
       case 'native': return MAP.land;
-      case 'indep': case 'pt-indep': return mix(tintOf(f.tint, KIND_TINT[f.kind]), MAP.land, 0.32);
-      default: return tintOf(f.tint, KIND_TINT[f.kind] ?? 'es.spain');
+      case 'indep': case 'pt-indep': return hex(TINTS[INDEPENDENT[own] ?? (own.startsWith('ind.') ? own : 'ind.sand')]);
+      default: return tintOf(own, KIND_TINT[k] ?? 'es.spain');
     }
   }
+  /** A realm's name in the year shown: the curated period's, else the keyframe's, else its own. */
+  const nameOf = (fid: string, year: number, eraNames: Record<string, string>) => statusOf(fid, year).name ?? eraNames[fid] ?? chron.families[fid].name;
   type GeoObj = Parameters<ReturnType<typeof geoPath>>[0];
   const fc = (fs: (Feature | undefined)[]): GeoObj => ({ type: 'FeatureCollection', features: fs.filter((f): f is Feature => !!f) });
   /** The units drawn at a state: the American keyframe in force (from 1492) and
@@ -694,15 +725,18 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
 
     // the realms in force, cross-fading from the set before
     const set = unitsAt(st);
+    curList = today ? [] : set.list; curYear = st.year; curToday = today; curNames = era.names;
+    labelBoxes.clear();
     const drawSet = (list: Unit[], alpha: number, tag: string) => {
       const shown = list.filter((u) => UM.get(u.id));
       ctx.globalAlpha = alpha;
       // under to over: each family's units in its own shade
       for (const u of shown) {
-        ctx.fillStyle = css(unitFill(famOf(u)));
+        ctx.fillStyle = css(unitFill(u.f, st.year));
         ctx.fill(G(`${tag}:u:${u.id}`, () => UM.get(u.id) as Feature));
       }
-      const claims = shown.filter((u) => famOf(u).kind === 'claim');
+      // claims, and realms fought over in the wars of independence, are hatched
+      const claims = shown.filter((u) => famOf(u).kind === 'claim' || statusOf(u.f, st.year).kind === 'contested');
       if (claims.length) {
         const cp = G(`${tag}:claims`, () => fc(claims.map((u) => UM.get(u.id))));
         ctx.save(); ctx.clip(cp);
@@ -768,7 +802,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       for (const u of set.list) { if (!UM.get(u.id)) continue; byFam.set(u.f, [...(byFam.get(u.f) ?? []), u]); }
       for (const [fid, us] of [...byFam].reverse()) {
         const path = G(`fam:${fid}`, () => fc(us.map((u) => UM.get(u.id))));
-        shapeHits.push({ path, stroke: false, hit: { title: era.names[fid] ?? chron.families[fid].name, focus: { kind: 'unit', f: fid } } });
+        shapeHits.push({ path, stroke: false, hit: { title: nameOf(fid, st.year, era.names), focus: { kind: 'unit', f: fid } } });
         if (focus?.kind === 'unit' && focus.f === fid) { ctx.fillStyle = css(C.paper, 0.14); ctx.fill(path); }
       }
     }
@@ -957,13 +991,14 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         const p = pt(cd.at);
         if (!p) continue;
         const px = cd.area * c.R * c.R;          // its size on screen, roughly, in square pixels
-        const name = era.names[cd.fid] ?? chron.families[cd.fid].name;
+        const name = nameOf(cd.fid, st.year, era.names);
         const size = clamp(Math.sqrt(px) / 7, 10.5, 17);
         ctx.font = `${cd.rank === 3 ? 700 : 600} ${size}px ${fontSerif}`;
         const w = ctx.measureText(name).width;
         // too small to hold its name: left to the hover (the stop's own always shows)
         if (cd.rank < 3 && px < w * size * 1.1) continue;
         if (!free_(p[0] - w / 2 - 2, p[1] - size, w + 4, size + 4)) continue;
+        labelBoxes.set(cd.fid, [p[0] - w / 2 - 2, p[1] - size, p[0] + w / 2 + 2, p[1] + 4]);
         ctx.lineJoin = 'round';
         ctx.lineWidth = 3.2; ctx.strokeStyle = css(MAP.space, 0.7); ctx.strokeText(name, p[0], p[1]);
         ctx.fillStyle = css(C.paper, cd.rank === 3 ? 1 : 0.92); ctx.fillText(name, p[0], p[1]);
@@ -1149,11 +1184,13 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       const off = today;
       const path = geoPath(proj);
       const drawnKinds = today ? 'es-today,pt-today' : layers.iberian
-        ? [...new Set(set.list.map((u) => { const k = famOf(u).kind; return k === 'pt-indep' ? 'indep' : k === 'claim' ? 'es' : k; }))].sort().join(',')
+        ? [...new Set(set.list.map((u) => (famOf(u).kind === 'claim' ? 'es' : legendKind(statusOf(u.f, st.year).kind))))].sort().join(',')
         : '';
       opts.onAnchors({
         stop: st.si,
-        here: today ? [] : realmsHolding(st.si, set).map((f) => ({ f, name: era.names[f] ?? chron.families[f].name })),
+        here: today ? [] : realmsHolding(st.si, set).map((f) => ({ f, name: nameOf(f, st.year, era.names) })),
+        realms: today ? [] : [...new Set(set.list.filter((u) => units.get(u.id)).map((u) => u.f))].reverse().map((f) => ({ f, name: nameOf(f, st.year, era.names) })),
+        labelOf: (f) => labelBoxes.get(f) ?? null,
         kinds: drawnKinds,
         area: [a.x, a.y, a.x + a.w, a.y + a.h],
         ship: shipAt ? [shipAt[0], shipAt[1]] : null,
@@ -1304,7 +1341,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     dpr = Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1);
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     if (!free) cam = null;
-    flight = null;
+    // (a turn the reader asked for, to a place, survives a resize)
+    if (!flight?.to) flight = null;
     kick();
   }
 
@@ -1408,7 +1446,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     },
     setInset(i: Inset) {
       if (i.l === inset.l && i.r === inset.r && i.t === inset.t && i.b === inset.b) return;
-      inset = i; if (!free) cam = null; flight = null; kick();
+      inset = i; if (!free) cam = null; if (!flight?.to) flight = null; kick();
     },
     setReduced(r: boolean) { reduced = r; if (r) { playing = false; flight = null; vel = { lon: 0, lat: 0 }; } if (!free) cam = null; kick(); },
     setVisible(v: boolean) { visible = v; if (v) kick(); else if (raf) { cancelAnimationFrame(raf); raf = 0; } },
@@ -1441,6 +1479,46 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       else cam = null;
       kick();
     },
+    infoAt(x: number, y: number) {
+      if (!cam || !loaded) return null;
+      const proj = projectionFor(cam);
+      const g = proj.invert?.([x, y]) as LonLat | undefined;
+      if (!g || !Number.isFinite(g[0]) || (mode === 'globe' && geoDistance(g, [cam.lon, cam.lat]) > Math.PI / 2)) return null;
+      let hit: { id: string; f: string } | undefined;
+      if (layers.iberian) for (let i = curList.length - 1; i >= 0; i--) {
+        const u = curList[i]; const f = units.get(u.id);
+        if (f && geoContains(f, g)) { hit = u; break; }
+      }
+      let iso: string | undefined;
+      for (const [id, f] of countries) if (geoContains(f, g)) { iso = id; break; }
+      if (!hit && !iso && !(land && geoContains(land, g))) return null;
+      return { at: g, unit: hit?.id, f: hit?.f, name: hit ? nameOf(hit.f, curYear, curNames) : undefined, iso, year: curYear, today: curToday };
+    },
+    realmSpot(f: string) {
+      let best: { id: string; area: number; at: LonLat } | null = null;
+      for (const u of curList) if (u.f === f) { const g = factsOf(u.id); if (g && (!best || g.area > best.area)) best = { id: u.id, ...g }; }
+      if (!best) return null;
+      const at = (chron.families[f]?.at ?? best.at) as LonLat;
+      let iso: string | undefined;
+      for (const [id, c] of countries) if (geoContains(c, at)) { iso = id; break; }
+      return { at, unit: best.id, f, name: nameOf(f, curYear, curNames), iso, year: curYear, today: curToday };
+    },
+    realmPoint(f: string) {
+      const b = labelBoxes.get(f);
+      if (b) return [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2];
+      if (!cam) return null;
+      const fam = chron.families[f];
+      let best: { area: number; at: LonLat } | null = null;
+      for (const u of curList) if (u.f === f) { const g = factsOf(u.id); if (g && (!best || g.area > best.area)) best = g; }
+      const at = (fam?.at ?? best?.at) as LonLat | undefined;
+      if (!at) return null;
+      const proj = projectionFor(cam);
+      if (mode === 'globe' && geoDistance(at, [cam.lon, cam.lat]) > Math.PI / 2) return null;
+      const p = proj(at);
+      return p ? [p[0], p[1]] : null;
+    },
+    lookAt(at: LonLat) { if (cam) flyTo({ lon: at[0], lat: clamp(at[1], -70, 75), R: Math.min(cam.R, R0() * 2) }); },
+    unitHolds(unitId: string, at: LonLat) { const f = units.get(unitId); return !!f && geoContains(f, at); },
     pick(x: number, y: number) {
       if (dragging) return null;
       let best: HitInfo | null = null, bd = 16;

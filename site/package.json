@@ -19,6 +19,7 @@
     "user:delete": "tsx scripts/users.mts delete",
     "palette:check": "tsx scripts/check-palette.mts",
     "atlas:palette": "tsx scripts/check-atlas-palette.mts",
+    "atlas:status": "tsx scripts/check-atlas-status.mts",
     "text:import": "tsx scripts/text-import.mts",
     "iberofonia:import": "tsx scripts/iberofonia-import.mts",
     "curated:publish": "tsx scripts/curated-publish.mts"

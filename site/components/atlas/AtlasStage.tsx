@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { dict, type Lang } from '@/lib/i18n';
 import type { Chronicle, RecordView } from '@/lib/atlas-chronicle';
 import { CHAPTER_STARTS, stopIndex, TRACKS, yearLabel, type Track } from '@/lib/atlas-time';
-import { DEFAULT_LAYERS, focusKey, type Anchors, type Box, type Engine, type Focus, type FrameInfo, type HitInfo, type Layers, type Mode } from '@/lib/atlas-globe';
+import { DEFAULT_LAYERS, focusKey, type Anchors, type Box, type Engine, type Focus, type FrameInfo, type HitInfo, type Layers, type Mode, type Spot } from '@/lib/atlas-globe';
 import { changedItems, noteFor, place } from './explainer';
+import RealmInfo, { type UnitFacts } from './RealmInfo';
+import { statusAt } from '@/lib/atlas-status';
 
 /* The Atlas app (issues #95 and #102). Carlos: "a fixed panel where you can't
    scroll", layers, colour; then (2026-11-23) "ours, not a copy", and no world
@@ -103,6 +105,12 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   // what the globe draws at this stop: the realms the stop's places lie in, and which colours are on it
   const [here, setHere] = useState<{ f: string; name: string }[]>([]);
   const [kinds, setKinds] = useState('');
+  // the realms on the globe now (for the list in Layers), and the click-for-info popover (#104)
+  const [realms, setRealms] = useState<{ f: string; name: string }[]>([]);
+  const [info, setInfo] = useState<{ spot: Spot; x: number; y: number; keyboard: boolean; related: { i: number; title: string } | null } | null>(null);
+  const [facts, setFacts] = useState<UnitFacts | null>(null);
+  const infoEl = useRef<HTMLDivElement>(null);
+  const realmsKey = useRef('');
   const reduced = useSyncExternalStore(subscribeRM, getRM, () => false);
   const wide = useSyncExternalStore(subscribeWide, getWide, () => true);
   const reducedRef = useRef(reduced);
@@ -166,11 +174,63 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const placeRef = useRef(placeNote);
   useLayoutEffect(() => { placeRef.current = placeNote; placeNote(); }, [placeNote, cardOpen, started, ready, more, keyShown, panel]);
   const hereKey = useRef('');
+  useLayoutEffect(() => {
+    const el = infoEl.current, st = stage.current;
+    if (!el || !st || !info) return;
+    if (!wide) { el.style.transform = ''; return; }
+    const sr = st.getBoundingClientRect();
+    const w = el.offsetWidth, h = el.offsetHeight, g = 14, m = 10;
+    const panels = [nowEl, keyEl, tools, bar, card, scaleBox].map((r) => rel(r.current, sr)).filter((b): b is Box => !!b);
+    const label = info.spot.f ? anchors.current?.labelOf(info.spot.f) ?? null : null;
+    const avoid = label ? [...panels, label] : panels;
+    const { x, y } = info;
+    const cands: [number, number][] = [[x + g, y + g], [x - g - w, y + g], [x + g, y - g - h], [x - g - w, y - g - h], [x - w / 2, y + g * 2], [x - w / 2, y - g * 2 - h]];
+    const fits = (bx: number, by: number) => bx >= m && by >= m && bx + w <= sr.width - m && by + h <= sr.height - m;
+    const hit = (bx: number, by: number) => avoid.reduce((acc, b) => acc + Math.max(0, Math.min(bx + w, b[2]) - Math.max(bx, b[0])) * Math.max(0, Math.min(by + h, b[3]) - Math.max(by, b[1])), 0);
+    let best: [number, number] | null = null, bestScore = Infinity;
+    for (const [cx, cy] of cands) {
+      const bx = Math.max(m, Math.min(sr.width - m - w, cx)), by = Math.max(m, Math.min(sr.height - m - h, cy));
+      const score = hit(bx, by) * 10 + (fits(cx, cy) ? 0 : 500) + Math.hypot(bx - cx, by - cy);
+      if (score < bestScore) { bestScore = score; best = [bx, by]; }
+    }
+    if (best) el.style.transform = `translate(${Math.round(best[0])}px, ${Math.round(best[1])}px)`;
+    el.dataset.placed = '';
+    if (info.keyboard) el.focus();
+  }, [info, facts, wide, cardOpen]);
+  // a click anywhere outside the popover and the globe closes it
+  useEffect(() => {
+    if (!info) return;
+    const off = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (infoEl.current?.contains(t) || canvas.current === t) return;
+      setInfo(null);
+    };
+    document.addEventListener('pointerdown', off);
+    return () => document.removeEventListener('pointerdown', off);
+  }, [info]);
+  // the stop most worth reading about this realm: a border change that names it, else a record set in it, nearest in time
+  const relatedFor = (sp: Spot) => {
+    if (!sp.f || !sp.unit) return null;
+    const e = engine.current;
+    let best: { i: number; title: string; d: number } | null = null;
+    stops.forEach((s, i) => {
+      if (i === bi) return;
+      const named = s.kind === 'era' && s.era !== undefined && chronicle.eras[s.era].pulse.includes(sp.f as string);
+      const inside = !named && s.kind === 'record' && !!s.record?.anchors.length && Math.abs(s.year - sp.year) < 60 && !!e?.unitHolds(sp.unit as string, s.record.anchors[0].at);
+      if (!named && !inside) return;
+      const d = Math.abs(s.year - sp.year) + (named ? 0 : 5);
+      if (!best || d < best.d) best = { i, title: s.title, d };
+    });
+    return best ? { i: (best as { i: number }).i, title: (best as { title: string }).title } : null;
+  };
+
   const onAnchors = useCallback((a: Anchors) => {
     anchors.current = a;
     const hk = `${a.stop}|${a.here.map((h) => h.f).join(',')}`;
     if (hk !== hereKey.current) { hereKey.current = hk; setHere(a.here); }
     setKinds((k) => (k === a.kinds ? k : a.kinds));
+    const rk = a.realms.map((r) => `${r.f}:${r.name}`).join('|');
+    if (rk !== realmsKey.current) { realmsKey.current = rk; setRealms(a.realms); }
     placeRef.current();
   }, []);
 
@@ -211,7 +271,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
         if (j < N) { engine.current?.seekStop(j); return; }
         engine.current?.pause();
       }
-      l.bi = f.stop; setBi(f.stop); setCardFocus(null); setPinned(null); setMore(false);
+      l.bi = f.stop; setBi(f.stop); setCardFocus(null); setPinned(null); setMore(false); setInfo(null);
       cardBody.current?.scrollTo({ top: 0 });
     }
     if (f.landfall !== l.landfall) { l.landfall = f.landfall; setLandfall(f.landfall); }
@@ -380,14 +440,43 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     const r = ev.currentTarget.getBoundingClientRect();
     engine.current?.pick(ev.clientX - r.left, ev.clientY - r.top);
   };
+  // the facts behind the popover (the units' own tags, capitals, ISO codes): fetched the first time one opens
+  const loadFacts = useCallback(() => {
+    if (facts) return;
+    fetch('/data/atlas-units.json').then((r) => (r.ok ? r.json() : null)).then((d: UnitFacts | null) => d && setFacts(d)).catch(() => {});
+  }, [facts]);
+  const openInfo = useCallback((spot: Spot | null, x: number, y: number, keyboard = false) => {
+    if (!spot) { setInfo(null); return; }
+    loadFacts();
+    setInfo({ spot, x, y, keyboard, related: relatedFor(spot) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadFacts, bi, stops]);
   const onClick = (ev: React.MouseEvent<HTMLCanvasElement>) => {
     setPanel('');
     if (Math.hypot(ev.clientX - downAt.current.x, ev.clientY - downAt.current.y) > 5) return;
     const r = ev.currentTarget.getBoundingClientRect();
-    const h = engine.current?.pick(ev.clientX - r.left, ev.clientY - r.top);
-    if (h?.go !== undefined) go(h.go);
-    else if (h?.focus) { const f = h.focus; setPinned((p) => (focusKey(p) === focusKey(f) ? null : f)); }
+    const x = ev.clientX - r.left, y = ev.clientY - r.top;
+    const h = engine.current?.pick(x, y);
+    if (h?.go !== undefined) { setInfo(null); go(h.go); }
+    else if (h?.focus && h.focus.kind !== 'unit') { setInfo(null); const f = h.focus; setPinned((p) => (focusKey(p) === focusKey(f) ? null : f)); }
+    // a territory (or any land): what it was in this year
+    else openInfo(engine.current?.infoAt(x, y) ?? null, x, y);
   };
+  // a realm chosen from a list (Layers, the card): the same popover, at the realm's name
+  const infoFor = useCallback((f: string) => {
+    const e = engine.current;
+    if (!e) return;
+    const spot = e.realmSpot(f);
+    setPanel('');
+    const show = () => {
+      const at = e.realmPoint(f);
+      const st = stage.current?.getBoundingClientRect();
+      openInfo(spot, at?.[0] ?? (st ? st.width / 2 : 200), at?.[1] ?? (st ? st.height / 2 : 200), true);
+    };
+    // a realm on the far side of the planet: the globe turns to it first
+    // (after the drawer has closed and the globe has been framed again)
+    if (!e.realmPoint(f) && spot) setTimeout(() => { e.lookAt(spot.at); setTimeout(show, reducedRef.current ? 60 : 560); }, 120); else show();
+  }, [openInfo]);
   const point = (f: Focus) => ({
     onPointerEnter: () => setCardFocus(f),
     onPointerLeave: () => setCardFocus(null),
@@ -401,7 +490,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     else if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
     else if (e.key === '+' || e.key === '=') engine.current?.zoomBy(1.5);
     else if (e.key === '-') engine.current?.zoomBy(1 / 1.5);
-    else if (e.key === 'Escape') setPanel('');
+    else if (e.key === 'Escape') { if (info) setInfo(null); else setPanel(''); }
     else if (e.key === ' ' && (e.target as HTMLElement) === stage.current) { e.preventDefault(); toggle(); }
   };
 
@@ -479,7 +568,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
   const drawn = new Set(kinds.split(',').filter(Boolean));
   const L2 = t.legend2;
   const legend: { k: string; label: string }[] = [
-    ...(layers.iberian ? (['es-today', 'pt-today', 'ant', 'es', 'pt', 'isl', 'indep', 'native', 'other'] as const)
+    ...(layers.iberian ? (['es-today', 'pt-today', 'ant', 'es', 'pt', 'isl', 'contested', 'indep', 'native', 'other'] as const)
       .filter((k) => drawn.has(k) || ((k === 'es' || k === 'pt') && !drawn.size))
       .map((k) => ({ k, label: L2[k] })) : []),
     ...(layers.iberian && here.length ? [{ k: 'here', label: L2.here }] : []),
@@ -528,7 +617,7 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
               return (
                 <li key={fk}>
                   <button type="button" className={`atlas__chip atlas__chip--unit${focusK === fk ? ' is-hl' : ''}`} aria-pressed={focusKey(pinned) === fk}
-                    onClick={() => setPinned((p) => (focusKey(p) === fk ? null : f))} {...point(f)}>
+                    onClick={() => { setPinned((p) => (focusKey(p) === fk ? null : f)); infoFor(h.f); }} {...point(f)}>
                     <i aria-hidden="true" />{h.name}
                   </button>
                 </li>
@@ -681,6 +770,24 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
                   </li>
                 ))}
               </ul>
+              {realms.length > 0 && layers.iberian && (
+                <>
+                  <h3 className="atlas__pop-h">{t.info.onGlobe}</h3>
+                  <p className="atlas__pop-hint">{t.info.onGlobeHint}</p>
+                  <ul className="atlas__chips atlas__chips--realms">
+                    {realms.map((r) => {
+                      const k = statusAt(chronicle.families[r.f], stops[bi].year).kind;
+                      return (
+                        <li key={r.f}>
+                          <button type="button" className={`atlas__chip atlas__chip--unit atlas__chip--${k}`} onClick={() => infoFor(r.f)}>
+                            <i aria-hidden="true" />{r.name}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              )}
               <h3 className="atlas__pop-h">{t.legendH}</h3>
               <Legend items={legend} />
             </div>
@@ -695,7 +802,12 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
           <line ref={leader} style={{ display: 'none' }} />
           <circle ref={leaderDot} r="4" style={{ display: 'none' }} key={note?.key} />
         </svg>
-        {ready && note && !welcome && !panel && (
+        {info && (
+          <RealmInfo ref={infoEl} spot={info.spot} chronicle={chronicle} facts={facts} lang={lang} t={t} related={info.related}
+            onGo={(i) => { setInfo(null); go(i); }} onClose={() => setInfo(null)} sheet={!wide}
+            when={b.kind === 'era' && b.era !== undefined ? String(chronicle.eras[b.era].year) : b.kind === 'today' ? t.todayLabel : yearLabel(Math.floor(b.kind === 'record' ? b.year : info.spot.year), lang)} />
+        )}
+        {ready && note && !welcome && !panel && !info && (
           <div className="atlas__callout" ref={calloutEl} key={note.key} aria-hidden="true">
             <span className="atlas__callout-kicker">{note.kicker}</span>
             <strong className="atlas__callout-title">{note.title}</strong>

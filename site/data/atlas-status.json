@@ -1,0 +1,242 @@
+{
+  "about": "What each realm on the Atlas was, year by year (issue #104): its kind of polity, its sovereign and, where its status changed while its shape is on the globe, the dated periods of each status. The globe colours a territory by the status in force (Spain's family only while it was Spain's, Portugal's only while it was Portugal's, the independent states' after independence, contested during the wars of independence), and the click-for-info popover reads it. A family with no `periods` keeps its own kind for as long as it is drawn. Every period names its source: the dated instrument or event, as in the keyframes. Capitals are not written here: they come from Wikidata (P36) through tools/build-atlas-status.py, and only when Wikidata gives one for the date. Checked by `npm run atlas:status`.",
+  "sovereigns": {
+    "castile": { "en": "the Crown of Castile (the Spanish Monarchy)", "es": "la Corona de Castilla (la Monarquía Hispánica)" },
+    "spain": { "en": "the Spanish Monarchy", "es": "la Monarquía Hispánica" },
+    "portugal": { "en": "the Crown of Portugal", "es": "la Corona de Portugal" },
+    "leon": { "en": "the Kingdom of León", "es": "el reino de León" },
+    "umayyad": { "en": "the Umayyad Caliphate of Damascus", "es": "el califato omeya de Damasco" },
+    "rome": { "en": "Rome", "es": "Roma" },
+    "carthage": { "en": "Carthage", "es": "Cartago" },
+    "byzantium": { "en": "the Eastern Roman (Byzantine) Empire", "es": "el Imperio romano de Oriente (bizantino)" },
+    "britain": { "en": "the British Crown", "es": "la Corona británica" },
+    "france": { "en": "the French Crown", "es": "la Corona francesa" },
+    "netherlands": { "en": "the Dutch Republic and its successors", "es": "las Provincias Unidas y sus sucesores" },
+    "denmark": { "en": "the Danish Crown", "es": "la Corona danesa" },
+    "russia": { "en": "the Russian Empire", "es": "el Imperio ruso" },
+    "united-states": { "en": "the United States", "es": "los Estados Unidos" },
+    "haiti": { "en": "Haiti", "es": "Haití" },
+    "mexico": { "en": "the Mexican Empire", "es": "el Imperio mexicano" },
+    "gran-colombia": { "en": "the Republic of Colombia (Gran Colombia)", "es": "la República de Colombia (Gran Colombia)" },
+    "brazil-empire": { "en": "the Empire of Brazil", "es": "el Imperio del Brasil" }
+  },
+  "families": {
+    "indies": { "type": "viceroyalty", "sovereign": "castile" },
+    "new-spain": { "type": "viceroyalty", "sovereign": "castile", "periods": [
+      { "from": "1810-09-16", "to": "1821-09-27", "kind": "contested", "source": { "en": "Grito de Dolores, 16 September 1810; entry of the Army of the Three Guarantees into Mexico City, 27 September 1821", "es": "Grito de Dolores, 16 de septiembre de 1810; entrada del Ejército Trigarante en la Ciudad de México, 27 de septiembre de 1821" } },
+      { "from": "1821-09-27", "to": "1823-03-19", "kind": "indep", "type": "empire", "name": { "en": "Mexican Empire", "es": "Imperio mexicano" }, "sovereign": null, "source": { "en": "Act of Independence of the Mexican Empire, 28 September 1821; abdication of Agustín I, 19 March 1823", "es": "Acta de Independencia del Imperio mexicano, 28 de septiembre de 1821; abdicación de Agustín I, 19 de marzo de 1823" } },
+      { "from": "1823-03-19", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Mexico", "es": "México" }, "sovereign": null, "source": { "en": "Constitution of the United Mexican States, 4 October 1824", "es": "Constitución de los Estados Unidos Mexicanos, 4 de octubre de 1824" } }
+    ] },
+    "provincias-internas": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1810-09-16", "to": "1821-09-27", "kind": "contested", "source": { "en": "Grito de Dolores, 16 September 1810; Mexican independence, 27 September 1821", "es": "Grito de Dolores, 16 de septiembre de 1810; independencia de México, 27 de septiembre de 1821" } },
+      { "from": "1821-09-27", "to": "2100", "kind": "indep", "type": "province", "name": { "en": "Northern provinces of Mexico", "es": "Provincias del norte de México" }, "sovereign": "mexico", "source": { "en": "Treaty of Córdoba, 24 August 1821; Mexican independence, 27 September 1821", "es": "Tratado de Córdoba, 24 de agosto de 1821; independencia de México, 27 de septiembre de 1821" } }
+    ] },
+    "yucatan": { "type": "captaincy-general", "sovereign": "castile" },
+    "guatemala": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1821-09-15", "to": "1823-07-01", "kind": "indep", "type": "province", "name": { "en": "Guatemala (Central America)", "es": "Guatemala (Centroamérica)" }, "sovereign": "mexico", "source": { "en": "Act of Independence of Central America, 15 September 1821; annexation to the Mexican Empire, 5 January 1822", "es": "Acta de Independencia de Centroamérica, 15 de septiembre de 1821; anexión al Imperio mexicano, 5 de enero de 1822" } },
+      { "from": "1823-07-01", "to": "2100", "kind": "indep", "type": "federal-republic", "name": { "en": "United Provinces of Central America", "es": "Provincias Unidas del Centro de América" }, "sovereign": null, "source": { "en": "Declaration of absolute independence, 1 July 1823", "es": "Declaración de independencia absoluta, 1 de julio de 1823" } }
+    ] },
+    "peru": { "type": "viceroyalty", "sovereign": "castile", "periods": [
+      { "from": "1820-09-08", "to": "1824-12-09", "kind": "contested", "source": { "en": "Landing of San Martín's expedition at Paracas, 8 September 1820; battle of Ayacucho, 9 December 1824", "es": "Desembarco de la expedición de San Martín en Paracas, 8 de septiembre de 1820; batalla de Ayacucho, 9 de diciembre de 1824" } },
+      { "from": "1824-12-09", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Peru", "es": "Perú" }, "sovereign": null, "source": { "en": "Capitulation of Ayacucho, 9 December 1824", "es": "Capitulación de Ayacucho, 9 de diciembre de 1824" } }
+    ] },
+    "new-granada": { "type": "viceroyalty", "sovereign": "castile", "periods": [
+      { "from": "1810-07-20", "to": "1819-08-07", "kind": "contested", "source": { "en": "Junta of Santa Fe de Bogotá, 20 July 1810; battle of Boyacá, 7 August 1819", "es": "Junta de Santa Fe de Bogotá, 20 de julio de 1810; batalla de Boyacá, 7 de agosto de 1819" } },
+      { "from": "1819-08-07", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Republic of Colombia (Gran Colombia)", "es": "República de Colombia (Gran Colombia)" }, "sovereign": null, "source": { "en": "Battle of Boyacá, 7 August 1819; Fundamental Law of the Republic of Colombia, Angostura, 17 December 1819", "es": "Batalla de Boyacá, 7 de agosto de 1819; Ley Fundamental de la República de Colombia, Angostura, 17 de diciembre de 1819" } }
+    ] },
+    "venezuela": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1810-04-19", "to": "1821-06-24", "kind": "contested", "source": { "en": "Junta of Caracas, 19 April 1810; battle of Carabobo, 24 June 1821", "es": "Junta de Caracas, 19 de abril de 1810; batalla de Carabobo, 24 de junio de 1821" } },
+      { "from": "1821-06-24", "to": "2100", "kind": "indep", "type": "province", "name": { "en": "Venezuela", "es": "Venezuela" }, "sovereign": "gran-colombia", "source": { "en": "Battle of Carabobo, 24 June 1821", "es": "Batalla de Carabobo, 24 de junio de 1821" } }
+    ] },
+    "rio-de-la-plata": { "type": "viceroyalty", "sovereign": "castile", "periods": [
+      { "from": "1810-05-25", "to": "1816-07-09", "kind": "contested", "source": { "en": "May Revolution, Buenos Aires, 25 May 1810; Declaration of Independence, Tucumán, 9 July 1816", "es": "Revolución de Mayo, Buenos Aires, 25 de mayo de 1810; Declaración de Independencia, Tucumán, 9 de julio de 1816" } },
+      { "from": "1816-07-09", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "United Provinces of the Río de la Plata", "es": "Provincias Unidas del Río de la Plata" }, "sovereign": null, "source": { "en": "Declaration of Independence, Tucumán, 9 July 1816", "es": "Declaración de Independencia, Tucumán, 9 de julio de 1816" } }
+    ] },
+    "chile": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1810-09-18", "to": "1818-02-12", "kind": "contested", "source": { "en": "First Government Junta, 18 September 1810; proclamation of independence, 12 February 1818", "es": "Primera Junta de Gobierno, 18 de septiembre de 1810; proclamación de la independencia, 12 de febrero de 1818" } },
+      { "from": "1818-02-12", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Chile", "es": "Chile" }, "sovereign": null, "source": { "en": "Proclamation of independence, 12 February 1818", "es": "Proclamación de la independencia, 12 de febrero de 1818" } }
+    ] },
+    "cuba": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1899-01-01", "to": "2100", "kind": "other", "type": "military-government", "sovereign": "united-states", "source": { "en": "Treaty of Paris, 10 December 1898; the United States takes over the government of Cuba, 1 January 1899", "es": "Tratado de París, 10 de diciembre de 1898; los Estados Unidos asumen el gobierno de Cuba, 1 de enero de 1899" } }
+    ] },
+    "puerto-rico": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1898-12-10", "to": "2100", "kind": "other", "type": "territory", "sovereign": "united-states", "source": { "en": "Treaty of Paris, 10 December 1898", "es": "Tratado de París, 10 de diciembre de 1898" } }
+    ] },
+    "santo-domingo": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1795-07-22", "to": "1809-07-09", "kind": "other", "type": "colony", "sovereign": "france", "source": { "en": "Peace of Basel, 22 July 1795; Spanish rule restored, 9 July 1809", "es": "Paz de Basilea, 22 de julio de 1795; restauración del dominio español, 9 de julio de 1809" } },
+      { "from": "1821-11-30", "to": "1822-02-09", "kind": "indep", "type": "republic", "name": { "en": "Republic of Spanish Haiti", "es": "República del Haití Español" }, "sovereign": null, "source": { "en": "Declaration of independence, 30 November 1821; Haitian occupation, 9 February 1822", "es": "Declaración de independencia, 30 de noviembre de 1821; ocupación haitiana, 9 de febrero de 1822" } },
+      { "from": "1822-02-09", "to": "1844-02-27", "kind": "other", "type": "province", "sovereign": "haiti", "source": { "en": "Haitian occupation, 9 February 1822; Dominican independence, 27 February 1844", "es": "Ocupación haitiana, 9 de febrero de 1822; independencia dominicana, 27 de febrero de 1844" } }
+    ] },
+    "florida": { "type": "colony", "sovereign": "castile", "periods": [
+      { "from": "1821-07-17", "to": "2100", "kind": "other", "type": "territory", "sovereign": "united-states", "source": { "en": "Adams–Onís Treaty, in force 22 February 1821; handed over at St. Augustine (10 July) and Pensacola (17 July 1821)", "es": "Tratado Adams-Onís, vigente desde el 22 de febrero de 1821; entregas en San Agustín (10 de julio) y Panzacola (17 de julio de 1821)" } }
+    ] },
+    "louisiana": { "type": "province", "sovereign": "castile", "periods": [
+      { "from": "1803-11-30", "to": "2100", "kind": "other", "type": "colony", "sovereign": "france", "source": { "en": "Third Treaty of San Ildefonso, 1 October 1800; transfer to France at New Orleans, 30 November 1803", "es": "Tercer Tratado de San Ildefonso, 1 de octubre de 1800; entrega a Francia en Nueva Orleans, 30 de noviembre de 1803" } }
+    ] },
+    "philippines": { "type": "captaincy-general", "sovereign": "castile", "periods": [
+      { "from": "1896-08-23", "to": "1899-04-11", "kind": "contested", "source": { "en": "Cry of Pugad Lawin, August 1896; Treaty of Paris in force, 11 April 1899", "es": "Grito de Pugad Lawin, agosto de 1896; entrada en vigor del Tratado de París, 11 de abril de 1899" } },
+      { "from": "1899-04-11", "to": "2100", "kind": "other", "type": "territory", "sovereign": "united-states", "source": { "en": "Treaty of Paris in force, 11 April 1899", "es": "Entrada en vigor del Tratado de París, 11 de abril de 1899" } }
+    ] },
+    "trinidad": { "type": "colony", "sovereign": "castile", "periods": [
+      { "from": "1797-02-18", "to": "2100", "kind": "other", "type": "colony", "sovereign": "britain", "source": { "en": "British capture of Trinidad, 18 February 1797; Treaty of Amiens, 1802", "es": "Toma británica de Trinidad, 18 de febrero de 1797; Paz de Amiens, 1802" } }
+    ] },
+    "jamaica-es": { "type": "colony", "sovereign": "castile", "periods": [
+      { "from": "1655-05-10", "to": "2100", "kind": "other", "type": "colony", "sovereign": "britain", "source": { "en": "English capture of Jamaica, 10 May 1655 (OpenHistoricalMap)", "es": "Toma inglesa de Jamaica, 10 de mayo de 1655 (OpenHistoricalMap)" } }
+    ] },
+    "brazil": { "type": "colony", "sovereign": "portugal", "periods": [
+      { "from": "1815-12-16", "to": "1822-09-07", "kind": "pt", "type": "kingdom", "name": { "en": "Kingdom of Brazil", "es": "Reino del Brasil" }, "note": { "en": "In the United Kingdom of Portugal, Brazil and the Algarves", "es": "En el Reino Unido de Portugal, Brasil y los Algarves" }, "source": { "en": "Law of 16 December 1815", "es": "Ley de 16 de diciembre de 1815" } },
+      { "from": "1822-09-07", "to": "2100", "kind": "indep", "type": "empire", "name": { "en": "Empire of Brazil", "es": "Imperio del Brasil" }, "sovereign": null, "source": { "en": "Cry of Ipiranga, 7 September 1822", "es": "Grito de Ipiranga, 7 de septiembre de 1822" } }
+    ] },
+    "maranhao": { "type": "colony", "sovereign": "portugal", "periods": [
+      { "from": "1822-09-07", "to": "2100", "kind": "indep", "type": "province", "name": { "en": "Northern provinces of Brazil", "es": "Provincias del norte del Brasil" }, "sovereign": "brazil-empire", "source": { "en": "Cry of Ipiranga, 7 September 1822; Pará and Maranhão join the Empire, 1823", "es": "Grito de Ipiranga, 7 de septiembre de 1822; Pará y Marañón se adhieren al Imperio, 1823" } }
+    ] },
+    "brazil-empire": { "type": "empire", "periods": [
+      { "from": "1889-11-15", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "United States of Brazil", "es": "Estados Unidos del Brasil" }, "source": { "en": "Proclamation of the Republic, 15 November 1889", "es": "Proclamación de la República, 15 de noviembre de 1889" } }
+    ] },
+    "mexico": { "type": "republic", "periods": [
+      { "from": "1864-04-10", "to": "1867-06-19", "kind": "indep", "type": "empire", "name": { "en": "Second Mexican Empire", "es": "Segundo Imperio mexicano" }, "note": { "en": "Imposed under the French intervention; the Republic held out under Juárez", "es": "Impuesto con la intervención francesa; la República resistió con Juárez" }, "source": { "en": "Treaty of Miramar, 10 April 1864; execution of Maximilian, 19 June 1867", "es": "Tratado de Miramar, 10 de abril de 1864; fusilamiento de Maximiliano, 19 de junio de 1867" } }
+    ] },
+    "central-america": { "type": "federal-republic", "periods": [
+      { "from": "1838-05-30", "to": "2100", "kind": "indep", "type": "former", "name": { "en": "Former Federal Republic of Central America", "es": "Antigua República Federal de Centroamérica" }, "note": { "en": "Dissolved from 1838 into Guatemala, El Salvador, Honduras, Nicaragua and Costa Rica; borders as of 1826", "es": "Disuelta desde 1838 en Guatemala, El Salvador, Honduras, Nicaragua y Costa Rica; fronteras de 1826" }, "source": { "en": "Federal Congress frees the states to constitute themselves, 30 May 1838", "es": "El Congreso Federal deja a los estados constituirse libremente, 30 de mayo de 1838" } }
+    ] },
+    "gran-colombia": { "type": "republic", "periods": [
+      { "from": "1830-05-13", "to": "1886-08-05", "kind": "indep", "type": "former", "name": { "en": "Former Gran Colombia", "es": "Antigua Gran Colombia" }, "note": { "en": "Divided from 1830 into New Granada, Venezuela and Ecuador; borders as of 1826", "es": "Dividida desde 1830 en Nueva Granada, Venezuela y Ecuador; fronteras de 1826" }, "source": { "en": "Secession of Venezuela (1830) and Ecuador, 13 May 1830", "es": "Separación de Venezuela (1830) y del Ecuador, 13 de mayo de 1830" } },
+      { "from": "1886-08-05", "to": "1903-11-03", "kind": "indep", "type": "republic", "name": { "en": "Republic of Colombia", "es": "República de Colombia" }, "source": { "en": "Constitution of 5 August 1886", "es": "Constitución del 5 de agosto de 1886" } },
+      { "from": "1903-11-03", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Colombia", "es": "Colombia" }, "note": { "en": "Borders as of 1899: Panama separated on 3 November 1903", "es": "Fronteras de 1899: Panamá se separó el 3 de noviembre de 1903" }, "source": { "en": "Separation of Panama, 3 November 1903", "es": "Separación de Panamá, 3 de noviembre de 1903" } }
+    ] },
+    "new-granada-rep": { "type": "republic", "periods": [
+      { "from": "1831-11-21", "to": "1858-05-22", "kind": "indep", "name": { "en": "Republic of New Granada", "es": "República de la Nueva Granada" }, "source": { "en": "Constituent convention, 21 November 1831", "es": "Convención constituyente, 21 de noviembre de 1831" } },
+      { "from": "1858-05-22", "to": "1863-05-08", "kind": "indep", "type": "confederation", "name": { "en": "Granadine Confederation", "es": "Confederación Granadina" }, "source": { "en": "Constitution of 22 May 1858", "es": "Constitución del 22 de mayo de 1858" } },
+      { "from": "1863-05-08", "to": "1886-08-05", "kind": "indep", "type": "federal-republic", "name": { "en": "United States of Colombia", "es": "Estados Unidos de Colombia" }, "source": { "en": "Constitution of Rionegro, 8 May 1863", "es": "Constitución de Rionegro, 8 de mayo de 1863" } },
+      { "from": "1886-08-05", "to": "2100", "kind": "indep", "name": { "en": "Republic of Colombia", "es": "República de Colombia" }, "source": { "en": "Constitution of 5 August 1886", "es": "Constitución del 5 de agosto de 1886" } }
+    ] },
+    "venezuela-rep": { "type": "republic", "periods": [
+      { "from": "1819-12-17", "to": "1830-01-13", "kind": "indep", "type": "province", "sovereign": "gran-colombia", "source": { "en": "Fundamental Law of the Republic of Colombia, 17 December 1819; Venezuela's separation, 1830", "es": "Ley Fundamental de la República de Colombia, 17 de diciembre de 1819; separación de Venezuela, 1830" } },
+      { "from": "1830-01-13", "to": "1864-04-22", "kind": "indep", "name": { "en": "State of Venezuela", "es": "Estado de Venezuela" }, "source": { "en": "Constitution of 1830 (OpenHistoricalMap)", "es": "Constitución de 1830 (OpenHistoricalMap)" } },
+      { "from": "1864-04-22", "to": "2100", "kind": "indep", "type": "federal-republic", "name": { "en": "United States of Venezuela", "es": "Estados Unidos de Venezuela" }, "source": { "en": "Federal Constitution of 22 April 1864", "es": "Constitución Federal del 22 de abril de 1864" } }
+    ] },
+    "ecuador": { "type": "republic" },
+    "peru-rep": { "type": "republic", "periods": [
+      { "from": "1836-10-28", "to": "1839-08-25", "kind": "indep", "type": "confederation", "name": { "en": "Peru (in the Peru–Bolivian Confederation)", "es": "Perú (en la Confederación Perú-Boliviana)" }, "source": { "en": "Peru–Bolivian Confederation, 28 October 1836; dissolved 25 August 1839", "es": "Confederación Perú-Boliviana, 28 de octubre de 1836; disuelta el 25 de agosto de 1839" } }
+    ] },
+    "bolivia": { "type": "republic", "periods": [
+      { "from": "1836-10-28", "to": "1839-08-25", "kind": "indep", "type": "confederation", "name": { "en": "Bolivia (in the Peru–Bolivian Confederation)", "es": "Bolivia (en la Confederación Perú-Boliviana)" }, "source": { "en": "Peru–Bolivian Confederation, 28 October 1836; dissolved 25 August 1839", "es": "Confederación Perú-Boliviana, 28 de octubre de 1836; disuelta el 25 de agosto de 1839" } }
+    ] },
+    "chile-rep": { "type": "republic" },
+    "argentina": { "type": "republic", "periods": [
+      { "from": "1831-01-04", "to": "1862-10-12", "kind": "indep", "type": "confederation", "name": { "en": "Argentine Confederation", "es": "Confederación Argentina" }, "source": { "en": "Federal Pact, 4 January 1831; Mitre takes office as president of the united Republic, 12 October 1862", "es": "Pacto Federal, 4 de enero de 1831; Mitre asume la presidencia de la República unificada, 12 de octubre de 1862" } },
+      { "from": "1862-10-12", "to": "2100", "kind": "indep", "name": { "en": "Argentine Republic", "es": "República Argentina" }, "source": { "en": "Mitre takes office as president of the united Republic, 12 October 1862", "es": "Mitre asume la presidencia de la República unificada, 12 de octubre de 1862" } }
+    ] },
+    "paraguay": { "type": "republic" },
+    "uruguay": { "type": "republic" },
+    "guatemala-rep": { "type": "republic" },
+    "honduras": { "type": "republic" },
+    "el-salvador": { "type": "republic" },
+    "nicaragua": { "type": "republic" },
+    "costa-rica": { "type": "republic" },
+    "dominican-republic": { "type": "republic", "periods": [
+      { "from": "1861-03-18", "to": "1865-07-11", "kind": "es", "type": "province", "name": { "en": "Santo Domingo", "es": "Santo Domingo" }, "sovereign": "spain", "note": { "en": "Re-annexed to Spain", "es": "Reanexionada a España" }, "source": { "en": "Annexation proclaimed 18 March 1861; Spanish withdrawal, July 1865", "es": "Anexión proclamada el 18 de marzo de 1861; retirada española, julio de 1865" } }
+    ] },
+    "us-cuba": { "type": "military-government", "sovereign": "united-states", "periods": [
+      { "from": "1902-05-20", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Republic of Cuba", "es": "República de Cuba" }, "sovereign": null, "source": { "en": "Proclamation of the Republic of Cuba, 20 May 1902", "es": "Proclamación de la República de Cuba, 20 de mayo de 1902" } }
+    ] },
+    "us-philippines": { "type": "military-government", "sovereign": "united-states", "periods": [
+      { "from": "1902-07-04", "to": "1935-11-15", "kind": "other", "type": "insular-government", "name": { "en": "Philippine Islands", "es": "Islas Filipinas" }, "sovereign": "united-states", "source": { "en": "Philippine Organic Act, 1 July 1902; end of military rule, 4 July 1902", "es": "Ley Orgánica de Filipinas, 1 de julio de 1902; fin del gobierno militar, 4 de julio de 1902" } },
+      { "from": "1935-11-15", "to": "1946-07-04", "kind": "other", "type": "commonwealth", "name": { "en": "Commonwealth of the Philippines", "es": "Mancomunidad de Filipinas" }, "sovereign": "united-states", "source": { "en": "Inauguration of the Commonwealth, 15 November 1935", "es": "Inauguración de la Mancomunidad, 15 de noviembre de 1935" } },
+      { "from": "1946-07-04", "to": "2100", "kind": "indep", "type": "republic", "name": { "en": "Republic of the Philippines", "es": "República de Filipinas" }, "sovereign": null, "source": { "en": "Treaty of Manila, independence 4 July 1946", "es": "Tratado de Manila, independencia el 4 de julio de 1946" } }
+    ] },
+    "florida-dispute": { "type": "claim" },
+    "louisiana-dispute": { "type": "claim" },
+    "nw-coast": { "type": "claim" },
+    "britain": { "type": "other-crown", "sovereign": "britain" },
+    "france": { "type": "other-crown", "sovereign": "france" },
+    "denmark": { "type": "other-crown", "sovereign": "denmark" },
+    "netherlands": { "type": "other-crown", "sovereign": "netherlands" },
+    "russia": { "type": "colony", "sovereign": "russia" },
+    "united-states": { "type": "republic" },
+    "saint-domingue": { "type": "colony", "sovereign": "france" },
+    "haiti": { "type": "independent-state" },
+    "jamaica-gb": { "type": "colony", "sovereign": "britain", "periods": [
+      { "from": "1962-08-06", "to": "2100", "kind": "other", "type": "independent-state", "name": { "en": "Jamaica", "es": "Jamaica" }, "sovereign": null, "source": { "en": "Jamaica Independence Act, 6 August 1962", "es": "Ley de Independencia de Jamaica, 6 de agosto de 1962" } }
+    ] },
+    "florida-gb": { "type": "colony", "sovereign": "britain" },
+    "trinidad-gb": { "type": "colony", "sovereign": "britain", "periods": [
+      { "from": "1962-08-31", "to": "2100", "kind": "other", "type": "independent-state", "name": { "en": "Trinidad and Tobago", "es": "Trinidad y Tobago" }, "sovereign": null, "source": { "en": "Independence of Trinidad and Tobago, 31 August 1962", "es": "Independencia de Trinidad y Tobago, 31 de agosto de 1962" } }
+    ] },
+    "tawantinsuyu": { "type": "indigenous-state" },
+    "sulu": { "type": "sultanate" },
+    "maguindanao": { "type": "sultanate" },
+
+    "carthaginian-iberia": { "type": "dominion", "sovereign": "carthage" },
+    "hispania-citerior": { "type": "roman-province", "sovereign": "rome" },
+    "hispania-ulterior": { "type": "roman-province", "sovereign": "rome" },
+    "tarraconensis": { "type": "roman-province", "sovereign": "rome" },
+    "baetica": { "type": "roman-province", "sovereign": "rome" },
+    "lusitania": { "type": "roman-province", "sovereign": "rome" },
+    "gallaecia": { "type": "roman-province", "sovereign": "rome" },
+    "carthaginensis": { "type": "roman-province", "sovereign": "rome" },
+    "sueves": { "type": "kingdom" },
+    "visigoths": { "type": "kingdom" },
+    "spania": { "type": "province", "sovereign": "byzantium" },
+    "al-andalus": { "type": "province", "sovereign": "umayyad" },
+    "emirate-cordoba": { "type": "emirate" },
+    "caliphate-cordoba": { "type": "caliphate" },
+    "granada": { "type": "emirate" },
+    "asturias": { "type": "kingdom" },
+    "leon": { "type": "kingdom" },
+    "galicia": { "type": "kingdom" },
+    "castile-county": { "type": "county", "sovereign": "leon" },
+    "castile": { "type": "kingdom" },
+    "castile-crown": { "type": "crown" },
+    "pamplona": { "type": "kingdom" },
+    "navarre": { "type": "kingdom" },
+    "aragon-county": { "type": "county" },
+    "sobrarbe": { "type": "county" },
+    "ribagorza": { "type": "county" },
+    "aragon": { "type": "kingdom" },
+    "aragon-crown": { "type": "crown" },
+    "barcelona": { "type": "county" },
+    "girona": { "type": "county" },
+    "urgell": { "type": "county" },
+    "cerdanya": { "type": "county" },
+    "besalu": { "type": "county" },
+    "empuries": { "type": "county" },
+    "roussillon": { "type": "county" },
+    "conflent": { "type": "county" },
+    "pallars": { "type": "county" },
+    "osona": { "type": "county" },
+    "majorca": { "type": "kingdom" },
+    "spain": { "type": "monarchy", "periods": [
+      { "from": "1873-02-11", "to": "1874-12-29", "kind": "es", "type": "republic", "name": { "en": "First Spanish Republic", "es": "Primera República Española" }, "source": { "en": "Proclamation of the Republic, 11 February 1873; Sagunto pronouncement, 29 December 1874", "es": "Proclamación de la República, 11 de febrero de 1873; pronunciamiento de Sagunto, 29 de diciembre de 1874" } },
+      { "from": "1931-04-14", "to": "1939-04-01", "kind": "es", "type": "republic", "name": { "en": "Second Spanish Republic", "es": "Segunda República Española" }, "source": { "en": "Proclamation of the Republic, 14 April 1931; end of the Civil War, 1 April 1939", "es": "Proclamación de la República, 14 de abril de 1931; fin de la Guerra Civil, 1 de abril de 1939" } },
+      { "from": "1939-04-01", "to": "1975-11-22", "kind": "es", "type": "dictatorship", "name": { "en": "Spain (the Franco regime)", "es": "España (el régimen de Franco)" }, "source": { "en": "End of the Civil War, 1 April 1939; proclamation of Juan Carlos I, 22 November 1975", "es": "Fin de la Guerra Civil, 1 de abril de 1939; proclamación de Juan Carlos I, 22 de noviembre de 1975" } },
+      { "from": "1975-11-22", "to": "2100", "kind": "es", "type": "kingdom", "name": { "en": "Kingdom of Spain", "es": "Reino de España" }, "source": { "en": "Proclamation of Juan Carlos I, 22 November 1975; Constitution of 1978", "es": "Proclamación de Juan Carlos I, 22 de noviembre de 1975; Constitución de 1978" } }
+    ] },
+    "portucale": { "type": "county", "sovereign": "leon" },
+    "portugal": { "type": "kingdom", "periods": [
+      { "from": "1580-09-12", "to": "1640-12-01", "kind": "pt", "type": "kingdom", "note": { "en": "In dynastic union with the Spanish Monarchy (the Iberian Union), keeping its own laws and offices", "es": "En unión dinástica con la Monarquía Hispánica (la Unión Ibérica), con sus propias leyes y oficios" }, "source": { "en": "Philip II acclaimed king of Portugal, 1580; Cortes of Tomar, 1581; Restoration, 1 December 1640", "es": "Felipe II aclamado rey de Portugal, 1580; Cortes de Tomar, 1581; Restauración, 1 de diciembre de 1640" } },
+      { "from": "1910-10-05", "to": "2100", "kind": "pt", "type": "republic", "name": { "en": "Portuguese Republic", "es": "República Portuguesa" }, "source": { "en": "Proclamation of the Republic, 5 October 1910", "es": "Proclamación de la República, 5 de octubre de 1910" } }
+    ] },
+    "spain-africa": { "type": "presidio", "sovereign": "spain" },
+    "spanish-morocco": { "type": "protectorate", "sovereign": "spain" },
+    "ifni": { "type": "colony", "sovereign": "spain" },
+    "spanish-sahara": { "type": "colony", "sovereign": "spain" },
+    "spanish-guinea": { "type": "colony", "sovereign": "spain" },
+    "carolines": { "type": "colony", "sovereign": "spain" },
+    "milan": { "type": "duchy", "sovereign": "spain" },
+    "franche-comte": { "type": "county", "sovereign": "spain" },
+    "pt-morocco": { "type": "presidio", "sovereign": "portugal" },
+    "azores": { "type": "captaincy-general", "sovereign": "portugal" },
+    "cape-verde": { "type": "colony", "sovereign": "portugal" },
+    "pt-guinea": { "type": "colony", "sovereign": "portugal" },
+    "pt-gold-coast": { "type": "trading-post", "sovereign": "portugal" },
+    "sao-tome": { "type": "colony", "sovereign": "portugal" },
+    "angola": { "type": "colony", "sovereign": "portugal" },
+    "mozambique": { "type": "colony", "sovereign": "portugal" },
+    "estado-da-india": { "type": "state-of-india", "sovereign": "portugal" },
+    "pt-east-indies": { "type": "trading-post", "sovereign": "portugal" },
+    "pt-east-africa": { "type": "presidio", "sovereign": "portugal" },
+    "timor": { "type": "colony", "sovereign": "portugal" },
+    "macau": { "type": "territory", "sovereign": "portugal" }
+  }
+}

@@ -8,6 +8,7 @@ import milestones from '@/data/milestones.json';
 import voyagesData from '@/data/atlas-voyages.json';
 import atlasEras from '@/data/atlas-eras.json';
 import atlasRealms from '@/data/atlas-realms.json';
+import atlasStatus from '@/data/atlas-status.json';
 import recordsData from '@/data/atlas-records.json';
 import iberophone from '@/public/data/iberophone.json';
 
@@ -65,6 +66,15 @@ type RawRealms = {
   gaps: { from: number; to: number; where: string; text: L }[];
 };
 const REALMS = atlasRealms as unknown as RawRealms;
+
+/* What each realm was, year by year (#104; data/atlas-status.json, curated with
+   a source for every period): the globe colours a territory by the status in
+   force, and the click-for-info popover reads it. */
+type RawPeriod = { from: string; to: string; kind: string; type?: string; name?: L; note?: L; sovereign?: string | null; source: L };
+type RawStatus = { sovereigns: Record<string, L>; families: Record<string, { type?: string; sovereign?: string; periods?: RawPeriod[] }> };
+const STATUS = atlasStatus as unknown as RawStatus;
+/** An ISO date (or a bare year) as a decimal year. */
+export const isoYear = (iso: string) => { const [y, m = '1', d = '1'] = iso.replace(/^-/, '').split('-'); const v = +y + (+m - 1) / 12 + (+d - 1) / 365.25; return iso.startsWith('-') ? -v : v; };
 
 type Milestone = { n: number; year: number; date: L; title: L; body: L };
 const MILESTONES = milestones.milestones as Milestone[];
@@ -154,7 +164,8 @@ export type Era = {
   marks: { at: LonLat; name: string; kind: string }[];
   names: Record<string, string>;
 };
-export type Family = { kind: string; tint?: string; z: number; name: string; at?: LonLat };
+export type Period = { from: number; to: number; kind: string; type?: string; name?: string; note?: string; sovereign?: string | null; source: string };
+export type Family = { kind: string; tint?: string; z: number; name: string; at?: LonLat; type?: string; sovereign?: string; periods?: Period[] };
 export type RealmUnit = { id: string; f: string; from: number; to: number };
 export type StopMilestone = { n: number; date: string; title: string };
 export type RecordView = {
@@ -267,10 +278,21 @@ export function chronicleFor(lang: Lang): Chronicle {
     marks: (e.marks ?? []).map((m) => ({ at: m.at, kind: m.kind, name: m.name[lang] })),
     names: Object.fromEntries(Object.entries(e.names ?? {}).map(([k, v]) => [k, v.short[lang] || v.name[lang]])),
   }));
-  const family = (f: RawFamily): Family => ({ kind: f.kind, tint: f.tint, z: f.z ?? 1, name: (f.short ?? f.name)[lang], at: f.at });
+  const sov = (k: string | null | undefined) => (k === null ? null : k ? STATUS.sovereigns[k]?.[lang] : undefined);
+  const family = (id: string, f: RawFamily): Family => {
+    const st = STATUS.families[id];
+    return {
+      kind: f.kind, tint: f.tint, z: f.z ?? 1, name: (f.short ?? f.name)[lang], at: f.at,
+      type: st?.type, sovereign: sov(st?.sovereign) ?? undefined,
+      periods: st?.periods?.map((p) => ({
+        from: isoYear(p.from), to: isoYear(p.to), kind: p.kind, type: p.type, name: p.name?.[lang], note: p.note?.[lang],
+        sovereign: p.sovereign === undefined ? undefined : sov(p.sovereign), source: p.source[lang],
+      })),
+    };
+  };
   const families: Record<string, Family> = Object.fromEntries([
-    ...Object.entries(FAMILIES).map(([k, f]) => [k, family(f)]),
-    ...Object.entries(REALMS.families).map(([k, f]) => [k, family(f)]),
+    ...Object.entries(FAMILIES).map(([k, f]) => [k, family(k, f)]),
+    ...Object.entries(REALMS.families).map(([k, f]) => [k, family(k, f)]),
   ]);
 
   const ms = (n: number): StopMilestone => {

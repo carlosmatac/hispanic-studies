@@ -3,7 +3,8 @@
    cover another floating thing or leave the window.
 
    It opens /[lang]/atlas at every viewport below, in English and Spanish, in a
-   few states (the welcome; a stop with the card open and closed; the layers
+   few states (the welcome; a stop with the card open and closed; the layers;
+   the click-for-info popover
    panel; the index), measures the bounding box of every fixed piece of the
    interface (the cartouche, the legend, the rail, the time bar, the card, the
    explainer, the scale, the panels) and fails when two of them intersect, when
@@ -43,7 +44,8 @@ const VIEWPORTS = [
 // the fixed pieces, by selector; panels are measured only when open
 const PIECES = {
   now: '.atlas__now', key: '.atlas__key', keyChip: '.atlas__key-chip', rail: '.atlas__rail', bar: '.atlas__bar', card: '.atlas__card',
-  callout: '.atlas__callout', scale: '.atlas__scale', layers: '.atlas__pop', index: '.atlas__places', welcome: '.atlas__welcome',
+  callout: '.atlas__callout', scale: '.atlas__scale', layers: '.atlas__drawer--layers', index: '.atlas__places', welcome: '.atlas__welcome',
+  info: '.atlas__info',
 };
 
 async function boxes(page) {
@@ -130,7 +132,10 @@ async function run() {
       if (open && w >= 1000) { await open.click(); await settle(page); }
       await page.click('.atlas__rail .atlas__inst:nth-child(2)');
       await measure('layers');
-      await page.keyboard.press('Escape');
+      // the click-for-info popover, opened from the list of realms in Layers
+      const chip = await page.$('.atlas__chips--realms button');
+      if (chip) { await chip.click(); await settle(page, 1200); await measure('info'); await page.keyboard.press('Escape'); }
+      else await page.keyboard.press('Escape');
       await page.click('.atlas__rail .atlas__inst:nth-child(1)');
       await measure('index');
       await page.keyboard.press('Escape');
