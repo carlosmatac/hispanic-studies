@@ -22,7 +22,7 @@ librosa: onsets, low-band hits, harmonic/percussive energy, chords).
 | video s | track s | the music | the picture |
 | --- | --- | --- | --- |
 | 0.02 | 3.82 | the guitar begins | "One civilization," letter by letter |
-| 4.33 | 8.13 | second guitar phrase | the map pulls back to four continents |
+| 4.33 | 8.13 | second guitar phrase | the Atlas globe pulls back from Iberia and turns: four continents |
 | 7.92 | 11.72 | third phrase | "To know who we are…" over Ortelius' America (1572) |
 | 11.52 | 15.32 | fourth phrase | the viceregal world, cut faster and faster; from 12.12 Beltrán's voice over it: "See, we love our pueblos mágicos, those charming…" |
 | 15.44 | 19.24 | a low hit; the bass leaves, soft section | his window opens in his pause: "…colonial towns we put on postcards and Instagram. Every single one of them is viceregal. Spain built them." (to 23.79) |
@@ -33,8 +33,8 @@ librosa: onsets, low-band hits, harmonic/percussive energy, chords).
 | 39.39 | 39.24 | the rise peaks | the portico; the camera dives into "Watch" |
 | 42.11 | 41.96 | **the drop** (D) | Watch |
 | 45.16 / 47.54 | 45.01 / 47.39 | hits (47.54 is the biggest) | Read; its ring of essays folds on 47.54 |
-| 50.18 | 50.03 | hit | the canon |
-| 55.68 | 55.53 | hit | the Atlas |
+| 50.18 | 50.03 | hit | the archive |
+| 55.68 | 55.53 | hit | the Atlas (the app, its globe flying between stops) |
 | 61.29 | 61.14 | **the climax** (back on D) | De Indiis Editions |
 | 64.62 | 64.47 | hit | "Join the argument." |
 | 66.22 · 67.69 · 68.49 · 69.28 | 66.07 · 67.54 · 68.34 · 69.13 | the breakdown's hits | the five logos · 50,000+ · followers on five channels · @hispano_studies |
@@ -94,7 +94,7 @@ Harmony (one chord per bar, D minor):
 | 5–8 | 8.57–17.14 | **Build** | palmas and a muted kick join; strings stab on every downbeat; a riser through bar 8; **full stop on the last beat** (silence 0.5 s) | first glimpses of Beltrán, faster and faster |
 | 9–16 | 17.14–34.29 | **Drop 1** | the whole kit and the sub; guitar rasgueado on the offbeats; cellos play the Folía bass line | the montage: Beltrán to camera, his openings, the maps and paintings, one cut per beat at its peak |
 | 17–20 | 34.29–42.86 | **Break** | half time: only strings holding the chords, a soft pulse, space | the three pillars, one bar each: MESTIZAJE · CATOLICISMO · LENGUA, and one line of Beltrán's own voice |
-| 21–29 | 42.86–62.14 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel (1 bar), the essays (2), the canon (2), the Atlas (2), the books (1), the followings (1); between each, the portico's frieze sweeps in (0.8 s before the change) and the camera dives into the next metope on the downbeat |
+| 21–29 | 42.86–62.14 | **Drop 2** | everything back, a touch bigger (a second guitar, higher strings); the last bar builds | what IHS makes: the channel (1 bar), the essays (2), the archive (2; the canon until 2026-11), the Atlas (2), the books (1), the followings (1); between each, the portico's frieze sweeps in (0.8 s before the change) and the camera dives into the next metope on the downbeat |
 | 30–31 | 62.14–66.43 | **Lockup** | one clean hit on the downbeat of bar 30 (low impact + a final Dm chord), then it rings out | the IHS logo and the name; silence by 66.4 s |
 
 The key sync points: **8.57** (build starts), **17.14** (drop 1), **34.29** (break),
