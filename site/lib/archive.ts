@@ -50,7 +50,7 @@ async function load(includeDrafts: boolean): Promise<Archive> {
     title: loc(p?.titleEn ?? '', p?.titleEs ?? ''),
     intro: loc(p?.introEn ?? '', p?.introEs ?? ''),
     notes: loc(p?.notesEn ?? '', p?.notesEs ?? ''),
-    door: loc(p?.doorEn ?? '', p?.doorEs ?? ''),
+    door: loc(ownDoor(p?.doorEn), ownDoor(p?.doorEs)),
     landingTitle: loc(p?.landingTitleEn ?? '', p?.landingTitleEs ?? ''),
     landingIntro: loc(p?.landingIntroEn ?? '', p?.landingIntroEs ?? ''),
   };
@@ -163,7 +163,8 @@ const loadArticles = (id: string, fresh: boolean) => {
 /** A curated work's articles (ES and EN). */
 export const getArticles = cache(async (id: string) => loadArticles(id, await isEditor()));
 
-const loadPublished = unstable_cache(() => load(false), ['archive-v2'], { tags: [ARCHIVE_TAG] });
+// v3 (#106): the stored home line now goes through ownDoor; a new key, so nothing cached before it is served
+const loadPublished = unstable_cache(() => load(false), ['archive-v3'], { tags: [ARCHIVE_TAG] });
 
 /** Whether this request comes from a signed-in editor (Draft Mode on and a valid session). */
 export const isEditor = cache(async (): Promise<boolean> => {
@@ -208,5 +209,20 @@ export const getText = cache(async (id: string, lang: string) => {
 });
 
 /** "{works}" and "{sections}" in the page's own copy become the numbers. */
-export const fillCounts = (s: string, a: Pick<Archive, 'works' | 'sections'>) =>
-  s.replace(/\{(works|obras)\}/g, String(a.works.length)).replace(/\{(sections|secciones)\}/g, String(a.sections.length));
+export const fillCounts = (s: string, a: Pick<Archive, 'works' | 'sections' | 'eras'>) => {
+  const curated = curatedWorks(a, false).length;
+  return s
+    .replace(/\{(works|obras)\}/g, String(a.works.length)).replace(/\{(sections|secciones)\}/g, String(a.sections.length))
+    .replace(/\{(curated|curados)\}/g, String(curated)).replace(/\{(rest|resto)\}/g, String(a.works.length - curated));
+};
+
+/* The home's line about the archive as it was seeded before the curated 80
+   (issue #93): "{works} primary sources in six periods … to the end of the
+   twentieth century", no longer true. Stored unchanged, it counts as empty, so
+   the site's own line (lib/i18n.ts, canon.door) shows until someone writes a
+   new one in /admin (issue #106). */
+const LEGACY_DOOR = [
+  '{works} primary sources in six periods, from Vitoria and Las Casas to the end of the twentieth century; those in the public domain, in full.',
+  '{works} fuentes primarias en seis épocas, de Vitoria y Las Casas al final del siglo XX; las de dominio público, completas.',
+];
+export const ownDoor = (s: string | null | undefined) => (s && !LEGACY_DOOR.includes(s.trim().replace('{obras}', '{works}')) ? s : '');

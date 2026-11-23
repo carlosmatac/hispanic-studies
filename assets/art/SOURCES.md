@@ -159,7 +159,7 @@ In the reel we use only the public-domain and CC0 files above. The Cartagena nav
 | File | Made from |
 | --- | --- |
 | `epigraph-valley.jpg` | `assets/art/ai/valley-of-mexico-2026-10-25.jpg` (AI-generated, see below): the false signature painted out, printed a little warmer toward the site's paper, resized to 2400 px. It fills the epigraph section behind Lewis Hanke's sentence, credited on the page as a generated image |
-| `atlas-plate.jpg` | A still of our own Atlas (the 1542 keyframe, `site/lib/atlas-engine.ts`; Natural Earth, public domain, and OpenHistoricalMap, CC0), captured from the page on 2026-10-29 |
+| `atlas-plate.jpg` | A still of our own Atlas globe (`site/lib/atlas-globe.ts`) at the 1776–1777 border keyframe (`#on-map-era-1777`): the viceroyalties of New Spain, Peru, New Granada and the Río de la Plata in Spain's colours, Brazil and Maranhão in Portugal's. Drawn from Natural Earth (public domain), the OpenHistoricalMap keyframes (CC0) and the voyages' own logs. Captured on 2026-11-23 from a production build of main at 2× (the interface hidden), cropped to 16:10 and saved at 2000 × 1250 px for the home's Atlas plate; it replaces the 2026-10-29 still of the old flat chart |
 | `pillars/fresco.jpg` | The pillars' band, built by `tools/build-fresco.py` from three public-domain paintings laid side by side with soft seams and one warm grade: Miguel Cabrera, *1. De español e india, mestiza*, 1763, oil on canvas, Museo de Historia Mexicana, Monterrey (per [Wikidata Q111605580](https://www.wikidata.org/wiki/Q111605580)), [Commons](https://commons.wikimedia.org/wiki/File:De_espa%C3%B1ol_e_india,_mestiza.jpg) (PD-Art, PD-old-100; 777 × 995 px, the largest copy on Commons), since 2026-10-29 in place of Morlete's casta painting; Miguel Cabrera, *Retablo de la Virgen de Guadalupe con san Juan Bautista, fray Juan de Zumárraga y Juan Diego*, 18th century, [Commons](https://commons.wikimedia.org/wiki/File:Miguel_Cabrera_-_Altarpiece_of_the_Virgin_of_Guadalupe_with_Saint_John_the_Baptist,_Fray_Juan_de_Zum%C3%A1rraga_and_Juan_Diego_-_Google_Art_Project.jpg) (Google Art Project, public domain); and the Florentine Codex folio 80, [Commons](https://commons.wikimedia.org/wiki/File:The_Florentine_Codex_(folio_80).jpg) (public domain, the full 1132 px file). Credited on the page under the band |
 | `pillars/mestizaje-detail.jpg`, `pillars/catolicismo-detail.jpg`, `pillars/lengua-detail.jpg` | Crops of the same three paintings, same grade, shown in the panel each pillar opens (Cabrera's *mestiza* whole, at its 777 px) |
 
@@ -168,11 +168,14 @@ Wanted for the Mestizaje pillar, pending the museum's permission: Manuel de Arel
 
 `portico.jpg` left the site on 2026-10-25 (the pillars are now HTML and CSS); it stays in the film (`film/reel/assets/img/portico.jpg`). `epigraph-agnus-dei.jpg` (Zurbarán's lamb) left the site on 2026-10-26: the valley replaced it.
 
-## The footer (`site/public/art/footer-name.jpg`)
+## The footer (`site/public/video/footer-loop.mp4`, since 2026-11-23, issue #106)
 
 | File | Made from |
 | --- | --- |
-| `footer-name.jpg` | `assets/art/ai/footer-hispano-studies-2026-10-26.png` (AI-generated, see above), the cream strip on its right cut off (1826 × 809). The footer's glass shows the same picture mirrored and blurred |
+| `footer-loop.mp4` | A 32 s seamless loop made by us with ffmpeg from four of the film's graded period pictures (`film/reel/assets/img/graded/`, all listed above): Jorge Juan and Antonio de Ulloa's *Plano de la Ciudad de los Reyes* (Lima, 1744; CC0 scan of a public-domain engraving), Cristóbal de Villalpando's *Vista de la Plaza Mayor de la Ciudad de México* (1695; public domain), the Nuremberg map of Tenochtitlan (1524; public domain) and Juan and Ulloa's *Plano de Cartagena de las Indias* (1735; CC0 scan of a public-domain engraving). Each is a slow pan of 10 s, crossfaded over 2 s, the last back into the first. 384 × 216, 15 fps, H.264, no sound, 370 KB. The page never shows it as a film: `site/components/FooterPixels.tsx` redraws it as pixels in the brand's colours |
+| `footer-loop.jpg` | One frame of the same loop (at 4 s), the still that reduced motion, Save-Data and a failed film show, pixelated the same way |
+
+Until 2026-11-23 the footer was a frosted glass over `footer-name.jpg`, made from `assets/art/ai/footer-hispano-studies-2026-10-26.png` (AI-generated, see above; the cream strip on its right cut off, 1826 × 809), lifted like a blind by scrolling. The source stays in `assets/art/ai/`; the site file is in git history.
 
 The letters cut from period pictures (`site/public/art/letters/`) were on the site only on 2026-10-26: Carlos preferred his own picture and its typeface.
 
