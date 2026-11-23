@@ -46,6 +46,8 @@
 
     /* the Atlas: the app itself, as it runs (a video of our own engine, the page's glass around it) */
     #wk-atlas { background: transparent; }
+    /* its chip sits at the top, over the dark above the planet: the year card keeps its corner */
+    #at-chip { left: 50%; top: 104px; translate: -50% 0; }
     #at-app { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; object-fit: cover; transform-origin: 50% 46%; background: #17130f; }
 
     /* books */
@@ -102,27 +104,27 @@
         <div id="rd-ring">
           <div id="rd-a0" class="rd-arm"><article id="rd-c0" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/the-vikings-did-not-discover-america.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">Dec 29, 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">Iván Vélez</p></span>
+            <span class="rd-text"><p class="rd-k">Dec 29, 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">IvÃ¡n VÃ©lez</p></span>
           </article></div>
           <div id="rd-a1" class="rd-arm"><article id="rd-c1" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/the-catholic-hispanic-position-on.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">Dec 19, 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco Elías de Tejada</p></span>
+            <span class="rd-text"><p class="rd-k">Dec 19, 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco ElÃ­as de Tejada</p></span>
           </article></div>
           <div id="rd-a2" class="rd-arm"><article id="rd-c2" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/oireis-hablar-de-mi-a-tribute-to.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">Sep 17, 2025</p><h3>Oiréis hablar de mí: A Tribute to José Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo · trans. Beltrán Arellanes</p></span>
+            <span class="rd-text"><p class="rd-k">Sep 17, 2025</p><h3>OirÃ©is hablar de mÃ­: A Tribute to JosÃ© Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo Â· trans. BeltrÃ¡n Arellanes</p></span>
           </article></div>
           <div id="rd-a3" class="rd-arm"><article id="rd-c3" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/transitional-political-society-neither.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">Jun 2, 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla · trans. Beltrán Arellanes</p></span>
+            <span class="rd-text"><p class="rd-k">Jun 2, 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla Â· trans. BeltrÃ¡n Arellanes</p></span>
           </article></div>
           <div id="rd-a4" class="rd-arm"><article id="rd-c4" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/on-bullfighting.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">May 21, 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno · trans. Beltrán Arellanes</p></span>
+            <span class="rd-text"><p class="rd-k">May 21, 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno Â· trans. BeltrÃ¡n Arellanes</p></span>
           </article></div>
           <div id="rd-a5" class="rd-arm"><article id="rd-c5" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/spain-and-america.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">Apr 17, 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno · trans. Beltrán Arellanes</p></span>
+            <span class="rd-text"><p class="rd-k">Apr 17, 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno Â· trans. BeltrÃ¡n Arellanes</p></span>
           </article></div>
           <div id="rd-a6" class="rd-arm"><article id="rd-c6" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/the-black-legend-threat-to-hispanic.jpg" alt="" /></span>
@@ -130,7 +132,7 @@
           </article></div>
           <div id="rd-a7" class="rd-arm"><article id="rd-c7" class="rd-card">
             <span class="rd-cover"><img src="assets/img/essays/aryan-indigenismo-and-manifest-destiny.jpg" alt="" /></span>
-            <span class="rd-text"><p class="rd-k">Apr 6, 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">Beltrán Arellanes</p></span>
+            <span class="rd-text"><p class="rd-k">Apr 6, 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">BeltrÃ¡n Arellanes</p></span>
           </article></div>
         </div>
       </div>
@@ -238,7 +240,7 @@
       // THE ARCHIVE: close on the collection's title, down into its first era, its cards one under
       // another; on the beat a work's page whips in (its article), and the camera reads down it
       arrive("#wk-archive .wk-word", 8.065, 510, 383); fig("#wk-archive", 8.065 + 0.8 * B);
-      const AR = [[900, 290, 1.55], [930, 420, 1.4], [960, 1560, 1.12], [960, 1720, 1.05]], WK = [[960, 560, 1.08], [960, 700, 1.0]];
+      const AR = [[880, 250, 1.5], [900, 330, 1.42], [960, 1560, 1.12], [960, 1720, 1.05]], WK = [[960, 560, 1.08], [960, 700, 1.0]];
       move("#ar-world", cam(...AR[0]), cam(...AR[1]), 8.065, 1.0, "power1.inOut", true);
       move("#ar-world", cam(...AR[1]), cam(...AR[2]), 8.065 + 1.0, 1.3, "power2.inOut");
       move("#ar-world", cam(...AR[2]), cam(...AR[3]), 8.065 + 2.3, 0.9, "none");

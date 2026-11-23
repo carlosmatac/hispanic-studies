@@ -57,17 +57,17 @@ SERIES = ["Race, Mixture and Difference", "Indo-Hispanic Thought and Its Critics
 THUMBS = ["BISc6y6fIuM", "JNLr7NM_buA", "3LYcIzK8mxo", "5Yug5P6lbCc", "NJKfmnwbOXQ", "Xinb9TN9aOM"]
 
 # the channels' glyphs, straight from the site's seal component
-icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text()
+icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text(encoding="utf-8")
 GLYPHS = dict(re.findall(r"^  (\w+): '([^']+)',$", icon_src, flags=re.M))
 # the pictures of the site, as captured (film/tools/capture-site.mjs): the archive page from the
 # collection's title down its first era, a work's page, and the Atlas app's frames
-SITE = json.loads((ROOT / "film/reel/assets/img/site/site.json").read_text())
+SITE = json.loads((ROOT / "film/reel/assets/img/site/site.json").read_text(encoding="utf-8"))
 
 # ---------------------------------------------------------------- the frieze between shots
 # The portico of the pillars scene (bar 20) ends with a dive into the "Watch" metope. Every
 # later shot leaves the same way: the frieze slides in from the right and the camera dives
 # into the next metope. The metopes are in the film's order, so the frieze always runs right.
-pillars = (ROOT / "film/reel/compositions/pillars.html").read_text()
+pillars = (ROOT / "film/reel/compositions/pillars.html").read_text(encoding="utf-8")
 GRADE = re.search(r'<img (data-color-grading="[^"]*")[^>]*id="pil-plate"', pillars).group(1)
 TINT = "\n".join("            " + re.sub(r' data-hf-id="[^"]*"', "", t).replace('id="pil-sh', 'id="fz-sh')
                  for t in re.findall(r'<path[^>]*id="pil-sh\d"[^>]*/>', pillars))
@@ -151,6 +151,8 @@ page = f'''<template>
 
     /* the Atlas: the app itself, as it runs (a video of our own engine, the page's glass around it) */
     #wk-atlas {{ background: transparent; }}
+    /* its chip sits at the top, over the dark above the planet: the year card keeps its corner */
+    #at-chip {{ left: 50%; top: 104px; translate: -50% 0; }}
     #at-app {{ position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; object-fit: cover; transform-origin: 50% 46%; background: #17130f; }}
 
     /* books */
@@ -352,5 +354,5 @@ page = f'''<template>
   </script>
 </template>
 '''
-OUT.write_text(page)
+OUT.write_text(page, encoding="utf-8")
 print("wrote", OUT, "duration", END)
