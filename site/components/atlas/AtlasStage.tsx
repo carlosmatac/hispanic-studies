@@ -185,6 +185,11 @@ export default function AtlasStage({ lang, chronicle }: { lang: Lang; chronicle:
     const avoid = label ? [...panels, label] : panels;
     const { x, y } = info;
     const cands: [number, number][] = [[x + g, y + g], [x - g - w, y + g], [x + g, y - g - h], [x - g - w, y - g - h], [x - w / 2, y + g * 2], [x - w / 2, y - g * 2 - h]];
+    // and, when the click is crowded by panels, the open middle of the map between the left column and the rail
+    const lo = Math.max(m, ...[nowEl, keyEl].map((r) => rel(r.current, sr)?.[2] ?? 0)) + m;
+    const hi = Math.min(sr.width - m, rel(tools.current, sr)?.[0] ?? sr.width) - m;
+    const top = m, bottom = (rel(bar.current, sr)?.[1] ?? sr.height) - m - h;
+    cands.push([(lo + hi) / 2 - w / 2, top], [(lo + hi) / 2 - w / 2, bottom], [lo, top], [hi - w, top]);
     const fits = (bx: number, by: number) => bx >= m && by >= m && bx + w <= sr.width - m && by + h <= sr.height - m;
     const hit = (bx: number, by: number) => avoid.reduce((acc, b) => acc + Math.max(0, Math.min(bx + w, b[2]) - Math.max(bx, b[0])) * Math.max(0, Math.min(by + h, b[3]) - Math.max(by, b[1])), 0);
     let best: [number, number] | null = null, bestScore = Infinity;
