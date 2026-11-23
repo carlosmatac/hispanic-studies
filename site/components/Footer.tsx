@@ -1,24 +1,22 @@
-import Image from 'next/image';
 import { dict, type Lang } from '@/lib/i18n';
 import { CHANNELS, SITE } from '@/lib/content';
 import { collabPath } from '@/lib/canon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
-import FooterBlind from './FooterBlind';
+import FooterPixels from './FooterPixels';
 
-/* The footer is one panel and a blind. The page ends with a frosted glass
-   that carries the links; under it lies the name, each letter a window onto
-   a painting (an image Carlos made; see assets/art/SOURCES.md), seen blurred
-   through the glass. Scrolling on lifts the glass and shows the name; letting
-   go drops it again (FooterBlind). */
+/* The footer (issue #106, after algoreto.com's): one burgundy panel whose
+   ground is our generated film of a tercio on the march and a ship off the
+   Pillars of Hercules, redrawn as discreet pixels in the brand's dark colours
+   (FooterPixels, lib/footer-pixels.ts). Over it, the content as a grid of
+   cells parted by hairlines, a band where the film shows, and the bottom
+   line. The film is credited as generated, under Sources. */
 export default function Footer({ lang }: { lang: Lang }) {
   const d = dict(lang);
   return (
     <footer className="foot">
-      <div className="foot__name">
-        <Image src="/art/footer-name.jpg" alt="Hispano Studies" width={1826} height={809} sizes="100vw" />
-      </div>
-      <div className="foot__glass">
+      <FooterPixels />
+      <div className="foot__body">
         <div className="foot__grid">
           <a className="foot__mark" href={`/${lang}`} aria-label={SITE.name}>
             <span className="foot__eagle" aria-hidden="true" />
@@ -63,10 +61,12 @@ export default function Footer({ lang }: { lang: Lang }) {
               <ul>
                 <li><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">{d.foot.naturalEarth}</a></li>
                 <li><span>{d.foot.canonSrc}</span></li>
+                <li><span>{d.foot.film}</span></li>
               </ul>
             </div>
           </div>
         </div>
+        <div className="foot__field" aria-hidden="true" />
         <div className="foot__base">
           <span>© 2026 {d.foot.legal}</span>
           <div className="foot__chips">
@@ -78,8 +78,6 @@ export default function Footer({ lang }: { lang: Lang }) {
           </div>
         </div>
       </div>
-      <div className="foot__under" aria-hidden="true" />
-      <FooterBlind />
     </footer>
   );
 }

@@ -82,7 +82,7 @@ const en = {
     eyebrow: 'The Atlas · 218 BCE to today',
     h: 'A world that is discovered.',
     sub: (n: number) => `From the Roman landing in Hispania in 218 BCE to today, in ${n} stops on a globe that starts dark. What enters the record of voyages, charts and treaties lights up; the borders change with every instrument. Step through it, play it, or jump to any chapter.`,
-    door: 'An interactive globe from 218 BCE to today: the Institute’s records, ten voyages, twenty border changes and sixty milestones, discovered as the story goes.',
+    door: (n: number) => `A globe from the Roman landing in 218 BCE to today, in ${n} stops and seven chapters: the Institute’s records, the voyages and the borders as they changed, discovered as the story goes.`,
     msEyebrow: 'A brief history of Iberofonía',
     msH: 'Sixty milestones, in seven chapters.',
     open: 'Open the Atlas',
@@ -293,7 +293,7 @@ const en = {
 
   },
   canon: {
-    eyebrow: (n: number, from: number, to: number) => `The archive · ${n} texts, ${from} to ${to}`,
+    eyebrow: (curated: number, eras: number, rest: number) => `The archive · ${curated} texts in ${eras} eras, and ${rest} more`,
     h: 'An archive of Hispanic thought.',
     sub: 'The primary sources of the long argument about what the Hispanic world is, from the Empire’s own thinkers to the end of the twentieth century, in six periods. Open any work for its record; those in the public domain can be read here in full, in their original language. Those who argued against Hispanic unity are here too, and marked.',
     disclaimer: 'Records and classification adapted from Gustavo Bueno, “España y América” (2001). Portuguese, Brazilian, Lusophone African, Asian, Indigenous, Black Atlantic, Equatoguinean and Filipino traditions remain historically distinct. Their presence here does not imply their assent to a Hispanic or Iberophone project.',
@@ -309,7 +309,8 @@ const en = {
     fullText: 'Full text',
     read: 'Read the full text',
     openPage: 'Open its page',
-    door: (n: number) => `${n} primary sources in six periods, from Vitoria and Las Casas to the end of the twentieth century; those in the public domain, in full.`,
+    // the home's line (Doors); {curated} and {rest} become the numbers (lib/archive.ts, fillCounts)
+    door: '{curated} texts on civilizational unity, from Universal Monarchy to Iberofonía, each introduced in an article with its editions; then {rest} more primary sources from the archive.',
     open: 'Open the archive',
   },
   reader: {
@@ -520,6 +521,7 @@ const en = {
     discord: 'Discord · Reconquista Syndicate',
     naturalEarth: 'Natural Earth · public domain',
     canonSrc: 'Archive records after Gustavo Bueno (2001)',
+    film: 'Under this footer: a tercio on the march and a ship off the Pillars of Hercules · generated video',
     legal: 'Hispano Studies LLC',
     version: 'First version · October 2026 · not final copy',
     pamphlet: 'The free pamphlet',
@@ -613,7 +615,7 @@ const es: Dict = {
     eyebrow: 'El Atlas · del 218 a. C. a hoy',
     h: 'Un mundo que se descubre.',
     sub: (n: number) => `Del desembarco romano en Hispania en el 218 a. C. a hoy, en ${n} paradas sobre un globo que empieza a oscuras. Lo que entra en el registro de viajes, cartas y tratados se ilumina; las fronteras cambian con cada instrumento. Avanza paso a paso, dale a reproducir o salta a cualquier capítulo.`,
-    door: 'Un globo interactivo del 218 a. C. a hoy: las fichas del Instituto, diez viajes, veinte cambios de frontera y sesenta hitos, que se descubren a medida que avanza la historia.',
+    door: (n: number) => `Un globo del desembarco romano del 218 a. C. a hoy, en ${n} paradas y siete capítulos: las fichas del Instituto, los viajes y las fronteras según cambiaron, que se descubren a medida que avanza la historia.`,
     msEyebrow: 'Breve historia de la Iberofonía',
     msH: 'Sesenta hitos, en siete capítulos.',
     open: 'Abrir el Atlas',
@@ -818,7 +820,7 @@ const es: Dict = {
 
   },
   canon: {
-    eyebrow: (n: number, from: number, to: number) => `El archivo · ${n} textos, de ${from} a ${to}`,
+    eyebrow: (curated: number, eras: number, rest: number) => `El archivo · ${curated} textos en ${eras} épocas, y ${rest} más`,
     h: 'Un archivo del pensamiento hispánico.',
     sub: 'Las fuentes primarias de la larga discusión sobre qué es el mundo hispánico, de los pensadores del propio Imperio al final del siglo XX, en seis épocas. Abre cualquier obra para ver su ficha; las que son de dominio público se pueden leer aquí completas, en su lengua original. Los que argumentaron contra la unidad hispánica también están, y señalados.',
     disclaimer: 'Fichas y clasificación adaptadas de Gustavo Bueno, «España y América» (2001). Las tradiciones portuguesa, brasileña, lusoafricana, asiática, indígena, del Atlántico negro, ecuatoguineana y filipina siguen siendo históricamente distintas. Su presencia aquí no implica su adhesión a un proyecto hispánico o iberófono.',
@@ -834,7 +836,7 @@ const es: Dict = {
     fullText: 'Texto completo',
     read: 'Leer el texto completo',
     openPage: 'Abrir su página',
-    door: (n: number) => `${n} fuentes primarias en seis épocas, de Vitoria y Las Casas al final del siglo XX; las de dominio público, completas.`,
+    door: '{curados} textos sobre la unidad civilizatoria, de la Monarquía Universal a la iberofonía, cada uno presentado en un artículo con sus ediciones; y después, {resto} fuentes primarias más del archivo.',
     open: 'Abrir el archivo',
   },
   reader: {
@@ -1042,6 +1044,7 @@ const es: Dict = {
     discord: 'Discord · Reconquista Syndicate',
     naturalEarth: 'Natural Earth · dominio público',
     canonSrc: 'Fichas del archivo según Gustavo Bueno (2001)',
+    film: 'Bajo este pie: un tercio en marcha y un navío ante las columnas de Hércules · vídeo generado',
     legal: 'Hispano Studies LLC',
     version: 'Primera versión · octubre de 2026 · texto no definitivo',
     pamphlet: 'El folleto gratuito',
@@ -1194,7 +1197,7 @@ const adminEn = {
     deleteConfirm: (name: string) => `Delete the region “${name}”?`,
   },
   page: {
-    h: 'The archive page', lead: 'The words at the top and at the foot of the archive page, and its line on the home page. Write {works} or {sections} where the number should go.',
+    h: 'The archive page', lead: 'The words at the top and at the foot of the archive page, and its line on the home page. Write {works}, {sections}, {curated} (the eighty shown) or {rest} (the works outside them) where the number should go.',
     title: 'Old title (not shown since the 80 texts)', intro: 'Introduction to “More from the archive”', notes: 'Note at the foot', door: 'Line on the home page',
     landingTitle: 'The 80 texts: title', landingIntro: 'The 80 texts: introduction (a blank line between paragraphs)',
   },
@@ -1418,7 +1421,7 @@ const adminEs: AdminDict = {
     deleteConfirm: (name: string) => `¿Eliminar la región «${name}»?`,
   },
   page: {
-    h: 'La página del archivo', lead: 'Las palabras de arriba y de abajo de la página del archivo, y su línea en la portada. Escribe {obras} o {secciones} donde deba ir el número.',
+    h: 'La página del archivo', lead: 'Las palabras de arriba y de abajo de la página del archivo, y su línea en la portada. Escribe {obras}, {secciones}, {curados} (los ochenta que se muestran) o {resto} (las obras fuera de ellos) donde deba ir el número.',
     title: 'Título antiguo (no se muestra desde los 80 textos)', intro: 'Introducción a «Más del archivo»', notes: 'Nota al pie', door: 'Línea en la portada',
     landingTitle: '80 textos: título', landingIntro: '80 textos: introducción (una línea en blanco entre párrafos)',
   },

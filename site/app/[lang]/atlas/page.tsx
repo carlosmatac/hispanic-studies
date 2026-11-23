@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   if (!isLang(lang)) return {};
   const d = dict(lang);
-  return { title: `${d.nav.atlas} · ${d.meta.title}`, description: d.atlas.door };
+  return { title: `${d.nav.atlas} · ${d.meta.title}`, description: d.atlas.door(chronicleFor(lang).stops.length) };
 }
 
 export default async function AtlasPage({ params }: { params: Promise<{ lang: string }> }) {

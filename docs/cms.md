@@ -35,7 +35,9 @@ them from there.)
 7. **Página del archivo**: the title and introduction of the 80 texts (the
    archive's landing; empty = the copy of your brief), the introduction of
    "More from the archive", the note at the foot and the line on the home page.
-   `{obras}` / `{works}` and `{secciones}` / `{sections}` become the numbers.
+   `{obras}` / `{works}`, `{secciones}` / `{sections}`, `{curados}` / `{curated}`
+   (the 80 shown) and `{resto}` / `{rest}` (the works outside them) become the
+   numbers.
 8. **Mi cuenta**: change your password; **download a backup** of everything.
 
 ### The 80 texts (issue #93)

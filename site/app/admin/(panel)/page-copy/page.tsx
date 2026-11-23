@@ -1,6 +1,7 @@
 import { adminText } from '@/lib/admin/lang';
 import { getPageCopy } from '@/lib/admin/queries';
 import { dict } from '@/lib/i18n';
+import { ownDoor } from '@/lib/archive';
 import PageCopyForm from '@/components/admin/PageCopyForm';
 
 export default async function PageCopyPage() {
@@ -15,7 +16,7 @@ export default async function PageCopyPage() {
     titleEn: p?.titleEn || en.h, titleEs: p?.titleEs || es.h,
     introEn: p?.introEn || en.sub, introEs: p?.introEs || es.sub,
     notesEn: p?.notesEn || en.disclaimer, notesEs: p?.notesEs || es.disclaimer,
-    doorEn: p?.doorEn || en.door(0).replace(/^0 /, '{works} '), doorEs: p?.doorEs || es.door(0).replace(/^0 /, '{obras} '),
+    doorEn: ownDoor(p?.doorEn) || en.door, doorEs: ownDoor(p?.doorEs) || es.door,
   };
   return (
     <>
