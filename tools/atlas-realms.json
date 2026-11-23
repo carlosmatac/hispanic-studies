@@ -1,0 +1,1520 @@
+{
+  "about": "The realms of the Atlas outside the American keyframes (issue #104): the peninsula's polities from 218 BCE, Spain and Portugal, and their holdings in Europe, Africa, Asia and the Pacific. Each family is a chain of dated OpenHistoricalMap relations; each relation is drawn between its own start_date and end_date, narrowed (never widened) where `from`/`to` say so, and cut to `clip` (west, south, east, north) where OHM carries an error. Built by tools/build-atlas-eras.py into site/data/atlas-realms.json and site/public/data/atlas-realms.topo.json. Research: issue #104 (OHM survey of 2026-11-23). Not used: the relations whose ways carry CC BY-SA (Seville 2974339/2974338, Jaén 2974340, Kingdom of Granada 2974292, Valencia 2974331, Córdoba 2803889, Biscay, the principality of Asturias 2974171, Galicia 2974173/2974172), the open rings (Roman conquest 2697849, Biscay), the Carthage relations that duplicate 2849518, the 'Independent Moorish States' polygon 2697817 (it covers the Christian north-east), and the Spanish Netherlands (no geometry).",
+  "gaps": [
+    {
+      "from": -27,
+      "to": -14,
+      "where": "iberia",
+      "text": {
+        "en": "OpenHistoricalMap has no shape for Baetica before 14 BCE.",
+        "es": "OpenHistoricalMap no tiene forma para la Bética antes del 14 a. C."
+      }
+    },
+    {
+      "from": 1031,
+      "to": 1232,
+      "where": "iberia",
+      "text": {
+        "en": "No sourced border exists for the taifas, the Almoravids or the Almohads, so the Muslim south of the peninsula is left blank from 1031 to 1232.",
+        "es": "No hay fronteras con fuentes para las taifas, los almorávides ni los almohades, así que el sur musulmán de la península queda en blanco de 1031 a 1232."
+      }
+    },
+    {
+      "from": 1199,
+      "to": 1297,
+      "where": "iberia",
+      "text": {
+        "en": "OpenHistoricalMap has no shape for the Kingdom of Portugal between 1199 and 1297, so none is drawn.",
+        "es": "OpenHistoricalMap no tiene forma para el reino de Portugal entre 1199 y 1297, así que no se dibuja."
+      }
+    }
+  ],
+  "families": {
+    "carthaginian-iberia": {
+      "kind": "ant",
+      "tint": "ant.clay",
+      "z": 1,
+      "name": {
+        "en": "Carthaginian Iberia",
+        "es": "Iberia cartaginesa"
+      },
+      "at": [
+        -3.2,
+        38.6
+      ]
+    },
+    "hispania-citerior": {
+      "kind": "ant",
+      "tint": "ant.stone",
+      "z": 1,
+      "name": {
+        "en": "Hispania Citerior",
+        "es": "Hispania Citerior"
+      },
+      "at": [
+        -2.5,
+        41.2
+      ]
+    },
+    "hispania-ulterior": {
+      "kind": "ant",
+      "tint": "ant.sand",
+      "z": 1,
+      "name": {
+        "en": "Hispania Ulterior",
+        "es": "Hispania Ulterior"
+      },
+      "at": [
+        -6.2,
+        38.2
+      ]
+    },
+    "tarraconensis": {
+      "kind": "ant",
+      "tint": "ant.stone",
+      "z": 1,
+      "name": {
+        "en": "Tarraconensis",
+        "es": "Tarraconense"
+      },
+      "at": [
+        -2.2,
+        41.6
+      ]
+    },
+    "baetica": {
+      "kind": "ant",
+      "tint": "ant.clay",
+      "z": 1,
+      "name": {
+        "en": "Baetica",
+        "es": "Bética"
+      },
+      "at": [
+        -5,
+        37.6
+      ]
+    },
+    "lusitania": {
+      "kind": "ant",
+      "tint": "ant.sand",
+      "z": 1,
+      "name": {
+        "en": "Lusitania",
+        "es": "Lusitania"
+      },
+      "at": [
+        -7.4,
+        39.4
+      ]
+    },
+    "gallaecia": {
+      "kind": "ant",
+      "tint": "ant.clay",
+      "z": 1,
+      "name": {
+        "en": "Gallaecia",
+        "es": "Gallaecia"
+      },
+      "at": [
+        -7.3,
+        42.6
+      ]
+    },
+    "carthaginensis": {
+      "kind": "ant",
+      "tint": "ant.olive",
+      "z": 1,
+      "name": {
+        "en": "Carthaginensis",
+        "es": "Cartaginense"
+      },
+      "at": [
+        -2.4,
+        39
+      ]
+    },
+    "sueves": {
+      "kind": "ant",
+      "tint": "ant.olive",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of the Sueves",
+        "es": "Reino suevo"
+      },
+      "at": [
+        -7.8,
+        41.6
+      ]
+    },
+    "visigoths": {
+      "kind": "ant",
+      "tint": "ant.stone",
+      "z": 1,
+      "name": {
+        "en": "Visigothic kingdom",
+        "es": "Reino visigodo"
+      },
+      "at": [
+        -3.8,
+        40
+      ]
+    },
+    "spania": {
+      "kind": "ant",
+      "tint": "ant.sand",
+      "z": 2,
+      "name": {
+        "en": "Byzantine Spania",
+        "es": "Spania bizantina"
+      },
+      "at": [
+        -1.6,
+        37.6
+      ]
+    },
+    "al-andalus": {
+      "kind": "isl",
+      "tint": "isl.andalus",
+      "z": 0,
+      "name": {
+        "en": "Al-Andalus",
+        "es": "Al-Ándalus"
+      },
+      "at": [
+        -4.6,
+        38.6
+      ]
+    },
+    "emirate-cordoba": {
+      "kind": "isl",
+      "tint": "isl.andalus",
+      "z": 0,
+      "name": {
+        "en": "Emirate of Córdoba",
+        "es": "Emirato de Córdoba"
+      },
+      "at": [
+        -4.4,
+        38.4
+      ]
+    },
+    "caliphate-cordoba": {
+      "kind": "isl",
+      "tint": "isl.andalus",
+      "z": 0,
+      "name": {
+        "en": "Caliphate of Córdoba",
+        "es": "Califato de Córdoba"
+      },
+      "at": [
+        -4.4,
+        38.4
+      ]
+    },
+    "granada": {
+      "kind": "isl",
+      "tint": "isl.violet",
+      "z": 1,
+      "name": {
+        "en": "Nasrid Granada",
+        "es": "Granada nazarí"
+      },
+      "at": [
+        -3.6,
+        37.1
+      ]
+    },
+    "asturias": {
+      "kind": "es",
+      "tint": "es.plum",
+      "z": 1,
+      "name": {
+        "en": "Kingdom of Asturias",
+        "es": "Reino de Asturias"
+      },
+      "at": [
+        -6,
+        43.1
+      ]
+    },
+    "leon": {
+      "kind": "es",
+      "tint": "es.wine",
+      "z": 1,
+      "name": {
+        "en": "Kingdom of León",
+        "es": "Reino de León"
+      },
+      "at": [
+        -5.6,
+        41.9
+      ]
+    },
+    "galicia": {
+      "kind": "es",
+      "tint": "es.coral",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of Galicia",
+        "es": "Reino de Galicia"
+      },
+      "at": [
+        -7.9,
+        42.6
+      ]
+    },
+    "castile-county": {
+      "kind": "es",
+      "tint": "es.spain",
+      "z": 2,
+      "name": {
+        "en": "County of Castile",
+        "es": "Condado de Castilla"
+      },
+      "at": [
+        -3.7,
+        42.2
+      ]
+    },
+    "castile": {
+      "kind": "es",
+      "tint": "es.spain",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of Castile",
+        "es": "Reino de Castilla"
+      },
+      "at": [
+        -3.4,
+        40.4
+      ]
+    },
+    "castile-crown": {
+      "kind": "es",
+      "tint": "es.spain",
+      "z": 1,
+      "name": {
+        "en": "Crown of Castile",
+        "es": "Corona de Castilla"
+      },
+      "at": [
+        -3.3,
+        39.3
+      ]
+    },
+    "pamplona": {
+      "kind": "es",
+      "tint": "es.rose",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of Pamplona",
+        "es": "Reino de Pamplona"
+      },
+      "at": [
+        -1.7,
+        42.75
+      ]
+    },
+    "navarre": {
+      "kind": "es",
+      "tint": "es.rose",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of Navarre",
+        "es": "Reino de Navarra"
+      },
+      "at": [
+        -1.7,
+        42.75
+      ]
+    },
+    "aragon-county": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 2,
+      "name": {
+        "en": "County of Aragón",
+        "es": "Condado de Aragón"
+      },
+      "at": [
+        -0.6,
+        42.6
+      ]
+    },
+    "sobrarbe": {
+      "kind": "es",
+      "tint": "es.coral",
+      "z": 2,
+      "name": {
+        "en": "Sobrarbe",
+        "es": "Sobrarbe"
+      },
+      "at": [
+        0.05,
+        42.45
+      ]
+    },
+    "ribagorza": {
+      "kind": "es",
+      "tint": "es.brick",
+      "z": 2,
+      "name": {
+        "en": "Ribagorza",
+        "es": "Ribagorza"
+      },
+      "at": [
+        0.55,
+        42.35
+      ]
+    },
+    "aragon": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of Aragón",
+        "es": "Reino de Aragón"
+      },
+      "at": [
+        -0.7,
+        41.9
+      ]
+    },
+    "aragon-crown": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 1,
+      "name": {
+        "en": "Crown of Aragón",
+        "es": "Corona de Aragón"
+      },
+      "at": [
+        -0.4,
+        41.2
+      ]
+    },
+    "barcelona": {
+      "kind": "es",
+      "tint": "es.red",
+      "z": 2,
+      "name": {
+        "en": "County of Barcelona",
+        "es": "Condado de Barcelona"
+      },
+      "at": [
+        1.8,
+        41.55
+      ]
+    },
+    "girona": {
+      "kind": "es",
+      "tint": "es.rose",
+      "z": 2,
+      "name": {
+        "en": "Girona",
+        "es": "Gerona"
+      }
+    },
+    "urgell": {
+      "kind": "es",
+      "tint": "es.brick",
+      "z": 2,
+      "name": {
+        "en": "Urgell",
+        "es": "Urgel"
+      }
+    },
+    "cerdanya": {
+      "kind": "es",
+      "tint": "es.plum",
+      "z": 2,
+      "name": {
+        "en": "Cerdanya",
+        "es": "Cerdaña"
+      }
+    },
+    "besalu": {
+      "kind": "es",
+      "tint": "es.coral",
+      "z": 2,
+      "name": {
+        "en": "Besalú",
+        "es": "Besalú"
+      }
+    },
+    "empuries": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 2,
+      "name": {
+        "en": "Empúries",
+        "es": "Ampurias"
+      }
+    },
+    "roussillon": {
+      "kind": "es",
+      "tint": "es.wine",
+      "z": 2,
+      "name": {
+        "en": "Roussillon",
+        "es": "Rosellón"
+      }
+    },
+    "conflent": {
+      "kind": "es",
+      "tint": "es.red",
+      "z": 2,
+      "name": {
+        "en": "Conflent",
+        "es": "Conflent"
+      }
+    },
+    "pallars": {
+      "kind": "es",
+      "tint": "es.coral",
+      "z": 2,
+      "name": {
+        "en": "Pallars",
+        "es": "Pallars"
+      }
+    },
+    "osona": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 2,
+      "name": {
+        "en": "Osona",
+        "es": "Osona"
+      }
+    },
+    "majorca": {
+      "kind": "es",
+      "tint": "es.coral",
+      "z": 2,
+      "name": {
+        "en": "Kingdom of Majorca",
+        "es": "Reino de Mallorca"
+      },
+      "at": [
+        2.95,
+        39.62
+      ]
+    },
+    "spain": {
+      "kind": "es",
+      "tint": "es.spain",
+      "z": 1,
+      "name": {
+        "en": "Spain",
+        "es": "España"
+      },
+      "at": [
+        -3.4,
+        39.8
+      ]
+    },
+    "portucale": {
+      "kind": "pt",
+      "tint": "pt.sage",
+      "z": 2,
+      "name": {
+        "en": "County of Portugal",
+        "es": "Condado de Portugal"
+      },
+      "at": [
+        -8.3,
+        41
+      ]
+    },
+    "portugal": {
+      "kind": "pt",
+      "tint": "pt.portugal",
+      "z": 1,
+      "name": {
+        "en": "Portugal",
+        "es": "Portugal"
+      },
+      "at": [
+        -8,
+        39.7
+      ]
+    },
+    "spain-africa": {
+      "kind": "es",
+      "tint": "es.spain",
+      "z": 3,
+      "name": {
+        "en": "Spanish North Africa",
+        "es": "Norte de África español"
+      },
+      "coast": false
+    },
+    "spanish-morocco": {
+      "kind": "es",
+      "tint": "es.red",
+      "z": 3,
+      "name": {
+        "en": "Spanish Morocco",
+        "es": "Marruecos español"
+      },
+      "at": [
+        -5,
+        35.1
+      ]
+    },
+    "ifni": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 3,
+      "name": {
+        "en": "Ifni",
+        "es": "Ifni"
+      }
+    },
+    "spanish-sahara": {
+      "kind": "es",
+      "tint": "es.coral",
+      "z": 3,
+      "name": {
+        "en": "Spanish Sahara",
+        "es": "Sáhara español"
+      },
+      "at": [
+        -12.9,
+        24.6
+      ]
+    },
+    "spanish-guinea": {
+      "kind": "es",
+      "tint": "es.rose",
+      "z": 3,
+      "name": {
+        "en": "Spanish Guinea",
+        "es": "Guinea española"
+      },
+      "at": [
+        10.3,
+        1.6
+      ]
+    },
+    "carolines": {
+      "kind": "es",
+      "tint": "es.red",
+      "z": 3,
+      "name": {
+        "en": "Caroline Islands",
+        "es": "Islas Carolinas"
+      }
+    },
+    "milan": {
+      "kind": "es",
+      "tint": "es.red",
+      "z": 2,
+      "name": {
+        "en": "Duchy of Milan",
+        "es": "Ducado de Milán"
+      },
+      "at": [
+        9.3,
+        45.3
+      ]
+    },
+    "franche-comte": {
+      "kind": "es",
+      "tint": "es.amber",
+      "z": 2,
+      "name": {
+        "en": "Franche-Comté",
+        "es": "Franco Condado"
+      },
+      "at": [
+        6,
+        47
+      ]
+    },
+    "pt-morocco": {
+      "kind": "pt",
+      "tint": "pt.portugal",
+      "z": 3,
+      "name": {
+        "en": "Portuguese Morocco",
+        "es": "Marruecos portugués"
+      },
+      "coast": false
+    },
+    "azores": {
+      "kind": "pt",
+      "tint": "pt.portugal",
+      "z": 3,
+      "name": {
+        "en": "Azores",
+        "es": "Azores"
+      }
+    },
+    "cape-verde": {
+      "kind": "pt",
+      "tint": "pt.sage",
+      "z": 3,
+      "name": {
+        "en": "Cape Verde",
+        "es": "Cabo Verde"
+      }
+    },
+    "pt-guinea": {
+      "kind": "pt",
+      "tint": "pt.teal",
+      "z": 3,
+      "name": {
+        "en": "Portuguese Guinea",
+        "es": "Guinea portuguesa"
+      }
+    },
+    "pt-gold-coast": {
+      "kind": "pt",
+      "tint": "pt.sage",
+      "z": 3,
+      "name": {
+        "en": "Portuguese Gold Coast",
+        "es": "Costa de Oro portuguesa"
+      },
+      "coast": false
+    },
+    "sao-tome": {
+      "kind": "pt",
+      "tint": "pt.sage",
+      "z": 3,
+      "name": {
+        "en": "São Tomé",
+        "es": "Santo Tomé"
+      }
+    },
+    "angola": {
+      "kind": "pt",
+      "tint": "pt.pine",
+      "z": 3,
+      "name": {
+        "en": "Angola",
+        "es": "Angola"
+      },
+      "at": [
+        16.5,
+        -11.5
+      ]
+    },
+    "mozambique": {
+      "kind": "pt",
+      "tint": "pt.pine",
+      "z": 3,
+      "name": {
+        "en": "Mozambique",
+        "es": "Mozambique"
+      },
+      "at": [
+        36.5,
+        -15.5
+      ]
+    },
+    "estado-da-india": {
+      "kind": "pt",
+      "tint": "pt.teal",
+      "z": 3,
+      "name": {
+        "en": "Estado da Índia",
+        "es": "Estado da Índia"
+      },
+      "at": [
+        73.9,
+        15.4
+      ]
+    },
+    "pt-east-indies": {
+      "kind": "pt",
+      "tint": "pt.brazil",
+      "z": 3,
+      "name": {
+        "en": "Portuguese East Indies",
+        "es": "Indias Orientales portuguesas"
+      }
+    },
+    "timor": {
+      "kind": "pt",
+      "tint": "pt.brazil",
+      "z": 3,
+      "name": {
+        "en": "Portuguese Timor",
+        "es": "Timor portugués"
+      },
+      "at": [
+        125.9,
+        -8.8
+      ]
+    },
+    "macau": {
+      "kind": "pt",
+      "tint": "pt.teal",
+      "z": 3,
+      "name": {
+        "en": "Macau",
+        "es": "Macao"
+      },
+      "coast": false
+    },
+    "pt-east-africa": {
+      "kind": "pt",
+      "tint": "pt.teal",
+      "z": 3,
+      "coast": false,
+      "name": {
+        "en": "Portuguese forts in East Africa and Arabia",
+        "es": "Fortalezas portuguesas en África oriental y Arabia"
+      }
+    }
+  },
+  "chains": [
+    {
+      "f": "carthaginian-iberia",
+      "ohm": [
+        2849518
+      ]
+    },
+    {
+      "f": "hispania-citerior",
+      "ohm": [
+        2697842,
+        2697838
+      ]
+    },
+    {
+      "f": "hispania-ulterior",
+      "ohm": [
+        2697843,
+        {
+          "id": 2697839,
+          "to": -27
+        }
+      ]
+    },
+    {
+      "f": "tarraconensis",
+      "ohm": [
+        2697836,
+        2697841
+      ]
+    },
+    {
+      "f": "baetica",
+      "ohm": [
+        2697835
+      ]
+    },
+    {
+      "f": "lusitania",
+      "ohm": [
+        {
+          "id": 2697833,
+          "from": -27
+        }
+      ]
+    },
+    {
+      "f": "gallaecia",
+      "ohm": [
+        2697837
+      ]
+    },
+    {
+      "f": "carthaginensis",
+      "ohm": [
+        2697840
+      ]
+    },
+    {
+      "f": "sueves",
+      "ohm": [
+        2831478
+      ]
+    },
+    {
+      "f": "visigoths",
+      "ohm": [
+        2831479,
+        {
+          "id": 2850079,
+          "from": 624,
+          "to": 711
+        }
+      ]
+    },
+    {
+      "f": "spania",
+      "ohm": [
+        2850078
+      ]
+    },
+    {
+      "f": "al-andalus",
+      "ohm": [
+        2803912
+      ]
+    },
+    {
+      "f": "emirate-cordoba",
+      "ohm": [
+        2697816,
+        2849466
+      ]
+    },
+    {
+      "f": "caliphate-cordoba",
+      "ohm": [
+        2803480
+      ]
+    },
+    {
+      "f": "granada",
+      "ohm": [
+        2803895,
+        2739789,
+        2739790,
+        2739791,
+        2860650,
+        2739792,
+        2739793
+      ]
+    },
+    {
+      "f": "asturias",
+      "ohm": [
+        2740133,
+        2740132,
+        2740131,
+        2740130,
+        2740129,
+        2803450
+      ]
+    },
+    {
+      "f": "leon",
+      "ohm": [
+        2740152,
+        2740165,
+        2740149,
+        2740148,
+        2740161,
+        2740160,
+        2740159,
+        2740175,
+        2740174,
+        2740173,
+        2740170,
+        2740169,
+        2740182,
+        2740181
+      ]
+    },
+    {
+      "f": "galicia",
+      "ohm": [
+        2740162
+      ]
+    },
+    {
+      "f": "castile-county",
+      "ohm": [
+        2740150,
+        2740151,
+        2740163,
+        2740147,
+        2740145
+      ]
+    },
+    {
+      "f": "castile",
+      "ohm": [
+        2740146,
+        2740184,
+        2740168,
+        2740183
+      ]
+    },
+    {
+      "f": "castile-crown",
+      "ohm": [
+        2740180,
+        2740179,
+        2740178,
+        2740177,
+        2740176,
+        2803896,
+        2860649,
+        {
+          "id": 2849121,
+          "clip": [
+            -25,
+            20,
+            5,
+            45
+          ]
+        },
+        {
+          "id": 2849131,
+          "clip": [
+            -25,
+            20,
+            5,
+            45
+          ]
+        },
+        {
+          "id": 2860651,
+          "clip": [
+            -25,
+            20,
+            5,
+            45
+          ]
+        }
+      ]
+    },
+    {
+      "f": "pamplona",
+      "ohm": [
+        2740068,
+        2740067,
+        2740066,
+        2740065,
+        2740064,
+        2740063,
+        2740062,
+        2740061,
+        2740060,
+        2740059
+      ]
+    },
+    {
+      "f": "navarre",
+      "ohm": [
+        {
+          "id": 2803894,
+          "from": 1234
+        },
+        2974114
+      ]
+    },
+    {
+      "f": "aragon-county",
+      "ohm": [
+        2740015,
+        2740014,
+        2740013
+      ]
+    },
+    {
+      "f": "sobrarbe",
+      "ohm": [
+        2739936,
+        2739935
+      ]
+    },
+    {
+      "f": "ribagorza",
+      "ohm": [
+        2739866,
+        2739930
+      ]
+    },
+    {
+      "f": "aragon",
+      "ohm": [
+        2739933,
+        2739931,
+        2739939,
+        2739940,
+        2739941
+      ]
+    },
+    {
+      "f": "aragon-crown",
+      "ohm": [
+        2739942,
+        2739966,
+        2848627,
+        2739978,
+        2739977,
+        2860648,
+        2739976,
+        2739975,
+        2739974,
+        2739967,
+        2860647,
+        2739973,
+        2739972,
+        2750773,
+        2860525,
+        2860661,
+        2860517,
+        2750772,
+        2860646,
+        2848626,
+        2860524,
+        2860518,
+        2860554,
+        2860669,
+        2860662,
+        2860663,
+        2751179,
+        2803893
+      ]
+    },
+    {
+      "f": "barcelona",
+      "ohm": [
+        2739868,
+        2739884,
+        2739885,
+        2739887
+      ]
+    },
+    {
+      "f": "girona",
+      "ohm": [
+        2739867
+      ]
+    },
+    {
+      "f": "urgell",
+      "ohm": [
+        2739873,
+        2739878,
+        2739882
+      ]
+    },
+    {
+      "f": "cerdanya",
+      "ohm": [
+        2739872,
+        2739879
+      ]
+    },
+    {
+      "f": "besalu",
+      "ohm": [
+        2739871
+      ]
+    },
+    {
+      "f": "empuries",
+      "ohm": [
+        2739869
+      ]
+    },
+    {
+      "f": "roussillon",
+      "ohm": [
+        2739865
+      ]
+    },
+    {
+      "f": "conflent",
+      "ohm": [
+        2739864
+      ]
+    },
+    {
+      "f": "pallars",
+      "ohm": [
+        2739875,
+        2739881,
+        2739876,
+        2739877
+      ]
+    },
+    {
+      "f": "osona",
+      "ohm": [
+        2739870,
+        2739880,
+        2739883
+      ]
+    },
+    {
+      "f": "majorca",
+      "ohm": [
+        2860660
+      ]
+    },
+    {
+      "f": "spain",
+      "ohm": [
+        {
+          "id": 2860657,
+          "clip": [
+            -25,
+            20,
+            10,
+            45
+          ]
+        },
+        {
+          "id": 2860656,
+          "clip": [
+            -25,
+            20,
+            10,
+            45
+          ]
+        },
+        {
+          "id": 2860655,
+          "clip": [
+            -25,
+            20,
+            10,
+            45
+          ]
+        },
+        {
+          "id": 2860654,
+          "clip": [
+            -25,
+            20,
+            10,
+            45
+          ]
+        },
+        {
+          "id": 2860653,
+          "clip": [
+            -25,
+            20,
+            10,
+            45
+          ]
+        },
+        2860652,
+        2803891,
+        2692925,
+        2860553,
+        2860342,
+        2803886,
+        2803628,
+        2860495,
+        2860667,
+        2860494,
+        2860668,
+        2860666,
+        2878363,
+        2860665,
+        2860664,
+        2860345,
+        2860408,
+        2860487,
+        2860486,
+        2860485,
+        2862762,
+        2860484,
+        2862761,
+        2860483,
+        2860482,
+        2860407,
+        2860481,
+        2862760,
+        2860480,
+        2860344
+      ]
+    },
+    {
+      "f": "portucale",
+      "ohm": [
+        2740167
+      ]
+    },
+    {
+      "f": "portugal",
+      "ohm": [
+        2740172,
+        2740171,
+        2692924,
+        2878364,
+        2860981,
+        {
+          "id": 2963149,
+          "clip": [
+            -35,
+            20,
+            0,
+            45
+          ]
+        },
+        {
+          "id": 2963147,
+          "clip": [
+            -35,
+            20,
+            0,
+            45
+          ]
+        },
+        {
+          "id": 2963148,
+          "clip": [
+            -35,
+            20,
+            0,
+            45
+          ]
+        },
+        2963144,
+        2959471,
+        2959467,
+        2807009,
+        2905980,
+        2962011,
+        2962573,
+        2962005,
+        2905979,
+        2962065,
+        2962107,
+        2943761
+      ]
+    },
+    {
+      "f": "spain-africa",
+      "ohm": [
+        2850825,
+        2850824,
+        2850827,
+        2850826,
+        2851093,
+        2860511,
+        2860512,
+        2850887,
+        2964489,
+        2860501,
+        2860497,
+        2860506,
+        2888603,
+        2848387,
+        2848388,
+        2888604
+      ]
+    },
+    {
+      "f": "spanish-morocco",
+      "ohm": [
+        2860424,
+        2860423,
+        2860422,
+        2860421
+      ]
+    },
+    {
+      "f": "ifni",
+      "ohm": [
+        2805384,
+        2964463,
+        2690847
+      ]
+    },
+    {
+      "f": "spanish-sahara",
+      "ohm": [
+        2690848,
+        2964464,
+        2860429,
+        2860427,
+        2860426
+      ]
+    },
+    {
+      "f": "spanish-guinea",
+      "ohm": [
+        2860393,
+        2860392,
+        2860391,
+        2964462,
+        2860390,
+        2860389
+      ]
+    },
+    {
+      "f": "carolines",
+      "ohm": [
+        2889773,
+        2889772
+      ]
+    },
+    {
+      "f": "milan",
+      "ohm": [
+        2848874,
+        2848848
+      ]
+    },
+    {
+      "f": "franche-comte",
+      "ohm": [
+        {
+          "id": 2812113,
+          "from": 1556
+        },
+        2839759
+      ]
+    },
+    {
+      "f": "pt-morocco",
+      "ohm": [
+        2860980,
+        2964468,
+        2964500,
+        2963138,
+        2965414,
+        2965421,
+        2965425,
+        2965417,
+        2963428,
+        2965410,
+        2964499
+      ]
+    },
+    {
+      "f": "azores",
+      "ohm": [
+        2959473,
+        2959472
+      ]
+    },
+    {
+      "f": "cape-verde",
+      "ohm": [
+        2962006,
+        2962010,
+        2962009,
+        2962007
+      ]
+    },
+    {
+      "f": "pt-guinea",
+      "ohm": [
+        2803504,
+        2962012
+      ]
+    },
+    {
+      "f": "pt-gold-coast",
+      "ohm": [
+        2963829,
+        2963826,
+        2963825,
+        2963824
+      ]
+    },
+    {
+      "f": "sao-tome",
+      "ohm": [
+        2885983,
+        2885979,
+        2885981,
+        2962071,
+        2962074,
+        2885982
+      ]
+    },
+    {
+      "f": "angola",
+      "ohm": [
+        2962058,
+        2962057,
+        2962064,
+        2690861,
+        2962066,
+        2839751,
+        2839750
+      ]
+    },
+    {
+      "f": "mozambique",
+      "ohm": [
+        2962568,
+        2698259,
+        2962557,
+        2698260,
+        2698261,
+        2698264,
+        2690864,
+        2863628,
+        2698263,
+        2698265,
+        2698266
+      ]
+    },
+    {
+      "f": "estado-da-india",
+      "ohm": [
+        2965464,
+        2962689,
+        2962685,
+        2962698,
+        2922065,
+        2962710,
+        2922067,
+        2965460,
+        2962697,
+        2962696,
+        2962695,
+        2962694,
+        2962684,
+        2962688,
+        2965467,
+        2962709,
+        2962693,
+        2965461,
+        2965459,
+        2922066,
+        2922074,
+        2965458,
+        2962691,
+        2962690
+      ]
+    },
+    {
+      "f": "pt-east-indies",
+      "ohm": [
+        2864424,
+        2864423,
+        2864422,
+        2864421,
+        2864420,
+        2864419,
+        2864418,
+        2864417
+      ]
+    },
+    {
+      "f": "timor",
+      "ohm": [
+        2864416,
+        2864415,
+        2864414,
+        2864412,
+        2962106
+      ]
+    },
+    {
+      "f": "macau",
+      "ohm": [
+        2694462
+      ]
+    },
+    {
+      "f": "pt-east-africa",
+      "ohm": [
+        2962570,
+        2963990,
+        2964471,
+        2962686
+      ]
+    }
+  ]
+}

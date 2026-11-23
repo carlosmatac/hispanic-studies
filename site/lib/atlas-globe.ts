@@ -28,13 +28,14 @@
    ========================================================================== */
 
 import {
-  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoInterpolate, geoDistance, geoCentroid, geoArea,
+  geoEqualEarth, geoOrthographic, geoPath, geoGraticule, geoInterpolate, geoDistance, geoCentroid, geoArea, geoContains,
   type GeoProjection,
 } from 'd3-geo';
 import { feature, merge, mesh } from 'topojson-client';
 import type { Feature, FeatureCollection, Geometry, MultiPolygon, MultiLineString, Position } from 'geojson';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import type { Chronicle, Era, LonLat, Stop, Voyage, Waypoint } from '@/lib/atlas-chronicle';
+import { GROUND, TINTS, type Tint } from '@/lib/atlas-palette';
 
 /* ---------- colours: the brand tokens, and tints of them ---------- */
 
@@ -66,19 +67,25 @@ const C = {
   glow: mix(BRAND.leather, BRAND.burgundy, 0.35),
 };
 
-/* The map's colours (Carlos, 2026-11-22 and 23): a warm dark ground and sea
-   from the brand's ink and leather; the inhabited world in one muted
-   parchment tone, with no empire told from another (world polities are out of
-   scope); Spain's jurisdictions in burgundy and Portugal's in leather, from our
-   own keyframes; what the voyages recorded lit in paper. */
+/* The map's colours (#104, lib/atlas-palette.ts): a warm dark ground and sea;
+   the rest of the inhabited world in one quiet grey, with no empire told from
+   another (world polities are out of scope, #102); the realms of the story in
+   four families of hues (Spain's reds, Portugal's greens, the Islamic states'
+   blues, Rome's and the Goths' stone), a shade per realm and its name; what
+   the voyages recorded lit in paper. */
 const MAP = {
-  space: hex('#17130f'),
-  sea: mix(hex('#1f1a16'), BRAND.leather, 0.16),
-  land: mix(BRAND.paperDeep, BRAND.leather, 0.62),
-  landFaint: mix(hex('#1f1a16'), BRAND.leather, 0.32),
+  space: hex(GROUND.space),
+  sea: hex(GROUND.sea),
+  land: hex(GROUND.land),
+  landHi: hex(GROUND.landHi),
+  landFaint: mix(hex(GROUND.sea), hex(GROUND.land), 0.45),
   halo: mix(BRAND.leather, BRAND.paper, 0.25),
-  es: hex('#a8485a'), pt: hex('#ad7f64'),
+  es: hex(TINTS['es.spain']), pt: hex(TINTS['pt.portugal']),
 };
+const tintOf = (t: string | undefined, fallback: Tint): RGB => hex(TINTS[(t as Tint) in TINTS ? (t as Tint) : fallback]);
+// today: the Portuguese-speaking states (ISO numeric); the rest of the Iberophone states speak Spanish
+const TODAY_PT = new Set(['620', '076', '024', '508', '624', '626']);
+const KIND_TINT: Record<string, Tint> = { es: 'es.spain', pt: 'pt.portugal', isl: 'isl.andalus', ant: 'ant.stone', claim: 'es.rose', indep: 'es.coral', 'pt-indep': 'pt.brazil' };
 
 /* ---------- small helpers ---------- */
 
@@ -229,6 +236,9 @@ export type FrameInfo = {
 };
 export type Anchors = {
   stop: number;
+  /** the realms the stop's places lie in, and the kinds of realm drawn (for the legend) */
+  here: { f: string; name: string }[];
+  kinds: string;
   area: Box;
   ship: [number, number] | null;
   labels: Box[];
@@ -265,6 +275,8 @@ export type Engine = {
   setMode(m: Mode): void;
   setOverview(o: boolean): void;
   setLayers(l: Layers): void;
+  /** the page's panels over the globe, in its pixels: no name is drawn under them */
+  setAvoid(b: Box[]): void;
   zoomTo(k: number): void;
   zoomBy(f: number): void;
   recentre(): void;
@@ -410,10 +422,10 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       const min = cv.v.kind === 'land' ? 4 : cv.v.kind === 'river' ? 9 : 16;
       return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(min, cap.span), cv.v.kind === 'sea' ? 1.7 : 3) };
     }
-    if (b.focus) return { lon: b.focus.at[0], lat: clamp(b.focus.at[1], -65, 70), R: RforSpan(Math.max(5, b.focus.span)) };
+    if (b.focus) return { lon: b.focus.at[0], lat: clamp(b.focus.at[1], -65, 70), R: RforSpan(Math.max(6, b.focus.span), 5) };   // close enough to read the realms (#104)
     if (b.box) {
       const cap = capOf(boxPoints(b.box));
-      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(8, cap.span * 0.82), 1.5) };
+      return { lon: cap.at[0], lat: clamp(cap.at[1], -60, 65), R: RforSpan(Math.max(8, cap.span * 0.82), 3) };
     }
     // a record with no place: stay where the story was
     return lastTarget ?? { lon: -20, lat: 25, R: R0() };
@@ -431,8 +443,10 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   let skip = 0;
   let lastEra = -1;
   let lastStop = -1;
-  let eraFadeAt = -1e9;
-  let prevEra = -1;
+  let setFadeAt = -1e9;
+  let lastSetKey = '';
+  let lastSet: { id: string; f: string }[] = [];
+  let prevSet: { id: string; f: string }[] = [];
   let pulseAt = -1e9;
   let hits: HitInfo[] = [];
   let hoverKey = '';
@@ -440,6 +454,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   let shapeHits: { path: Path2D; stroke: boolean; hit: Omit<HitInfo, 'x' | 'y'> }[] = [];
   let dragging = false;
   let settleAt = 0;
+  let avoidBoxes: Box[] = [];
+  let avoidKey = '';
 
   function frame(now: number) {
     raf = 0;
@@ -499,13 +515,13 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         cam = nc;
       }
       if (st.era !== lastEra) {
-        if (lastEra >= 0 && !reduced) { prevEra = lastEra; eraFadeAt = now; pulseAt = now; }
+        if (lastEra >= 0 && !reduced) pulseAt = now;
         lastEra = st.era;
       }
       if (moving || dragging) settleAt = now;
       const settling = now - settleAt < 260;   // one fine frame after the camera stops
-      const fading = now - eraFadeAt < 1000 || now - pulseAt < 2800;
-      const key = `${st.si}|${st.era}|${st.preEra}|${Math.round(st.fog * 80)}|${mode}`;
+      const fading = now - setFadeAt < 1000 || now - pulseAt < 2800;
+      const key = `${st.si}|${st.era}|${st.preEra}|${Math.round(st.year)}|${Math.round(st.fog * 80)}|${mode}`;
       const atSea = st.vi >= 0 && playing;
       skip = drawCost > 40 ? (skip + 1) % 3 : drawCost > 24 ? (skip + 1) % 2 : 0;
       if ((dirty || moving || fading || atSea || settling || key !== lastKey) && (skip === 0 || dirty)) {
@@ -556,19 +572,79 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   }
 
   const famOf = (u: { f: string }) => chron.families[u.f];
-  function unitFill(f: { kind: string; tone: number }): RGB {
+  /* A realm's fill: its own shade from the palette (lib/atlas-palette.ts).
+     Independent successor states wear their shade quieter; other crowns and
+     Indigenous states sit on the grey land, told by an edge and a name. */
+  function unitFill(f: { kind: string; tint?: string }): RGB {
     switch (f.kind) {
-      case 'es': return C.es[f.tone % C.es.length];
-      case 'pt': return C.pt[f.tone % C.pt.length];
-      case 'pt-indep': return mix(BRAND.leather, BRAND.paperDeep, 0.35);
-      case 'indep': return C.indep;
-      case 'native': return C.native;
-      case 'claim': return C.es[3];
-      default: return C.other;
+      case 'other': return MAP.landHi;
+      case 'native': return MAP.land;
+      case 'indep': case 'pt-indep': return mix(tintOf(f.tint, KIND_TINT[f.kind]), MAP.land, 0.32);
+      default: return tintOf(f.tint, KIND_TINT[f.kind] ?? 'es.spain');
     }
   }
   type GeoObj = Parameters<ReturnType<typeof geoPath>>[0];
   const fc = (fs: (Feature | undefined)[]): GeoObj => ({ type: 'FeatureCollection', features: fs.filter((f): f is Feature => !!f) });
+  /** The units drawn at a state: the American keyframe in force (from 1492) and
+      the dated realms (the peninsula from 218 BCE, the Old World holdings),
+      under to over by their family's rank. */
+  type Unit = { id: string; f: string };
+  const setCache = new Map<string, Unit[]>();
+  function unitsAt(st: State): { key: string; list: Unit[] } {
+    const y = st.year;
+    const rs = chron.realms.filter((u) => u.from <= y && y < u.to);
+    const key = `${st.preEra ? '-' : st.era}|${rs.map((u) => u.id).join(',')}`;
+    let list = setCache.get(key);
+    if (!list) {
+      list = [...(st.preEra ? [] : chron.eras[st.era].units), ...rs.map((u) => ({ id: u.id, f: u.f }))]
+        .filter((u) => !!famOf(u))
+        .map((u, i) => ({ u, i }))
+        .sort((p, q) => (famOf(p.u).z - famOf(q.u).z) || (p.i - q.i))
+        .map(({ u }) => u);
+      setCache.set(key, list);
+    }
+    return { key, list };
+  }
+  // geographic facts about a unit, computed once: its area, and a point for its name
+  const geoFacts = new Map<string, { area: number; at: LonLat }>();
+  function factsOf(id: string): { area: number; at: LonLat } | null {
+    let g = geoFacts.get(id);
+    if (g) return g;
+    const f = units.get(id);
+    if (!f || !f.geometry) return null;
+    const geom = f.geometry as Geometry;
+    const polys: Position[][][] = geom.type === 'Polygon' ? [geom.coordinates] : geom.type === 'MultiPolygon' ? geom.coordinates : [];
+    let best: Position[][] | null = null, bestA = -1, total = 0;
+    for (const poly of polys) { const ar = geoArea({ type: 'Polygon', coordinates: poly }); total += ar; if (ar > bestA) { bestA = ar; best = poly; } }
+    g = { area: total, at: best ? (geoCentroid({ type: 'Polygon', coordinates: best }) as LonLat) : [0, 0] };
+    geoFacts.set(id, g);
+    return g;
+  }
+  /** The realms a stop's places lie in: for each place, the smallest unit drawn that holds it. */
+  const hereCache = new Map<string, string[]>();
+  function realmsHolding(si: number, set: { key: string; list: Unit[] }): string[] {
+    const rec = stops[si].stop.record;
+    if (!rec || stops[si].stop.kind !== 'record' || !rec.anchors.length) return [];
+    const key = `${si}|${set.key}`;
+    let out = hereCache.get(key);
+    if (out) return out;
+    const found: string[] = [];
+    for (const an of rec.anchors) {
+      let best: Unit | null = null, bestA = Infinity;
+      for (const u of set.list) {
+        const k = famOf(u).kind;
+        if (k === 'other' || k === 'native' || k === 'claim') continue;
+        const f = units.get(u.id);
+        const facts = factsOf(u.id);
+        if (!f || !facts || facts.area >= bestA) continue;
+        if (geoContains(f, an.at)) { best = u; bestA = facts.area; }
+      }
+      if (best && !found.includes(best.f)) found.push(best.f);
+    }
+    out = found.slice(0, 3);
+    hereCache.set(key, out);
+    return out;
+  }
 
   function draw(st: State, now: number, fast: boolean) {
     const c = cam as Cam;
@@ -614,61 +690,84 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     // the inhabited world: all land in one muted tone, no empire told from another
     if (coast) { ctx.fillStyle = css(layers.world ? MAP.land : MAP.landFaint); ctx.fill(coast); }
 
-    // jurisdictions: the keyframe in force, cross-fading from the one before
-    const drawEra = (ei: number, alpha: number) => {
-      const e = chron.eras[ei];
-      const tag = `era:${ei}`;
-      const shown = e.units.filter((u) => famOf(u) && UM.get(u.id));
-      const byColour = new Map<string, typeof shown>();
-      for (const u of shown) { const k = css(unitFill(famOf(u))); byColour.set(k, [...(byColour.get(k) ?? []), u]); }
+    // the realms in force, cross-fading from the set before
+    const set = unitsAt(st);
+    const drawSet = (list: Unit[], alpha: number, tag: string) => {
+      const shown = list.filter((u) => UM.get(u.id));
       ctx.globalAlpha = alpha;
-      for (const [colour, us] of byColour) { ctx.fillStyle = colour; ctx.fill(G(`${tag}:${colour}`, () => fc(us.map((u) => UM.get(u.id))))); }
+      // under to over: each family's units in its own shade
+      for (const u of shown) {
+        ctx.fillStyle = css(unitFill(famOf(u)));
+        ctx.fill(G(`${tag}:u:${u.id}`, () => UM.get(u.id) as Feature));
+      }
       const claims = shown.filter((u) => famOf(u).kind === 'claim');
       if (claims.length) {
         const cp = G(`${tag}:claims`, () => fc(claims.map((u) => UM.get(u.id))));
         ctx.save(); ctx.clip(cp);
         const h = new Path2D();
         for (let x = -H; x < W; x += 7) { h.moveTo(x, H); h.lineTo(x + H, 0); }
-        ctx.strokeStyle = css(C.paper, 0.25); ctx.lineWidth = 0.8; ctx.stroke(h);
+        ctx.strokeStyle = css(C.paper, 0.3); ctx.lineWidth = 0.8; ctx.stroke(h);
         ctx.restore();
       }
+      // borders: a dark seam and a paper hairline, so neighbours part even where their shades are close
       const solid = shown.filter((u) => famOf(u).kind !== 'native');
       const native = shown.filter((u) => famOf(u).kind === 'native');
-      ctx.lineWidth = 0.7; ctx.strokeStyle = css(C.paper, 0.5);
-      if (solid.length) ctx.stroke(G(`${tag}:edge`, () => fc(solid.map((u) => UM.get(u.id)))));
-      if (native.length) { ctx.setLineDash([2, 3]); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => UM.get(u.id))))); ctx.setLineDash([]); }
+      if (solid.length) {
+        const edge = G(`${tag}:edge`, () => fc(solid.map((u) => UM.get(u.id))));
+        ctx.lineWidth = 1.6; ctx.strokeStyle = css(MAP.space, 0.55); ctx.stroke(edge);
+        ctx.lineWidth = 0.7; ctx.strokeStyle = css(C.paper, 0.55); ctx.stroke(edge);
+      }
+      if (native.length) { ctx.lineWidth = 0.9; ctx.strokeStyle = css(C.paper, 0.6); ctx.setLineDash([2, 3]); ctx.stroke(G(`${tag}:native`, () => fc(native.map((u) => UM.get(u.id))))); ctx.setLineDash([]); }
       ctx.globalAlpha = 1;
     };
-    if (!layers.iberian) { /* the Iberian keyframes are off */ } else if (today) {
-      ctx.fillStyle = css(C.pt[1]);
-      ctx.fill(G('today:sub', () => fc(chron.iberophone.submersa.map((id) => countries.get(id)))));
-      ctx.fillStyle = css(C.es[1]);
-      ctx.fill(G('today:em', () => fc(chron.iberophone.emersa.map((id) => countries.get(id)))));
-      if (borders) { ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paper, 0.45); ctx.stroke(G('borders', () => borders as MultiLineString)); }
-    } else if (!st.preEra) {
-      const ef = reduced ? 1 : smooth((now - eraFadeAt) / 900);
-      if (ef < 1 && prevEra >= 0 && prevEra !== st.era) drawEra(prevEra, 1 - ef);
-      drawEra(st.era, ef);
-      if (st.cs.stop.kind === 'era') {
+    if (set.key !== lastSetKey) {
+      if (lastSetKey && !reduced) { prevSet = lastSet; setFadeAt = now; }
+      lastSetKey = set.key; lastSet = set.list;
+    }
+    // what this stop is about: the realms that change (a keyframe), the realms its places lie in (a record)
+    const hi = new Set<string>();
+    if (layers.iberian && !today) {
+      if (st.cs.stop.kind === 'era' && !st.preEra) for (const f of era.pulse) hi.add(f);
+      for (const f of realmsHolding(st.si, set)) hi.add(f);
+      if (focus?.kind === 'unit') hi.add(focus.f);
+    }
+    if (!layers.iberian) { /* the realms are off */ } else if (today) {
+      const tintToday = (id: string) => (TODAY_PT.has(id) ? TINTS['pt.brazil'] : TINTS['es.red']);
+      for (const id of chron.iberophone.emersa) { const f = countries.get(id); if (!f) continue; ctx.fillStyle = tintToday(id); ctx.fill(G(`today:${id}`, () => f)); }
+      const sub = G('today:sub', () => fc(chron.iberophone.submersa.map((id) => countries.get(id))));
+      ctx.fillStyle = css(MAP.landHi); ctx.fill(sub);
+      ctx.save(); ctx.clip(sub);
+      const h = new Path2D();
+      for (let x = -H; x < W; x += 6) { h.moveTo(x, H); h.lineTo(x + H, 0); }
+      ctx.strokeStyle = TINTS['es.rose']; ctx.globalAlpha = 0.6; ctx.lineWidth = 1; ctx.stroke(h); ctx.globalAlpha = 1;
+      ctx.restore();
+      // today's states, faintly: only here are modern borders drawn
+      if (borders) { ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paper, 0.3); ctx.stroke(G('borders', () => borders as MultiLineString)); }
+    } else {
+      const ef = reduced ? 1 : smooth((now - setFadeAt) / 900);
+      if (ef < 1 && prevSet.length) drawSet(prevSet, 1 - ef, 'prev');
+      drawSet(set.list, ef, 'cur');
+      if (hi.size) {
+        // the stop's territory: outlined in light (a keyframe's changes pulse once)
         const p2 = (now - pulseAt) / 1000;
-        const al = reduced ? 0.8 : p2 < 2.6 ? Math.max(0.4, (1 - p2 / 2.6) * (0.55 + 0.45 * Math.sin(p2 * 7))) : 0.4;
-        ctx.lineWidth = 2.2; ctx.strokeStyle = css(C.paper, al);
-        ctx.stroke(G(`era:${st.era}:pulse`, () => fc(era.units.filter((u) => era.pulse.includes(u.f)).map((u) => UM.get(u.id)))));
+        const pulsing = st.cs.stop.kind === 'era' && !reduced && p2 < 2.6;
+        const al = pulsing ? Math.max(0.55, (1 - p2 / 2.6) * (0.6 + 0.4 * Math.sin(p2 * 7))) : 0.95;
+        const hp = G('hi', () => fc(set.list.filter((u) => hi.has(u.f)).map((u) => UM.get(u.id))));
+        ctx.save(); ctx.clip(hp);
+        ctx.lineWidth = 7; ctx.strokeStyle = css(C.paper, 0.22); ctx.stroke(hp);
+        ctx.restore();
+        ctx.lineWidth = 2.2; ctx.strokeStyle = css(C.paper, al); ctx.stroke(hp);
       }
     }
     shapeHits = [];
-    if (layers.iberian && !today && !st.preEra) {
-      const listed = new Set(era.pulse);
-      if (focus?.kind === 'unit') listed.add(focus.f);
-      for (const fid of listed) {
-        const us = era.units.filter((u) => u.f === fid && UM.get(u.id));
-        if (!us.length || !chron.families[fid]) continue;
-        const path = G(`era:${st.era}:fam:${fid}`, () => fc(us.map((u) => UM.get(u.id))));
+    if (layers.iberian && !today) {
+      // every realm on the globe names itself under the pointer (the topmost first)
+      const byFam = new Map<string, Unit[]>();
+      for (const u of set.list) { if (!UM.get(u.id)) continue; byFam.set(u.f, [...(byFam.get(u.f) ?? []), u]); }
+      for (const [fid, us] of [...byFam].reverse()) {
+        const path = G(`fam:${fid}`, () => fc(us.map((u) => UM.get(u.id))));
         shapeHits.push({ path, stroke: false, hit: { title: era.names[fid] ?? chron.families[fid].name, focus: { kind: 'unit', f: fid } } });
-        if (focus?.kind === 'unit' && focus.f === fid) {
-          ctx.fillStyle = css(C.paper, 0.16); ctx.fill(path);
-          ctx.lineWidth = 2.4; ctx.strokeStyle = css(C.paper, 0.95); ctx.stroke(path);
-        }
+        if (focus?.kind === 'unit' && focus.f === fid) { ctx.fillStyle = css(C.paper, 0.14); ctx.fill(path); }
       }
     }
     if (coast) { ctx.lineWidth = 0.6; ctx.strokeStyle = css(C.paperDeep, 0.35); ctx.stroke(coast); }
@@ -713,7 +812,9 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       // after the voyages, the dark thins over the centuries as the world's coasts reach the record
       const charted = clamp((st.year - 1570) / 180, 0, 0.82);
       if (fogOn && charted > 0) { mctx.globalAlpha = charted; mctx.fill(sphere); mctx.globalAlpha = 1; }
-      if (!st.preEra) mctx.fill(G(`known:${st.era}`, () => fc(knownUnits[st.era].map((id) => UM.get(id)))));
+      // (lit as 'recorded' they would wash the realms' colours out: only the dark is lifted by them)
+      if (fogOn && !st.preEra) mctx.fill(G(`known:${st.era}`, () => fc(knownUnits[st.era].map((id) => UM.get(id)))));
+      if (fogOn) mctx.fill(G('known:realms', () => fc(set.list.filter((u) => chron.realms.some((r) => r.id === u.id)).map((u) => UM.get(u.id)))));
       for (const r of sailed) {
         const kind = r.cv.v.kind;
         // with the dark on, a wide wake lifts it; lit as "recorded", a narrow one
@@ -727,7 +828,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
           const p = pt(lf.wp.at);
           if (!p) continue;
           const grow = r.current && !reduced ? smooth((st.tau - lf.arrive) / 1.4) : 1;
-          const rad = (lf.wp.reveal ?? (kind === 'sea' ? 1.8 : 1.2)) * Math.max(0.05, grow) * ppd;
+          // (lit as "recorded", a landfall is a small light, not a blot over the realms)
+          const rad = Math.min((lf.wp.reveal ?? (kind === 'sea' ? 1.8 : 1.2)) * ppd, fogOn ? Infinity : 9) * Math.max(0.05, grow);
           mctx.beginPath(); mctx.arc(p[0], p[1], rad, 0, Math.PI * 2); mctx.fill();
         }
       }
@@ -802,6 +904,8 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
     const placed: [number, number, number, number][] = [];
     const free_ = (x: number, y: number, w: number, h: number) => {
       if (x < 4 || y < 4 || x + w > W - 4 || y + h > H - 4) return false;
+      // no name under the page's panels (the cartouche, the rail, the time bar, the card)
+      for (const b of avoidBoxes) if (x < b[2] && x + w > b[0] && y < b[3] && y + h > b[1]) return false;
       for (const b of placed) if (x < b[0] + b[2] && x + w > b[0] && y < b[1] + b[3] && y + h > b[1]) return false;
       placed.push([x, y, w, h]); return true;
     };
@@ -829,6 +933,43 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         ctx.textAlign = 'center';
       }
     }
+
+    // the realms' names: the stop's own first, then the keyframe's, then the largest; only where they fit
+    const drawNames = (own: boolean) => {
+    if (layers.iberian && layers.labels && !today) {
+      ctx.textAlign = 'center';
+      const byFam = new Map<string, Unit[]>();
+      for (const u of set.list) { if (!units.get(u.id)) continue; byFam.set(u.f, [...(byFam.get(u.f) ?? []), u]); }
+      const cands = [...byFam].flatMap(([fid, us]) => {
+        const f = chron.families[fid];
+        if (!f || f.kind === 'native') return [];
+        if (f.kind === 'other' && !era.labels.includes(fid) && !hi.has(fid)) return [];
+        let area = 0, big: { area: number; at: LonLat } | null = null;
+        for (const u of us) { const g = factsOf(u.id); if (!g) continue; area += g.area; if (!big || g.area > big.area) big = g; }
+        if (!big) return [];
+        const rank = hi.has(fid) ? 3 : era.labels.includes(fid) && !st.preEra ? 2 : 1;
+        return [{ fid, area, at: (f.at ?? big.at) as LonLat, rank }];
+      }).sort((p, q) => (q.rank - p.rank) || (q.area - p.area));
+      for (const cd of cands) {
+        if ((cd.rank === 3) !== own) continue;
+        const p = pt(cd.at);
+        if (!p) continue;
+        const px = cd.area * c.R * c.R;          // its size on screen, roughly, in square pixels
+        const name = era.names[cd.fid] ?? chron.families[cd.fid].name;
+        const size = clamp(Math.sqrt(px) / 7, 10.5, 17);
+        ctx.font = `${cd.rank === 3 ? 700 : 600} ${size}px ${fontSerif}`;
+        const w = ctx.measureText(name).width;
+        // too small to hold its name: left to the hover (the stop's own always shows)
+        if (cd.rank < 3 && px < w * size * 1.1) continue;
+        if (!free_(p[0] - w / 2 - 2, p[1] - size, w + 4, size + 4)) continue;
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 3.2; ctx.strokeStyle = css(MAP.space, 0.7); ctx.strokeText(name, p[0], p[1]);
+        ctx.fillStyle = css(C.paper, cd.rank === 3 ? 1 : 0.92); ctx.fillText(name, p[0], p[1]);
+      }
+    }
+    };
+    // the stop's own realms are named before anything else claims the room
+    drawNames(true);
 
     // seas get their names when they are reached
     const seas: { at: LonLat; name: string; from?: number }[] = [
@@ -966,24 +1107,7 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       }
     }
 
-    // the keyframe's names
-    if (layers.iberian && layers.labels && !today && !st.preEra) {
-      ctx.textAlign = 'center';
-      for (const fid of era.labels) {
-        const f = chron.families[fid];
-        if (!f?.at || f.kind === 'native') continue;
-        if (!era.units.some((u) => u.f === fid)) continue;
-        const p = pt(f.at);
-        if (!p) continue;
-        const name = era.names[fid] ?? f.name;
-        const size = clamp(ppd * 0.95, 10.5, 16);
-        ctx.font = `600 ${size}px ${fontSerif}`;
-        const w = ctx.measureText(name).width;
-        if (!free_(p[0] - w / 2 - 2, p[1] - size, w + 4, size + 4)) continue;
-        ctx.lineWidth = 3; ctx.strokeStyle = css(C.burgundyDark, 0.55); ctx.strokeText(name, p[0], p[1]);
-        ctx.fillStyle = css(C.paper, 0.95); ctx.fillText(name, p[0], p[1]);
-      }
-    }
+    drawNames(false);
     // the events layer: Beltrán's records in force this year, as lozenges
     if (layers.events) {
       const pins: [number, number][] = [];
@@ -1020,21 +1144,25 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         const x0 = Math.max(0, b[0][0]), y0 = Math.max(0, b[0][1]), x1 = Math.min(W, b[1][0]), y1 = Math.min(H, b[1][1]);
         return x1 - x0 < 1 || y1 - y0 < 1 ? null : [x0, y0, x1, y1];
       };
-      const off = today || st.preEra;
-      const eraNow = st.era;
+      const off = today;
       const path = geoPath(proj);
+      const drawnKinds = today ? 'es-today,pt-today' : layers.iberian
+        ? [...new Set(set.list.map((u) => { const k = famOf(u).kind; return k === 'pt-indep' ? 'indep' : k === 'claim' ? 'es' : k; }))].sort().join(',')
+        : '';
       opts.onAnchors({
         stop: st.si,
+        here: today ? [] : realmsHolding(st.si, set).map((f) => ({ f, name: era.names[f] ?? chron.families[f].name })),
+        kinds: drawnKinds,
         area: [a.x, a.y, a.x + a.w, a.y + a.h],
         ship: shipAt ? [shipAt[0], shipAt[1]] : null,
         labels: placed.map(([x, y, w, h]) => [x, y, x + w, y + h] as Box),
         project: (at) => { const p = pt(at); return p ? [p[0], p[1]] : null; },
         unitBox: (fid) => {
           if (off) return null;
-          const us = chron.eras[eraNow].units.filter((u) => u.f === fid && units.get(u.id));
+          const us = set.list.filter((u) => u.f === fid && units.get(u.id));
           return us.length ? clip(path.bounds(fc(us.map((u) => units.get(u.id))))) : null;
         },
-        lineBox: (id) => (off || !chron.eras[eraNow].lines.includes(id) || !lines.get(id) ? null : clip(path.bounds(lines.get(id) as Feature))),
+        lineBox: (id) => (off || st.preEra || !chron.eras[st.era].lines.includes(id) || !lines.get(id) ? null : clip(path.bounds(lines.get(id) as Feature))),
       });
     }
 
@@ -1192,9 +1320,10 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
   }
   (async () => {
     try {
-      const [world, eraTopo] = await Promise.all([
+      const [world, eraTopo, realmTopo] = await Promise.all([
         fetch('/data/world-110m.json').then((r) => r.json()),
         fetch('/data/atlas-eras.topo.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
+        fetch('/data/atlas-realms.topo.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
       ]);
       const wt = world as Topology;
       const cobj = wt.objects.countries as GeometryCollection;
@@ -1221,6 +1350,12 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
         const ec = decimate(et, 3);
         for (const f of (feature(ec, ec.objects.units) as unknown as FeatureCollection<Geometry>).features) unitsCoarse.set(String(f.id), rewindOne(f));
         for (const f of (feature(et, et.objects.lines) as unknown as FeatureCollection<Geometry>).features) lines.set(String(f.id), f);
+      }
+      if (realmTopo) {
+        const rt = realmTopo as Topology;
+        for (const f of (feature(rt, rt.objects.units) as unknown as FeatureCollection<Geometry>).features) units.set(String(f.id), rewindOne(f));
+        const rc = decimate(rt, 3);
+        for (const f of (feature(rc, rc.objects.units) as unknown as FeatureCollection<Geometry>).features) unitsCoarse.set(String(f.id), rewindOne(f));
       }
       readFonts();
       if (document.fonts) document.fonts.ready.then(() => { readFonts(); kick(); });
@@ -1290,6 +1425,11 @@ export function createAtlasGlobe(canvas: HTMLCanvasElement, chron: Chronicle, op
       flyNext = !o; kick();
     },
     setLayers(l: Layers) { layers = l; kick(); },
+    setAvoid(b: Box[]) {
+      const k = b.map((x) => x.map(Math.round).join(',')).join('|');
+      if (k === avoidKey) return;
+      avoidKey = k; avoidBoxes = b; kick();
+    },
     zoomTo(k: number) { if (cam) flyTo({ ...cam, R: clamp(R0() * k, R0() * 0.85, Rmax()) }); },
     zoomBy(f: number) { if (cam) flyTo({ ...cam, R: clamp(cam.R * f, R0() * 0.85, Rmax()) }); },
     recentre() {

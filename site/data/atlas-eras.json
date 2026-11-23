@@ -9,6 +9,7 @@
  "families": {
   "indies": {
    "kind": "es",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "Viceroyalty of the Indies",
@@ -25,6 +26,7 @@
   },
   "new-spain": {
    "kind": "es",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "New Spain",
@@ -37,6 +39,7 @@
   },
   "peru": {
    "kind": "es",
+   "tint": "es.wine",
    "tone": 1,
    "name": {
     "en": "Peru",
@@ -49,6 +52,7 @@
   },
   "new-granada": {
    "kind": "es",
+   "tint": "es.brick",
    "tone": 2,
    "name": {
     "en": "New Granada",
@@ -61,6 +65,7 @@
   },
   "rio-de-la-plata": {
    "kind": "es",
+   "tint": "es.amber",
    "tone": 3,
    "name": {
     "en": "Río de la Plata",
@@ -73,6 +78,7 @@
   },
   "guatemala": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 2,
    "name": {
     "en": "Guatemala",
@@ -85,6 +91,7 @@
   },
   "chile": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 2,
    "name": {
     "en": "Chile",
@@ -97,6 +104,7 @@
   },
   "venezuela": {
    "kind": "es",
+   "tint": "es.plum",
    "tone": 3,
    "name": {
     "en": "Venezuela",
@@ -109,6 +117,7 @@
   },
   "cuba": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 1,
    "name": {
     "en": "Cuba",
@@ -121,6 +130,7 @@
   },
   "puerto-rico": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 1,
    "name": {
     "en": "Puerto Rico",
@@ -129,6 +139,7 @@
   },
   "santo-domingo": {
    "kind": "es",
+   "tint": "es.amber",
    "tone": 2,
    "name": {
     "en": "Santo Domingo",
@@ -141,6 +152,7 @@
   },
   "yucatan": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 1,
    "name": {
     "en": "Yucatán",
@@ -149,6 +161,7 @@
   },
   "provincias-internas": {
    "kind": "es",
+   "tint": "es.amber",
    "tone": 2,
    "name": {
     "en": "Interior Provinces",
@@ -161,6 +174,7 @@
   },
   "florida": {
    "kind": "es",
+   "tint": "es.plum",
    "tone": 2,
    "name": {
     "en": "Florida",
@@ -173,6 +187,7 @@
   },
   "louisiana": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 3,
    "name": {
     "en": "Louisiana",
@@ -185,6 +200,7 @@
   },
   "philippines": {
    "kind": "es",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "Philippines",
@@ -197,6 +213,7 @@
   },
   "trinidad": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 2,
    "name": {
     "en": "Trinidad",
@@ -205,6 +222,7 @@
   },
   "jamaica-es": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 2,
    "name": {
     "en": "Jamaica",
@@ -213,6 +231,7 @@
   },
   "brazil": {
    "kind": "pt",
+   "tint": "pt.brazil",
    "tone": 0,
    "name": {
     "en": "Brazil",
@@ -225,6 +244,7 @@
   },
   "maranhao": {
    "kind": "pt",
+   "tint": "pt.sage",
    "tone": 1,
    "name": {
     "en": "Maranhão and Grão-Pará",
@@ -449,6 +469,7 @@
   },
   "mexico": {
    "kind": "indep",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "Mexico",
@@ -461,6 +482,7 @@
   },
   "central-america": {
    "kind": "indep",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Federal Republic of Central America",
@@ -477,6 +499,7 @@
   },
   "gran-colombia": {
    "kind": "indep",
+   "tint": "es.brick",
    "tone": 0,
    "name": {
     "en": "Colombia",
@@ -489,6 +512,7 @@
   },
   "new-granada-rep": {
    "kind": "indep",
+   "tint": "es.brick",
    "tone": 0,
    "name": {
     "en": "New Granada",
@@ -501,6 +525,7 @@
   },
   "venezuela-rep": {
    "kind": "indep",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Venezuela",
@@ -513,6 +538,7 @@
   },
   "ecuador": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "Ecuador",
@@ -521,6 +547,7 @@
   },
   "peru-rep": {
    "kind": "indep",
+   "tint": "es.wine",
    "tone": 0,
    "name": {
     "en": "Peru",
@@ -533,6 +560,7 @@
   },
   "bolivia": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "Bolivia",
@@ -545,6 +573,7 @@
   },
   "chile-rep": {
    "kind": "indep",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Chile",
@@ -557,6 +586,7 @@
   },
   "argentina": {
    "kind": "indep",
+   "tint": "es.amber",
    "tone": 0,
    "name": {
     "en": "United Provinces of the Río de la Plata",
@@ -573,6 +603,7 @@
   },
   "paraguay": {
    "kind": "indep",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Paraguay",
@@ -581,6 +612,7 @@
   },
   "uruguay": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "Uruguay",
@@ -589,6 +621,7 @@
   },
   "guatemala-rep": {
    "kind": "indep",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Guatemala",
@@ -597,6 +630,7 @@
   },
   "honduras": {
    "kind": "indep",
+   "tint": "es.amber",
    "tone": 0,
    "name": {
     "en": "Honduras",
@@ -605,6 +639,7 @@
   },
   "el-salvador": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "El Salvador",
@@ -613,6 +648,7 @@
   },
   "nicaragua": {
    "kind": "indep",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Nicaragua",
@@ -621,6 +657,7 @@
   },
   "costa-rica": {
    "kind": "indep",
+   "tint": "es.brick",
    "tone": 0,
    "name": {
     "en": "Costa Rica",
@@ -629,6 +666,7 @@
   },
   "dominican-republic": {
    "kind": "indep",
+   "tint": "es.amber",
    "tone": 0,
    "name": {
     "en": "Dominican Republic",
@@ -637,6 +675,7 @@
   },
   "brazil-empire": {
    "kind": "pt-indep",
+   "tint": "pt.brazil",
    "tone": 0,
    "name": {
     "en": "Empire of Brazil",
@@ -653,6 +692,7 @@
   },
   "florida-dispute": {
    "kind": "claim",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Disputed with the United States",
@@ -661,6 +701,7 @@
   },
   "louisiana-dispute": {
    "kind": "claim",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Disputed with the United States",
@@ -669,6 +710,7 @@
   },
   "nw-coast": {
    "kind": "claim",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Northwest coast, claimed by Spain",
