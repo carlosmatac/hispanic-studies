@@ -1,0 +1,32 @@
+{
+  "first": 1671,
+  "end": 1839,
+  "a0": 55.675,
+  "story": [
+    { "at": 0.0, "stop": "era-1492" },
+    { "at": 0.8, "stop": "columbus-1", "run": [0.0, 0.97], "for": 0.8 },
+    { "at": 1.6, "stop": "era-1494" },
+    { "at": 2.4, "stop": "era-1542" },
+    { "at": 3.2, "stop": "legazpi", "run": [0.0, 1.0], "for": 0.8 },
+    { "at": 4.0, "stop": "era-1777" }
+  ],
+  "camera": [
+    { "at": 0.0, "lon": -4.0, "lat": 39.0, "k": 4.2 },
+    { "at": 0.8, "lon": -7.5, "lat": 36.5, "k": 3.5, "ease": "linear" },
+    { "at": 1.75, "lon": -42.0, "lat": 22.0, "k": 1.5, "ease": "inout" },
+    { "at": 2.45, "lon": -50.0, "lat": 17.0, "k": 1.42, "ease": "linear" },
+    { "at": 3.05, "lon": -72.0, "lat": 3.0, "k": 1.25, "ease": "inout" },
+    { "at": 3.25, "lon": -74.0, "lat": 4.0, "k": 1.24, "ease": "linear" },
+    { "at": 4.3, "lon": -166.0, "lat": 17.0, "k": 0.98, "ease": "inout" },
+    { "at": 5.6, "lon": -171.0, "lat": 17.0, "k": 0.94, "ease": "linear" }
+  ],
+  "pins": {
+    "granada": [-3.6, 37.18],
+    "guanahani": [-74.5, 24.1],
+    "tordesillas": [-46.5, 6.0],
+    "lima": [-77.03, -12.05],
+    "mexico": [-99.13, 19.43],
+    "manila": [120.98, 14.6],
+    "interior": [-106.0, 31.0]
+  }
+}

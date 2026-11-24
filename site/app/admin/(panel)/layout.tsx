@@ -12,6 +12,8 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const { lang, t } = await adminText();
   const nav = [
     { href: '/admin', label: t.nav.works },
+    { href: '/admin/curated', label: t.nav.curated },
+    { href: '/admin/eras', label: t.nav.eras },
     { href: '/admin/sections', label: t.nav.sections },
     { href: '/admin/regions', label: t.nav.regions },
     { href: '/admin/page-copy', label: t.nav.page },

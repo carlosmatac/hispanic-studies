@@ -5,7 +5,8 @@ import { and, asc, eq } from 'drizzle-orm';
 import { getDb, schema } from '@/lib/db';
 import { getSession } from '@/lib/admin/session';
 import { renderMarkdown } from '@/lib/text';
-import { RIGHTS, type CanonRegion, type CanonSection, type CanonWork, type Localised, type Reference, type Rights } from '@/lib/canon';
+import { isHostable, RIGHTS, type Article, type BrowseRegion, type CanonRegion, type CanonSection, type CanonWork, type Edition, type Era, type Localised, type Reference, type Rights } from '@/lib/canon';
+import { hostedMode } from '@/lib/editions';
 import type { Lang } from '@/lib/i18n';
 
 /* The archive, read from the database (issue #69). The public pages are
@@ -17,31 +18,60 @@ import type { Lang } from '@/lib/i18n';
 
 export const ARCHIVE_TAG = 'archive';
 
-export type PageCopy = { title: Localised; intro: Localised; notes: Localised; door: Localised };
-export type Archive = { page: PageCopy; sections: CanonSection[]; regions: CanonRegion[]; works: CanonWork[] };
+export type PageCopy = { title: Localised; intro: Localised; notes: Localised; door: Localised; landingTitle: Localised; landingIntro: Localised };
+export type Archive = {
+  page: PageCopy;
+  sections: CanonSection[];
+  regions: CanonRegion[];
+  /** the curated 80's eras and the regions it is browsed by (issue #93) */
+  eras: Era[];
+  browseRegions: BrowseRegion[];
+  works: CanonWork[];
+};
 
 const loc = (en: string, es: string): Localised => ({ en, es });
 
 async function load(includeDrafts: boolean): Promise<Archive> {
   const db = getDb();
-  const [pageRows, sectionRows, regionRows, workRows, textRows, refRows] = await Promise.all([
+  const [pageRows, sectionRows, regionRows, eraRows, browseRows, workRows, textRows, refRows, editionRows, titleRows] = await Promise.all([
     db.select().from(schema.archivePage),
     db.select().from(schema.sections).orderBy(asc(schema.sections.position)),
     db.select().from(schema.regions).orderBy(asc(schema.regions.position)),
+    db.select().from(schema.eras).orderBy(asc(schema.eras.position)),
+    db.select().from(schema.browseRegions).orderBy(asc(schema.browseRegions.position)),
     includeDrafts ? db.select().from(schema.works) : db.select().from(schema.works).where(eq(schema.works.status, 'published')),
     db.select({ workId: schema.workTexts.workId, lang: schema.workTexts.lang, minutes: schema.workTexts.minutes }).from(schema.workTexts),
     db.select().from(schema.workReferences).orderBy(asc(schema.workReferences.workId), asc(schema.workReferences.position)),
+    db.select().from(schema.editions).orderBy(asc(schema.editions.workId), asc(schema.editions.position)),
+    db.select({ workId: schema.workArticles.workId, locale: schema.workArticles.locale, title: schema.workArticles.title }).from(schema.workArticles),
   ]);
   const p = pageRows[0];
   const page: PageCopy = {
     title: loc(p?.titleEn ?? '', p?.titleEs ?? ''),
     intro: loc(p?.introEn ?? '', p?.introEs ?? ''),
     notes: loc(p?.notesEn ?? '', p?.notesEs ?? ''),
-    door: loc(p?.doorEn ?? '', p?.doorEs ?? ''),
+    door: loc(ownDoor(p?.doorEn), ownDoor(p?.doorEs)),
+    landingTitle: loc(p?.landingTitleEn ?? '', p?.landingTitleEs ?? ''),
+    landingIntro: loc(p?.landingIntroEn ?? '', p?.landingIntroEs ?? ''),
   };
   const sections: CanonSection[] = sectionRows.map((s) => ({ id: s.id, position: s.position, name: loc(s.nameEn, s.nameEs), from: s.yearFrom, to: s.yearTo }));
   const regions: CanonRegion[] = regionRows.map((r) => ({ id: r.id, position: r.position, name: loc(r.nameEn, r.nameEs), note: loc(r.noteEn, r.noteEs), swatch: r.swatch }));
+  const eras: Era[] = eraRows.map((e) => ({ id: e.id, position: e.position, name: loc(e.nameEn, e.nameEs), from: e.yearFrom, to: e.yearTo }));
+  const browseRegions: BrowseRegion[] = browseRows.map((r) => ({ id: r.id, position: r.position, name: loc(r.nameEn, r.nameEs) }));
   const swatchOf = new Map(regions.map((r) => [r.id, r.swatch]));
+  const editionsOf = new Map<string, Edition[]>();
+  for (const e of editionRows) {
+    // hosted only when its approval passes every check, whatever the row says
+    const hosted = hostedMode(e);
+    const ed: Edition = {
+      id: e.id, readingLang: e.readingLang, primary: e.primary, languages: e.languages ?? [], extent: e.extent, url: e.url,
+      label: e.label, sourceName: e.sourceName, translator: e.translator, scopeNote: e.scopeNote, publicationYear: e.publicationYear,
+      hosted, pdfUrl: hosted === 'local_pdf' ? e.pdfUrl : '',
+    };
+    editionsOf.set(e.workId, [...(editionsOf.get(e.workId) ?? []), ed]);
+  }
+  const titlesOf = new Map<string, Localised>();
+  for (const a of titleRows) titlesOf.set(a.workId, { ...(titlesOf.get(a.workId) ?? { en: '', es: '' }), [a.locale]: a.title });
   const textsOf = new Map<string, { lang: string; minutes: number }[]>();
   for (const t of textRows) textsOf.set(t.workId, [...(textsOf.get(t.workId) ?? []), { lang: t.lang, minutes: t.minutes }]);
   const refsOf = new Map<string, Reference[]>();
@@ -54,8 +84,31 @@ async function load(includeDrafts: boolean): Promise<Archive> {
   }
 
   const works: CanonWork[] = workRows.map((w) => {
-    const texts = textsOf.get(w.id) ?? [];
     const rights: Rights = (RIGHTS as readonly string[]).includes(w.rights) ? w.rights : 'unverified';
+    const editions = editionsOf.get(w.id) ?? [];
+    // a text is shown when the work is in the U.S. public domain, or an edition in that language is approved to be hosted as HTML
+    const approvedHtml = new Set(editions.filter((e) => e.hosted === 'inline_html').map((e) => e.readingLang));
+    const texts = (textsOf.get(w.id) ?? []).filter((t) => isHostable(rights) || approvedHtml.has(t.lang));
+    const curated = w.eraId && (w.curated || w.canonId) ? {
+      canonId: w.canonId ?? '',
+      slug: w.slug ?? w.id,
+      current: w.curated,
+      order: w.curatedOrder ?? 0,
+      era: w.eraId,
+      originalTitle: w.originalTitle || w.title,
+      creator: w.creator || w.author,
+      dateDisplay: w.dateDisplay || String(w.year),
+      dateKind: w.dateKind,
+      scope: w.scope,
+      originalLanguages: w.originalLanguages ?? [],
+      browseRegions: w.browseRegionIds ?? [],
+      geographicNote: w.geographicNote,
+      englishState: w.englishState,
+      articleStatus: w.articleStatus,
+      titles: titlesOf.get(w.id) ?? { en: '', es: '' },
+      editions,
+      companions: w.companions ?? [],
+    } : null;
     return {
       id: w.id,
       status: w.status,
@@ -82,18 +135,36 @@ async function load(includeDrafts: boolean): Promise<Archive> {
       pdSpainYear: w.pdSpainYear,
       pdUsYear: w.pdUsYear,
       needsTranscription: w.needsTranscription,
-      // a text is only ever shown for a public-domain work
-      hasText: texts.length > 0 && rights === 'public-domain',
+      hasText: texts.length > 0,
       texts,
       references: refsOf.get(w.id) ?? [],
+      curated,
     };
   });
   // the order of the shelf and of "earlier / later": by year, then by id
   works.sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
-  return { page, sections, regions, works };
+  return { page, sections, regions, eras, browseRegions, works };
 }
 
-const loadPublished = unstable_cache(() => load(false), ['archive-v1'], { tags: [ARCHIVE_TAG] });
+/** The curated 80 in their order (era, then Beltrán's order), as this reader may see them. */
+export function curatedWorks(a: Pick<Archive, 'eras' | 'works'>, editor: boolean): CanonWork[] {
+  const eraPos = new Map(a.eras.map((e) => [e.id, e.position]));
+  return a.works
+    .filter((w) => w.curated?.current && (editor || (w.status === 'published' && w.curated.articleStatus === 'published')))
+    .sort((x, y) => (eraPos.get(x.curated!.era) ?? 99) - (eraPos.get(y.curated!.era) ?? 99) || x.curated!.order - y.curated!.order);
+}
+
+const loadArticles = (id: string, fresh: boolean) => {
+  const read = async (): Promise<Article[]> => (await getDb().select().from(schema.workArticles).where(eq(schema.workArticles.workId, id)))
+    .map((a) => ({ locale: a.locale, title: a.title, aboutAuthor: a.aboutAuthor, workInItsTime: a.workInItsTime, whyReadToday: a.whyReadToday }));
+  return fresh ? read() : unstable_cache(read, ['work-articles-v1', id], { tags: [ARCHIVE_TAG] })();
+};
+
+/** A curated work's articles (ES and EN). */
+export const getArticles = cache(async (id: string) => loadArticles(id, await isEditor()));
+
+// v3 (#106): the stored home line now goes through ownDoor; a new key, so nothing cached before it is served
+const loadPublished = unstable_cache(() => load(false), ['archive-v3'], { tags: [ARCHIVE_TAG] });
 
 /** Whether this request comes from a signed-in editor (Draft Mode on and a valid session). */
 export const isEditor = cache(async (): Promise<boolean> => {
@@ -138,5 +209,20 @@ export const getText = cache(async (id: string, lang: string) => {
 });
 
 /** "{works}" and "{sections}" in the page's own copy become the numbers. */
-export const fillCounts = (s: string, a: Pick<Archive, 'works' | 'sections'>) =>
-  s.replace(/\{(works|obras)\}/g, String(a.works.length)).replace(/\{(sections|secciones)\}/g, String(a.sections.length));
+export const fillCounts = (s: string, a: Pick<Archive, 'works' | 'sections' | 'eras'>) => {
+  const curated = curatedWorks(a, false).length;
+  return s
+    .replace(/\{(works|obras)\}/g, String(a.works.length)).replace(/\{(sections|secciones)\}/g, String(a.sections.length))
+    .replace(/\{(curated|curados)\}/g, String(curated)).replace(/\{(rest|resto)\}/g, String(a.works.length - curated));
+};
+
+/* The home's line about the archive as it was seeded before the curated 80
+   (issue #93): "{works} primary sources in six periods … to the end of the
+   twentieth century", no longer true. Stored unchanged, it counts as empty, so
+   the site's own line (lib/i18n.ts, canon.door) shows until someone writes a
+   new one in /admin (issue #106). */
+const LEGACY_DOOR = [
+  '{works} primary sources in six periods, from Vitoria and Las Casas to the end of the twentieth century; those in the public domain, in full.',
+  '{works} fuentes primarias en seis épocas, de Vitoria y Las Casas al final del siglo XX; las de dominio público, completas.',
+];
+export const ownDoor = (s: string | null | undefined) => (s && !LEGACY_DOOR.includes(s.trim().replace('{obras}', '{works}')) ? s : '');

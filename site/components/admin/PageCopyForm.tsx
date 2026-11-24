@@ -4,13 +4,14 @@ import { useActionState } from 'react';
 import { savePage } from '@/app/admin/actions';
 import { adminDict, type Lang } from '@/lib/i18n';
 
-type Copy = Record<'titleEn' | 'titleEs' | 'introEn' | 'introEs' | 'notesEn' | 'notesEs' | 'doorEn' | 'doorEs', string>;
+type Copy = Record<'titleEn' | 'titleEs' | 'introEn' | 'introEs' | 'notesEn' | 'notesEs' | 'doorEn' | 'doorEs' | 'landingTitleEn' | 'landingTitleEs' | 'landingIntroEn' | 'landingIntroEs', string>;
 
 /* The archive page's own words, in Spanish and English side by side. */
 export default function PageCopyForm({ copy, lang }: { copy: Copy; lang: Lang }) {
   const { page: t, common } = adminDict(lang);
   const [state, action, pending] = useActionState(savePage, null);
   const rows: [keyof Copy, keyof Copy, string, number][] = [
+    ['landingTitleEs', 'landingTitleEn', t.landingTitle, 2], ['landingIntroEs', 'landingIntroEn', t.landingIntro, 12],
     ['titleEs', 'titleEn', t.title, 2], ['introEs', 'introEn', t.intro, 6], ['notesEs', 'notesEn', t.notes, 5], ['doorEs', 'doorEn', t.door, 3],
   ];
   return (

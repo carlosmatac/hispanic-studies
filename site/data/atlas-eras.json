@@ -9,6 +9,7 @@
  "families": {
   "indies": {
    "kind": "es",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "Viceroyalty of the Indies",
@@ -25,6 +26,7 @@
   },
   "new-spain": {
    "kind": "es",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "New Spain",
@@ -37,6 +39,7 @@
   },
   "peru": {
    "kind": "es",
+   "tint": "es.wine",
    "tone": 1,
    "name": {
     "en": "Peru",
@@ -49,6 +52,7 @@
   },
   "new-granada": {
    "kind": "es",
+   "tint": "es.brick",
    "tone": 2,
    "name": {
     "en": "New Granada",
@@ -61,6 +65,7 @@
   },
   "rio-de-la-plata": {
    "kind": "es",
+   "tint": "es.amber",
    "tone": 3,
    "name": {
     "en": "Río de la Plata",
@@ -73,6 +78,7 @@
   },
   "guatemala": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 2,
    "name": {
     "en": "Guatemala",
@@ -85,6 +91,7 @@
   },
   "chile": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 2,
    "name": {
     "en": "Chile",
@@ -97,6 +104,7 @@
   },
   "venezuela": {
    "kind": "es",
+   "tint": "es.plum",
    "tone": 3,
    "name": {
     "en": "Venezuela",
@@ -109,6 +117,7 @@
   },
   "cuba": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 1,
    "name": {
     "en": "Cuba",
@@ -121,6 +130,7 @@
   },
   "puerto-rico": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 1,
    "name": {
     "en": "Puerto Rico",
@@ -129,6 +139,7 @@
   },
   "santo-domingo": {
    "kind": "es",
+   "tint": "es.amber",
    "tone": 2,
    "name": {
     "en": "Santo Domingo",
@@ -141,6 +152,7 @@
   },
   "yucatan": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 1,
    "name": {
     "en": "Yucatán",
@@ -149,6 +161,7 @@
   },
   "provincias-internas": {
    "kind": "es",
+   "tint": "es.amber",
    "tone": 2,
    "name": {
     "en": "Interior Provinces",
@@ -161,6 +174,7 @@
   },
   "florida": {
    "kind": "es",
+   "tint": "es.plum",
    "tone": 2,
    "name": {
     "en": "Florida",
@@ -173,6 +187,7 @@
   },
   "louisiana": {
    "kind": "es",
+   "tint": "es.rose",
    "tone": 3,
    "name": {
     "en": "Louisiana",
@@ -185,6 +200,7 @@
   },
   "philippines": {
    "kind": "es",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "Philippines",
@@ -197,6 +213,7 @@
   },
   "trinidad": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 2,
    "name": {
     "en": "Trinidad",
@@ -205,6 +222,7 @@
   },
   "jamaica-es": {
    "kind": "es",
+   "tint": "es.coral",
    "tone": 2,
    "name": {
     "en": "Jamaica",
@@ -213,6 +231,7 @@
   },
   "brazil": {
    "kind": "pt",
+   "tint": "pt.brazil",
    "tone": 0,
    "name": {
     "en": "Brazil",
@@ -225,6 +244,7 @@
   },
   "maranhao": {
    "kind": "pt",
+   "tint": "pt.sage",
    "tone": 1,
    "name": {
     "en": "Maranhão and Grão-Pará",
@@ -449,6 +469,7 @@
   },
   "mexico": {
    "kind": "indep",
+   "tint": "es.red",
    "tone": 0,
    "name": {
     "en": "Mexico",
@@ -461,6 +482,7 @@
   },
   "central-america": {
    "kind": "indep",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Federal Republic of Central America",
@@ -477,6 +499,7 @@
   },
   "gran-colombia": {
    "kind": "indep",
+   "tint": "es.brick",
    "tone": 0,
    "name": {
     "en": "Colombia",
@@ -489,6 +512,7 @@
   },
   "new-granada-rep": {
    "kind": "indep",
+   "tint": "es.brick",
    "tone": 0,
    "name": {
     "en": "New Granada",
@@ -501,6 +525,7 @@
   },
   "venezuela-rep": {
    "kind": "indep",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Venezuela",
@@ -513,6 +538,7 @@
   },
   "ecuador": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "Ecuador",
@@ -521,6 +547,7 @@
   },
   "peru-rep": {
    "kind": "indep",
+   "tint": "es.wine",
    "tone": 0,
    "name": {
     "en": "Peru",
@@ -533,6 +560,7 @@
   },
   "bolivia": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "Bolivia",
@@ -545,6 +573,7 @@
   },
   "chile-rep": {
    "kind": "indep",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Chile",
@@ -557,6 +586,7 @@
   },
   "argentina": {
    "kind": "indep",
+   "tint": "es.amber",
    "tone": 0,
    "name": {
     "en": "United Provinces of the Río de la Plata",
@@ -573,6 +603,7 @@
   },
   "paraguay": {
    "kind": "indep",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Paraguay",
@@ -581,6 +612,7 @@
   },
   "uruguay": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "Uruguay",
@@ -589,6 +621,7 @@
   },
   "guatemala-rep": {
    "kind": "indep",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Guatemala",
@@ -597,6 +630,7 @@
   },
   "honduras": {
    "kind": "indep",
+   "tint": "es.amber",
    "tone": 0,
    "name": {
     "en": "Honduras",
@@ -605,6 +639,7 @@
   },
   "el-salvador": {
    "kind": "indep",
+   "tint": "es.coral",
    "tone": 0,
    "name": {
     "en": "El Salvador",
@@ -613,6 +648,7 @@
   },
   "nicaragua": {
    "kind": "indep",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Nicaragua",
@@ -621,6 +657,7 @@
   },
   "costa-rica": {
    "kind": "indep",
+   "tint": "es.brick",
    "tone": 0,
    "name": {
     "en": "Costa Rica",
@@ -629,6 +666,7 @@
   },
   "dominican-republic": {
    "kind": "indep",
+   "tint": "es.amber",
    "tone": 0,
    "name": {
     "en": "Dominican Republic",
@@ -637,6 +675,7 @@
   },
   "brazil-empire": {
    "kind": "pt-indep",
+   "tint": "pt.brazil",
    "tone": 0,
    "name": {
     "en": "Empire of Brazil",
@@ -653,6 +692,7 @@
   },
   "florida-dispute": {
    "kind": "claim",
+   "tint": "es.plum",
    "tone": 0,
    "name": {
     "en": "Disputed with the United States",
@@ -661,6 +701,7 @@
   },
   "louisiana-dispute": {
    "kind": "claim",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Disputed with the United States",
@@ -669,6 +710,7 @@
   },
   "nw-coast": {
    "kind": "claim",
+   "tint": "es.rose",
    "tone": 0,
    "name": {
     "en": "Northwest coast, claimed by Spain",
@@ -694,8 +736,8 @@
     "es": "Capitulaciones de Santa Fe, 17 de abril de 1492"
    },
    "change": {
-    "en": "Columbus is named admiral, viceroy and governor of the islands and mainland he may discover. Hispaniola, where he leaves the fort of La Navidad that December, is Castile’s first foothold. On the mainland two great Indigenous states hold sway: the Mexica Triple Alliance and Tawantinsuyu, the Inca state.",
-    "es": "Colón es nombrado almirante, virrey y gobernador de las islas y tierra firme que descubra. La Española, donde deja en diciembre el fuerte de La Navidad, es el primer asiento de Castilla. En tierra firme dominan dos grandes estados indígenas: la Triple Alianza mexica y el Tawantinsuyu, el estado inca."
+    "en": "Columbus is named admiral, viceroy and governor of the islands and mainland he may discover. Hispaniola, where he leaves the fort of La Navidad that December, is Castile’s first foothold. On the mainland two great Indigenous states hold sway: the Mexica Triple Alliance and Tawantinsuyu, the Inca state. The capitulations are an instrument, not a shape: what the map draws is the jurisdictions in force that year.",
+    "es": "Colón es nombrado almirante, virrey y gobernador de las islas y tierra firme que descubra. La Española, donde deja en diciembre el fuerte de La Navidad, es el primer asiento de Castilla. En tierra firme dominan dos grandes estados indígenas: la Triple Alianza mexica y el Tawantinsuyu, el estado inca. Las capitulaciones son un instrumento, no una forma: el mapa dibuja las jurisdicciones vigentes ese año."
    },
    "source": {
     "en": "Archivo de la Corona de Aragón, Cancillería, reg. 3569; Library of Congress, 1492: An Ongoing Voyage",
@@ -818,8 +860,8 @@
     "es": "Real provisión de Burgos, 5 de octubre de 1511"
    },
    "change": {
-    "en": "The first Audiencia of the Indies, a royal court of appeal, sits at Santo Domingo over the islands Castile has settled: Hispaniola, Puerto Rico (1508), Jamaica (1509) and Cuba (1511).",
-    "es": "La primera audiencia de las Indias se asienta en Santo Domingo, sobre las islas que Castilla ha poblado: La Española, Puerto Rico (1508), Jamaica (1509) y Cuba (1511)."
+    "en": "The first Audiencia of the Indies, a royal court of appeal, sits at Santo Domingo over the islands Castile has settled: Hispaniola, Puerto Rico (1508), Jamaica (1509) and Cuba (1511). This provision is not the Laws of Burgos, which followed on 27 December 1512 (milestone 13).",
+    "es": "La primera audiencia de las Indias se asienta en Santo Domingo, sobre las islas que Castilla ha poblado: La Española, Puerto Rico (1508), Jamaica (1509) y Cuba (1511). Esta provisión no son las Leyes de Burgos, que llegaron el 27 de diciembre de 1512 (hito 13)."
    },
    "source": {
     "en": "Recopilación de Leyes de los Reynos de las Indias (1681), book II, title XV",
@@ -1039,8 +1081,8 @@
     "es": "Legazpi toma posesión en Cebú (1565); fundación de Manila (24 de junio de 1571); Audiencia de Manila (real cédula, 5 de mayo de 1583)"
    },
    "change": {
-    "en": "The Philippines are governed from New Spain, joined to it by the galleons between Acapulco and Manila, which return by Urdaneta’s route of 1565. Portuguese Brazil has had a governor-general at Salvador since 1549.",
-    "es": "Filipinas se gobierna desde la Nueva España, unida a ella por los galeones entre Acapulco y Manila, que vuelven por la ruta de Urdaneta de 1565. El Brasil portugués tiene gobernador general en Salvador desde 1549."
+    "en": "The Philippines are governed from New Spain, joined to it by the galleons between Acapulco and Manila, which return by Urdaneta’s route of 1565. Portuguese Brazil has had a governor-general at Salvador since 1549. The cédula of 1583 created Manila’s audiencia; it is not the date the court began to sit. Colonial Manila arose where settlements already stood.",
+    "es": "Filipinas se gobierna desde la Nueva España, unida a ella por los galeones entre Acapulco y Manila, que vuelven por la ruta de Urdaneta de 1565. El Brasil portugués tiene gobernador general en Salvador desde 1549. La cédula de 1583 creó la audiencia de Manila; no es la fecha en que empezó a funcionar. La Manila colonial surgió donde ya había poblaciones."
    },
    "source": {
     "en": "Library of Congress, Negotiating Empire: the founding of Manila; Recopilación (1681), book II, title XV",
@@ -2607,8 +2649,8 @@
     "es": "Las actas de independencia, 1810–1825; las últimas guarniciones realistas se rinden en Chiloé (Tantauco, 15 de enero de 1826) y El Callao (23 de enero de 1826)"
    },
    "change": {
-    "en": "The mainland empire has become successor states: Mexico, the Federal Republic of Central America, Colombia, Peru, Bolivia, Chile, the United Provinces of the Río de la Plata and Paraguay. Brazil has been an independent empire since 1822. Spain keeps Cuba, Puerto Rico and the Philippines.",
-    "es": "El imperio continental se ha convertido en estados sucesores: México, la República Federal de Centro América, Colombia, Perú, Bolivia, Chile, las Provincias Unidas del Río de la Plata y Paraguay. Brasil es un imperio independiente desde 1822. España conserva Cuba, Puerto Rico y Filipinas."
+    "en": "The mainland empire has become successor states: Mexico, the Federal Republic of Central America, Colombia, Peru, Bolivia, Chile, the United Provinces of the Río de la Plata and Paraguay. Brazil has been an independent empire since 1822. Spain keeps Cuba, Puerto Rico and the Philippines. This is the mainland endgame, not the end of Spanish authority everywhere.",
+    "es": "El imperio continental se ha convertido en estados sucesores: México, la República Federal de Centro América, Colombia, Perú, Bolivia, Chile, las Provincias Unidas del Río de la Plata y Paraguay. Brasil es un imperio independiente desde 1822. España conserva Cuba, Puerto Rico y Filipinas. Es el final en el continente, no el fin de la autoridad española en todas partes."
    },
    "source": {
     "en": "UNESCO, Ayacucho battlefield and Callao historical record; National Library of Brazil, independence collections",

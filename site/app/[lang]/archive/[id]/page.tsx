@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { dict, isLang, type Lang } from '@/lib/i18n';
-import { getArchive, getPublishedArchive, getText, pickText } from '@/lib/archive';
-import { languageName, readHref, splitTitle, workHref, type CanonWork } from '@/lib/canon';
+import { notFound, redirect } from 'next/navigation';
+import { archiveDate, dict, isLang, type Lang } from '@/lib/i18n';
+import { curatedWorks, getArchive, getArticles, getPublishedArchive, getText, isEditor, pickText } from '@/lib/archive';
+import { languageName, readHref, showsCurated, splitTitle, workHref, type CanonWork } from '@/lib/canon';
 import { renderTree } from '@/lib/text';
 import { swatchStyle } from '@/lib/palette';
 import Citation from '@/components/canon/Citation';
@@ -11,11 +11,16 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ReaderToc from '@/components/canon/ReaderToc';
 import Ads from '@/components/Ads';
+import CuratedWork from '@/components/archive/CuratedWork';
 
-/* A work's own page (issue #68). When the work is in the public domain and its
-   text is in the archive, the reader: long-form reading on the site's paper,
-   the text in its original language, its chapters as contents, and where it
-   came from. Otherwise the record, with links to legitimate copies only.
+/* A work's own page (issue #68). One of the curated 80 whose article is
+   approved (issue #93) gets its article, editions and, when it is hosted
+   here, its text (components/archive/CuratedWork). Any other work: when it is
+   in the U.S. public domain and its text is in the archive, the reader:
+   long-form reading on the site's paper, the text in its original language,
+   its chapters as contents, and where it came from; otherwise the record, with
+   links to legitimate copies only. /archive/<slug> (Beltrán's address for a
+   work we already had under another id) goes to /archive/<id>.
    Statically generated for every published work in the database; a work
    added later in the back office is generated on its first visit, and every
    save regenerates the pages (lib/admin/revalidate.ts). Drafts are shown only
@@ -34,11 +39,22 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const work = isLang(lang) ? (await getArchive()).works.find((w) => w.id === id) : undefined;
   if (!isLang(lang) || !work) return {};
   const d = dict(lang);
+  const alternates = { languages: { en: `/en/archive/${id}`, es: `/es/archive/${id}` } };
+  if (showsCurated(work, await isEditor())) {
+    const c = work.curated!;
+    const intro = (await getArticles(id)).find((a) => a.locale === lang)?.whyReadToday ?? '';
+    return {
+      title: `${c.originalTitle} · ${c.creator} (${archiveDate(c.dateDisplay, lang)}) · ${d.reader.archive} · ${d.meta.title}`,
+      description: intro.split(/(?<=\.)\s/)[0] || `${c.creator}, ${c.originalTitle} (${archiveDate(c.dateDisplay, lang)}).`,
+      alternates,
+      ...(work.status === 'draft' || c.articleStatus !== 'published' ? { robots: { index: false } } : {}),
+    };
+  }
   const [title] = splitTitle(work.title);
   return {
     title: `${title} · ${work.author} (${work.year}) · ${d.reader.archive} · ${d.meta.title}`,
     description: work.note[lang] || `${work.author}, ${work.title} (${work.year}).`,
-    alternates: { languages: { en: `/en/archive/${id}`, es: `/es/archive/${id}` } },
+    alternates,
     ...(work.status === 'draft' ? { robots: { index: false } } : {}),
   };
 }
@@ -52,10 +68,35 @@ export default async function ReaderPage({ params }: Params) {
   const archive = await getArchive();
   const works = archive.works;
   const i = works.findIndex((w) => w.id === id);
-  if (i < 0) notFound();
+  if (i < 0) {
+    // Beltrán's slug for a work we keep under another id
+    const bySlug = works.find((w) => w.curated?.slug === id);
+    if (bySlug) redirect(`/${lang}/archive/${encodeURIComponent(bySlug.id)}`);
+    notFound();
+  }
   const work = works[i];
   const textLang = pickText(work, lang);
   const text = textLang ? await getText(id, textLang) : null;
+  const editor = await isEditor();
+
+  if (showsCurated(work, editor)) {
+    const list = curatedWorks(archive, editor);
+    const k = list.findIndex((w) => w.id === id);
+    const era = archive.eras.find((e) => e.id === work.curated!.era);
+    const regionNames = work.curated!.browseRegions.map((r) => archive.browseRegions.find((g) => g.id === r)?.name[lang]).filter((x): x is string => !!x);
+    return (
+      <>
+        <Header lang={lang} current="canon" path={`/archive/${id}`} />
+        {text && <div className="reader-progress" aria-hidden="true"><span /></div>}
+        <CuratedWork
+          lang={lang} work={work} eraName={era?.name[lang] ?? ''} eraId={era?.id ?? ''} articles={await getArticles(id)} text={text}
+          prev={k > 0 ? list[k - 1] : null} next={k >= 0 && k < list.length - 1 ? list[k + 1] : null} editor={editor} regionNames={regionNames}
+        />
+        <Footer lang={lang} />
+      </>
+    );
+  }
+
   const d = dict(lang);
   const r = d.reader;
   const [title, sub] = splitTitle(work.title);

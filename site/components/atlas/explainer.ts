@@ -1,16 +1,19 @@
 import type { Chronicle, LonLat } from '@/lib/atlas-chronicle';
-import type { Anchors, Box, Focus } from '@/lib/atlas-engine';
+import type { Anchors, Box, Focus } from '@/lib/atlas-globe';
 import type { Dict } from '@/lib/i18n';
 
-/* The explainer (issue #88): a short note laid over the chart, next to what the
-   beat changes, with a leader line to it. It says in a line or two what just
-   happened, from the content the card already has (a landfall's log, the first
-   sentence of a keyframe, the treaty's sides); nothing in it is new.
+/* The explainer (issue #88, kept on the globe in #95): a short note laid over
+   the planet, next to what the stop changes, with a leader line to it. It says
+   in a line or two what just happened, from the content the card already has
+   (a landfall's log, the first sentence of a keyframe, the treaty's sides, the
+   places a record names); nothing in it is new.
 
    - a voyage: the latest landfall reached (its date, name and log);
    - a keyframe: what changes (the jurisdictions that pulse, or the treaty line);
-   - a change of layout: the chart turning into a globe or to the Pacific;
-   - the opening: how to read the dark; today: the closing sentence.
+   - a record: where it happened: the places it names, and the realm in force
+     there at its date (#104; that places are approximate is said once, in the
+     legend);
+   - today: the closing sentence.
    Hovering or focusing an item on the card moves the note to that item. */
 
 type T = Dict['atlas'];
@@ -26,7 +29,7 @@ const firstSentence = (s: string) => (s.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? s).tr
 
 /** The jurisdictions and lines a keyframe changes, as the card lists them. */
 export function changedItems(chron: Chronicle, bi: number, t: T): MapItem[] {
-  const b = chron.beats[bi];
+  const b = chron.stops[bi];
   if (b.kind !== 'era' || b.era === undefined) return [];
   const e = chron.eras[b.era];
   const out: MapItem[] = [];
@@ -40,13 +43,14 @@ export function changedItems(chron: Chronicle, bi: number, t: T): MapItem[] {
 }
 
 export function noteFor(opts: {
-  chron: Chronicle; bi: number; stop: number; focus: Focus | null; turning: boolean; reduced: boolean; t: T;
+  chron: Chronicle; bi: number; stop: number; focus: Focus | null; t: T;
   fmtDate: (iso?: string) => string;
+  /** the realms the stop's places lie in, as the globe found them */
+  here?: { f: string; name: string }[];
 }): Note | null {
-  const { chron, bi, stop, focus, turning, reduced, t, fmtDate } = opts;
-  const b = chron.beats[bi];
-  const prev = chron.beats[bi - 1];
-  const layoutTurn = prev && prev.layout !== b.layout ? t.layoutNote[b.layout] : null;
+  const { chron, bi, stop, focus, t, fmtDate } = opts;
+  const here = opts.here ?? [];
+  const b = chron.stops[bi];
   const voyage = b.voyage !== undefined ? chron.voyages[b.voyage] : undefined;
   const stops = voyage ? voyage.route.filter((w) => w.name) : [];
 
@@ -67,18 +71,25 @@ export function noteFor(opts: {
   }
   if (focus?.kind === 'unit') {
     const it = changedItems(chron, bi, t).find((x) => x.focus.kind === 'unit' && x.focus.f === focus.f);
-    if (it) return { key: `${b.id}:unit:${focus.f}`, kicker: t.onMap, title: it.name, anchor: { kind: 'units', families: [focus.f] }, beatLevel: false };
+    const name = it?.name ?? here.find((h) => h.f === focus.f)?.name;
+    if (name) return { key: `${b.id}:unit:${focus.f}`, kicker: t.onMap, title: name, anchor: { kind: 'units', families: [focus.f] }, beatLevel: false };
   }
 
-  // the chart turns: said first, while it turns
-  if (layoutTurn && turning && !reduced) {
-    return { key: `${b.id}:turn`, kicker: b.label, title: layoutTurn.title, text: layoutTurn.text, anchor: null, beatLevel: true };
+  const places = b.kind !== 'voyage' && b.record ? b.record.anchors : [];
+  if (focus?.kind === 'place' && places[focus.k]) {
+    return { key: `${b.id}:place:${focus.k}`, kicker: t.where, title: places[focus.k].name, anchor: { kind: 'point', at: places[focus.k].at }, beatLevel: false };
   }
-  const pre = layoutTurn && reduced ? layoutTurn.title : undefined;
 
   let note: Note | null = null;
-  if (b.kind === 'open') {
-    note = { key: 'open', kicker: t.readKicker, title: t.readTitle, text: t.readText, anchor: { kind: 'point', at: [-56, 22] }, beatLevel: true };
+  if (b.kind === 'record') {
+    if (!places.length) return null;
+    const names = places.slice(0, 3).map((p) => p.name).join(' · ') + (places.length > 3 ? ` ${t.andMore(places.length - 3)}` : '');
+    // what happened is the card's; the note says where: the places, and the realm they lay in then
+    note = {
+      key: `${b.id}:places`, kicker: `${t.where} · ${b.label}`, title: names,
+      text: here.length ? t.whereIn(here.map((h) => h.name)) : undefined,
+      anchor: { kind: 'point', at: places[0].at }, beatLevel: true,
+    };
   } else if (b.kind === 'today') {
     note = { key: 'today', kicker: b.label, title: b.title, text: firstSentence(b.text), anchor: null, beatLevel: true };
   } else if (b.kind === 'voyage') {
@@ -95,7 +106,6 @@ export function noteFor(opts: {
       beatLevel: true,
     };
   }
-  if (note && pre) note.pre = pre;
   return note;
 }
 
@@ -104,7 +114,8 @@ export function noteFor(opts: {
 const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
 const grow = (b: Box, d: number): Box => [b[0] - d, b[1] - d, b[2] + d, b[3] + d];
 
-export type Placement = { x: number; y: number; target: [number, number] | null; from: [number, number] | null; slot: string };
+/** `blocked`: every place it could go covers a panel, so it is not shown. */
+export type Placement = { x: number; y: number; target: [number, number] | null; from: [number, number] | null; slot: string; blocked: boolean };
 
 export function place(opts: {
   note: Note; anchors: Anchors; chron: Chronicle; w: number; h: number; avoid: Box[]; prevSlot: string;
@@ -143,7 +154,8 @@ export function place(opts: {
 
   if (!box || !target) {
     // nothing to point at: high in the middle of the chart
-    return { x: clampX((ax0 + ax1) / 2 - w / 2), y: clampY(ay0 + 16), target: null, from: null, slot: 'top' };
+    const x = clampX((ax0 + ax1) / 2 - w / 2), y = clampY(ay0 + 16);
+    return { x, y, target: null, from: null, slot: 'top', blocked: avoid.some((a) => overlap([x, y, x + w, y + h], a) > 0) };
   }
 
   const g = 30;
@@ -157,11 +169,14 @@ export function place(opts: {
   ];
   const keep = grow(box, 6);
   const ship: Box | null = an.ship ? [an.ship[0] - 30, an.ship[1] - 34, an.ship[0] + 30, an.ship[1] + 18] : null;
-  let best: { slot: string; x: number; y: number; score: number } | null = null;
+  let best: { slot: string; x: number; y: number; score: number; hits: boolean } | null = null;
   for (const [slot, x0, y0] of cands) {
     const x = clampX(x0), y = clampY(y0);
     const r: Box = [x, y, x + w, y + h];
     let score = overlap(r, keep) * 30;
+    // a panel under it rules a place out
+    const hits = avoid.some((a) => overlap(r, a) > 0);
+    if (hits) score += 1e8;
     // the point itself must never be covered
     if (tx > x - 8 && tx < x + w + 8 && ty > y - 8 && ty < y + h + 8) score += 1e7;
     if (ship) score += overlap(r, ship) * 20;
@@ -171,12 +186,12 @@ export function place(opts: {
     const nx = Math.max(x, Math.min(tx, x + w)), ny = Math.max(y, Math.min(ty, y + h));
     score += Math.hypot(nx - tx, ny - ty) * 6;
     if (slot === prevSlot) score -= 900;   // stay put while the camera glides
-    if (!best || score < best.score) best = { slot, x, y, score };
+    if (!best || score < best.score) best = { slot, x, y, score, hits };
   }
-  const b = best as { slot: string; x: number; y: number };
+  const b = best as { slot: string; x: number; y: number; hits: boolean };
   // the leader: from the note's nearest edge to the point (on a line: level with the note)
   const to: [number, number] = line ? [tx, Math.max(box[1] + 8, Math.min(box[3] - 8, b.y + h / 2))] : target;
   const from: [number, number] = [Math.max(b.x, Math.min(to[0], b.x + w)), Math.max(b.y, Math.min(to[1], b.y + h))];
   const far = Math.hypot(from[0] - to[0], from[1] - to[1]) > 12;
-  return { x: b.x, y: b.y, target: far ? to : null, from: far ? from : null, slot: b.slot };
+  return { x: b.x, y: b.y, target: far ? to : null, from: far ? from : null, slot: b.slot, blocked: b.hits };
 }

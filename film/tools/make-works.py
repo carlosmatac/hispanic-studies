@@ -2,10 +2,16 @@
 of the reel (bars 21-29). Everything on screen comes from the site's own data:
 
   - Watch: his real thumbnails (film/reel/assets/img/yt-*.jpg)
-  - Read: the eight essays in site/lib/content.ts, as cards flying in 3D
-  - The canon: the fifty works as the site's cards (site/data/canon-works.json),
-    in the same five bindings, on burgundy
-  - The Atlas: milestones from site/data/milestones.json pinned on the map
+  - Read: the eight essays in site/lib/content.ts, as the home's essay cards (the post's
+    cover, its date, author and translator), flying in 3D
+  - The archive: covers of real works of the curated 80, coloured by region as on the site
+    (film/reel/assets/archive.json, exported from the archive's database by
+    film/tools/capture-site.mjs archive), fanned, sorted into the six eras, and one opened
+    to its article (the article's own first lines)
+  - The Atlas: the globe alone, rendered from our own engine (lib/atlas-globe.ts) by
+    film/tools/capture-site.mjs atlas: the camera flies Iberia, the Atlantic, the Americas,
+    Manila, the realms fill era by era and the voyages draw themselves; the year, the
+    milestone cards and their pins are built here, on the places the render reports
   - De Indiis Editions: the series names (site/lib/i18n.ts)
   - Follow: the channels' own logos (Simple Icons, CC0, as on the site) and one total
     that stays true as they grow: the verified followings add up to more than 50,000
@@ -39,36 +45,37 @@ NUMS = [at(66.065), at(67.537), at(68.344), at(69.133)]
 esc = html.escape
 
 # ---------------------------------------------------------------- data
+# as on the home (site/lib/content.ts), newest first; dates as the home prints them in English
 ESSAYS = [
-    ("The Catholic-Hispanic Position on Racism", "Francisco Elías de Tejada", "19 Dec 2025"),
-    ("The Vikings Did Not Discover America", "Iván Vélez", "29 Dec 2025"),
-    ("Oiréis hablar de mí: A Tribute to José Vasconcelos", "Ismael Carvallo Robledo", "17 Sep 2025"),
-    ("Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire", "Santiago Armesilla", "2 Jun 2025"),
-    ("Spain and America", "Gustavo Bueno", "17 Apr 2025"),
-    ("On Bullfighting", "Gustavo Bueno", "21 May 2025"),
-    ("Aryan Indigenismo and Manifest Destiny", "Beltrán Arellanes", "6 Apr 2025"),
-    ("The Black Legend: Threat to Hispanic Civilization (Part 1)", "Alicia Melchor Herrera", "12 Apr 2025"),
+    ("The Vikings Did Not Discover America", "Iván Vélez", "", "Dec 29, 2025", "the-vikings-did-not-discover-america"),
+    ("The Catholic-Hispanic Position on Racism", "Francisco Elías de Tejada", "", "Dec 19, 2025", "the-catholic-hispanic-position-on"),
+    ("Oiréis hablar de mí: A Tribute to José Vasconcelos", "Ismael Carvallo Robledo", "Beltrán Arellanes", "Sep 17, 2025", "oireis-hablar-de-mi-a-tribute-to"),
+    ("Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire", "Santiago Armesilla", "Beltrán Arellanes", "Jun 2, 2025", "transitional-political-society-neither"),
+    ("On Bullfighting", "Gustavo Bueno", "Beltrán Arellanes", "May 21, 2025", "on-bullfighting"),
+    ("Spain and America", "Gustavo Bueno", "Beltrán Arellanes", "Apr 17, 2025", "spain-and-america"),
+    ("The Black Legend: Threat to Hispanic Civilization (Part 1)", "Alicia Melchor Herrera", "", "Apr 12, 2025", "the-black-legend-threat-to-hispanic"),
+    ("Aryan Indigenismo and Manifest Destiny", "Beltrán Arellanes", "", "Apr 6, 2025", "aryan-indigenismo-and-manifest-destiny"),
 ]
 SERIES = ["Race, Mixture and Difference", "Indo-Hispanic Thought and Its Critics", "Classics and Critics of Hispanidad",
           "Hispanic Political Theology", "Pan-Iberian and Lusophone Thought", "Literary Continentalism"]
 THUMBS = ["BISc6y6fIuM", "JNLr7NM_buA", "3LYcIzK8mxo", "5Yug5P6lbCc", "NJKfmnwbOXQ", "Xinb9TN9aOM"]
 
-WORKS = json.loads((ROOT / "site/data/canon-works.json").read_text())["works"]
 # the channels' glyphs, straight from the site's seal component
-icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text()
+icon_src = (ROOT / "site/components/ChannelIcon.tsx").read_text(encoding="utf-8")
 GLYPHS = dict(re.findall(r"^  (\w+): '([^']+)',$", icon_src, flags=re.M))
-MILES = {m["n"]: m for m in json.loads((ROOT / "site/data/milestones.json").read_text())["milestones"]}
+ARCHIVE = json.loads((ROOT / "film/reel/assets/archive.json").read_text(encoding="utf-8"))
+ATLAS_PINS = json.loads((ROOT / "film/reel/assets/atlas/atlas-pins.json").read_text(encoding="utf-8"))
 
 # ---------------------------------------------------------------- the frieze between shots
 # The portico of the pillars scene (bar 20) ends with a dive into the "Watch" metope. Every
 # later shot leaves the same way: the frieze slides in from the right and the camera dives
 # into the next metope. The metopes are in the film's order, so the frieze always runs right.
-pillars = (ROOT / "film/reel/compositions/pillars.html").read_text()
+pillars = (ROOT / "film/reel/compositions/pillars.html").read_text(encoding="utf-8")
 GRADE = re.search(r'<img (data-color-grading="[^"]*")[^>]*id="pil-plate"', pillars).group(1)
 TINT = "\n".join("            " + re.sub(r' data-hf-id="[^"]*"', "", t).replace('id="pil-sh', 'id="fz-sh')
                  for t in re.findall(r'<path[^>]*id="pil-sh\d"[^>]*/>', pillars))
 METOPES = [(258, 218), (582, 227), (915, 227), (1248, 227), (1582, 226), (1916, 218)]
-LABELS = ["Watch", "Read", "Canon", "Atlas", "Books", "Community"]
+LABELS = ["Watch", "Read", "Archive", "Atlas", "Books", "Community"]
 mets = "\n".join(f'          <p id="fz-m{i}" class="fz-met" style="left: {x}px; width: {w}px">{LABELS[i]}</p>'
                  for i, (x, w) in enumerate(METOPES))
 fz_x = [round(x + w / 2, 1) for x, w in METOPES]
@@ -76,56 +83,109 @@ fz_x = [round(x + w / 2, 1) for x, w in METOPES]
 # ---------------------------------------------------------------- read: 3D cards
 ring_r = 760
 cards = []
-for i, (t, a, d) in enumerate(ESSAYS):
+for i, (t, a, tr, d, slug) in enumerate(ESSAYS):
+    by = esc(a) + (f" · trans. {esc(tr)}" if tr else "")
     cards.append(f'''          <div id="rd-a{i}" class="rd-arm"><article id="rd-c{i}" class="rd-card">
-            <p class="rd-k">Substack · {esc(d)}</p><h3>{esc(t)}</h3><p class="rd-by">{esc(a)}</p>
+            <span class="rd-cover"><img src="assets/img/essays/{slug}.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">{esc(d)}</p><h3>{esc(t)}</h3><p class="rd-by">{by}</p></span>
           </article></div>''')
 grid = [((i % 4) - 1.5) * 470 for i in range(8)], [((i // 4) - 0.5) * 330 for i in range(8)]
 
-# ---------------------------------------------------------------- canon: the fifty works as cards
-# the same cards as the site's canon page: ten to a row, in order of year, five bindings
-BINDINGS = ["paper", "burgundy", "vellum", "leather", "ink"]
-CW, CH, GX, GY = 236, 315, 44, 52
-COLS = 10
-def split_title(t):
-    i = t.find(": ")
-    return (t[:i], t[i + 2:]) if i > 0 else (t, "")
-card_pos, cards_html = {}, []
-for i, w in enumerate(WORKS):
-    n = int(w["id"][1:])
-    col, row = i % COLS, i // COLS
-    x, y = 120 + col * (CW + GX), 140 + row * (CH + GY)
-    card_pos[w["id"]] = (x + CW / 2, y + CH / 2)
-    tilt = round(((n * 37) % 33 - 16) / 10, 1)
-    title, sub = split_title(w["title"])
-    long = " is-long" if len(title) > 46 else ""
-    counter = " cc--counter" if w["counter"] else ""
-    cards_html.append(
-        f'          <div class="cc-slot" style="left: {x}px; top: {y}px"><div id="cc-{w["id"]}" class="cc cc--{BINDINGS[(n * 3) % 5]}{counter}" style="rotate: {tilt}deg">'
-        f'<p class="cc-top"><b>{w["year"]}</b><span>{esc(w["code"])}</span></p>'
-        f'<p class="cc-t{long}">{esc(title)}</p>'
-        f'<p class="cc-foot"><i></i><b>{esc(w["author"])}</b><span>{esc(w["life"])}</span></p></div></div>')
-CANON_W = 120 * 2 + COLS * CW + (COLS - 1) * GX
-CANON_H = 140 * 2 + 5 * CH + 4 * GY
-# ---------------------------------------------------------------- atlas: milestones on the map
-# pins in the map image's own pixels (3584 x 1746), card offsets beside them
-STOPS = [
-    (60, (1994, 358), (70, -250)),
-    (9, (1288, 571), (60, -60)),
-    (14, (1053, 600), (-610, 40)),
-    (16, (1348, 959), (-640, 30)),
-    (22, (1707, 1042), (70, 20)),
-    (18, (3266, 672), (-640, -260)),
+# ---------------------------------------------------------------- the archive: covers, built here
+WORKS = {w["id"]: w for w in ARCHIVE["works"]}
+ERAS = ARCHIVE["eras"]
+ROMAN = ["I", "II", "III", "IV", "V", "VI"]
+# three covers an era (Beltrán's order inside it), the first twelve fanned when the shot opens
+COLUMNS = [
+    ["inter-caetera-1493", "vitoria-de-indis", "las-casas-tratado-comprobatorio"],
+    ["sahagun-codice-florentino", "cortes-de-tomar", "garcilaso-comentarios-reales"],
+    ["constitucion-cadiz", "T001", "T003"],
+    ["T012", "T013", "T030"],
+    ["T035", "T038", "T039"],
+    ["T046", "cplp-declaracao-constitutiva", "durantez-iberofonia-paniberismo"],
 ]
-pins, mcards = [], []
-for i, (n, (px, py), (dx, dy)) in enumerate(STOPS):
-    m = MILES[n]
-    pins.append(f'          <i id="at-p{i}" class="at-pin" style="left: {px}px; top: {py}px"></i>')
-    lx, ly = px + dx + (0 if dx > 0 else 560), py + dy + 70
-    pins.append(f'          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l{i}" d="M{px} {py} L{lx} {ly}" pathLength="1" /></svg>')
-    mcards.append(f'''          <article id="at-c{i}" class="at-card" style="left: {px + dx}px; top: {py + dy}px">
-            <p class="at-k">{esc(m["date"]["en"])} · Milestone {n} of 60</p><h3>{esc(m["title"]["en"])}</h3>
-          </article>''')
+FAN = ["inter-caetera-1493", "garcilaso-comentarios-reales", "T001", "cortes-de-tomar", "T013", "T012",
+       "T039", "T030", "T035", "sahagun-codice-florentino", "T046", "durantez-iberofonia-paniberismo"]
+OPEN = "T030"
+ART = next(a for a in ARCHIVE["articles"] if a["id"] == OPEN)
+CW2, CH2 = 210, 280
+COLX = [260 + i * 280 for i in range(6)]
+
+
+def first_sentence(t):
+    t = " ".join(t.split())
+    i = t.find(". ")
+    return t[: i + 1] if 0 < i < 260 else t[:200].rsplit(" ", 1)[0] + "…"
+
+
+def split_title(t):
+    for sep in (" — ", ": ", " / "):
+        i = t.find(sep)
+        if i > 0:
+            return t[:i]
+    return t
+
+
+def cover(w, extra="", pre="ac-"):
+    t = split_title(w["title"])
+    long = " is-long" if len(t) > 34 else ""
+    fg = "#f9f3dd" if w["fg"] == "paper" else "#28231e"
+    return (f'<div id="{pre}{w["id"]}" class="ac{extra}" style="--bg: {w["bg"]}; --fg: {fg}; --accent: {w["accent"]}; --line: {w["line"]}">'
+            f'<p class="ac-top">{esc(w["date"] if len(w["date"]) < 12 else str(w["year"]))}</p>'
+            f'<p class="ac-t{long}">{esc(t)}</p>'
+            f'<p class="ac-foot"><i></i><b>{esc(w["author"])}</b></p></div>')
+
+
+ar_cards = []
+order = [wid for col in COLUMNS for wid in col]
+for wid in order:
+    ar_cards.append("        " + cover(WORKS[wid]))
+eras_html = "\n".join(
+    f'        <p id="ae-{i}" class="ae" style="left: {COLX[i] - 120}px"><b>{ROMAN[i]}</b><span>{e["from"]}–{e["to"]}</span></p>'
+    for i, e in enumerate(ERAS))
+ow = WORKS[OPEN]
+article = f"""        <div id="aa-page">
+          <p class="aa-k">{esc(str(ow["year"]))} · {esc(ow["author"])}</p>
+          <p class="aa-t">{esc(split_title(ow["title"]))}</p>
+          <div class="aa-s"><h4>The author or issuing body</h4><p>{esc(first_sentence(ART["aboutAuthor"]))}</p></div>
+          <div class="aa-s"><h4>The work in its time</h4><p>{esc(first_sentence(ART["workInItsTime"]))}</p></div>
+          <div class="aa-s"><h4>Why read it today?</h4><p>{esc(first_sentence(ART["whyReadToday"]))}</p></div>
+        </div>"""
+# where each cover goes: the fan (a hand of twelve around a pivot below the frame), then its era
+fan_pos = {}
+for i, wid in enumerate(FAN):
+    a = (i - (len(FAN) - 1) / 2) * 6.2
+    r = 980
+    fan_pos[wid] = [round(1230 + r * math.sin(math.radians(a))), round(1580 - r * math.cos(math.radians(a))), round(a, 1)]
+col_pos = {}
+for c, col in enumerate(COLUMNS):
+    for k, wid in enumerate(col):
+        col_pos[wid] = [COLX[c], 610 + k * 66, round(((sum(map(ord, wid)) % 9) - 4) * 0.7, 1)]
+
+# ---------------------------------------------------------------- the Atlas: the globe, rendered; the rest built here
+FILM0 = 42.114              # where this scene starts in the film (index.html)
+AV0 = round(ATLAS_PINS["first"] / 30 - 0.004 - FILM0, 4)
+AVD = round(len(ATLAS_PINS["rows"]) / 30, 4)
+# the milestone cards: real titles (site/data/milestones.json and the Atlas's stops), each on its place
+# [id, pin, kicker, title, from, to (seconds into the shot), card offset from the pin]
+AT_CARDS = [
+    ["granada", "granada", "1492", "Granada enters the Castilian crown", 0.3, 1.25, [70, -40]],
+    ["tordesillas", "tordesillas", "1494", "Treaty of Tordesillas", 1.72, 2.62, [64, -150]],
+    ["lima", "lima", "1542", "The New Laws create the Viceroyalty of Peru", 2.52, 3.4, [70, -190]],
+    ["manila", "manila", "1565–1571", "The Pacific crossing and Manila", 4.0, 9.0, [60, 40]],
+    ["interior", "interior", "1776–1777", "The Bourbon reforms redraw the empire", 4.4, 9.0, [-590, -230]],
+]
+AT_YEARS = [[0.0, 1492], [1.6, 1494], [2.4, 1542], [3.2, 1565], [4.0, 1777]]
+at_cards = []
+for cid, pin, k, title, t0, t1, (dx, dy) in AT_CARDS:
+    lx, ly = (dx, dy + 40) if dx > 0 else (dx + 520, dy + 40)
+    at_cards.append(f"""      <div id="atc-{cid}" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-{cid}" d="M0 0 L{lx} {ly}" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-{cid}" class="atc-card" style="left: {dx}px; top: {dy}px"><p class="atc-k">{esc(k)}</p><h3>{esc(title)}</h3></article>
+      </div></div>""")
+# per frame: the pin's place and how far it faces us [frame, x, y, cos] for each card
+AT_TRACKS = {cid: [[r["f"], *r[pin]] for r in ATLAS_PINS["rows"]] for cid, pin, *_ in AT_CARDS}
 
 # ---------------------------------------------------------------- page
 logos = "\n".join(f'        <div class="wk-logo"><svg viewBox="0 0 24 24"><path d="{GLYPHS[k]}" /></svg></div>' for k in ["youtube", "instagram", "x", "tiktok", "substack"])
@@ -145,7 +205,8 @@ page = f'''<template>
     .wk-slab {{ position: absolute; left: 0; top: 0; width: 1020px; height: 380px; background: #f9f3dd; }}
 
     /* after its entrance a title becomes a small chip, so the world can be seen */
-    .wk-chip {{ position: absolute; left: 60px; top: 46px; padding: 12px 26px 14px; background: #f9f3dd; border: 3px solid #470b15; white-space: nowrap; z-index: 3; }}
+    .wk-chip {{ position: absolute; left: 60px; top: 46px; padding: 12px 34px 15px; border-radius: 999px; background: rgba(252, 248, 236, 0.84); border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.5); -webkit-backdrop-filter: blur(16px) saturate(1.25); backdrop-filter: blur(16px) saturate(1.25); white-space: nowrap; z-index: 3; }}
     .wk-chip b {{ font-weight: 600; font-size: 46px; color: #470b15; }}
     .wk-chip span {{ margin-left: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #28231e; }}
 
@@ -153,54 +214,78 @@ page = f'''<template>
     #wk-watch .wk-word {{ top: 640px; }}
     #wk-watch .wk-fig {{ top: 830px; }}
     #wk-wall {{ position: absolute; left: 690px; top: 110px; display: grid; grid-template-columns: repeat(3, 340px); gap: 20px; }}
-    .wk-thumb {{ width: 340px; height: 191px; object-fit: cover; display: block; }}
+    .wk-thumb {{ width: 340px; height: 191px; object-fit: cover; display: block; border-radius: 14px; border: 1px solid rgba(40, 35, 30, 0.14); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 10px 22px -8px rgba(44, 18, 20, 0.4); }}
 
     /* read: eight essays as cards in space */
     #rd-stage {{ position: absolute; inset: 0; perspective: 1700px; perspective-origin: 51% 58%; }}
     #rd-ring {{ position: absolute; left: 980px; top: 660px; width: 0; height: 0; transform-style: preserve-3d; }}
     .rd-arm {{ position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }}
-    .rd-card {{ position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 26px 30px; background: #f9f3dd; border: 3px solid #470b15; outline: 1px solid #470b15; outline-offset: 6px; backface-visibility: hidden; display: flex; flex-direction: column; }}
-    .rd-k {{ font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; color: #470b15; margin-bottom: 14px; }}
+    /* the home's essay card (globals.css .essay): rounded, the post's cover, its date, title and byline */
+    .rd-card {{ position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 18px; border-radius: 22px; background: #fbf7e9; border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.48); backface-visibility: hidden; display: grid; grid-template-columns: 122px minmax(0, 1fr); gap: 0 20px; align-items: start; }}
+    .rd-cover {{ display: block; width: 122px; height: 152px; overflow: hidden; border-radius: 8px; border: 1px solid rgba(40, 35, 30, 0.16); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 6px 14px -6px rgba(44, 18, 20, 0.3); }}
+    .rd-cover img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+    .rd-text {{ display: grid; gap: 8px; align-content: start; }}
+    .rd-k {{ font-family: "IBM Plex Mono", monospace; font-size: 20px; color: #6a625a; }}
     /* the clamp clips at the box: a little padding keeps the last line's descenders, not the next line */
-    .rd-card h3 {{ font-weight: 600; font-size: 40px; line-height: 1.05; color: #28231e; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.05em; }}
-    .rd-by {{ margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }}
+    .rd-card h3 {{ font-weight: 600; font-size: 30px; line-height: 1.08; color: #28231e; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.06em; }}
+    .rd-by {{ font-family: Inter, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.3; color: #6a625a; }}
     #wk-read .wk-word, #wk-read .wk-fig {{ z-index: 2; }}
 
-    /* the canon: the fifty works as the site's cards, on burgundy */
-    #wk-canon {{ background: #470b15; background-image: radial-gradient(70% 80% at 55% 45%, rgba(139, 94, 75, 0.55), transparent 75%); }}
-    #cn-world {{ position: absolute; left: 0; top: 0; width: {CANON_W}px; height: {CANON_H}px; transform-origin: 0 0; }}
-    .cc-slot {{ position: absolute; width: {CW}px; height: {CH}px; }}
-    .cc {{ --bg: #f9f3dd; --fg: #28231e; --ac: #470b15; --ln: rgba(40, 35, 30, 0.3);
-      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px; background: var(--bg); color: var(--fg);
-      box-shadow: 0 3px 6px rgba(20, 6, 8, 0.25), 0 30px 50px -22px rgba(20, 6, 8, 0.75); }}
-    .cc::before {{ content: ""; position: absolute; inset: 8px; border: 1.5px solid var(--ln); }}
-    .cc--burgundy {{ --bg: #5a1420; --fg: #f9f3dd; --ac: #dcc8ad; --ln: rgba(249, 243, 221, 0.3); }}
-    .cc--leather {{ --bg: #8b5e4b; --fg: #f9f3dd; --ac: #f9f3dd; --ln: rgba(249, 243, 221, 0.36); }}
-    .cc--ink {{ --bg: #28231e; --fg: #f9f3dd; --ac: #c9a993; --ln: rgba(249, 243, 221, 0.24); }}
-    .cc--vellum {{ --bg: #ede3c8; }}
-    .cc--counter::before {{ border-style: dashed; }}
-    .cc-top {{ display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: var(--ac); }}
-    .cc-top b {{ font-weight: 500; font-size: 18px; }}
-    .cc-t {{ font-style: italic; font-weight: 600; font-size: 29px; line-height: 1.06; }}
-    .cc-t.is-long {{ font-size: 23px; line-height: 1.1; }}
-    .cc-foot {{ margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }}
-    .cc-foot i {{ display: block; width: 34px; height: 1.5px; background: var(--ac); margin-bottom: 8px; }}
-    .cc-foot b {{ font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }}
-    .cc-foot span {{ font-family: "IBM Plex Mono", monospace; font-size: 13px; opacity: 0.75; }}
-    #wk-canon .wk-slab {{ background: #470b15; }}
-    #wk-canon .wk-word {{ color: #f9f3dd; }}
-    #wk-canon .wk-fig {{ color: #ede3c8; }}
-    #wk-canon .wk-chip {{ background: #f9f3dd; }}
+    /* the archive: covers of the curated works, on burgundy, as the old canon cards were */
+    #wk-archive {{ background: #470b15; background-image: radial-gradient(70% 80% at 60% 55%, rgba(139, 94, 75, 0.5), transparent 75%); }}
+    #wk-archive .wk-slab {{ background: #470b15; }}
+    #wk-archive .wk-word {{ color: #f9f3dd; z-index: 2; }}
+    #wk-archive .wk-fig {{ color: #ede3c8; z-index: 2; }}
+    #wk-archive .wk-slab {{ z-index: 2; }}
+    #ar-deck {{ position: absolute; inset: 0; perspective: 1800px; }}
+    .ac {{ --paper: #f9f3dd; --leather: #8b5e4b; --burgundy: #470b15; --ink: #28231e; --region-sea: #2a4d51; --region-olive: #4c5327;
+      position: absolute; left: {-CW2 // 2}px; top: {-CH2 // 2}px; width: {CW2}px; height: {CH2}px; display: flex; flex-direction: column; gap: 9px; padding: 17px 16px 15px;
+      background: var(--bg); color: var(--fg); border-radius: 8px; box-shadow: 0 3px 6px rgba(20, 6, 8, 0.28), 0 30px 50px -22px rgba(20, 6, 8, 0.8); backface-visibility: hidden; }}
+    .ac::before {{ content: ""; position: absolute; inset: 7px; border: 1px solid var(--line); border-radius: 3px; }}
+    .ac-top {{ font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; font-size: 17px; color: var(--accent); }}
+    .ac-t {{ font-style: italic; font-weight: 600; font-size: 27px; line-height: 1.07; }}
+    .ac-t.is-long {{ font-size: 22px; line-height: 1.1; }}
+    .ac-foot {{ margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }}
+    .ac-foot i {{ display: block; width: 30px; height: 1.5px; background: var(--accent); margin-bottom: 7px; }}
+    .ac-foot b {{ font-weight: 600; font-size: 13.5px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }}
+    #ar-head {{ position: absolute; left: 0; right: 0; top: 150px; text-align: center; font-style: italic; font-weight: 600; font-size: 78px; line-height: 1; color: #f9f3dd; white-space: nowrap; }}
+    #ar-head span {{ display: inline-block; }}
+    .ae {{ position: absolute; top: 300px; width: 240px; text-align: center; color: #f9f3dd; }}
+    .ae b {{ display: block; font-weight: 600; font-size: 54px; line-height: 1; }}
+    .ae span {{ display: block; margin-top: 8px; font-family: "IBM Plex Mono", Consolas, monospace; font-size: 24px; color: #dcc8ad; }}
+    #ar-veil {{ position: absolute; inset: 0; background: rgba(47, 7, 13, 0.82); opacity: 0; }}
+    /* the opened work: its cover swings open on the article's first lines */
+    #ar-book {{ position: absolute; left: 960px; top: 560px; width: 0; height: 0; perspective: 2200px; }}
+    #aa-page {{ position: absolute; left: -380px; top: -330px; width: 760px; height: 660px; padding: 40px 48px; border-radius: 14px; background: #f9f3dd; color: #28231e;
+      box-shadow: 0 4px 10px rgba(20, 6, 8, 0.35), 0 50px 90px -30px rgba(20, 6, 8, 0.85); opacity: 0; }}
+    .aa-k {{ font-family: "IBM Plex Mono", Consolas, monospace; font-size: 26px; color: #470b15; }}
+    .aa-t {{ margin: 8px 0 20px; font-style: italic; font-weight: 600; font-size: 52px; line-height: 1.02; color: #470b15; }}
+    .aa-s {{ margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(40, 35, 30, 0.18); }}
+    .aa-s h4 {{ font-weight: 600; font-size: 32px; line-height: 1.1; color: #28231e; }}
+    .aa-s p {{ margin-top: 6px; font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; line-height: 1.35; color: #5b534b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
+    #ar-lid {{ position: absolute; left: -380px; top: -330px; width: 760px; height: 660px; transform-origin: 0 50%; transform-style: preserve-3d; }}
+    #ar-lid .ac {{ left: 0; top: 0; width: 760px; height: 660px; padding: 40px 42px; gap: 16px; border-radius: 14px; }}
+    #ar-lid .ac::before {{ inset: 14px; border-radius: 6px; }}
+    #ar-lid .ac-top {{ font-size: 30px; }}
+    #ar-lid .ac-t {{ font-size: 76px; }}
+    #ar-lid .ac-foot b {{ font-size: 26px; }}
+    #ar-lid .ac-foot i {{ width: 60px; height: 2px; }}
 
-    /* the Atlas: milestones pinned on the Iberophone map */
-    #at-world {{ position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }}
-    #at-world > img {{ position: absolute; inset: 0; width: 3584px; height: 1746px; display: block; }}
-    .at-lead {{ position: absolute; inset: 0; width: 3584px; height: 1746px; overflow: visible; }}
-    .at-lead path {{ fill: none; stroke: #470b15; stroke-width: 4; stroke-dasharray: 0.02 0.02; }}
-    .at-pin {{ position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: #470b15; border: 6px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15; }}
-    .at-card {{ position: absolute; width: 560px; padding: 24px 30px 28px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; }}
-    .at-k {{ font-family: "IBM Plex Mono", monospace; font-size: 24px; color: #470b15; margin-bottom: 10px; }}
-    .at-card h3 {{ font-weight: 600; font-size: 46px; line-height: 1.05; color: #28231e; }}
+    /* the Atlas: the globe, rendered from our engine; the year, the cards and their pins built here */
+    #wk-atlas {{ background: transparent; }}
+    #at-globe {{ position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; background: #17130f; }}
+    #at-shade {{ position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23, 19, 15, 0.78) 0%, rgba(23, 19, 15, 0) 38%), linear-gradient(0deg, rgba(23, 19, 15, 0.7) 0%, rgba(23, 19, 15, 0) 30%); }}
+    #wk-atlas .wk-word {{ color: #f9f3dd; }}
+    #wk-atlas .wk-fig {{ color: #ede3c8; }}
+    #at-year {{ position: absolute; left: 120px; bottom: 60px; font-weight: 600; font-size: 230px; line-height: 0.9; letter-spacing: -0.03em; color: #f9f3dd; font-variant-numeric: lining-nums tabular-nums; text-shadow: 0 6px 40px rgba(23, 19, 15, 0.8); }}
+    .atc, .atc-in {{ position: absolute; left: 0; top: 0; width: 0; height: 0; }}
+    .atc-lead {{ position: absolute; left: -800px; top: -800px; width: 1600px; height: 1600px; overflow: visible; }}
+    .atc-lead path {{ fill: none; stroke: #f9f3dd; stroke-width: 3; stroke-dasharray: 0.03 0.02; }}
+    .atc-pin {{ position: absolute; left: -15px; top: -15px; width: 30px; height: 30px; border-radius: 50%; background: #470b15; border: 5px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15, 0 4px 14px rgba(0, 0, 0, 0.5); }}
+    .atc-card {{ position: absolute; width: 520px; padding: 22px 28px 26px; border-radius: 14px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7); }}
+    .atc-k {{ font-family: "IBM Plex Mono", Consolas, monospace; font-size: 26px; color: #470b15; margin-bottom: 8px; }}
+    .atc-card h3 {{ font-weight: 600; font-size: 44px; line-height: 1.04; color: #28231e; }}
 
     /* books */
     #wk-shelf {{ position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }}
@@ -256,26 +341,32 @@ page = f'''<template>
       <p class="wk-fig" style="top: 250px">Essays and translations on Substack</p>
     </div>
 
-    <div id="wk-canon" class="wk-shot clip" data-start="{C0}" data-duration="{round(A0 - C0, 4)}">
-      <div id="cn-world">
-{chr(10).join(cards_html)}
+    <div id="wk-archive" class="wk-shot clip" data-start="{C0}" data-duration="{round(A0 - C0, 4)}">
+      <div id="ar-deck">
+{chr(10).join(ar_cards)}
       </div>
-      <div class="wk-slab" id="cn-slab"></div>
-      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig" style="top: 250px">Fifty classic texts, 1818 to 1999</p>
-      <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
+      <p id="ar-head"><span>From</span> <span>Universal</span> <span>Monarchy</span> <span>to</span> <span>Iberofonía</span></p>
+{eras_html}
+      <div id="ar-veil"></div>
+      <div id="ar-book">
+{article}
+        <div id="ar-lid">{cover(WORKS[OPEN], " ac--lid", "lid-")}</div>
+      </div>
+      <div class="wk-slab" id="ar-slab"></div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>archive</span></p>
+      <p class="wk-fig" style="top: 250px">The primary sources of Hispanic thought</p>
+      <p class="wk-chip" id="ar-chip"><b>The archive</b><span>the primary sources of Hispanic thought</span></p>
     </div>
 
+    <!-- the globe, timed by itself (a timed video must not sit in a timed wrapper): under its shot -->
+    <video id="at-globe" class="clip" src="assets/atlas/atlas-shot.mp4" muted playsinline data-start="{AV0}" data-duration="{AVD}"></video>
     <div id="wk-atlas" class="wk-shot clip" data-start="{A0}" data-duration="{round(K0 - A0, 4)}">
-      <div id="at-world">
-        <img src="assets/img/iberophone-map.jpg" alt="" />
-{chr(10).join(pins)}
-{chr(10).join(mcards)}
-      </div>
-      <div class="wk-slab" id="at-slab"></div>
+      <div id="at-shade"></div>
+{chr(10).join(at_cards)}
+      <p id="at-year">1492</p>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>Atlas</span></p>
-      <p class="wk-fig" style="top: 250px">Sixty milestones, c. 722 to 2026</p>
-      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>sixty milestones, c. 722 to 2026</span></p>
+      <p class="wk-fig" style="top: 250px">An interactive globe, 218 BCE to today</p>
+      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>218 BCE to today</span></p>
     </div>
 
     <div id="wk-books" class="wk-shot clip" data-start="{K0}" data-duration="{round(F0 - K0, 4)}">
@@ -341,44 +432,70 @@ page = f'''<template>
       tl.fromTo("#rd-ring", {{ rotationY: -110, rotationX: 8 }}, {{ rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }}, {R0} + 2.35);
       tl.fromTo("#rd-ring", {{ rotationY: -372, rotationX: 10 }}, {{ rotationY: -360, rotationX: 10, duration: {round(C0 - R0 - 3.3, 3)}, ease: "none", immediateRender: false }}, {R0} + 3.3);
 
-      // THE CANON: close on La raza cósmica, along the row to Ariel and Nuestra América, then the
-      // camera pulls back to all fifty; the cards drop in from the focus outwards, each on its own tilt
-      arrive("#wk-canon .wk-word", {C0}, 510, 383); fig("#wk-canon", {C0} + 0.8 * B);
-      const P = {json.dumps({k: [round(v[0]), round(v[1])] for k, v in card_pos.items()})};
-      move("#cn-world", cam(P.T030[0], P.T030[1], 2.0), cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), {C0}, 0.9, "power2.inOut", true);
-      move("#cn-world", cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), cam(P.T018[0], P.T018[1], 1.7), {C0} + 0.95, 0.9, "power2.inOut");
-      move("#cn-world", cam(P.T018[0], P.T018[1], 1.7), cam(P.T013[0], P.T013[1], 1.9), {C0} + 1.9, 0.7, "power2.inOut");
-      move("#cn-world", cam(P.T013[0], P.T013[1], 1.9), cam({CANON_W / 2}, {CANON_H / 2}, 0.56), {C0} + 2.6, 1.5, "expo.inOut");
-      move("#cn-world", cam({CANON_W / 2}, {CANON_H / 2}, 0.56), cam({CANON_W / 2}, {CANON_H / 2}, 0.53), {C0} + 4.1, {round(A0 - C0 - 4.1, 3)}, "none");
-      document.querySelectorAll("#cn-world .cc").forEach((el) => {{
-        const [x, y] = P[el.id.slice(3)], d = Math.hypot(x - P.T030[0], y - P.T030[1]);
-        tl.fromTo(el, {{ opacity: 0, y: -90, scale: 1.08 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }}, {C0} + Math.min(1.3, d / 1700 * 1.1));
-      }});
+      // THE ARCHIVE: a hand of covers flies in and fans out; on the beat they sort into the six eras
+      // under the collection's title; on the next, one comes forward and opens on its article
+      arrive("#wk-archive .wk-word", {C0}, 510, 383); fig("#wk-archive", {C0} + 0.8 * B);
+      tl.fromTo("#ar-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {C0});
       const toChip = (id, slab, chip, t) => {{
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", {{ opacity: 1, filter: "blur(0px)" }}, {{ opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }}, t);
-        tl.fromTo(slab, {{ opacity: 0.94 }}, {{ opacity: 0, duration: 0.25, immediateRender: false }}, t);
+        if (slab) tl.fromTo(slab, {{ opacity: 0.94 }}, {{ opacity: 0, duration: 0.25, immediateRender: false }}, t);
         tl.fromTo(chip, {{ opacity: 0, x: -30 }}, {{ opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }}, t + 0.1);
       }};
-      tl.fromTo("#cn-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {C0});
-      toChip("#wk-canon", "#cn-slab", "#cn-chip", {C0} + 1.05);
-
-      // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
-      arrive("#wk-atlas .wk-word", {A0}, 515, 383); fig("#wk-atlas", {A0} + 0.8 * B);
-      const route = {json.dumps([list(p) for _, p, _ in STOPS])};
-      const k = 1.25;
-      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), {A0}, 0.65, "power2.inOut", true);
-      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), {A0} + 0.72, 0.65, "power2.inOut");
-      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), {A0} + 1.44, 0.6, "power2.inOut");
-      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), {A0} + 2.1, 0.6, "power2.inOut");
-      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), {A0} + 2.76, 1.3, "expo.inOut");
-      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.54), {A0} + 4.1, {round(K0 - A0 - 4.1, 3)}, "none");
-      [0, 0.54, 1.26, 1.94, 2.58, 3.3].forEach((t, i) => {{
-        tl.fromTo("#at-p" + i, {{ scale: 0 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)" }}, {A0} + t);
-        tl.fromTo("#at-l" + i, {{ strokeDashoffset: 1, opacity: 1 }}, {{ strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }}, {A0} + t + 0.05);
-        tl.fromTo("#at-c" + i, {{ opacity: 0, y: 30, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }}, {A0} + t + 0.12);
+      toChip("#wk-archive", "#ar-slab", "#ar-chip", {C0} + 1.05);
+      const FAN = {json.dumps(fan_pos)}, COL = {json.dumps(col_pos)}, ORDER = {json.dumps(order)};
+      const SORT = {C0} + 1.6, OPEN = {C0} + 3.2;
+      ORDER.forEach((id, i) => {{
+        const el = "#ac-" + id, c = COL[id], f = FAN[id];
+        if (f) {{
+          // from off the frame, below and to the right, tumbling in; then a slow breath of the fan
+          tl.fromTo(el, {{ x: 1500 + i * 60, y: 1500, rotation: 50 + i * 4, scale: 1.25, rotationY: -40 }}, {{ x: f[0], y: f[1], rotation: f[2], rotationY: 0, duration: 0.7, ease: "expo.out" }}, {C0} + 0.06 + i * 0.035);
+          tl.to(el, {{ x: f[0] - 40, rotation: f[2] * 1.12, duration: SORT - ({C0} + 0.76 + i * 0.035), ease: "none" }}, {C0} + 0.76 + i * 0.035);
+          tl.to(el, {{ x: c[0], y: c[1], rotation: c[2], scale: 1, duration: 0.75, ease: "power3.inOut" }}, SORT + i * 0.022);
+        }} else {{
+          tl.fromTo(el, {{ x: c[0] + 160, y: -320, rotation: -25, scale: 1 }}, {{ x: c[0], y: c[1], rotation: c[2], duration: 0.6, ease: "expo.out" }}, SORT + 0.2 + i * 0.022);
+        }}
       }});
-      tl.fromTo("#at-slab", {{ opacity: 0.94 }}, {{ opacity: 0.94, duration: 0.01 }}, {A0});
-      toChip("#wk-atlas", "#at-slab", "#at-chip", {A0} + 1.05);
+      // the collection's title, word by word, and the eras' numerals over their columns
+      document.querySelectorAll("#ar-head span").forEach((el, i) => tl.fromTo(el, {{ opacity: 0, filter: "blur(8px)" }}, {{ opacity: 1, filter: "blur(0px)", duration: 0.14 }}, SORT + 0.25 + i * 0.09));
+      tl.fromTo(".ae", {{ opacity: 0, y: -24 }}, {{ opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "expo.out" }}, SORT + 0.45);
+      // one work comes forward (its cover takes the place of the one in its column) and opens
+      tl.set("#ar-book", {{ autoAlpha: 0 }}, {C0});
+      tl.set("#ar-book", {{ autoAlpha: 1 }}, OPEN);
+      tl.set("#ac-{OPEN}", {{ autoAlpha: 0 }}, OPEN);
+      tl.fromTo("#ar-veil", {{ opacity: 0 }}, {{ opacity: 1, duration: 0.35, ease: "power2.out" }}, OPEN);
+      tl.fromTo("#ar-book", {{ x: COL["{OPEN}"][0] - 960, y: COL["{OPEN}"][1] - 560, scale: {CW2} / 760, rotation: COL["{OPEN}"][2] }}, {{ x: 0, y: 0, scale: 1, rotation: 0, duration: 0.5, ease: "expo.out" }}, OPEN);
+      tl.set("#aa-page", {{ opacity: 1 }}, OPEN + 0.3);
+      tl.fromTo("#ar-lid", {{ rotationY: 0 }}, {{ rotationY: -150, duration: 0.55, ease: "power2.inOut" }}, OPEN + 0.42);
+      tl.fromTo("#aa-page > *", {{ opacity: 0, y: 14 }}, {{ opacity: 1, y: 0, duration: 0.3, stagger: 0.09, ease: "expo.out" }}, OPEN + 0.62);
+      tl.fromTo("#ar-head, .ae", {{ opacity: 1 }}, {{ opacity: 0.25, duration: 0.3, immediateRender: false }}, OPEN);
+
+      // THE ATLAS: the globe flies (in the video); the year ticks, the cards land on their places
+      arrive("#wk-atlas .wk-word", {A0}, 515, 383); fig("#wk-atlas", {A0} + 0.8 * B);
+      toChip("#wk-atlas", null, "#at-chip", {A0} + 1.05);
+      const YEARS = {json.dumps(AT_YEARS)};
+      tl.set("#at-year", {{ textContent: YEARS[0][1] }}, {A0});
+      tl.fromTo("#at-year", {{ opacity: 0, y: 40 }}, {{ opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }}, {A0} + 0.15);
+      YEARS.slice(1).forEach(([t, y], i) => {{
+        tl.fromTo("#at-year", {{ textContent: YEARS[i][1] }}, {{ textContent: y, snap: {{ textContent: 1 }}, duration: 0.3, ease: "steps(9)", immediateRender: false }}, {A0} + t - 0.05);
+        tl.fromTo("#at-year", {{ scale: 1.08 }}, {{ scale: 1, duration: 0.3, ease: "expo.out", immediateRender: false }}, {A0} + t + 0.25);
+      }});
+      const CARDS = {json.dumps([[c[0], c[4], c[5]] for c in AT_CARDS])}, TRACK = {json.dumps(AT_TRACKS, separators=(",", ":"))};
+      const F0FILM = {FILM0};
+      CARDS.forEach(([id, t0, t1]) => {{
+        const a = {A0} + t0, b = {A0} + t1;
+        // the group rides on its place, frame by frame, and fades as the place turns away
+        TRACK[id].forEach(([f, x, y, c]) => {{
+          const t = f / 30 - F0FILM;
+          if (t < a - 0.05 || t > b + 0.4) return;
+          tl.set("#atc-" + id, {{ x, y, opacity: Math.max(0, Math.min(1, (c - 0.05) / 0.15)) }}, t - 0.002);
+        }});
+        tl.set("#atc-" + id + " .atc-in", {{ autoAlpha: 0 }}, {C0});
+        tl.set("#atc-" + id + " .atc-in", {{ autoAlpha: 1 }}, a);
+        tl.fromTo("#atc-" + id + " .atc-pin", {{ scale: 0 }}, {{ scale: 1, duration: 0.3, ease: "back.out(2)" }}, a);
+        tl.fromTo("#atl-" + id, {{ strokeDashoffset: 1 }}, {{ strokeDashoffset: 0, duration: 0.25, ease: "power2.out" }}, a + 0.05);
+        tl.fromTo("#atk-" + id, {{ opacity: 0, y: 30, scale: 0.94 }}, {{ opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }}, a + 0.12);
+        if (t1 < 8) tl.to("#atc-" + id + " .atc-in", {{ autoAlpha: 0, duration: 0.25, ease: "power2.in" }}, b);
+      }});
 
       // BOOKS, on the climax: the spines rise onto the shelf, one an eighth apart
       arrive("#wk-books .wk-word", {K0}, 530, 285); fig("#wk-books", {K0} + 0.6 * B);
@@ -397,7 +514,7 @@ page = f'''<template>
       // dives into it, as it dived into "Watch" at the end of the pillars
       const MX = {json.dumps(fz_x)};
       const KF = 1.64, CY = 255;
-      const outgoing = ["#wk-watch", "#wk-read", "#wk-canon", "#wk-atlas", "#wk-books"];
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-archive", "#wk-atlas, #at-globe", "#wk-books"];
       tl.set("#fz-pane", {{ x: 1920 }}, 0);
       [{R0}, {C0}, {A0}, {K0}, {F0}].forEach((t, i) => {{
         const m = MX[i + 1], t0 = t - 0.78;
@@ -418,5 +535,5 @@ page = f'''<template>
   </script>
 </template>
 '''
-OUT.write_text(page)
+OUT.write_text(page, encoding="utf-8")
 print("wrote", OUT, "duration", END)

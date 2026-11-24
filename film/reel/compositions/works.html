@@ -11,7 +11,8 @@
     .wk-slab { position: absolute; left: 0; top: 0; width: 1020px; height: 380px; background: #f9f3dd; }
 
     /* after its entrance a title becomes a small chip, so the world can be seen */
-    .wk-chip { position: absolute; left: 60px; top: 46px; padding: 12px 26px 14px; background: #f9f3dd; border: 3px solid #470b15; white-space: nowrap; z-index: 3; }
+    .wk-chip { position: absolute; left: 60px; top: 46px; padding: 12px 34px 15px; border-radius: 999px; background: rgba(252, 248, 236, 0.84); border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.5); -webkit-backdrop-filter: blur(16px) saturate(1.25); backdrop-filter: blur(16px) saturate(1.25); white-space: nowrap; z-index: 3; }
     .wk-chip b { font-weight: 600; font-size: 46px; color: #470b15; }
     .wk-chip span { margin-left: 18px; font-family: Inter, sans-serif; font-weight: 500; font-size: 28px; color: #28231e; }
 
@@ -19,54 +20,78 @@
     #wk-watch .wk-word { top: 640px; }
     #wk-watch .wk-fig { top: 830px; }
     #wk-wall { position: absolute; left: 690px; top: 110px; display: grid; grid-template-columns: repeat(3, 340px); gap: 20px; }
-    .wk-thumb { width: 340px; height: 191px; object-fit: cover; display: block; }
+    .wk-thumb { width: 340px; height: 191px; object-fit: cover; display: block; border-radius: 14px; border: 1px solid rgba(40, 35, 30, 0.14); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 10px 22px -8px rgba(44, 18, 20, 0.4); }
 
     /* read: eight essays as cards in space */
     #rd-stage { position: absolute; inset: 0; perspective: 1700px; perspective-origin: 51% 58%; }
     #rd-ring { position: absolute; left: 980px; top: 660px; width: 0; height: 0; transform-style: preserve-3d; }
     .rd-arm { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
-    .rd-card { position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 26px 30px; background: #f9f3dd; border: 3px solid #470b15; outline: 1px solid #470b15; outline-offset: 6px; backface-visibility: hidden; display: flex; flex-direction: column; }
-    .rd-k { font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; color: #470b15; margin-bottom: 14px; }
+    /* the home's essay card (globals.css .essay): rounded, the post's cover, its date, title and byline */
+    .rd-card { position: absolute; left: -220px; top: -150px; width: 440px; height: 300px; padding: 18px; border-radius: 22px; background: #fbf7e9; border: 1px solid rgba(40, 35, 30, 0.13);
+      box-shadow: 0 2px 3px rgba(44, 18, 20, 0.14), 0 22px 44px -18px rgba(44, 18, 20, 0.48); backface-visibility: hidden; display: grid; grid-template-columns: 122px minmax(0, 1fr); gap: 0 20px; align-items: start; }
+    .rd-cover { display: block; width: 122px; height: 152px; overflow: hidden; border-radius: 8px; border: 1px solid rgba(40, 35, 30, 0.16); box-shadow: 0 1px 1px rgba(44, 18, 20, 0.14), 0 6px 14px -6px rgba(44, 18, 20, 0.3); }
+    .rd-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .rd-text { display: grid; gap: 8px; align-content: start; }
+    .rd-k { font-family: "IBM Plex Mono", monospace; font-size: 20px; color: #6a625a; }
     /* the clamp clips at the box: a little padding keeps the last line's descenders, not the next line */
-    .rd-card h3 { font-weight: 600; font-size: 40px; line-height: 1.05; color: #28231e; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.05em; }
-    .rd-by { margin-top: auto; font-family: Inter, sans-serif; font-weight: 500; font-size: 24px; color: #6a625a; }
+    .rd-card h3 { font-weight: 600; font-size: 30px; line-height: 1.08; color: #28231e; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; padding-bottom: 0.06em; }
+    .rd-by { font-family: Inter, sans-serif; font-weight: 500; font-size: 19px; line-height: 1.3; color: #6a625a; }
     #wk-read .wk-word, #wk-read .wk-fig { z-index: 2; }
 
-    /* the canon: the fifty works as the site's cards, on burgundy */
-    #wk-canon { background: #470b15; background-image: radial-gradient(70% 80% at 55% 45%, rgba(139, 94, 75, 0.55), transparent 75%); }
-    #cn-world { position: absolute; left: 0; top: 0; width: 2996px; height: 2063px; transform-origin: 0 0; }
-    .cc-slot { position: absolute; width: 236px; height: 315px; }
-    .cc { --bg: #f9f3dd; --fg: #28231e; --ac: #470b15; --ln: rgba(40, 35, 30, 0.3);
-      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 16px; background: var(--bg); color: var(--fg);
-      box-shadow: 0 3px 6px rgba(20, 6, 8, 0.25), 0 30px 50px -22px rgba(20, 6, 8, 0.75); }
-    .cc::before { content: ""; position: absolute; inset: 8px; border: 1.5px solid var(--ln); }
-    .cc--burgundy { --bg: #5a1420; --fg: #f9f3dd; --ac: #dcc8ad; --ln: rgba(249, 243, 221, 0.3); }
-    .cc--leather { --bg: #8b5e4b; --fg: #f9f3dd; --ac: #f9f3dd; --ln: rgba(249, 243, 221, 0.36); }
-    .cc--ink { --bg: #28231e; --fg: #f9f3dd; --ac: #c9a993; --ln: rgba(249, 243, 221, 0.24); }
-    .cc--vellum { --bg: #ede3c8; }
-    .cc--counter::before { border-style: dashed; }
-    .cc-top { display: flex; justify-content: space-between; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: var(--ac); }
-    .cc-top b { font-weight: 500; font-size: 18px; }
-    .cc-t { font-style: italic; font-weight: 600; font-size: 29px; line-height: 1.06; }
-    .cc-t.is-long { font-size: 23px; line-height: 1.1; }
-    .cc-foot { margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }
-    .cc-foot i { display: block; width: 34px; height: 1.5px; background: var(--ac); margin-bottom: 8px; }
-    .cc-foot b { font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }
-    .cc-foot span { font-family: "IBM Plex Mono", monospace; font-size: 13px; opacity: 0.75; }
-    #wk-canon .wk-slab { background: #470b15; }
-    #wk-canon .wk-word { color: #f9f3dd; }
-    #wk-canon .wk-fig { color: #ede3c8; }
-    #wk-canon .wk-chip { background: #f9f3dd; }
+    /* the archive: covers of the curated works, on burgundy, as the old canon cards were */
+    #wk-archive { background: #470b15; background-image: radial-gradient(70% 80% at 60% 55%, rgba(139, 94, 75, 0.5), transparent 75%); }
+    #wk-archive .wk-slab { background: #470b15; }
+    #wk-archive .wk-word { color: #f9f3dd; z-index: 2; }
+    #wk-archive .wk-fig { color: #ede3c8; z-index: 2; }
+    #wk-archive .wk-slab { z-index: 2; }
+    #ar-deck { position: absolute; inset: 0; perspective: 1800px; }
+    .ac { --paper: #f9f3dd; --leather: #8b5e4b; --burgundy: #470b15; --ink: #28231e; --region-sea: #2a4d51; --region-olive: #4c5327;
+      position: absolute; left: -105px; top: -140px; width: 210px; height: 280px; display: flex; flex-direction: column; gap: 9px; padding: 17px 16px 15px;
+      background: var(--bg); color: var(--fg); border-radius: 8px; box-shadow: 0 3px 6px rgba(20, 6, 8, 0.28), 0 30px 50px -22px rgba(20, 6, 8, 0.8); backface-visibility: hidden; }
+    .ac::before { content: ""; position: absolute; inset: 7px; border: 1px solid var(--line); border-radius: 3px; }
+    .ac-top { font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; font-size: 17px; color: var(--accent); }
+    .ac-t { font-style: italic; font-weight: 600; font-size: 27px; line-height: 1.07; }
+    .ac-t.is-long { font-size: 22px; line-height: 1.1; }
+    .ac-foot { margin-top: auto; display: grid; gap: 4px; font-family: Inter, sans-serif; }
+    .ac-foot i { display: block; width: 30px; height: 1.5px; background: var(--accent); margin-bottom: 7px; }
+    .ac-foot b { font-weight: 600; font-size: 13.5px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.25; }
+    #ar-head { position: absolute; left: 0; right: 0; top: 150px; text-align: center; font-style: italic; font-weight: 600; font-size: 78px; line-height: 1; color: #f9f3dd; white-space: nowrap; }
+    #ar-head span { display: inline-block; }
+    .ae { position: absolute; top: 300px; width: 240px; text-align: center; color: #f9f3dd; }
+    .ae b { display: block; font-weight: 600; font-size: 54px; line-height: 1; }
+    .ae span { display: block; margin-top: 8px; font-family: "IBM Plex Mono", Consolas, monospace; font-size: 24px; color: #dcc8ad; }
+    #ar-veil { position: absolute; inset: 0; background: rgba(47, 7, 13, 0.82); opacity: 0; }
+    /* the opened work: its cover swings open on the article's first lines */
+    #ar-book { position: absolute; left: 960px; top: 560px; width: 0; height: 0; perspective: 2200px; }
+    #aa-page { position: absolute; left: -380px; top: -330px; width: 760px; height: 660px; padding: 40px 48px; border-radius: 14px; background: #f9f3dd; color: #28231e;
+      box-shadow: 0 4px 10px rgba(20, 6, 8, 0.35), 0 50px 90px -30px rgba(20, 6, 8, 0.85); opacity: 0; }
+    .aa-k { font-family: "IBM Plex Mono", Consolas, monospace; font-size: 26px; color: #470b15; }
+    .aa-t { margin: 8px 0 20px; font-style: italic; font-weight: 600; font-size: 52px; line-height: 1.02; color: #470b15; }
+    .aa-s { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(40, 35, 30, 0.18); }
+    .aa-s h4 { font-weight: 600; font-size: 32px; line-height: 1.1; color: #28231e; }
+    .aa-s p { margin-top: 6px; font-family: Inter, sans-serif; font-weight: 500; font-size: 22px; line-height: 1.35; color: #5b534b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    #ar-lid { position: absolute; left: -380px; top: -330px; width: 760px; height: 660px; transform-origin: 0 50%; transform-style: preserve-3d; }
+    #ar-lid .ac { left: 0; top: 0; width: 760px; height: 660px; padding: 40px 42px; gap: 16px; border-radius: 14px; }
+    #ar-lid .ac::before { inset: 14px; border-radius: 6px; }
+    #ar-lid .ac-top { font-size: 30px; }
+    #ar-lid .ac-t { font-size: 76px; }
+    #ar-lid .ac-foot b { font-size: 26px; }
+    #ar-lid .ac-foot i { width: 60px; height: 2px; }
 
-    /* the Atlas: milestones pinned on the Iberophone map */
-    #at-world { position: absolute; left: 0; top: 0; width: 3584px; height: 1746px; transform-origin: 0 0; }
-    #at-world > img { position: absolute; inset: 0; width: 3584px; height: 1746px; display: block; }
-    .at-lead { position: absolute; inset: 0; width: 3584px; height: 1746px; overflow: visible; }
-    .at-lead path { fill: none; stroke: #470b15; stroke-width: 4; stroke-dasharray: 0.02 0.02; }
-    .at-pin { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: #470b15; border: 6px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15; }
-    .at-card { position: absolute; width: 560px; padding: 24px 30px 28px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; }
-    .at-k { font-family: "IBM Plex Mono", monospace; font-size: 24px; color: #470b15; margin-bottom: 10px; }
-    .at-card h3 { font-weight: 600; font-size: 46px; line-height: 1.05; color: #28231e; }
+    /* the Atlas: the globe, rendered from our engine; the year, the cards and their pins built here */
+    #wk-atlas { background: transparent; }
+    #at-globe { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; background: #17130f; }
+    #at-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23, 19, 15, 0.78) 0%, rgba(23, 19, 15, 0) 38%), linear-gradient(0deg, rgba(23, 19, 15, 0.7) 0%, rgba(23, 19, 15, 0) 30%); }
+    #wk-atlas .wk-word { color: #f9f3dd; }
+    #wk-atlas .wk-fig { color: #ede3c8; }
+    #at-year { position: absolute; left: 120px; bottom: 60px; font-weight: 600; font-size: 230px; line-height: 0.9; letter-spacing: -0.03em; color: #f9f3dd; font-variant-numeric: lining-nums tabular-nums; text-shadow: 0 6px 40px rgba(23, 19, 15, 0.8); }
+    .atc, .atc-in { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+    .atc-lead { position: absolute; left: -800px; top: -800px; width: 1600px; height: 1600px; overflow: visible; }
+    .atc-lead path { fill: none; stroke: #f9f3dd; stroke-width: 3; stroke-dasharray: 0.03 0.02; }
+    .atc-pin { position: absolute; left: -15px; top: -15px; width: 30px; height: 30px; border-radius: 50%; background: #470b15; border: 5px solid #f9f3dd; box-shadow: 0 0 0 3px #470b15, 0 4px 14px rgba(0, 0, 0, 0.5); }
+    .atc-card { position: absolute; width: 520px; padding: 22px 28px 26px; border-radius: 14px; background: #f9f3dd; border: 3px solid #28231e; outline: 2px solid #b5aa96; outline-offset: 7px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7); }
+    .atc-k { font-family: "IBM Plex Mono", Consolas, monospace; font-size: 26px; color: #470b15; margin-bottom: 8px; }
+    .atc-card h3 { font-weight: 600; font-size: 44px; line-height: 1.04; color: #28231e; }
 
     /* books */
     #wk-shelf { position: absolute; right: 150px; bottom: 0; height: 860px; display: flex; gap: 18px; align-items: flex-end; }
@@ -121,28 +146,36 @@
       <div id="rd-stage">
         <div id="rd-ring">
           <div id="rd-a0" class="rd-arm"><article id="rd-c0" class="rd-card">
-            <p class="rd-k">Substack · 19 Dec 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco Elías de Tejada</p>
+            <span class="rd-cover"><img src="assets/img/essays/the-vikings-did-not-discover-america.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Dec 29, 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">Iván Vélez</p></span>
           </article></div>
           <div id="rd-a1" class="rd-arm"><article id="rd-c1" class="rd-card">
-            <p class="rd-k">Substack · 29 Dec 2025</p><h3>The Vikings Did Not Discover America</h3><p class="rd-by">Iván Vélez</p>
+            <span class="rd-cover"><img src="assets/img/essays/the-catholic-hispanic-position-on.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Dec 19, 2025</p><h3>The Catholic-Hispanic Position on Racism</h3><p class="rd-by">Francisco Elías de Tejada</p></span>
           </article></div>
           <div id="rd-a2" class="rd-arm"><article id="rd-c2" class="rd-card">
-            <p class="rd-k">Substack · 17 Sep 2025</p><h3>Oiréis hablar de mí: A Tribute to José Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo</p>
+            <span class="rd-cover"><img src="assets/img/essays/oireis-hablar-de-mi-a-tribute-to.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Sep 17, 2025</p><h3>Oiréis hablar de mí: A Tribute to José Vasconcelos</h3><p class="rd-by">Ismael Carvallo Robledo · trans. Beltrán Arellanes</p></span>
           </article></div>
           <div id="rd-a3" class="rd-arm"><article id="rd-c3" class="rd-card">
-            <p class="rd-k">Substack · 2 Jun 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla</p>
+            <span class="rd-cover"><img src="assets/img/essays/transitional-political-society-neither.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Jun 2, 2025</p><h3>Transitional Political Society, Neither Feudal nor Capitalist: The Spanish Empire</h3><p class="rd-by">Santiago Armesilla · trans. Beltrán Arellanes</p></span>
           </article></div>
           <div id="rd-a4" class="rd-arm"><article id="rd-c4" class="rd-card">
-            <p class="rd-k">Substack · 17 Apr 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno</p>
+            <span class="rd-cover"><img src="assets/img/essays/on-bullfighting.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">May 21, 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno · trans. Beltrán Arellanes</p></span>
           </article></div>
           <div id="rd-a5" class="rd-arm"><article id="rd-c5" class="rd-card">
-            <p class="rd-k">Substack · 21 May 2025</p><h3>On Bullfighting</h3><p class="rd-by">Gustavo Bueno</p>
+            <span class="rd-cover"><img src="assets/img/essays/spain-and-america.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Apr 17, 2025</p><h3>Spain and America</h3><p class="rd-by">Gustavo Bueno · trans. Beltrán Arellanes</p></span>
           </article></div>
           <div id="rd-a6" class="rd-arm"><article id="rd-c6" class="rd-card">
-            <p class="rd-k">Substack · 6 Apr 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">Beltrán Arellanes</p>
+            <span class="rd-cover"><img src="assets/img/essays/the-black-legend-threat-to-hispanic.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Apr 12, 2025</p><h3>The Black Legend: Threat to Hispanic Civilization (Part 1)</h3><p class="rd-by">Alicia Melchor Herrera</p></span>
           </article></div>
           <div id="rd-a7" class="rd-arm"><article id="rd-c7" class="rd-card">
-            <p class="rd-k">Substack · 12 Apr 2025</p><h3>The Black Legend: Threat to Hispanic Civilization (Part 1)</h3><p class="rd-by">Alicia Melchor Herrera</p>
+            <span class="rd-cover"><img src="assets/img/essays/aryan-indigenismo-and-manifest-destiny.jpg" alt="" /></span>
+            <span class="rd-text"><p class="rd-k">Apr 6, 2025</p><h3>Aryan Indigenismo and Manifest Destiny</h3><p class="rd-by">Beltrán Arellanes</p></span>
           </article></div>
         </div>
       </div>
@@ -150,103 +183,84 @@
       <p class="wk-fig" style="top: 250px">Essays and translations on Substack</p>
     </div>
 
-    <div id="wk-canon" class="wk-shot clip" data-start="8.065" data-duration="5.496">
-      <div id="cn-world">
-          <div class="cc-slot" style="left: 120px; top: 140px"><div id="cc-T001" class="cc cc--leather" style="rotate: -1.2deg"><p class="cc-top"><b>1818</b><span>VE</span></p><p class="cc-t">Carta de Jamaica</p><p class="cc-foot"><i></i><b>Simón Bolívar</b><span>1783–1830</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 140px"><div id="cc-T002" class="cc cc--burgundy" style="rotate: -0.8deg"><p class="cc-top"><b>1822</b><span>HN</span></p><p class="cc-t is-long">Soñaba el abad de San Pedro, y yo también sé soñar</p><p class="cc-foot"><i></i><b>José Cecilio del Valle</b><span>1780–1834</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 140px"><div id="cc-T003" class="cc cc--ink" style="rotate: -0.4deg"><p class="cc-top"><b>1847</b><span>VE</span></p><p class="cc-t is-long">Gramática de la lengua castellana destinada al uso de los americanos</p><p class="cc-foot"><i></i><b>Andrés Bello</b><span>1781–1865</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 140px"><div id="cc-T004" class="cc cc--vellum" style="rotate: 0.0deg"><p class="cc-top"><b>1855</b><span>PA</span></p><p class="cc-t">El Estado federal de Panamá</p><p class="cc-foot"><i></i><b>Justo Arosemena</b><span>1817–1896</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 140px"><div id="cc-T005" class="cc cc--paper" style="rotate: 0.4deg"><p class="cc-top"><b>1856</b><span>CL</span></p><p class="cc-t">Iniciativa de la América</p><p class="cc-foot"><i></i><b>Francisco Bilbao</b><span>1823–1865</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 140px"><div id="cc-T006" class="cc cc--leather" style="rotate: 0.8deg"><p class="cc-top"><b>1865</b><span>CO</span></p><p class="cc-t is-long">Unión latino-americana, pensamiento de Bolívar para formar una liga americana</p><p class="cc-foot"><i></i><b>José María Torres Caicedo</b><span>1830–1889</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 140px"><div id="cc-T007" class="cc cc--burgundy" style="rotate: 1.2deg"><p class="cc-top"><b>1866</b><span>GOA</span></p><p class="cc-t">Os brahamanes</p><p class="cc-foot"><i></i><b>Francisco Luís Gomes</b><span>1829–1869</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 140px"><div id="cc-T008" class="cc cc--ink" style="rotate: 1.6deg"><p class="cc-top"><b>1868</b><span>EC</span></p><p class="cc-t is-long">Ojeada histórico-crítica sobre la poesía ecuatoriana, desde su época más remota hasta nuestros días</p><p class="cc-foot"><i></i><b>Juan León Mera</b><span>1832–1894</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 140px"><div id="cc-T009" class="cc cc--vellum" style="rotate: -1.3deg"><p class="cc-top"><b>1870</b><span>PR</span></p><p class="cc-t">Antillean federation essays and speeches</p><p class="cc-foot"><i></i><b>Eugenio María de Hostos</b><span>1839–1903</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 140px"><div id="cc-T010" class="cc cc--paper" style="rotate: -0.9deg"><p class="cc-top"><b>1879</b><span>PT</span></p><p class="cc-t">História da civilização ibérica</p><p class="cc-foot"><i></i><b>Oliveira Martins</b><span>1845–1894</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 507px"><div id="cc-T011" class="cc cc--leather" style="rotate: -0.5deg"><p class="cc-top"><b>1883</b><span>BR</span></p><p class="cc-t">O abolicionismo</p><p class="cc-foot"><i></i><b>Joaquim Nabuco</b><span>1849–1910</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 507px"><div id="cc-T012" class="cc cc--burgundy" style="rotate: -0.1deg"><p class="cc-top"><b>1889</b><span>PH</span></p><p class="cc-t">Filipinas dentro de cien años</p><p class="cc-foot"><i></i><b>José Rizal</b><span>1861–1896</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 507px"><div id="cc-T013" class="cc cc--ink" style="rotate: 0.3deg"><p class="cc-top"><b>1891</b><span>CU</span></p><p class="cc-t">Nuestra América</p><p class="cc-foot"><i></i><b>José Martí</b><span>1853–1895</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 507px"><div id="cc-T014" class="cc cc--vellum cc--counter" style="rotate: 0.7deg"><p class="cc-top"><b>1894</b><span>PE</span></p><p class="cc-t">Pájinas libres</p><p class="cc-foot"><i></i><b>Manuel González Prada</b><span>1844–1918</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 507px"><div id="cc-T015" class="cc cc--paper" style="rotate: 1.1deg"><p class="cc-top"><b>1895</b><span>ES</span></p><p class="cc-t">En torno al casticismo</p><p class="cc-foot"><i></i><b>Miguel de Unamuno</b><span>1864–1936</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 507px"><div id="cc-T016" class="cc cc--leather" style="rotate: 1.5deg"><p class="cc-top"><b>1897</b><span>ES</span></p><p class="cc-t">Idearium español</p><p class="cc-foot"><i></i><b>Ángel Ganivet</b><span>1865–1898</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 507px"><div id="cc-T017" class="cc cc--burgundy" style="rotate: -1.4deg"><p class="cc-top"><b>1898</b><span>NI</span></p><p class="cc-t">El triunfo de Calibán and hemispheric writings</p><p class="cc-foot"><i></i><b>Rubén Darío</b><span>1867–1916</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 507px"><div id="cc-T018" class="cc cc--ink" style="rotate: -1.0deg"><p class="cc-top"><b>1900</b><span>UY</span></p><p class="cc-t">Ariel</p><p class="cc-foot"><i></i><b>José Enrique Rodó</b><span>1871–1917</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 507px"><div id="cc-T019" class="cc cc--vellum" style="rotate: -0.6deg"><p class="cc-top"><b>1905</b><span>PE</span></p><p class="cc-t is-long">Carácter de la literatura del Perú independiente</p><p class="cc-foot"><i></i><b>José de la Riva-Agüero</b><span>1885–1944</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 507px"><div id="cc-T020" class="cc cc--paper" style="rotate: -0.2deg"><p class="cc-top"><b>1905</b><span>BR</span></p><p class="cc-t">A América Latina</p><p class="cc-foot"><i></i><b>Manoel do Bomfim</b><span>1868–1932</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 874px"><div id="cc-T021" class="cc cc--leather" style="rotate: 0.2deg"><p class="cc-top"><b>1910</b><span>BO</span></p><p class="cc-t">Creación de la pedagogía nacional</p><p class="cc-foot"><i></i><b>Franz Tamayo</b><span>1879–1956</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 874px"><div id="cc-T022" class="cc cc--burgundy" style="rotate: 0.6deg"><p class="cc-top"><b>1913</b><span>PE</span></p><p class="cc-t">La creación de un continente</p><p class="cc-foot"><i></i><b>Francisco García Calderón</b><span>1883–1953</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 874px"><div id="cc-T023" class="cc cc--ink" style="rotate: 1.0deg"><p class="cc-top"><b>1914</b><span>ES</span></p><p class="cc-t">La leyenda negra y la verdad histórica</p><p class="cc-foot"><i></i><b>Julián Juderías</b><span>1877–1918</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 874px"><div id="cc-T024" class="cc cc--vellum" style="rotate: 1.4deg"><p class="cc-top"><b>1917</b><span>ES</span></p><p class="cc-t">España y el programa americanista</p><p class="cc-foot"><i></i><b>Rafael Altamira</b><span>1866–1951</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 874px"><div id="cc-T025" class="cc cc--paper" style="rotate: -1.5deg"><p class="cc-top"><b>1920</b><span>CR</span></p><p class="cc-t">La caída del águila</p><p class="cc-foot"><i></i><b>Carlos Gagini</b><span>1865–1925</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 874px"><div id="cc-T026" class="cc cc--leather" style="rotate: -1.1deg"><p class="cc-top"><b>1923</b><span>AR</span></p><p class="cc-t">El destino de un continente</p><p class="cc-foot"><i></i><b>Manuel Ugarte</b><span>1875–1951</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 874px"><div id="cc-T027" class="cc cc--burgundy" style="rotate: -0.7deg"><p class="cc-top"><b>1924</b><span>PT</span></p><p class="cc-t">A aliança peninsular</p><p class="cc-foot"><i></i><b>António Sardinha</b><span>1887–1925</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 874px"><div id="cc-T028" class="cc cc--ink" style="rotate: -0.3deg"><p class="cc-top"><b>1924</b><span>PE</span></p><p class="cc-t is-long">La unidad de la América Indo-Española and related essays</p><p class="cc-foot"><i></i><b>José Carlos Mariátegui</b><span>1894–1930</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 874px"><div id="cc-T029" class="cc cc--vellum" style="rotate: 0.1deg"><p class="cc-top"><b>1924</b><span>AR</span></p><p class="cc-t">Eurindia</p><p class="cc-foot"><i></i><b>Ricardo Rojas</b><span>1882–1957</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 874px"><div id="cc-T030" class="cc cc--paper" style="rotate: 0.5deg"><p class="cc-top"><b>1925</b><span>MX</span></p><p class="cc-t">La raza cósmica</p><p class="cc-foot"><i></i><b>José Vasconcelos</b><span>1882–1959</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 1241px"><div id="cc-T031" class="cc cc--leather" style="rotate: 0.9deg"><p class="cc-top"><b>1928</b><span>DO</span></p><p class="cc-t">Seis ensayos en busca de nuestra expresión</p><p class="cc-foot"><i></i><b>Pedro Henríquez Ureña</b><span>1884–1946</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 1241px"><div id="cc-T032" class="cc cc--burgundy" style="rotate: 1.3deg"><p class="cc-top"><b>1929</b><span>NI</span></p><p class="cc-t is-long">Plan de realización del supremo sueño de Bolívar</p><p class="cc-foot"><i></i><b>Augusto César Sandino</b><span>1895–1934</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 1241px"><div id="cc-T033" class="cc cc--ink" style="rotate: -1.6deg"><p class="cc-top"><b>1929</b><span>SV</span></p><p class="cc-t">El mínimum vital</p><p class="cc-foot"><i></i><b>Alberto Masferrer</b><span>1868–1932</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 1241px"><div id="cc-T034" class="cc cc--vellum" style="rotate: -1.2deg"><p class="cc-top"><b>1934</b><span>PR</span></p><p class="cc-t">Insularismo</p><p class="cc-foot"><i></i><b>Antonio S. Pedreira</b><span>1899–1939</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 1241px"><div id="cc-T035" class="cc cc--paper" style="rotate: -0.8deg"><p class="cc-top"><b>1934</b><span>ES</span></p><p class="cc-t">Defensa de la Hispanidad</p><p class="cc-foot"><i></i><b>Ramiro de Maeztu</b><span>1874–1936</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 1241px"><div id="cc-T036" class="cc cc--leather" style="rotate: -0.4deg"><p class="cc-top"><b>1936</b><span>PE</span></p><p class="cc-t">El antiimperialismo y el APRA</p><p class="cc-foot"><i></i><b>Víctor Raúl Haya de la Torre</b><span>1895–1979</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 1241px"><div id="cc-T037" class="cc cc--burgundy" style="rotate: 0.0deg"><p class="cc-top"><b>1939</b><span>ES</span></p><p class="cc-t">Pensamiento y poesía en la vida española</p><p class="cc-foot"><i></i><b>María Zambrano</b><span>1904–1991</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 1241px"><div id="cc-T038" class="cc cc--ink" style="rotate: 0.4deg"><p class="cc-top"><b>1940</b><span>CU</span></p><p class="cc-t">Contrapunteo cubano del tabaco y el azúcar</p><p class="cc-foot"><i></i><b>Fernando Ortiz</b><span>1881–1969</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 1241px"><div id="cc-T039" class="cc cc--vellum" style="rotate: 0.8deg"><p class="cc-top"><b>1940</b><span>BR</span></p><p class="cc-t">O mundo que o português criou</p><p class="cc-foot"><i></i><b>Gilberto Freyre</b><span>1900–1987</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 1241px"><div id="cc-T040" class="cc cc--paper" style="rotate: 1.2deg"><p class="cc-top"><b>1947</b><span>CL</span></p><p class="cc-t">Hispanoamérica del dolor</p><p class="cc-foot"><i></i><b>Jaime Eyzaguirre</b><span>1908–1968</span></p></div></div>
-          <div class="cc-slot" style="left: 120px; top: 1608px"><div id="cc-T041" class="cc cc--leather" style="rotate: 1.6deg"><p class="cc-top"><b>1953</b><span>MX</span></p><p class="cc-t">América como conciencia</p><p class="cc-foot"><i></i><b>Leopoldo Zea</b><span>1912–2004</span></p></div></div>
-          <div class="cc-slot" style="left: 400px; top: 1608px"><div id="cc-T042" class="cc cc--burgundy cc--counter" style="rotate: -1.3deg"><p class="cc-top"><b>1955</b><span>AO</span></p><p class="cc-t">Qu&#x27;est-ce que le luso-tropicalisme?</p><p class="cc-foot"><i></i><b>Mário Pinto de Andrade</b><span>1928–1990</span></p></div></div>
-          <div class="cc-slot" style="left: 680px; top: 1608px"><div id="cc-T043" class="cc cc--ink" style="rotate: -0.9deg"><p class="cc-top"><b>1956</b><span>CV</span></p><p class="cc-t">Cabo Verde visto por Gilberto Freyre</p><p class="cc-foot"><i></i><b>Baltasar Lopes</b><span>1907–1989</span></p></div></div>
-          <div class="cc-slot" style="left: 960px; top: 1608px"><div id="cc-T044" class="cc cc--vellum" style="rotate: -0.5deg"><p class="cc-top"><b>1959</b><span>PT</span></p><p class="cc-t">Um Fernando Pessoa</p><p class="cc-foot"><i></i><b>Agostinho da Silva</b><span>1906–1994</span></p></div></div>
-          <div class="cc-slot" style="left: 1240px; top: 1608px"><div id="cc-T045" class="cc cc--paper" style="rotate: -0.1deg"><p class="cc-top"><b>1967</b><span>UY</span></p><p class="cc-t">El Uruguay como problema</p><p class="cc-foot"><i></i><b>Alberto Methol Ferré</b><span>1929–2009</span></p></div></div>
-          <div class="cc-slot" style="left: 1520px; top: 1608px"><div id="cc-T046" class="cc cc--leather" style="rotate: 0.3deg"><p class="cc-top"><b>1968</b><span>AR</span></p><p class="cc-t">Historia de la nación latinoamericana</p><p class="cc-foot"><i></i><b>Jorge Abelardo Ramos</b><span>1921–1994</span></p></div></div>
-          <div class="cc-slot" style="left: 1800px; top: 1608px"><div id="cc-T047" class="cc cc--burgundy cc--counter" style="rotate: 0.7deg"><p class="cc-top"><b>1970</b><span>GW</span></p><p class="cc-t is-long">National Liberation and Culture / Libertação nacional e cultura</p><p class="cc-foot"><i></i><b>Amílcar Cabral</b><span>1924–1973</span></p></div></div>
-          <div class="cc-slot" style="left: 2080px; top: 1608px"><div id="cc-T048" class="cc cc--ink cc--counter" style="rotate: 1.1deg"><p class="cc-top"><b>1977</b><span>GQ</span></p><p class="cc-t">Historia y tragedia de Guinea Ecuatorial</p><p class="cc-foot"><i></i><b>Donato Ndongo</b><span>1950–living</span></p></div></div>
-          <div class="cc-slot" style="left: 2360px; top: 1608px"><div id="cc-T049" class="cc cc--vellum" style="rotate: 1.5deg"><p class="cc-top"><b>1988</b><span>PH</span></p><p class="cc-t">Culture and History</p><p class="cc-foot"><i></i><b>Nick Joaquín</b><span>1917–2004</span></p></div></div>
-          <div class="cc-slot" style="left: 2640px; top: 1608px"><div id="cc-T050" class="cc cc--paper cc--counter" style="rotate: -1.4deg"><p class="cc-top"><b>1999</b><span>PT</span></p><p class="cc-t is-long">A nau de Ícaro, seguido de Imagem e miragem da lusofonia</p><p class="cc-foot"><i></i><b>Eduardo Lourenço</b><span>1923–2020</span></p></div></div>
+    <div id="wk-archive" class="wk-shot clip" data-start="8.065" data-duration="5.496">
+      <div id="ar-deck">
+        <div id="ac-inter-caetera-1493" class="ac" style="--bg: #470b15; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent)"><p class="ac-top">4 May 1493</p><p class="ac-t">Inter caetera (4 de mayo)</p><p class="ac-foot"><i></i><b>Alejandro VI</b></p></div>
+        <div id="ac-vitoria-de-indis" class="ac" style="--bg: #470b15; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent)"><p class="ac-top">c. 1539</p><p class="ac-t">De Indis</p><p class="ac-foot"><i></i><b>Francisco de Vitoria</b></p></div>
+        <div id="ac-las-casas-tratado-comprobatorio" class="ac" style="--bg: #28231e; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent)"><p class="ac-top">1552/53</p><p class="ac-t is-long">Tratado comprobatorio del imperio soberano</p><p class="ac-foot"><i></i><b>Bartolomé de las Casas</b></p></div>
+        <div id="ac-sahagun-codice-florentino" class="ac" style="--bg: #28231e; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent)"><p class="ac-top">c. 1577</p><p class="ac-t is-long">Historia general de las cosas de Nueva España</p><p class="ac-foot"><i></i><b>Bernardino de Sahagún y colaboradores nahuas</b></p></div>
+        <div id="ac-cortes-de-tomar" class="ac" style="--bg: #4c5327; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 80%, var(--leather)); --line: color-mix(in srgb, var(--paper) 26%, transparent)"><p class="ac-top">1581</p><p class="ac-t is-long">Capítulos gerais do Estado dos Povos nas Cortes de Tomar</p><p class="ac-foot"><i></i><b>Cortes de Tomar / Felipe II de España y Filipe I de Portugal</b></p></div>
+        <div id="ac-garcilaso-comentarios-reales" class="ac" style="--bg: #8b5e4b; --fg: #f9f3dd; --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent)"><p class="ac-top">1609</p><p class="ac-t is-long">Primera parte de los Comentarios reales</p><p class="ac-foot"><i></i><b>Inca Garcilaso de la Vega</b></p></div>
+        <div id="ac-constitucion-cadiz" class="ac" style="--bg: #470b15; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent)"><p class="ac-top">1812</p><p class="ac-t is-long">Constitución política de la Monarquía española</p><p class="ac-foot"><i></i><b>Cortes Generales y Extraordinarias</b></p></div>
+        <div id="ac-T001" class="ac" style="--bg: #8b5e4b; --fg: #f9f3dd; --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent)"><p class="ac-top">1815</p><p class="ac-t">Carta de Jamaica</p><p class="ac-foot"><i></i><b>Simón Bolívar</b></p></div>
+        <div id="ac-T003" class="ac" style="--bg: #8b5e4b; --fg: #f9f3dd; --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent)"><p class="ac-top">1847</p><p class="ac-t is-long">Gramática de la lengua castellana destinada al uso de los americanos</p><p class="ac-foot"><i></i><b>Andrés Bello</b></p></div>
+        <div id="ac-T012" class="ac" style="--bg: #f9f3dd; --fg: #28231e; --accent: var(--burgundy); --line: color-mix(in srgb, var(--ink) 30%, transparent)"><p class="ac-top">1889–90</p><p class="ac-t">Filipinas dentro de cien años</p><p class="ac-foot"><i></i><b>José Rizal</b></p></div>
+        <div id="ac-T013" class="ac" style="--bg: #2a4d51; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 80%, var(--region-sea)); --line: color-mix(in srgb, var(--paper) 26%, transparent)"><p class="ac-top">1891</p><p class="ac-t">Nuestra América</p><p class="ac-foot"><i></i><b>José Martí</b></p></div>
+        <div id="ac-T030" class="ac" style="--bg: #28231e; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent)"><p class="ac-top">1925</p><p class="ac-t">La raza cósmica</p><p class="ac-foot"><i></i><b>José Vasconcelos</b></p></div>
+        <div id="ac-T035" class="ac" style="--bg: #470b15; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent)"><p class="ac-top">1934</p><p class="ac-t">Defensa de la Hispanidad</p><p class="ac-foot"><i></i><b>Ramiro de Maeztu</b></p></div>
+        <div id="ac-T038" class="ac" style="--bg: #2a4d51; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 80%, var(--region-sea)); --line: color-mix(in srgb, var(--paper) 26%, transparent)"><p class="ac-top">1940</p><p class="ac-t is-long">Del fenómeno social de la transculturación y de su importancia en Cuba</p><p class="ac-foot"><i></i><b>Fernando Ortiz</b></p></div>
+        <div id="ac-T039" class="ac" style="--bg: #4c5327; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 80%, var(--leather)); --line: color-mix(in srgb, var(--paper) 26%, transparent)"><p class="ac-top">1940</p><p class="ac-t">O mundo que o português criou</p><p class="ac-foot"><i></i><b>Gilberto Freyre</b></p></div>
+        <div id="ac-T046" class="ac" style="--bg: #8b5e4b; --fg: #f9f3dd; --accent: var(--paper); --line: color-mix(in srgb, var(--paper) 34%, transparent)"><p class="ac-top">1968</p><p class="ac-t is-long">Historia de la nación latinoamericana</p><p class="ac-foot"><i></i><b>Jorge Abelardo Ramos</b></p></div>
+        <div id="ac-cplp-declaracao-constitutiva" class="ac" style="--bg: #4c5327; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 80%, var(--leather)); --line: color-mix(in srgb, var(--paper) 26%, transparent)"><p class="ac-top">1996</p><p class="ac-t">Declaração Constitutiva da CPLP</p><p class="ac-foot"><i></i><b>Comunidade dos Países de Língua Portuguesa</b></p></div>
+        <div id="ac-durantez-iberofonia-paniberismo" class="ac" style="--bg: #470b15; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--paper) 78%, var(--leather)); --line: color-mix(in srgb, var(--paper) 28%, transparent)"><p class="ac-top">2018</p><p class="ac-t">Iberofonía y Paniberismo</p><p class="ac-foot"><i></i><b>Frigdiano Álvaro Durántez Prados</b></p></div>
       </div>
-      <div class="wk-slab" id="cn-slab"></div>
-      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>canon</span></p>
-      <p class="wk-fig" style="top: 250px">Fifty classic texts, 1818 to 1999</p>
-      <p class="wk-chip" id="cn-chip"><b>The canon</b><span>fifty texts, 1818 to 1999</span></p>
+      <p id="ar-head"><span>From</span> <span>Universal</span> <span>Monarchy</span> <span>to</span> <span>Iberofonía</span></p>
+        <p id="ae-0" class="ae" style="left: 140px"><b>I</b><span>1493–1554</span></p>
+        <p id="ae-1" class="ae" style="left: 420px"><b>II</b><span>1574–1781</span></p>
+        <p id="ae-2" class="ae" style="left: 700px"><b>III</b><span>1812–1870</span></p>
+        <p id="ae-3" class="ae" style="left: 980px"><b>IV</b><span>1877–1932</span></p>
+        <p id="ae-4" class="ae" style="left: 1260px"><b>V</b><span>1934–1959</span></p>
+        <p id="ae-5" class="ae" style="left: 1540px"><b>VI</b><span>1963–2021</span></p>
+      <div id="ar-veil"></div>
+      <div id="ar-book">
+        <div id="aa-page">
+          <p class="aa-k">1925 · José Vasconcelos</p>
+          <p class="aa-t">La raza cósmica</p>
+          <div class="aa-s"><h4>The author or issuing body</h4><p>José Vasconcelos (1882–1959), born in Oaxaca, was a writer, university rector, and secretary of public education in post-revolutionary Mexico.</p></div>
+          <div class="aa-s"><h4>The work in its time</h4><p>The essay opening La raza cósmica argues that mixture could produce a new form of humanity and gives Ibero-America a historical role.</p></div>
+          <div class="aa-s"><h4>Why read it today?</h4><p>It is indispensable to understanding the appeal and limits of turning a history of mixture into a collective destiny.</p></div>
+        </div>
+        <div id="ar-lid"><div id="lid-T030" class="ac ac--lid" style="--bg: #28231e; --fg: #f9f3dd; --accent: color-mix(in srgb, var(--leather) 55%, var(--paper)); --line: color-mix(in srgb, var(--paper) 22%, transparent)"><p class="ac-top">1925</p><p class="ac-t">La raza cósmica</p><p class="ac-foot"><i></i><b>José Vasconcelos</b></p></div></div>
+      </div>
+      <div class="wk-slab" id="ar-slab"></div>
+      <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>archive</span></p>
+      <p class="wk-fig" style="top: 250px">The primary sources of Hispanic thought</p>
+      <p class="wk-chip" id="ar-chip"><b>The archive</b><span>the primary sources of Hispanic thought</span></p>
     </div>
 
+    <!-- the globe, timed by itself (a timed video must not sit in a timed wrapper): under its shot -->
+    <video id="at-globe" class="clip" src="assets/atlas/atlas-shot.mp4" muted playsinline data-start="13.582" data-duration="5.6"></video>
     <div id="wk-atlas" class="wk-shot clip" data-start="13.561" data-duration="5.612">
-      <div id="at-world">
-        <img src="assets/img/iberophone-map.jpg" alt="" />
-          <i id="at-p0" class="at-pin" style="left: 1994px; top: 358px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l0" d="M1994 358 L2064 178" pathLength="1" /></svg>
-          <i id="at-p1" class="at-pin" style="left: 1288px; top: 571px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l1" d="M1288 571 L1348 581" pathLength="1" /></svg>
-          <i id="at-p2" class="at-pin" style="left: 1053px; top: 600px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l2" d="M1053 600 L1003 710" pathLength="1" /></svg>
-          <i id="at-p3" class="at-pin" style="left: 1348px; top: 959px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l3" d="M1348 959 L1268 1059" pathLength="1" /></svg>
-          <i id="at-p4" class="at-pin" style="left: 1707px; top: 1042px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l4" d="M1707 1042 L1777 1132" pathLength="1" /></svg>
-          <i id="at-p5" class="at-pin" style="left: 3266px; top: 672px"></i>
-          <svg class="at-lead" viewBox="0 0 3584 1746"><path id="at-l5" d="M3266 672 L3186 482" pathLength="1" /></svg>
-          <article id="at-c0" class="at-card" style="left: 2064px; top: 108px">
-            <p class="at-k">2015-2026 · Milestone 60 of 60</p><h3>Iberofonía becomes an explicit pan-Iberian proposal</h3>
-          </article>
-          <article id="at-c1" class="at-card" style="left: 1348px; top: 511px">
-            <p class="at-k">1492 · Milestone 9 of 60</p><h3>The Atlantic crossing joins two hemispheres</h3>
-          </article>
-          <article id="at-c2" class="at-card" style="left: 443px; top: 640px">
-            <p class="at-k">1519-1521 · Milestone 14 of 60</p><h3>The fall of Tenochtitlan</h3>
-          </article>
-          <article id="at-c3" class="at-card" style="left: 708px; top: 989px">
-            <p class="at-k">1532-1535 · Milestone 16 of 60</p><h3>Conquest and reorganization of the Andes</h3>
-          </article>
-          <article id="at-c4" class="at-card" style="left: 1777px; top: 1062px">
-            <p class="at-k">1807-1808 · Milestone 22 of 60</p><h3>The Portuguese court moves to Rio de Janeiro</h3>
-          </article>
-          <article id="at-c5" class="at-card" style="left: 2626px; top: 412px">
-            <p class="at-k">1565-1571 · Milestone 18 of 60</p><h3>The Pacific crossing and Manila</h3>
-          </article>
-      </div>
-      <div class="wk-slab" id="at-slab"></div>
+      <div id="at-shade"></div>
+      <div id="atc-granada" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-granada" d="M0 0 L70 0" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-granada" class="atc-card" style="left: 70px; top: -40px"><p class="atc-k">1492</p><h3>Granada enters the Castilian crown</h3></article>
+      </div></div>
+      <div id="atc-tordesillas" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-tordesillas" d="M0 0 L64 -110" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-tordesillas" class="atc-card" style="left: 64px; top: -150px"><p class="atc-k">1494</p><h3>Treaty of Tordesillas</h3></article>
+      </div></div>
+      <div id="atc-lima" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-lima" d="M0 0 L70 -150" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-lima" class="atc-card" style="left: 70px; top: -190px"><p class="atc-k">1542</p><h3>The New Laws create the Viceroyalty of Peru</h3></article>
+      </div></div>
+      <div id="atc-manila" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-manila" d="M0 0 L60 80" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-manila" class="atc-card" style="left: 60px; top: 40px"><p class="atc-k">1565–1571</p><h3>The Pacific crossing and Manila</h3></article>
+      </div></div>
+      <div id="atc-interior" class="atc"><div class="atc-in">
+        <svg class="atc-lead" viewBox="-800 -800 1600 1600"><path id="atl-interior" d="M0 0 L-70 -190" pathLength="1" /></svg>
+        <i class="atc-pin"></i>
+        <article id="atk-interior" class="atc-card" style="left: -590px; top: -230px"><p class="atc-k">1776–1777</p><h3>The Bourbon reforms redraw the empire</h3></article>
+      </div></div>
+      <p id="at-year">1492</p>
       <p class="wk-word" style="font-size: 150px; top: 90px"><span>The</span> <span>Atlas</span></p>
-      <p class="wk-fig" style="top: 250px">Sixty milestones, c. 722 to 2026</p>
-      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>sixty milestones, c. 722 to 2026</span></p>
+      <p class="wk-fig" style="top: 250px">An interactive globe, 218 BCE to today</p>
+      <p class="wk-chip" id="at-chip"><b>The Atlas</b><span>218 BCE to today</span></p>
     </div>
 
     <div id="wk-books" class="wk-shot clip" data-start="19.173" data-duration="3.33">
@@ -289,7 +303,7 @@
           <i id="fz-fill"></i>
           <p id="fz-m0" class="fz-met" style="left: 258px; width: 218px">Watch</p>
           <p id="fz-m1" class="fz-met" style="left: 582px; width: 227px">Read</p>
-          <p id="fz-m2" class="fz-met" style="left: 915px; width: 227px">Canon</p>
+          <p id="fz-m2" class="fz-met" style="left: 915px; width: 227px">Archive</p>
           <p id="fz-m3" class="fz-met" style="left: 1248px; width: 227px">Atlas</p>
           <p id="fz-m4" class="fz-met" style="left: 1582px; width: 226px">Books</p>
           <p id="fz-m5" class="fz-met" style="left: 1916px; width: 218px">Community</p>
@@ -328,44 +342,70 @@
       tl.fromTo("#rd-ring", { rotationY: -110, rotationX: 8 }, { rotationY: -372, rotationX: 10, duration: 0.95, ease: "power3.inOut", immediateRender: false }, 3.042 + 2.35);
       tl.fromTo("#rd-ring", { rotationY: -372, rotationX: 10 }, { rotationY: -360, rotationX: 10, duration: 1.723, ease: "none", immediateRender: false }, 3.042 + 3.3);
 
-      // THE CANON: close on La raza cósmica, along the row to Ariel and Nuestra América, then the
-      // camera pulls back to all fifty; the cards drop in from the focus outwards, each on its own tilt
-      arrive("#wk-canon .wk-word", 8.065, 510, 383); fig("#wk-canon", 8.065 + 0.8 * B);
-      const P = {"T001": [238, 298], "T002": [518, 298], "T003": [798, 298], "T004": [1078, 298], "T005": [1358, 298], "T006": [1638, 298], "T007": [1918, 298], "T008": [2198, 298], "T009": [2478, 298], "T010": [2758, 298], "T011": [238, 664], "T012": [518, 664], "T013": [798, 664], "T014": [1078, 664], "T015": [1358, 664], "T016": [1638, 664], "T017": [1918, 664], "T018": [2198, 664], "T019": [2478, 664], "T020": [2758, 664], "T021": [238, 1032], "T022": [518, 1032], "T023": [798, 1032], "T024": [1078, 1032], "T025": [1358, 1032], "T026": [1638, 1032], "T027": [1918, 1032], "T028": [2198, 1032], "T029": [2478, 1032], "T030": [2758, 1032], "T031": [238, 1398], "T032": [518, 1398], "T033": [798, 1398], "T034": [1078, 1398], "T035": [1358, 1398], "T036": [1638, 1398], "T037": [1918, 1398], "T038": [2198, 1398], "T039": [2478, 1398], "T040": [2758, 1398], "T041": [238, 1766], "T042": [518, 1766], "T043": [798, 1766], "T044": [1078, 1766], "T045": [1358, 1766], "T046": [1638, 1766], "T047": [1918, 1766], "T048": [2198, 1766], "T049": [2478, 1766], "T050": [2758, 1766]};
-      move("#cn-world", cam(P.T030[0], P.T030[1], 2.0), cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), 8.065, 0.9, "power2.inOut", true);
-      move("#cn-world", cam(P.T030[0] - 340, P.T030[1] - 40, 2.0), cam(P.T018[0], P.T018[1], 1.7), 8.065 + 0.95, 0.9, "power2.inOut");
-      move("#cn-world", cam(P.T018[0], P.T018[1], 1.7), cam(P.T013[0], P.T013[1], 1.9), 8.065 + 1.9, 0.7, "power2.inOut");
-      move("#cn-world", cam(P.T013[0], P.T013[1], 1.9), cam(1498.0, 1031.5, 0.56), 8.065 + 2.6, 1.5, "expo.inOut");
-      move("#cn-world", cam(1498.0, 1031.5, 0.56), cam(1498.0, 1031.5, 0.53), 8.065 + 4.1, 1.396, "none");
-      document.querySelectorAll("#cn-world .cc").forEach((el) => {
-        const [x, y] = P[el.id.slice(3)], d = Math.hypot(x - P.T030[0], y - P.T030[1]);
-        tl.fromTo(el, { opacity: 0, y: -90, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 8.065 + Math.min(1.3, d / 1700 * 1.1));
-      });
+      // THE ARCHIVE: a hand of covers flies in and fans out; on the beat they sort into the six eras
+      // under the collection's title; on the next, one comes forward and opens on its article
+      arrive("#wk-archive .wk-word", 8.065, 510, 383); fig("#wk-archive", 8.065 + 0.8 * B);
+      tl.fromTo("#ar-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 8.065);
       const toChip = (id, slab, chip, t) => {
         tl.fromTo(id + " .wk-word, " + id + " .wk-fig", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.18, immediateRender: false }, t);
-        tl.fromTo(slab, { opacity: 0.94 }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
+        if (slab) tl.fromTo(slab, { opacity: 0.94 }, { opacity: 0, duration: 0.25, immediateRender: false }, t);
         tl.fromTo(chip, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }, t + 0.1);
       };
-      tl.fromTo("#cn-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 8.065);
-      toChip("#wk-canon", "#cn-slab", "#cn-chip", 8.065 + 1.05);
-
-      // THE ATLAS: the camera follows the milestones over the map, a card at each, then pulls back
-      arrive("#wk-atlas .wk-word", 13.561, 515, 383); fig("#wk-atlas", 13.561 + 0.8 * B);
-      const route = [[1994, 358], [1288, 571], [1053, 600], [1348, 959], [1707, 1042], [3266, 672]];
-      const k = 1.25;
-      move("#at-world", cam(route[0][0] + 250, route[0][1] + 60, k), cam(route[1][0] + 200, route[1][1], k), 13.561, 0.65, "power2.inOut", true);
-      move("#at-world", cam(route[1][0] + 200, route[1][1], k), cam(route[2][0] - 50, route[2][1] + 60, k), 13.561 + 0.72, 0.65, "power2.inOut");
-      move("#at-world", cam(route[2][0] - 50, route[2][1] + 60, k), cam(route[3][0] - 50, route[3][1] + 40, k), 13.561 + 1.44, 0.6, "power2.inOut");
-      move("#at-world", cam(route[3][0] - 50, route[3][1] + 40, k), cam(route[4][0] + 200, route[4][1] + 40, k), 13.561 + 2.1, 0.6, "power2.inOut");
-      move("#at-world", cam(route[4][0] + 200, route[4][1] + 40, k), cam(1792, 760, 0.56), 13.561 + 2.76, 1.3, "expo.inOut");
-      move("#at-world", cam(1792, 760, 0.56), cam(1792, 760, 0.54), 13.561 + 4.1, 1.512, "none");
-      [0, 0.54, 1.26, 1.94, 2.58, 3.3].forEach((t, i) => {
-        tl.fromTo("#at-p" + i, { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, 13.561 + t);
-        tl.fromTo("#at-l" + i, { strokeDashoffset: 1, opacity: 1 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, 13.561 + t + 0.05);
-        tl.fromTo("#at-c" + i, { opacity: 0, y: 30, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }, 13.561 + t + 0.12);
+      toChip("#wk-archive", "#ar-slab", "#ar-chip", 8.065 + 1.05);
+      const FAN = {"inter-caetera-1493": [681, 769, -34.1], "garcilaso-comentarios-reales": [771, 714, -27.9], "T001": [868, 669, -21.7], "cortes-de-tomar": [968, 636, -15.5], "T013": [1072, 613, -9.3], "T012": [1177, 601, -3.1], "T039": [1283, 601, 3.1], "T030": [1388, 613, 9.3], "T035": [1492, 636, 15.5], "sahagun-codice-florentino": [1592, 669, 21.7], "T046": [1689, 714, 27.9], "durantez-iberofonia-paniberismo": [1779, 769, 34.1]}, COL = {"inter-caetera-1493": [260, 610, 0.0], "vitoria-de-indis": [260, 676, 2.8], "las-casas-tratado-comprobatorio": [260, 742, 0.7], "sahagun-codice-florentino": [540, 610, 2.1], "cortes-de-tomar": [540, 676, -2.8], "garcilaso-comentarios-reales": [540, 742, -2.1], "constitucion-cadiz": [820, 610, -2.1], "T001": [820, 676, 0.0], "T003": [820, 742, 1.4], "T012": [1100, 610, 1.4], "T013": [1100, 676, 2.1], "T030": [1100, 742, 1.4], "T035": [1380, 610, -1.4], "T038": [1380, 676, 0.7], "T039": [1380, 742, 1.4], "T046": [1660, 610, 0.0], "cplp-declaracao-constitutiva": [1660, 676, 2.1], "durantez-iberofonia-paniberismo": [1660, 742, -0.7]}, ORDER = ["inter-caetera-1493", "vitoria-de-indis", "las-casas-tratado-comprobatorio", "sahagun-codice-florentino", "cortes-de-tomar", "garcilaso-comentarios-reales", "constitucion-cadiz", "T001", "T003", "T012", "T013", "T030", "T035", "T038", "T039", "T046", "cplp-declaracao-constitutiva", "durantez-iberofonia-paniberismo"];
+      const SORT = 8.065 + 1.6, OPEN = 8.065 + 3.2;
+      ORDER.forEach((id, i) => {
+        const el = "#ac-" + id, c = COL[id], f = FAN[id];
+        if (f) {
+          // from off the frame, below and to the right, tumbling in; then a slow breath of the fan
+          tl.fromTo(el, { x: 1500 + i * 60, y: 1500, rotation: 50 + i * 4, scale: 1.25, rotationY: -40 }, { x: f[0], y: f[1], rotation: f[2], rotationY: 0, duration: 0.7, ease: "expo.out" }, 8.065 + 0.06 + i * 0.035);
+          tl.to(el, { x: f[0] - 40, rotation: f[2] * 1.12, duration: SORT - (8.065 + 0.76 + i * 0.035), ease: "none" }, 8.065 + 0.76 + i * 0.035);
+          tl.to(el, { x: c[0], y: c[1], rotation: c[2], scale: 1, duration: 0.75, ease: "power3.inOut" }, SORT + i * 0.022);
+        } else {
+          tl.fromTo(el, { x: c[0] + 160, y: -320, rotation: -25, scale: 1 }, { x: c[0], y: c[1], rotation: c[2], duration: 0.6, ease: "expo.out" }, SORT + 0.2 + i * 0.022);
+        }
       });
-      tl.fromTo("#at-slab", { opacity: 0.94 }, { opacity: 0.94, duration: 0.01 }, 13.561);
-      toChip("#wk-atlas", "#at-slab", "#at-chip", 13.561 + 1.05);
+      // the collection's title, word by word, and the eras' numerals over their columns
+      document.querySelectorAll("#ar-head span").forEach((el, i) => tl.fromTo(el, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14 }, SORT + 0.25 + i * 0.09));
+      tl.fromTo(".ae", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "expo.out" }, SORT + 0.45);
+      // one work comes forward (its cover takes the place of the one in its column) and opens
+      tl.set("#ar-book", { autoAlpha: 0 }, 8.065);
+      tl.set("#ar-book", { autoAlpha: 1 }, OPEN);
+      tl.set("#ac-T030", { autoAlpha: 0 }, OPEN);
+      tl.fromTo("#ar-veil", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, OPEN);
+      tl.fromTo("#ar-book", { x: COL["T030"][0] - 960, y: COL["T030"][1] - 560, scale: 210 / 760, rotation: COL["T030"][2] }, { x: 0, y: 0, scale: 1, rotation: 0, duration: 0.5, ease: "expo.out" }, OPEN);
+      tl.set("#aa-page", { opacity: 1 }, OPEN + 0.3);
+      tl.fromTo("#ar-lid", { rotationY: 0 }, { rotationY: -150, duration: 0.55, ease: "power2.inOut" }, OPEN + 0.42);
+      tl.fromTo("#aa-page > *", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.09, ease: "expo.out" }, OPEN + 0.62);
+      tl.fromTo("#ar-head, .ae", { opacity: 1 }, { opacity: 0.25, duration: 0.3, immediateRender: false }, OPEN);
+
+      // THE ATLAS: the globe flies (in the video); the year ticks, the cards land on their places
+      arrive("#wk-atlas .wk-word", 13.561, 515, 383); fig("#wk-atlas", 13.561 + 0.8 * B);
+      toChip("#wk-atlas", null, "#at-chip", 13.561 + 1.05);
+      const YEARS = [[0.0, 1492], [1.6, 1494], [2.4, 1542], [3.2, 1565], [4.0, 1777]];
+      tl.set("#at-year", { textContent: YEARS[0][1] }, 13.561);
+      tl.fromTo("#at-year", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 13.561 + 0.15);
+      YEARS.slice(1).forEach(([t, y], i) => {
+        tl.fromTo("#at-year", { textContent: YEARS[i][1] }, { textContent: y, snap: { textContent: 1 }, duration: 0.3, ease: "steps(9)", immediateRender: false }, 13.561 + t - 0.05);
+        tl.fromTo("#at-year", { scale: 1.08 }, { scale: 1, duration: 0.3, ease: "expo.out", immediateRender: false }, 13.561 + t + 0.25);
+      });
+      const CARDS = [["granada", 0.3, 1.25], ["tordesillas", 1.72, 2.62], ["lima", 2.52, 3.4], ["manila", 4.0, 9.0], ["interior", 4.4, 9.0]], TRACK = {"granada":[[1671,974.7,603,1],[1672,978.8,598.8,1],[1673,982.8,594.6,1],[1674,986.7,590.4,1],[1675,990.6,586.4,1],[1676,994.4,582.3,1],[1677,998.2,578.4,1],[1678,1001.9,574.4,1],[1679,1005.5,570.5,1],[1680,1009.1,566.7,1],[1681,1012.6,562.9,1],[1682,1016.1,559.2,1],[1683,1019.5,555.5,0.999],[1684,1022.8,551.9,0.999],[1685,1026.2,548.3,0.999],[1686,1029.4,544.8,0.999],[1687,1032.6,541.3,0.999],[1688,1035.7,537.9,0.999],[1689,1038.8,534.5,0.999],[1690,1041.9,531.2,0.999],[1691,1044.9,527.9,0.999],[1692,1047.8,524.6,0.999],[1693,1050.7,521.4,0.999],[1694,1053.5,518.2,0.998],[1695,1055.3,516.8,0.998],[1696,1059.9,514,0.998],[1697,1068,509.1,0.998],[1698,1079.5,502,0.997],[1699,1093.9,493,0.996],[1700,1111.1,482.2,0.995],[1701,1130.3,469.7,0.993],[1702,1151.2,455.9,0.991],[1703,1173.2,441,0.987],[1704,1195.7,425.2,0.983],[1705,1218.1,408.9,0.977],[1706,1239.8,392.5,0.97],[1707,1260.2,376.2,0.961],[1708,1278.8,360.6,0.95],[1709,1294.8,346.1,0.937],[1710,1306.8,334.3,0.923],[1711,1315.5,325,0.908],[1712,1321.5,317.6,0.894],[1713,1325.5,311.9,0.88],[1714,1328.1,307.6,0.867],[1715,1329.5,304.3,0.855],[1716,1330.1,301.8,0.844],[1717,1330.2,300.1,0.833],[1718,1330,298.8,0.825],[1719,1329.7,297.9,0.818],[1720,1329.3,297.3,0.812],[1721,1329,297,0.808],[1722,1328.8,296.8,0.806],[1723,1329.3,296.1,0.804],[1724,1331.4,293.3,0.8],[1725,1333.5,290.6,0.795],[1726,1335.6,287.9,0.791],[1727,1337.6,285.2,0.786],[1728,1339.6,282.6,0.781],[1729,1341.5,280,0.777],[1730,1343.5,277.5,0.772],[1731,1345.4,274.9,0.767],[1732,1347.2,272.4,0.762],[1733,1349.1,270,0.758],[1734,1350.9,267.5,0.753],[1735,1352.7,265.2,0.748],[1736,1354.4,262.8,0.743],[1737,1356.1,260.5,0.738],[1738,1357.8,258.2,0.732],[1739,1359.5,255.9,0.727],[1740,1361.1,253.7,0.722],[1741,1362.8,251.5,0.717],[1742,1364.3,249.3,0.712],[1743,1365.9,247.2,0.706],[1744,1367.1,245.6,0.702],[1745,1368,244.4,0.699],[1746,1370,241.7,0.692],[1747,1373.2,237.4,0.681],[1748,1377.3,231.9,0.666],[1749,1382.2,225.3,0.647],[1750,1387.8,217.8,0.622],[1751,1393.7,209.7,0.593],[1752,1399.8,201.5,0.558],[1753,1405.7,193.5,0.517],[1754,1410.3,187.2,0.477],[1755,1413.7,182.7,0.442],[1756,1416.1,179.6,0.41],[1757,1417.7,177.6,0.383],[1758,1418.8,176.2,0.361],[1759,1419.4,175.4,0.344],[1760,1419.8,175,0.333],[1761,1420,174.8,0.326],[1762,1420.1,175,0.324],[1763,1420.6,175.9,0.321],[1764,1421,176.8,0.319],[1765,1421.4,177.7,0.316],[1766,1421.8,178.6,0.313],[1767,1422.1,179.5,0.311],[1768,1422.4,180.1,0.309],[1769,1422.9,180.3,0.305],[1770,1423.9,180.9,0.298],[1771,1425.4,181.6,0.286],[1772,1427.2,182.6,0.269],[1773,1429,183.8,0.248],[1774,1430.6,185,0.223],[1775,1431.7,186.2,0.192],[1776,1431.7,187.2,0.157],[1777,1430.3,188,0.117],[1778,1427,188.4,0.073],[1779,1421.2,188.3,0.024],[1780,1412.4,187.6,-0.03],[1781,1400.1,186.2,-0.086],[1782,1383.8,184,-0.146],[1783,1363,181,-0.207],[1784,1337.8,177.3,-0.268],[1785,1311,173.5,-0.322],[1786,1283.7,169.7,-0.369],[1787,1256.7,166.2,-0.408],[1788,1230.6,163,-0.441],[1789,1205.8,160.2,-0.467],[1790,1182.8,157.9,-0.489],[1791,1161.7,155.9,-0.506],[1792,1142.7,154.4,-0.519],[1793,1126,153.2,-0.529],[1794,1111.7,152.2,-0.536],[1795,1099.9,151.6,-0.541],[1796,1090.5,151.1,-0.545],[1797,1083.6,150.8,-0.548],[1798,1079.2,150.6,-0.549],[1799,1077.4,150.5,-0.55],[1800,1076.6,150.8,-0.55],[1801,1075.6,151.1,-0.55],[1802,1074.7,151.5,-0.551],[1803,1073.7,151.8,-0.551],[1804,1072.8,152.1,-0.552],[1805,1071.8,152.5,-0.552],[1806,1070.9,152.8,-0.553],[1807,1069.9,153.2,-0.553],[1808,1069,153.5,-0.554],[1809,1068.1,153.9,-0.554],[1810,1067.1,154.2,-0.555],[1811,1066.2,154.5,-0.555],[1812,1065.3,154.9,-0.556],[1813,1064.3,155.2,-0.556],[1814,1063.4,155.6,-0.557],[1815,1062.5,155.9,-0.557],[1816,1061.5,156.3,-0.558],[1817,1060.6,156.6,-0.558],[1818,1059.7,156.9,-0.559],[1819,1058.7,157.3,-0.559],[1820,1057.8,157.6,-0.559],[1821,1056.9,158,-0.56],[1822,1056,158.3,-0.56],[1823,1055,158.7,-0.561],[1824,1054.1,159,-0.561],[1825,1053.2,159.4,-0.562],[1826,1052.3,159.7,-0.562],[1827,1051.4,160,-0.562],[1828,1050.5,160.4,-0.563],[1829,1049.5,160.7,-0.563],[1830,1048.6,161.1,-0.564],[1831,1047.7,161.4,-0.564],[1832,1046.8,161.8,-0.564],[1833,1045.9,162.1,-0.565],[1834,1045,162.5,-0.565],[1835,1044.1,162.8,-0.566],[1836,1043.2,163.2,-0.566],[1837,1042.3,163.5,-0.566],[1838,1041.4,163.9,-0.567]],"tordesillas":[[1671,-431.1,1328.7,0.637],[1672,-416.7,1322.5,0.639],[1673,-402.4,1316.4,0.641],[1674,-388.3,1310.3,0.643],[1675,-374.3,1304.2,0.645],[1676,-360.4,1298.2,0.647],[1677,-346.7,1292.2,0.649],[1678,-333.1,1286.2,0.651],[1679,-319.6,1280.3,0.653],[1680,-306.2,1274.4,0.655],[1681,-292.9,1268.5,0.657],[1682,-279.8,1262.6,0.659],[1683,-266.8,1256.8,0.661],[1684,-253.9,1251,0.663],[1685,-241.1,1245.2,0.665],[1686,-228.4,1239.5,0.667],[1687,-215.9,1233.8,0.669],[1688,-203.5,1228.1,0.671],[1689,-191.1,1222.4,0.673],[1690,-178.9,1216.8,0.675],[1691,-166.8,1211.2,0.677],[1692,-154.8,1205.7,0.679],[1693,-143,1200.1,0.681],[1694,-131.2,1194.6,0.683],[1695,-125.9,1192.6,0.684],[1696,-115.3,1189.8,0.686],[1697,-96.3,1184.6,0.691],[1698,-69.4,1177,0.697],[1699,-34.8,1167.1,0.705],[1700,7,1154.7,0.715],[1701,55.2,1139.7,0.727],[1702,109.1,1122.2,0.74],[1703,168.1,1102.2,0.755],[1704,231.2,1079.6,0.772],[1705,297.4,1054.6,0.789],[1706,365.9,1027.2,0.808],[1707,435.7,997.7,0.827],[1708,505.7,966.3,0.847],[1709,573.9,933.8,0.867],[1710,633.2,904,0.884],[1711,683.7,877.2,0.899],[1712,726.8,853.4,0.911],[1713,763.2,832.4,0.922],[1714,794,814.1,0.93],[1715,819.9,798.2,0.938],[1716,841.4,784.7,0.943],[1717,859,773.3,0.948],[1718,873.2,764,0.952],[1719,884.3,756.5,0.954],[1720,892.5,751,0.956],[1721,898.1,747.1,0.958],[1722,901.2,745,0.958],[1723,903.1,743.7,0.959],[1724,908.2,740.4,0.96],[1725,913.2,737,0.962],[1726,918.2,733.6,0.963],[1727,923.2,730.3,0.965],[1728,928.1,726.9,0.966],[1729,933,723.5,0.967],[1730,937.9,720.2,0.969],[1731,942.8,716.8,0.97],[1732,947.7,713.5,0.971],[1733,952.5,710.1,0.972],[1734,957.3,706.7,0.973],[1735,962.1,703.4,0.974],[1736,966.8,700,0.975],[1737,971.6,696.7,0.976],[1738,976.3,693.3,0.977],[1739,981,690,0.977],[1740,985.6,686.7,0.978],[1741,990.2,683.3,0.979],[1742,994.8,680,0.979],[1743,999.4,676.7,0.98],[1744,1002.9,674.2,0.98],[1745,1005.4,672.4,0.98],[1746,1011,668.3,0.981],[1747,1019.8,661.8,0.981],[1748,1031.7,653.1,0.981],[1749,1046.6,642.1,0.981],[1750,1064.1,628.9,0.98],[1751,1084.3,613.6,0.977],[1752,1106.7,596.5,0.972],[1753,1130.9,577.8,0.964],[1754,1153,560.7,0.955],[1755,1171.7,546.2,0.944],[1756,1187.3,534.1,0.934],[1757,1199.9,524.3,0.925],[1758,1209.9,516.6,0.917],[1759,1217.4,510.9,0.91],[1760,1222.5,507,0.905],[1761,1225.3,504.8,0.902],[1762,1226.6,504.7,0.901],[1763,1229.5,506.3,0.899],[1764,1232.3,507.9,0.897],[1765,1235.2,509.5,0.894],[1766,1238,511,0.892],[1767,1240.8,512.5,0.889],[1768,1243,513.7,0.887],[1769,1245.4,514,0.885],[1770,1251.1,514.7,0.88],[1771,1259.8,515.7,0.871],[1772,1271.5,517,0.859],[1773,1285.9,518.6,0.843],[1774,1302.7,520.3,0.823],[1775,1321.7,522,0.798],[1776,1342.3,523.7,0.767],[1777,1364,525,0.73],[1778,1386.2,525.9,0.686],[1779,1408.2,526.1,0.634],[1780,1429.2,525.4,0.575],[1781,1448.5,523.5,0.506],[1782,1464.9,520.2,0.429],[1783,1477.6,515.1,0.343],[1784,1485.4,508.3,0.25],[1785,1487.8,500.4,0.159],[1786,1485.5,492,0.074],[1787,1479.7,483.3,-0.005],[1788,1471.3,474.7,-0.077],[1789,1461.2,466.4,-0.142],[1790,1450,458.5,-0.2],[1791,1438.5,451.2,-0.251],[1792,1427.2,444.6,-0.296],[1793,1416.5,438.7,-0.333],[1794,1406.8,433.7,-0.365],[1795,1398.4,429.6,-0.39],[1796,1391.5,426.3,-0.41],[1797,1386.3,423.9,-0.425],[1798,1382.9,422.3,-0.434],[1799,1381.5,421.6,-0.438],[1800,1380.7,421.5,-0.439],[1801,1379.7,421.4,-0.441],[1802,1378.7,421.2,-0.443],[1803,1377.7,421.1,-0.445],[1804,1376.7,420.9,-0.447],[1805,1375.8,420.8,-0.448],[1806,1374.8,420.6,-0.45],[1807,1373.8,420.5,-0.452],[1808,1372.8,420.3,-0.454],[1809,1371.8,420.2,-0.456],[1810,1370.8,420.1,-0.458],[1811,1369.8,419.9,-0.459],[1812,1368.8,419.8,-0.461],[1813,1367.9,419.6,-0.463],[1814,1366.9,419.5,-0.465],[1815,1365.9,419.4,-0.467],[1816,1364.9,419.2,-0.468],[1817,1363.9,419.1,-0.47],[1818,1362.9,419,-0.472],[1819,1361.9,418.8,-0.474],[1820,1360.9,418.7,-0.476],[1821,1359.9,418.6,-0.477],[1822,1358.9,418.4,-0.479],[1823,1357.9,418.3,-0.481],[1824,1356.9,418.2,-0.483],[1825,1355.9,418,-0.485],[1826,1355,417.9,-0.486],[1827,1354,417.8,-0.488],[1828,1353,417.7,-0.49],[1829,1352,417.5,-0.492],[1830,1351,417.4,-0.494],[1831,1350,417.3,-0.495],[1832,1349,417.2,-0.497],[1833,1348,417,-0.499],[1834,1347,416.9,-0.501],[1835,1346,416.8,-0.502],[1836,1345,416.7,-0.504],[1837,1344,416.6,-0.506],[1838,1343,416.4,-0.508]],"lima":[[1671,-979.5,1251.4,0.092],[1672,-963.3,1248.7,0.095],[1673,-947.3,1246,0.097],[1674,-931.3,1243.3,0.1],[1675,-915.5,1240.6,0.102],[1676,-899.8,1237.9,0.105],[1677,-884.2,1235.1,0.107],[1678,-868.7,1232.4,0.11],[1679,-853.4,1229.6,0.112],[1680,-838.1,1226.8,0.115],[1681,-823,1224,0.117],[1682,-808,1221.1,0.12],[1683,-793.1,1218.3,0.122],[1684,-778.3,1215.4,0.125],[1685,-763.6,1212.6,0.127],[1686,-749.1,1209.7,0.13],[1687,-734.6,1206.8,0.132],[1688,-720.3,1203.9,0.135],[1689,-706.1,1201,0.137],[1690,-691.9,1198.1,0.14],[1691,-677.9,1195.1,0.142],[1692,-664,1192.2,0.145],[1693,-650.2,1189.2,0.148],[1694,-636.5,1186.3,0.15],[1695,-630.7,1185.5,0.151],[1696,-620.3,1185.2,0.155],[1697,-601.5,1184.6,0.161],[1698,-574.7,1183.5,0.169],[1699,-540,1181.8,0.181],[1700,-497.9,1179.1,0.195],[1701,-448.8,1175.2,0.211],[1702,-393.3,1169.8,0.231],[1703,-331.8,1162.6,0.253],[1704,-265,1153.4,0.277],[1705,-193.8,1141.7,0.305],[1706,-118.8,1127.5,0.335],[1707,-41,1110.7,0.367],[1708,39,1091,0.402],[1709,118.7,1069,0.438],[1710,189.8,1047.2,0.472],[1711,251.9,1026.6,0.503],[1712,305.9,1007.3,0.531],[1713,352.7,989.6,0.555],[1714,393.1,973.6,0.578],[1715,427.6,959.3,0.597],[1716,456.7,946.7,0.614],[1717,481,936,0.628],[1718,500.8,927,0.64],[1719,516.5,919.7,0.649],[1720,528.3,914.2,0.656],[1721,536.3,910.4,0.661],[1722,540.7,908.3,0.664],[1723,542.9,907.3,0.666],[1724,548,905.3,0.671],[1725,553,903.3,0.677],[1726,558.1,901.2,0.682],[1727,563.1,899.1,0.687],[1728,568.2,897,0.693],[1729,573.2,894.9,0.698],[1730,578.2,892.7,0.703],[1731,583.2,890.5,0.709],[1732,588.2,888.3,0.714],[1733,593.2,886.1,0.719],[1734,598.2,883.8,0.724],[1735,603.2,881.5,0.729],[1736,608.2,879.2,0.734],[1737,613.2,876.9,0.739],[1738,618.1,874.5,0.744],[1739,623.1,872.1,0.749],[1740,628,869.7,0.754],[1741,632.9,867.3,0.759],[1742,637.9,864.8,0.764],[1743,642.8,862.4,0.768],[1744,646.6,860.5,0.772],[1745,649.1,859.2,0.775],[1746,655.1,856.1,0.781],[1747,664.4,851.3,0.79],[1748,677.1,844.6,0.802],[1749,693.1,835.9,0.817],[1750,712.4,825.2,0.834],[1751,734.8,812.3,0.853],[1752,760.2,797,0.873],[1753,788.4,779.6,0.895],[1754,814.7,762.9,0.913],[1755,837.5,748,0.927],[1756,856.9,735.1,0.938],[1757,873,724.3,0.947],[1758,885.8,715.5,0.953],[1759,895.5,708.9,0.957],[1760,902.2,704.3,0.96],[1761,905.9,701.7,0.962],[1762,907.6,701.5,0.962],[1763,911.2,703,0.962],[1764,914.8,704.6,0.961],[1765,918.4,706.1,0.961],[1766,921.9,707.6,0.96],[1767,925.5,709.1,0.96],[1768,928.3,710.3,0.96],[1769,931.2,710.6,0.96],[1770,938.1,711.2,0.96],[1771,948.8,712.3,0.96],[1772,963.3,713.7,0.959],[1773,981.6,715.4,0.957],[1774,1003.5,717.4,0.953],[1775,1028.7,719.6,0.947],[1776,1057.2,721.8,0.938],[1777,1088.5,724.1,0.925],[1778,1122.3,726.1,0.907],[1779,1158.1,727.8,0.882],[1780,1195.3,728.9,0.85],[1781,1233.2,729.1,0.81],[1782,1270.9,728.2,0.76],[1783,1307.5,725.7,0.7],[1784,1341.4,721.5,0.629],[1785,1369.2,715.9,0.556],[1786,1391.1,709.4,0.484],[1787,1407.8,702.1,0.413],[1788,1420.1,694.5,0.345],[1789,1428.7,686.7,0.281],[1790,1434.5,679.1,0.222],[1791,1437.9,671.8,0.168],[1792,1439.5,664.9,0.12],[1793,1440,658.8,0.078],[1794,1439.6,653.3,0.042],[1795,1438.8,648.7,0.012],[1796,1437.9,645,-0.011],[1797,1437,642.3,-0.028],[1798,1436.4,640.5,-0.039],[1799,1436.1,639.7,-0.044],[1800,1435.7,639.4,-0.046],[1801,1435.2,639,-0.048],[1802,1434.7,638.6,-0.05],[1803,1434.2,638.1,-0.052],[1804,1433.7,637.7,-0.054],[1805,1433.2,637.3,-0.056],[1806,1432.7,636.9,-0.058],[1807,1432.2,636.5,-0.06],[1808,1431.7,636.1,-0.063],[1809,1431.2,635.7,-0.065],[1810,1430.7,635.3,-0.067],[1811,1430.2,634.8,-0.069],[1812,1429.7,634.4,-0.071],[1813,1429.2,634,-0.073],[1814,1428.6,633.6,-0.075],[1815,1428.1,633.2,-0.077],[1816,1427.6,632.8,-0.079],[1817,1427.1,632.4,-0.081],[1818,1426.6,632,-0.083],[1819,1426,631.6,-0.086],[1820,1425.5,631.2,-0.088],[1821,1425,630.8,-0.09],[1822,1424.4,630.4,-0.092],[1823,1423.9,630,-0.094],[1824,1423.4,629.6,-0.096],[1825,1422.9,629.2,-0.098],[1826,1422.3,628.8,-0.1],[1827,1421.8,628.4,-0.102],[1828,1421.2,628,-0.104],[1829,1420.7,627.6,-0.106],[1830,1420.2,627.2,-0.109],[1831,1419.6,626.8,-0.111],[1832,1419.1,626.4,-0.113],[1833,1418.5,626,-0.115],[1834,1418,625.6,-0.117],[1835,1417.4,625.3,-0.119],[1836,1416.9,624.9,-0.121],[1837,1416.3,624.5,-0.123],[1838,1415.7,624.1,-0.125]],"manila":[[1671,2602.8,-592,-0.274],[1672,2587.5,-585,-0.277],[1673,2572.2,-578,-0.28],[1674,2557.1,-571,-0.282],[1675,2542.2,-564.1,-0.285],[1676,2527.3,-557.2,-0.287],[1677,2512.6,-550.3,-0.29],[1678,2498,-543.4,-0.292],[1679,2483.5,-536.6,-0.295],[1680,2469.2,-529.8,-0.298],[1681,2454.9,-523,-0.3],[1682,2440.8,-516.2,-0.303],[1683,2426.8,-509.4,-0.305],[1684,2412.9,-502.7,-0.308],[1685,2399.2,-496,-0.31],[1686,2385.5,-489.3,-0.313],[1687,2372,-482.7,-0.315],[1688,2358.6,-476,-0.318],[1689,2345.3,-469.4,-0.321],[1690,2332.1,-462.8,-0.323],[1691,2319,-456.3,-0.326],[1692,2306,-449.7,-0.328],[1693,2293.1,-443.2,-0.331],[1694,2280.4,-436.7,-0.333],[1695,2274.8,-434.4,-0.335],[1696,2264.1,-431.3,-0.338],[1697,2245,-425.7,-0.344],[1698,2217.7,-417.5,-0.352],[1699,2182.5,-406.6,-0.362],[1700,2140.1,-392.9,-0.375],[1701,2090.8,-376.3,-0.391],[1702,2035.3,-356.8,-0.409],[1703,1974.4,-334.1,-0.429],[1704,1908.9,-308.3,-0.451],[1705,1839.6,-279.4,-0.475],[1706,1767.4,-247.5,-0.502],[1707,1693.2,-212.6,-0.53],[1708,1618,-174.9,-0.559],[1709,1543.9,-135.5,-0.59],[1710,1478.8,-98.7,-0.617],[1711,1422.6,-65.3,-0.642],[1712,1374.3,-35.2,-0.664],[1713,1332.9,-8.4,-0.684],[1714,1297.7,15.3,-0.7],[1715,1267.8,36,-0.715],[1716,1242.8,53.8,-0.727],[1717,1222.1,68.9,-0.738],[1718,1205.3,81.4,-0.746],[1719,1192.1,91.3,-0.753],[1720,1182.3,98.9,-0.758],[1721,1175.6,104,-0.761],[1722,1171.9,106.9,-0.763],[1723,1169.8,108.3,-0.765],[1724,1164.7,111.2,-0.769],[1725,1159.6,114.2,-0.773],[1726,1154.5,117.3,-0.777],[1727,1149.4,120.3,-0.781],[1728,1144.3,123.3,-0.785],[1729,1139.3,126.4,-0.789],[1730,1134.3,129.5,-0.792],[1731,1129.3,132.5,-0.796],[1732,1124.3,135.6,-0.8],[1733,1119.3,138.7,-0.804],[1734,1114.4,141.9,-0.807],[1735,1109.4,145,-0.811],[1736,1104.5,148.1,-0.814],[1737,1099.6,151.3,-0.818],[1738,1094.7,154.5,-0.821],[1739,1089.9,157.6,-0.825],[1740,1085,160.8,-0.828],[1741,1080.2,164,-0.831],[1742,1075.4,167.2,-0.835],[1743,1070.6,170.4,-0.838],[1744,1066.9,172.9,-0.84],[1745,1064.4,174.6,-0.842],[1746,1058.5,178.4,-0.846],[1747,1049.4,184.6,-0.852],[1748,1037,193,-0.86],[1749,1021.4,203.7,-0.869],[1750,1002.9,216.8,-0.879],[1751,981.5,232.2,-0.89],[1752,957.5,249.8,-0.901],[1753,931.2,269.6,-0.911],[1754,907,288.1,-0.919],[1755,886.3,304.2,-0.923],[1756,868.9,317.9,-0.926],[1757,854.7,329.3,-0.928],[1758,843.3,338.3,-0.929],[1759,834.8,345.2,-0.929],[1760,829,349.9,-0.929],[1761,825.7,352.5,-0.929],[1762,824.2,352.7,-0.928],[1763,821,351.3,-0.926],[1764,817.8,349.9,-0.924],[1765,814.6,348.6,-0.921],[1766,811.4,347.2,-0.919],[1767,808.3,345.9,-0.917],[1768,805.8,344.9,-0.915],[1769,803.1,344.7,-0.913],[1770,796.9,344.3,-0.91],[1771,787.2,343.6,-0.904],[1772,774.1,342.8,-0.896],[1773,757.9,341.8,-0.885],[1774,738.7,340.7,-0.87],[1775,716.8,339.7,-0.851],[1776,692.6,338.9,-0.828],[1777,666.5,338.3,-0.798],[1778,639.1,338.3,-0.763],[1779,610.9,339,-0.72],[1780,582.7,340.6,-0.668],[1781,555.4,343.4,-0.608],[1782,529.7,347.6,-0.539],[1783,506.7,353.7,-0.459],[1784,487.7,361.6,-0.371],[1785,474.6,370.6,-0.284],[1786,466.8,380.2,-0.2],[1787,463.1,390.1,-0.12],[1788,462.9,400,-0.047],[1789,465.3,409.7,0.021],[1790,469.4,418.8,0.082],[1791,474.8,427.4,0.137],[1792,480.8,435.2,0.185],[1793,487,442.2,0.227],[1794,492.9,448.2,0.262],[1795,498.2,453.2,0.29],[1796,502.7,457.2,0.313],[1797,506.1,460.1,0.329],[1798,508.4,462,0.339],[1799,509.4,462.8,0.344],[1800,510,463.1,0.345],[1801,510.8,463.5,0.347],[1802,511.6,463.9,0.349],[1803,512.4,464.3,0.351],[1804,513.2,464.6,0.353],[1805,514,465,0.355],[1806,514.7,465.4,0.357],[1807,515.5,465.8,0.359],[1808,516.3,466.1,0.361],[1809,517.1,466.5,0.363],[1810,517.9,466.9,0.365],[1811,518.7,467.2,0.367],[1812,519.5,467.6,0.369],[1813,520.3,468,0.371],[1814,521.2,468.3,0.373],[1815,522,468.7,0.375],[1816,522.8,469.1,0.377],[1817,523.6,469.4,0.379],[1818,524.4,469.8,0.381],[1819,525.2,470.1,0.383],[1820,526,470.5,0.385],[1821,526.8,470.9,0.387],[1822,527.6,471.2,0.389],[1823,528.4,471.6,0.391],[1824,529.2,471.9,0.393],[1825,530.1,472.3,0.394],[1826,530.9,472.6,0.396],[1827,531.7,473,0.398],[1828,532.5,473.3,0.4],[1829,533.3,473.7,0.402],[1830,534.1,474,0.404],[1831,535,474.4,0.406],[1832,535.8,474.7,0.408],[1833,536.6,475.1,0.41],[1834,537.4,475.4,0.412],[1835,538.3,475.8,0.414],[1836,539.1,476.1,0.416],[1837,539.9,476.5,0.418],[1838,540.7,476.8,0.42]],"interior":[[1671,-780.2,-521.5,0.186],[1672,-768,-511.5,0.187],[1673,-755.8,-501.5,0.188],[1674,-743.7,-491.6,0.188],[1675,-731.7,-481.8,0.189],[1676,-719.7,-472.1,0.19],[1677,-707.8,-462.5,0.191],[1678,-696,-452.9,0.191],[1679,-684.3,-443.5,0.192],[1680,-672.6,-434.2,0.193],[1681,-661,-425,0.194],[1682,-649.5,-415.8,0.195],[1683,-638.1,-406.8,0.195],[1684,-626.7,-397.8,0.196],[1685,-615.4,-388.9,0.197],[1686,-604.1,-380.2,0.198],[1687,-593,-371.5,0.199],[1688,-581.9,-362.8,0.199],[1689,-570.8,-354.3,0.2],[1690,-559.9,-345.9,0.201],[1691,-549,-337.5,0.202],[1692,-538.2,-329.2,0.203],[1693,-527.4,-321.1,0.203],[1694,-516.7,-312.9,0.204],[1695,-512.5,-309.3,0.205],[1696,-505.7,-302.2,0.207],[1697,-493.3,-289.6,0.21],[1698,-475.6,-271.8,0.215],[1699,-452.5,-249,0.221],[1700,-424.2,-221.8,0.228],[1701,-390.9,-190.6,0.238],[1702,-352.6,-156.2,0.249],[1703,-309.6,-119.2,0.261],[1704,-262.3,-80.2,0.276],[1705,-210.8,-39.9,0.292],[1706,-155.7,0.9,0.311],[1707,-97.2,41.6,0.331],[1708,-35.9,81.5,0.353],[1709,26.6,119.5,0.377],[1710,83.6,151.7,0.4],[1711,134.3,178.7,0.422],[1712,179.3,201.2,0.441],[1713,218.9,220,0.459],[1714,253.6,235.7,0.475],[1715,283.6,248.7,0.49],[1716,309.3,259.4,0.502],[1717,330.9,268.1,0.513],[1718,348.7,275,0.522],[1719,362.9,280.5,0.529],[1720,373.6,284.5,0.535],[1721,380.9,287.2,0.539],[1722,385,288.7,0.541],[1723,386.7,289.1,0.542],[1724,390.1,289.5,0.546],[1725,393.5,289.9,0.549],[1726,396.9,290.2,0.552],[1727,400.3,290.5,0.555],[1728,403.7,290.8,0.559],[1729,407.1,291,0.562],[1730,410.5,291.2,0.565],[1731,414,291.4,0.569],[1732,417.4,291.6,0.572],[1733,420.9,291.7,0.575],[1734,424.4,291.8,0.578],[1735,427.9,291.9,0.582],[1736,431.3,291.9,0.585],[1737,434.8,291.9,0.588],[1738,438.4,291.9,0.591],[1739,441.9,291.9,0.594],[1740,445.4,291.8,0.597],[1741,448.9,291.8,0.6],[1742,452.5,291.6,0.604],[1743,456,291.5,0.607],[1744,458.8,291.4,0.609],[1745,460.6,291.2,0.611],[1746,464.8,290.8,0.614],[1747,471.4,290.1,0.62],[1748,480.5,289,0.628],[1749,492.1,287.4,0.638],[1750,506.3,285.1,0.649],[1751,523,281.9,0.662],[1752,542.5,277.8,0.676],[1753,564.5,272.5,0.69],[1754,585.4,267,0.702],[1755,604,261.8,0.712],[1756,620,257.1,0.72],[1757,633.4,253,0.726],[1758,644.3,249.5,0.73],[1759,652.7,246.8,0.733],[1760,658.4,245,0.735],[1761,661.6,243.9,0.736],[1762,663.1,244.2,0.738],[1763,666.1,246,0.742],[1764,669,247.8,0.746],[1765,672,249.6,0.75],[1766,675,251.5,0.754],[1767,677.9,253.3,0.758],[1768,680.3,254.8,0.761],[1769,682.7,255.4,0.764],[1770,688.2,256.8,0.769],[1771,697,259.1,0.778],[1772,709,262.2,0.79],[1773,724.3,266.2,0.804],[1774,742.9,271,0.821],[1775,765,276.6,0.838],[1776,790.4,283,0.856],[1777,819.1,290.1,0.875],[1778,851.1,297.9,0.892],[1779,886.2,306.3,0.906],[1780,924.2,315,0.918],[1781,964.7,324,0.925],[1782,1007.3,332.9,0.925],[1783,1051.3,341.6,0.918],[1784,1095.3,349.4,0.903],[1785,1134.7,355.6,0.881],[1786,1169,360.3,0.854],[1787,1198.6,363.5,0.823],[1788,1223.8,365.5,0.791],[1789,1245,366.6,0.758],[1790,1262.6,366.9,0.726],[1791,1277.2,366.7,0.695],[1792,1289,366.1,0.667],[1793,1298.4,365.2,0.64],[1794,1305.9,364.3,0.618],[1795,1311.6,363.4,0.598],[1796,1315.8,362.5,0.583],[1797,1318.8,361.9,0.571],[1798,1320.6,361.4,0.564],[1799,1321.4,361.2,0.561],[1800,1321.5,361.2,0.559],[1801,1321.6,361.1,0.558],[1802,1321.6,361.1,0.556],[1803,1321.7,361,0.554],[1804,1321.8,361,0.553],[1805,1321.8,360.9,0.551],[1806,1321.9,360.9,0.55],[1807,1322,360.9,0.548],[1808,1322,360.8,0.546],[1809,1322.1,360.8,0.545],[1810,1322.1,360.7,0.543],[1811,1322.2,360.7,0.542],[1812,1322.2,360.6,0.54],[1813,1322.3,360.6,0.538],[1814,1322.3,360.5,0.537],[1815,1322.4,360.5,0.535],[1816,1322.4,360.5,0.534],[1817,1322.5,360.4,0.532],[1818,1322.5,360.4,0.53],[1819,1322.5,360.3,0.529],[1820,1322.6,360.3,0.527],[1821,1322.6,360.2,0.525],[1822,1322.6,360.2,0.524],[1823,1322.7,360.1,0.522],[1824,1322.7,360.1,0.521],[1825,1322.7,360,0.519],[1826,1322.7,360,0.517],[1827,1322.7,360,0.516],[1828,1322.8,359.9,0.514],[1829,1322.8,359.9,0.512],[1830,1322.8,359.8,0.511],[1831,1322.8,359.8,0.509],[1832,1322.8,359.7,0.507],[1833,1322.8,359.7,0.506],[1834,1322.8,359.6,0.504],[1835,1322.8,359.6,0.502],[1836,1322.8,359.6,0.501],[1837,1322.8,359.5,0.499],[1838,1322.8,359.5,0.497]]};
+      const F0FILM = 42.114;
+      CARDS.forEach(([id, t0, t1]) => {
+        const a = 13.561 + t0, b = 13.561 + t1;
+        // the group rides on its place, frame by frame, and fades as the place turns away
+        TRACK[id].forEach(([f, x, y, c]) => {
+          const t = f / 30 - F0FILM;
+          if (t < a - 0.05 || t > b + 0.4) return;
+          tl.set("#atc-" + id, { x, y, opacity: Math.max(0, Math.min(1, (c - 0.05) / 0.15)) }, t - 0.002);
+        });
+        tl.set("#atc-" + id + " .atc-in", { autoAlpha: 0 }, 8.065);
+        tl.set("#atc-" + id + " .atc-in", { autoAlpha: 1 }, a);
+        tl.fromTo("#atc-" + id + " .atc-pin", { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, a);
+        tl.fromTo("#atl-" + id, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.25, ease: "power2.out" }, a + 0.05);
+        tl.fromTo("#atk-" + id, { opacity: 0, y: 30, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "expo.out" }, a + 0.12);
+        if (t1 < 8) tl.to("#atc-" + id + " .atc-in", { autoAlpha: 0, duration: 0.25, ease: "power2.in" }, b);
+      });
 
       // BOOKS, on the climax: the spines rise onto the shelf, one an eighth apart
       arrive("#wk-books .wk-word", 19.173, 530, 285); fig("#wk-books", 19.173 + 0.6 * B);
@@ -384,7 +424,7 @@
       // dives into it, as it dived into "Watch" at the end of the pillars
       const MX = [367.0, 695.5, 1028.5, 1361.5, 1695.0, 2025.0];
       const KF = 1.64, CY = 255;
-      const outgoing = ["#wk-watch", "#wk-read", "#wk-canon", "#wk-atlas", "#wk-books"];
+      const outgoing = ["#wk-watch", "#wk-read", "#wk-archive", "#wk-atlas, #at-globe", "#wk-books"];
       tl.set("#fz-pane", { x: 1920 }, 0);
       [3.042, 8.065, 13.561, 19.173, 22.503].forEach((t, i) => {
         const m = MX[i + 1], t0 = t - 0.78;
