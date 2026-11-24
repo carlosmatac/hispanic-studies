@@ -16,12 +16,18 @@ const nextConfig: NextConfig = {
       // the Collaborate page (issue #93) has a Spanish address; each language keeps its own
       { source: '/es/work-with-us', destination: '/es/colabora', permanent: false },
       { source: '/en/colabora', destination: '/en/work-with-us', permanent: false },
+      // the privacy policy (issue #111), likewise
+      { source: '/es/privacy', destination: '/es/privacidad', permanent: false },
+      { source: '/en/privacidad', destination: '/en/privacy', permanent: false },
       // the brief's suggested English address, without the language
       { source: '/work-with-us', destination: '/en/work-with-us', permanent: false },
     ];
   },
   async rewrites() {
-    return [{ source: '/es/colabora', destination: '/es/work-with-us' }];
+    return [
+      { source: '/es/colabora', destination: '/es/work-with-us' },
+      { source: '/es/privacidad', destination: '/es/privacy' },
+    ];
   },
 };
 
