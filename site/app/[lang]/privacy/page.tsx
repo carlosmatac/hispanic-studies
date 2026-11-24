@@ -39,10 +39,10 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
           <p className="pending">{p.draft}</p>
           <p>{p.updated}</p>
         </section>
-        <div className="collab__grid legal__grid">
+        <div className="legal__list">
           {p.sections.map((s, i) => (
-            <section key={i} className="collab__card legal__card" aria-labelledby={`privacy-${i}`}>
-              <span className="collab__n" aria-hidden="true">{i + 1}</span>
+            <section key={i} className="legal__point" aria-labelledby={`privacy-${i}`}>
+              <span className="legal__n" aria-hidden="true">{i + 1}</span>
               <h2 id={`privacy-${i}`}>{s.h}</h2>
               {renderTree(renderMarkdown(s.body, { adSlot: false }).tree, React)}
             </section>
