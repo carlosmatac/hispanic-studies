@@ -45,7 +45,7 @@ function page(): Backup['page'] {
   const [en, es] = [dict('en').canon, dict('es').canon];
   return {
     titleEn: en.h, titleEs: es.h, introEn: en.sub, introEs: es.sub, notesEn: en.disclaimer, notesEs: es.disclaimer,
-    doorEn: en.door(0).replace(/^0 /, '{works} '), doorEs: es.door(0).replace(/^0 /, '{works} '),
+    doorEn: en.door, doorEs: es.door,
   };
 }
 
