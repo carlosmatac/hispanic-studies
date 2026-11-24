@@ -1347,7 +1347,7 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .legal .page-head > * { margin-inline: auto; max-width: none; text-align: center; }
 .legal .page-head h1 { max-width: none; margin-inline: auto; }
 .legal .page-head .pending { display: inline-block; }
-.legal__list { max-width: 64ch; margin: 0 auto; padding: 0 var(--edge) clamp(52px, 7vw, 104px); }
+.legal__list { max-width: 84ch; margin: 0 auto; padding: 0 var(--edge) clamp(52px, 7vw, 104px); }
 .legal__point { padding: clamp(26px, 3.4vw, 40px) 0; text-align: center; border-top: var(--rule); font-size: 17px; line-height: 1.65; hyphens: manual; }
 .legal__point:first-child { border-top: 0; }
 .legal__n { display: block; font-family: var(--display); font-weight: 600; font-size: 30px; line-height: 1; color: var(--leather); }
