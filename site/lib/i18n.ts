@@ -15,7 +15,7 @@ const en = {
   },
   nav: {
     atlas: 'Atlas', canon: 'Archive', books: 'Books', watch: 'Watch', read: 'Read',
-    about: 'About', merch: 'Merch', cart: 'Cart 0', main: 'Main', language: 'Language',
+    mission: 'Mission', merch: 'Merch', cart: 'Cart 0', main: 'Main', language: 'Language',
     skip: 'Skip to content',
   },
   map: {
@@ -493,10 +493,9 @@ const en = {
     h: 'Where to find us.',
   },
   about: {
-    eyebrow: 'The mission',
-    h: 'A tradition that was forgotten, not refuted.',
-    p1: 'The Institute for Hispano Studies studies and defends Hispanic civilization: its history, its Catholic inheritance, its mestizaje and its two languages. De Indiis Editions translates and republishes the canon of that argument.',
-    p2: 'The claim is not that this tradition was defeated. It is that most of it was never translated, and that an argument you cannot read is an argument you cannot answer.',
+    // the home's Mission section (issue #116): his excerpt and his button come from lib/manifesto.ts
+    eyebrow: 'Mission',
+    h: 'Our mission.',
     plate: 'Cristóbal de Villalpando, View of the Plaza Mayor of Mexico City, 1695. Corsham Court',
     followers: 'followers',
     subscribers: 'subscribers',
@@ -507,13 +506,19 @@ const en = {
     h: 'Join the argument.',
     sub: 'A Discord of readers, translators and people who are tired of losing this debate for lack of sources.',
     discord: 'Join the Discord',
-    discordPending: '[invite link pending]',
     support: 'Support on Substack',
   },
   merch: {
     eyebrow: 'Merch',
     h: 'Wear the argument.',
     pending: '[The store is not connected yet]',
+  },
+  // the Mission page (/en/mission, issue #116): Beltrán's manifesto itself is in lib/manifesto.ts
+  mission: {
+    meta: 'Mission',
+    eyebrow: 'Mission',
+    switchLabel: 'Read it in',
+    langs: { en: 'English', es: 'Español', pt: 'Português' },
   },
   privacy: {
     meta: 'Privacy policy',
@@ -567,7 +572,7 @@ const es: Dict = {
   },
   nav: {
     atlas: 'Atlas', canon: 'Archivo', books: 'Libros', watch: 'Ver', read: 'Leer',
-    about: 'Nosotros', merch: 'Tienda', cart: 'Cesta 0', main: 'Principal', language: 'Idioma',
+    mission: 'Misión', merch: 'Tienda', cart: 'Cesta 0', main: 'Principal', language: 'Idioma',
     skip: 'Saltar al contenido',
   },
   map: {
@@ -1035,10 +1040,8 @@ const es: Dict = {
     h: 'Dónde encontrarnos.',
   },
   about: {
-    eyebrow: 'La misión',
-    h: 'Una tradición olvidada, no refutada.',
-    p1: 'El Institute for Hispano Studies estudia y defiende la civilización hispánica: su historia, su herencia católica, su mestizaje y sus dos lenguas. De Indiis Editions traduce y reedita el canon de esa discusión.',
-    p2: 'La tesis no es que esta tradición fuera derrotada. Es que casi nunca se tradujo, y un argumento que no puedes leer es un argumento que no puedes responder.',
+    eyebrow: 'Misión',
+    h: 'Nuestra misión.',
     plate: 'Cristóbal de Villalpando, Vista de la Plaza Mayor de la Ciudad de México, 1695. Corsham Court',
     followers: 'seguidores',
     subscribers: 'suscriptores',
@@ -1049,13 +1052,18 @@ const es: Dict = {
     h: 'Únete a la discusión.',
     sub: 'Un Discord de lectores, traductores y gente harta de perder este debate por falta de fuentes.',
     discord: 'Entrar en el Discord',
-    discordPending: '[enlace de invitación pendiente]',
     support: 'Apoyar en Substack',
   },
   merch: {
     eyebrow: 'Tienda',
     h: 'Lleva el argumento puesto.',
     pending: '[La tienda aún no está conectada]',
+  },
+  mission: {
+    meta: 'Misión',
+    eyebrow: 'Misión',
+    switchLabel: 'Leer en',
+    langs: { en: 'English', es: 'Español', pt: 'Português' },
   },
   privacy: {
     meta: 'Política de privacidad',

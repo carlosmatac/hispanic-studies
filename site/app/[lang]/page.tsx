@@ -4,7 +4,9 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { dict, isLang } from '@/lib/i18n';
 import Image from 'next/image';
-import { SITE, SHORTS, VIDEOS, ESSAYS, channel, shortThumb, shortUrl, videoThumb, videoUrl } from '@/lib/content';
+import { SITE, SHORTS, VIDEOS, ESSAYS, DISCORD, channel, shortThumb, shortUrl, videoThumb, videoUrl } from '@/lib/content';
+import { MANIFESTO } from '@/lib/manifesto';
+import { missionPath } from '@/lib/canon';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Hero from '@/components/Hero';
@@ -144,7 +146,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* VII · about */}
+        {/* VII · mission (it was "about"; issue #116): Beltrán's homepage excerpt, verbatim, and
+            his button to the whole manifesto on the Mission page. The anchor stays #about. */}
         <section className="about" id="about" aria-labelledby="about-h">
           <span className="numeral" aria-hidden="true">VII<i /></span>
           <div className="about__grid">
@@ -155,10 +158,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="about__text">
               <p className="eyebrow">{d.about.eyebrow}</p>
               <h2 id="about-h">{d.about.h}</h2>
-              {/* the short mission summary from Beltrán's own manifesto goes here,
-                  with a link to the full text on /[lang]/mission (issue #66; text pending) */}
-              <p className="lede">{d.about.p1}</p>
-              <p>{d.about.p2}</p>
+              <p className="lede">{MANIFESTO[lang].excerpt}</p>
+              <p className="about__go"><a className="btn btn--solid" href={`/${lang}${missionPath(lang)}`}>{MANIFESTO[lang].button}</a></p>
             </div>
           </div>
         </section>
@@ -180,7 +181,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
           </div>
           <div className="community__actions">
-            <span className="pending"><ChannelIcon name="discord" /> {d.comm.discord} {d.comm.discordPending}</span>
+            <a className="btn btn--ghost" href={DISCORD.url} target="_blank" rel="noopener noreferrer"><ChannelIcon name="discord" /> {d.comm.discord}</a>
             <a className="btn btn--ghost" href={substack.url} target="_blank" rel="noopener noreferrer"><ChannelIcon name="substack" /> {d.comm.support}</a>
           </div>
         </section>

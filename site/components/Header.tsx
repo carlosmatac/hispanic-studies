@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { dict, LANGS, type Lang } from '@/lib/i18n';
+import { missionPath } from '@/lib/canon';
 
-export const NAV = ['atlas', 'canon', 'watch', 'books', 'read', 'about', 'merch'] as const;
+export const NAV = ['atlas', 'canon', 'watch', 'books', 'read', 'mission', 'merch'] as const;
 export type NavKey = (typeof NAV)[number];
 
-/* The Atlas and the archive have their own pages; everything else is a section
-   of the home. (The archive keeps the key "canon", its name until 2026-10-29.) */
+/* The Atlas, the archive and the Mission (Beltrán's manifesto, issue #116; it was
+   "About", a section of the home) have their own pages; everything else is a
+   section of the home. (The archive keeps the key "canon", its name until 2026-10-29.) */
 export const navHref = (lang: Lang, k: NavKey) =>
-  k === 'atlas' ? `/${lang}/atlas` : k === 'canon' ? `/${lang}/archive` : `/${lang}#${k}`;
+  k === 'atlas' ? `/${lang}/atlas` : k === 'canon' ? `/${lang}/archive` : k === 'mission' ? `/${lang}${missionPath(lang)}` : `/${lang}#${k}`;
 
 /** `path` is the page's address without the language (e.g. "/archive/T001"), for the language switch. */
 export default function Header({ lang, current, path }: { lang: Lang; current?: NavKey; path?: string }) {
