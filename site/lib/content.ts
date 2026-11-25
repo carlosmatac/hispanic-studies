@@ -15,6 +15,10 @@ export const FOLLOWING = { youtube: '13.5K', instagram: '19K', x: '22K', substac
 
 export type ChannelKey = 'youtube' | 'instagram' | 'x' | 'tiktok' | 'substack' | 'patreon' | 'discord';
 
+/** The community's Discord server; the invite (Beltrán, 2026-11-25, #116) never expires, and the
+    server's name is the one Discord's public invite endpoint gives. */
+export const DISCORD = { name: 'Reconquista Syndicate', url: 'https://discord.gg/FRdUHnhNPp' };
+
 /** `unit` says what the count counts: YouTube and Substack have subscribers, the rest followers. */
 export const CHANNELS: { key: ChannelKey; name: string; handle: string; url: string; following?: string; unit?: 'subscribers' | 'followers' }[] = [
   { key: 'youtube', name: 'YouTube', handle: '@hispano_studies', url: 'https://www.youtube.com/@hispano_studies', following: FOLLOWING.youtube, unit: 'subscribers' },
@@ -23,12 +27,9 @@ export const CHANNELS: { key: ChannelKey; name: string; handle: string; url: str
   { key: 'tiktok', name: 'TikTok', handle: '@hispano_studies', url: 'https://www.tiktok.com/@hispano_studies' },
   { key: 'substack', name: 'Substack', handle: 'hispanicamerican', url: 'https://hispanicamerican.substack.com/', following: FOLLOWING.substack, unit: 'subscribers' },
   { key: 'patreon', name: 'Patreon', handle: 'HispanicAmericanStudies', url: 'https://www.patreon.com/HispanicAmericanStudies' },
+  { key: 'discord', name: 'Discord', handle: DISCORD.name, url: DISCORD.url },
 ];
 export const channel = (key: ChannelKey) => CHANNELS.find((c) => c.key === key)!;
-
-/** The community's Discord server; the invite (Beltrán, 2026-11-25, #116) never expires, and the
-    server's name is the one Discord's public invite endpoint gives. */
-export const DISCORD = { name: 'Reconquista Syndicate', url: 'https://discord.gg/FRdUHnhNPp' };
 
 /* Every video on the channel, read from youtube.com/@hispano_studies on
    2026-10-21 (IDs checked against YouTube's oEmbed). Titles are the

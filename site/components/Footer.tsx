@@ -1,5 +1,5 @@
 import { dict, type Lang } from '@/lib/i18n';
-import { CHANNELS, DISCORD, SITE } from '@/lib/content';
+import { CHANNELS, SITE } from '@/lib/content';
 import { collabPath, privacyPath } from '@/lib/canon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
@@ -45,7 +45,6 @@ export default function Footer({ lang }: { lang: Lang }) {
             <h4>{d.foot.community}</h4>
             <ul>
               <li><a href={`/${lang}#community`}>{d.foot.pamphlet}</a></li>
-              <li><a href={DISCORD.url} target="_blank" rel="noopener noreferrer">{d.foot.discord}</a></li>
               <li><a href={`/${lang}${collabPath(lang)}`}>{d.collab.meta}</a></li>
               <li><a href={`/${lang}#merch`}>{d.nav.merch}</a></li>
             </ul>
