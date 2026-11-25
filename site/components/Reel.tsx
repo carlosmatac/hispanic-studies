@@ -4,10 +4,11 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
 import { dict, type Lang } from '@/lib/i18n';
 
 /* The reel: a film about the Institute that runs right under the title page,
-   full width, silent and looping. It is graded on the page's own paper, so it
-   reads as part of the page, not as a video.
+   silent and looping, framed and always whole (it grows to the largest size
+   the window allows as it scrolls in; globals.css). It is graded on the
+   page's own paper, so it reads as part of the page, not as a video.
 
-   - The film never moves or changes size. Pressing it (or the label that
+   - Pressing it (or the label that
      follows the pointer) turns the sound on where it is; pressing again
      turns it off.
    - It only plays while it is on screen. With reduced motion it does not
