@@ -72,7 +72,11 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar-h) + 8px); }
+/* nothing pans sideways on a phone: iOS Safari takes its viewport overflow
+   from the root, not from the body, so the root clips too (hidden first for
+   browsers without clip; on the root either one goes to the viewport and
+   leaves sticky and the window scroll alone) */
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--bar-h) + 8px); overflow-x: hidden; overflow-x: clip; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
 body {
@@ -200,7 +204,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
    as the screen allows, one line, and a running band. Nothing else.
    ========================================================================== */
 
-.title { position: relative; isolation: isolate; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; min-height: calc(100svh - var(--bar-h)); overflow: clip; }
+.title { position: relative; isolation: isolate; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; min-height: calc(100svh - var(--bar-h)); overflow: hidden; overflow: clip; }
 /* two layers: behind, shapes of the brand's colours drifting; in front, a pane
    of frosted glass with the title on it. Outside the pane the shapes are
    clear; through it they are only colour. Cream stays on top. */
@@ -284,7 +288,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
 .title__say em { color: var(--burgundy); }
 
 /* the band: the three pillars and the motto, running */
-.title__band { display: flex; overflow: clip; border-block: var(--rule); background: var(--paper); white-space: nowrap; }
+.title__band { display: flex; overflow: hidden; overflow: clip; border-block: var(--rule); background: var(--paper); white-space: nowrap; }
 .title__run { display: flex; flex: none; }
 .title__item {
   display: inline-flex; align-items: center; gap: clamp(20px, 3vw, 44px); padding: 15px 0 13px clamp(20px, 3vw, 44px);
@@ -440,7 +444,7 @@ main .eyebrow { color: var(--leather); }
 
 .epigraph { padding: 0; color: var(--burgundy); }
 .epigraph__stick {
-  position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip;
+  position: relative; min-height: 100svh; display: grid; align-items: center; overflow: hidden; overflow: clip;
   padding: clamp(72px, 9vw, 130px) var(--edge);
 }
 /* the valley fills the whole section; a paper veil from the left keeps the words */
@@ -1056,7 +1060,7 @@ main .eyebrow { color: var(--leather); }
 .vid:hover h4, .short:hover h4 { text-decoration: underline; }
 .watch__note { margin: 14px 0 0; color: var(--ink-muted); }
 
-.rail { position: relative; }
+.rail { position: relative; min-width: 0; max-width: 100%; }
 .rail__track {
   list-style: none; margin: 0; padding: 0 0 14px; display: grid; grid-auto-flow: column;
   grid-auto-columns: clamp(150px, 15vw, 210px); gap: clamp(12px, 1.4vw, 20px);
