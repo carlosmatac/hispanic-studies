@@ -19,6 +19,9 @@ const nextConfig: NextConfig = {
       // the privacy policy (issue #111), likewise
       { source: '/es/privacy', destination: '/es/privacidad', permanent: false },
       { source: '/en/privacidad', destination: '/en/privacy', permanent: false },
+      // the Mission page, Beltrán's manifesto (issue #116), likewise
+      { source: '/es/mission', destination: '/es/mision', permanent: false },
+      { source: '/en/mision', destination: '/en/mission', permanent: false },
       // the brief's suggested English address, without the language
       { source: '/work-with-us', destination: '/en/work-with-us', permanent: false },
     ];
@@ -27,6 +30,7 @@ const nextConfig: NextConfig = {
     return [
       { source: '/es/colabora', destination: '/es/work-with-us' },
       { source: '/es/privacidad', destination: '/es/privacy' },
+      { source: '/es/mision', destination: '/es/mission' },
     ];
   },
 };

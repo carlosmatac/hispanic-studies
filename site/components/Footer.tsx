@@ -1,5 +1,5 @@
 import { dict, type Lang } from '@/lib/i18n';
-import { CHANNELS, SITE } from '@/lib/content';
+import { CHANNELS, DISCORD, SITE } from '@/lib/content';
 import { collabPath, privacyPath } from '@/lib/canon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
@@ -24,7 +24,7 @@ export default function Footer({ lang }: { lang: Lang }) {
           <nav className="foot__col" aria-label={d.foot.explore}>
             <h4>{d.foot.explore}</h4>
             <ul>
-              {(['atlas', 'canon', 'books', 'watch', 'read', 'about'] as const).map((k) => (
+              {(['atlas', 'canon', 'books', 'watch', 'read', 'mission'] as const).map((k) => (
                 <li key={k}><a href={navHref(lang, k)}>{d.nav[k]}</a></li>
               ))}
             </ul>
@@ -45,7 +45,7 @@ export default function Footer({ lang }: { lang: Lang }) {
             <h4>{d.foot.community}</h4>
             <ul>
               <li><a href={`/${lang}#community`}>{d.foot.pamphlet}</a></li>
-              <li><span>{d.foot.discord} <span className="foot__pending">{d.comm.discordPending}</span></span></li>
+              <li><a href={DISCORD.url} target="_blank" rel="noopener noreferrer">{d.foot.discord}</a></li>
               <li><a href={`/${lang}${collabPath(lang)}`}>{d.collab.meta}</a></li>
               <li><a href={`/${lang}#merch`}>{d.nav.merch}</a></li>
             </ul>

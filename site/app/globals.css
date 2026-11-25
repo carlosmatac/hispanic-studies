@@ -1176,6 +1176,9 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .about__text > p:not(.eyebrow) { margin: 0; padding: 18px 0; border-top: var(--rule); max-width: none; }
 .about__text > p:last-child { border-bottom: var(--rule); }
 .about__text .lede { font-size: clamp(17px, 1.2vw, 19px); }
+/* the Mission section (#116): his excerpt between two rules, then his button to the manifesto */
+.about__text > .lede:not(:last-child) { border-bottom: var(--rule); }
+.about__text > p.about__go { padding: clamp(20px, 2.4vw, 28px) 0 0; border: 0; }
 
 /* ==========================================================================
    FOOTER — one burgundy panel whose ground is our generated film of a tercio
@@ -1219,7 +1222,6 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .foot a, .foot li > span { color: color-mix(in srgb, var(--paper) 92%, transparent); text-decoration: none; font-size: 14.5px; line-height: 1.35; }
 .foot a:hover { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
 .foot__count { margin-left: 8px; font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 55%, transparent); }
-.foot__pending { display: block; margin-top: 2px; font-family: var(--mono); font-size: 11px; color: color-mix(in srgb, var(--paper) 55%, transparent); }
 .foot__side { display: grid; grid-template-rows: auto 1fr; padding: 0 !important; }
 .foot__side > * { padding: clamp(28px, 2.6vw, 40px) var(--edge) clamp(22px, 2.2vw, 32px) clamp(18px, 2vw, 30px); }
 .foot__say { border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent); }
@@ -1360,3 +1362,40 @@ a:hover > .seal .seal__glyph, a:focus-visible > .seal .seal__glyph { fill: var(-
 .legal__point .reader__text p { text-indent: 0; margin: 0 0 1em; hyphens: manual; }
 .legal__point .reader__text p:last-child { margin-bottom: 0; }
 .legal__point a { color: var(--burgundy); text-underline-offset: 3px; overflow-wrap: anywhere; }
+
+/* The Mission page (/mission, /mision; issue #116): Beltrán's manifesto in one
+   column on the paper, in the reader's Ibarra. The three versions are all in
+   the page; the switch's anchors (#en, #es, #pt) show one through :target, the
+   site's language by default. Without :has() all three show, one under another. */
+.manifesto { --read-size: clamp(18px, 0.3vw + 16.8px, 21px); --col: calc(var(--read-size) * 32); padding: clamp(36px, 6vw, 88px) var(--edge) clamp(52px, 7vw, 104px); }
+.manifesto section { padding: 0; }
+.manifesto__version { scroll-margin-top: calc(var(--bar-h) + 8px); }
+@supports selector(:has(*)) {
+  .manifesto__version { display: none; }
+  .manifesto__version:target,
+  .manifesto:not(:has(.manifesto__version:target)) .manifesto__version[data-default] { display: block; }
+}
+@supports not selector(:has(*)) {
+  .manifesto__version + .manifesto__version { margin-top: clamp(52px, 7vw, 104px); padding-top: clamp(36px, 5vw, 64px); border-top: var(--rule); }
+}
+.manifesto__head { max-width: var(--col); margin: 0 auto; padding-bottom: clamp(26px, 4vw, 44px); border-bottom: var(--rule); text-align: center; }
+.manifesto__head .eyebrow { margin: 0 auto 16px; }
+.manifesto__switch { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin-bottom: clamp(20px, 3vw, 32px); }
+.manifesto__switch-label { margin-right: 6px; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+.manifesto__switch a { padding: 6px 15px; border: 1px solid var(--grid); border-radius: var(--radius-pill); font-size: 13.5px; text-decoration: none; background: var(--paper); transition: background 0.15s, color 0.15s, border-color 0.15s; }
+.manifesto__switch a[aria-current="true"] { background: var(--burgundy); border-color: var(--burgundy); color: var(--paper); }
+.manifesto__switch a:hover:not([aria-current="true"]) { border-color: var(--burgundy); color: var(--burgundy); }
+.manifesto__head h1 { max-width: none; font-size: clamp(38px, 6vw, 72px); line-height: 1.02; color: var(--burgundy); }
+.manifesto__text {
+  max-width: var(--col); margin: clamp(30px, 4.5vw, 52px) auto 0;
+  font: 400 var(--read-size)/1.62 var(--display); color: var(--ink);
+  hyphens: auto; -webkit-hyphens: auto; hanging-punctuation: first; text-wrap: pretty; overflow-wrap: break-word;
+}
+.manifesto__text p { max-width: none; margin: 0 0 0.9em; }
+.manifesto__text p:last-child { margin-bottom: 0; }
+.manifesto__intro p:first-child { font-size: 1.12em; line-height: 1.5; }
+.manifesto__part { margin-top: 2.4em; }
+.manifesto__part h2 { margin: 0 0 0.8em; font-size: clamp(25px, 2.4vw, 32px); line-height: 1.12; color: var(--burgundy); hyphens: manual; }
+.manifesto__n { display: block; margin-bottom: 8px; font-size: 0.82em; color: var(--leather); }
+.manifesto__text strong { font-weight: 600; }
+.manifesto__text a { color: var(--burgundy); text-underline-offset: 3px; overflow-wrap: anywhere; }

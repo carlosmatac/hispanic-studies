@@ -26,7 +26,9 @@ export const CHANNELS: { key: ChannelKey; name: string; handle: string; url: str
 ];
 export const channel = (key: ChannelKey) => CHANNELS.find((c) => c.key === key)!;
 
-export const DISCORD = { name: 'Reconquista Syndicate' };
+/** The community's Discord server; the invite (Beltrán, 2026-11-25, #116) never expires, and the
+    server's name is the one Discord's public invite endpoint gives. */
+export const DISCORD = { name: 'Reconquista Syndicate', url: 'https://discord.gg/FRdUHnhNPp' };
 
 /* Every video on the channel, read from youtube.com/@hispano_studies on
    2026-10-21 (IDs checked against YouTube's oEmbed). Titles are the
