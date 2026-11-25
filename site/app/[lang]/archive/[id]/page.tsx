@@ -10,6 +10,7 @@ import Citation from '@/components/canon/Citation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ReaderToc from '@/components/canon/ReaderToc';
+import Ads from '@/components/Ads';
 import CuratedWork from '@/components/archive/CuratedWork';
 
 /* A work's own page (issue #68). One of the curated 80 whose article is
@@ -145,8 +146,9 @@ export default async function ReaderPage({ params }: Params) {
             </details>
           )}
 
-          {/* AD SLOT (#70): above the text */}
-          <AdSlot name="reader-top" />
+          {/* AD SLOTS (#70): only where there is a text to read (a record alone is thin content for AdSense) */}
+          {text && <Ads />}
+          {text && <AdSlot name="reader-top" />}
 
           {text ? (
             <div className="reader__body">
@@ -180,8 +182,7 @@ export default async function ReaderPage({ params }: Params) {
             </section>
           )}
 
-          {/* AD SLOT (#70): after the text */}
-          <AdSlot name="reader-end" />
+          {text && <AdSlot name="reader-end" />}
 
           <nav className="reader__pager" aria-label={r.archive}>
             {i > 0 ? <Neighbour work={works[i - 1]} lang={lang} label={r.earlier} rel="prev" /> : <span />}

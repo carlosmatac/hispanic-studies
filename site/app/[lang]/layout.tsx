@@ -19,6 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     description: d.meta.description,
     alternates: { languages: { en: '/en', es: '/es' } },
     icons: { icon: '/brand/ihs-logo.svg' },
+    // AdSense's "meta tag" way of proving the site is ours (#70): off until the publisher id is set
+    ...(process.env.NEXT_PUBLIC_ADSENSE_ID ? { other: { 'google-adsense-account': process.env.NEXT_PUBLIC_ADSENSE_ID } } : {}),
   };
 }
 

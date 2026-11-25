@@ -23,7 +23,7 @@ const ENTER = /^\/enter(\/|$)/;
    image optimizer (/_next/image, itself behind the pass) fetches them from the
    site without the visitor's cookie, and they are the art and the brand the
    public site shows anyway. Pages, videos, data and the archive stay closed. */
-const OPEN = /^\/(_next\/static\/|_next\/webpack-hmr|__nextjs|favicon\.ico$|robots\.txt$|(art|brand)\/[^?#]+\.(jpe?g|png|webp|avif|gif|svg)$)/i;
+const OPEN = /^\/(_next\/static\/|_next\/webpack-hmr|__nextjs|favicon\.ico$|robots\.txt$|ads\.txt$|(art|brand)\/[^?#]+\.(jpe?g|png|webp|avif|gif|svg)$)/i;
 
 // a browser asking for a page, not a script fetching data, a file or an RSC payload
 function wantsPage(request: NextRequest) {

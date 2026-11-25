@@ -8,6 +8,7 @@ import Citation from '@/components/canon/Citation';
 import ReaderToc from '@/components/canon/ReaderToc';
 import ArticleTabs from './ArticleTabs';
 import PdfViewer from './PdfViewer';
+import Ads from '@/components/Ads';
 
 /* A work of the curated 80 (issue #93), as Beltrán's brief lays it out:
    1. the header: original title; author or issuing body; date and its kind; scope;
@@ -23,7 +24,8 @@ import PdfViewer from './PdfViewer';
 
 type Text = { tree: Parameters<typeof renderTree>[0]; sections: Section[]; words: number; minutes: number; lang: string } | null;
 
-/** Where an ad may go later (#70). Empty and hidden: no ad code yet. */
+/** Where an ad goes (#70, components/Ads.tsx): empty and hidden until the AdSense env vars are set,
+    and only where a text is hosted here (an article and links alone are thin content for AdSense). */
 const AdSlot = ({ name }: { name: string }) => <div className="ad-slot" data-ad-slot={name} hidden aria-hidden="true" />;
 
 const md = (s: string) => renderTree(renderMarkdown(s, { adSlot: false }).tree, React);
@@ -147,8 +149,8 @@ export default function CuratedWork({ lang, work, eraName, eraId, articles, text
           </div>
         )}
 
-        {/* AD SLOT (#70): after the article */}
-        <AdSlot name="reader-top" />
+        {text && <Ads />}
+        {text && <AdSlot name="reader-top" />}
 
         <section className="w80-read" id="read" aria-labelledby="read-h">
           <h2 id="read-h">{t.readText}</h2>
@@ -247,8 +249,7 @@ export default function CuratedWork({ lang, work, eraName, eraId, articles, text
           </section>
         )}
 
-        {/* AD SLOT (#70): after the text */}
-        <AdSlot name="reader-end" />
+        {text && <AdSlot name="reader-end" />}
 
         <nav className="reader__pager" aria-label={t.back}>
           {prev ? <Neighbour work={prev} lang={lang} label={t.earlier} rel="prev" /> : <span />}
