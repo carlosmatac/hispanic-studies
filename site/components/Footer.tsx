@@ -1,6 +1,6 @@
 import { dict, type Lang } from '@/lib/i18n';
 import { CHANNELS, SITE } from '@/lib/content';
-import { collabPath } from '@/lib/canon';
+import { collabPath, privacyPath } from '@/lib/canon';
 import AlgoretoLogo from './AlgoretoLogo';
 import { navHref } from './Header';
 import FooterPixels from './FooterPixels';
@@ -70,6 +70,7 @@ export default function Footer({ lang }: { lang: Lang }) {
         <div className="foot__base">
           <span>© 2026 {d.foot.legal}</span>
           <div className="foot__chips">
+            <a className="foot__chip" href={`/${lang}${privacyPath(lang)}`}>{d.foot.privacy}</a>
             <span className="foot__chip">{d.foot.version}</span>
             <a className="foot__chip foot__made" href="https://algoreto.com" target="_blank" rel="noopener noreferrer">
               <span>{d.foot.madeBy}</span>

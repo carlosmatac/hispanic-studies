@@ -195,6 +195,8 @@ export const tilt = (id: string) => Math.round(((seed(id) * 37) % 33) - 16) / 10
    serves /es/colabora from app/[lang]/work-with-us). The work an appeal came from
    rides along as ?work=<slug>. */
 export const collabPath = (lang: Lang) => (lang === 'es' ? '/colabora' : '/work-with-us');
+/** The privacy policy (issue #111): /en/privacy and /es/privacidad (next.config.ts serves the second from app/[lang]/privacy). */
+export const privacyPath = (lang: Lang) => (lang === 'es' ? '/privacidad' : '/privacy');
 export const collabAnchor = (lang: Lang) => (lang === 'es' ? 'traducciones' : 'translations');
 export const collabHref = (lang: Lang, slug?: string) =>
   `/${lang}${collabPath(lang)}${slug ? `?work=${encodeURIComponent(slug)}` : ''}#${collabAnchor(lang)}`;
