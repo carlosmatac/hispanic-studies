@@ -317,8 +317,22 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
    sound switch turns the sound on in place.
    ========================================================================== */
 
-.reel { padding: 0; background: var(--paper); }
-.reel__stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 100svh; overflow: hidden; }
+/* framed, and always whole (Carlos, 2026-11-25: full width cut the film's words at the top and bottom on
+   wide, short windows). The stage is the largest 16:9 that fits the window inside the page's gutter; it
+   arrives at three quarters of that and grows to it as it scrolls into view, keeping its rounded edge,
+   hairline and lift. Without scroll-driven animations, or with reduced motion, it is simply that size. */
+.reel { --reel-pad: clamp(28px, 4vw, 64px); padding: var(--reel-pad) 0; background: var(--paper); }
+.reel__stage {
+  --reel-max: min(calc(100% - 2 * var(--gutter)), calc((100svh - var(--bar-h) - 2 * var(--reel-pad)) * 16 / 9));
+  position: relative; width: var(--reel-max); margin-inline: auto; aspect-ratio: 16 / 9; overflow: hidden;
+  border-radius: var(--radius-l); border: 1px solid var(--grid-light); box-shadow: var(--lift-2);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reel__stage { animation: reel-grow linear both; animation-timeline: view(); animation-range: entry 10% cover 50%; }
+  }
+}
+@keyframes reel-grow { from { width: calc(var(--reel-max) * 0.74); } }
 .reel__loop { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--paper); }
 .reel__hit { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: pointer; }
 .reel__hit.is-tracking { cursor: none; }
@@ -336,6 +350,7 @@ section { padding: clamp(52px, 7vw, 104px) var(--edge); position: relative; }
 .reel__hit:hover .reel__chip { background: var(--burgundy-dark); }
 .reel__hit:active .reel__chip { scale: 0.94; }
 .reel__hit:focus-visible { outline: 3px solid var(--burgundy); outline-offset: -6px; }
+@media (max-width: 700px) { .reel__chip { font-size: 13px; padding: 6px 12px; left: 10px; bottom: 10px; } }
 
 .signup { display: flex; flex-wrap: wrap; gap: 9px; margin: 14px 0 11px; }
 .signup input {
